@@ -18,7 +18,7 @@ class PizzaCommand extends Command {
 
     async run(msg) {
         var start = Date.now();
-        msg.channel.sendMessage("pong").then(sendedMessage => {
+        msg.say("pong").then(sendedMessage => {
             var stop = Date.now();
             var diff = (stop - start);
             sendedMessage.edit(`pong \`${diff}ms\``);
