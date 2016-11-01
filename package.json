@@ -9,9 +9,14 @@
   "author": "wolke",
   "license": "ISC",
   "dependencies": {
+    "bluebird": "^3.4.6",
     "discord.js": "^10.0.1",
     "discord.js-commando": "^0.3.0",
-    "node-opus": "^0.2.2"
+    "eventemitter3": "^2.0.2",
+    "node-dogstatsd": "^0.0.6",
+    "node-opus": "^0.2.2",
+    "request": "^2.76.0",
+    "winston": "^2.2.0"
   },
   "devDependencies": {
     "eslint": "^3.9.1",

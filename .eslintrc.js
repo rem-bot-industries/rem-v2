@@ -8,10 +8,6 @@ module.exports = {
         "sourceType": "module"
     },
     "rules": {
-        "indent": [
-            "error",
-            "tab"
-        ],
         "linebreak-style": [
             "error",
             "windows"
@@ -19,10 +15,6 @@ module.exports = {
         "quotes": [
             "error",
             "single"
-        ],
-        "semi": [
-            "error",
-            "never"
         ]
     }
 };
