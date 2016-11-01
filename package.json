@@ -9,10 +9,12 @@
   "author": "wolke",
   "license": "ISC",
   "dependencies": {
+    "discord.js": "^10.0.1",
     "discord.js-commando": "^0.3.0",
     "node-opus": "^0.2.2"
   },
   "devDependencies": {
+    "eslint": "^3.9.1",
     "minami": "^1.1.1"
   }
 }

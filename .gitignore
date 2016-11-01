@@ -3,3 +3,4 @@ node_modules
 yarn.lock
 cmd.bat
 .idea
+config/main.json
