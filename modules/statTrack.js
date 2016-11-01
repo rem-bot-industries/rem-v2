@@ -22,7 +22,6 @@ module.exports = class StatTrack extends EventEmitter {
         this.guilds = 0;
         this.users = 0;
         this.interval = setInterval(() => {
-            console.log('update!');
             this.update()
         }, interval * 1000)
     }
