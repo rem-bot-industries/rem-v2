@@ -9,9 +9,10 @@ const config = require('../config/main.json');
 var EventEmitter = require('events');
 /**
  * The stattrack engine
- * @type {StatTrack}
+ * @extends EventEmitter
+ *
  */
-module.exports = class StatTrack extends EventEmitter {
+class StatTrack extends EventEmitter {
     /**
      * Create the stats engine.
      * @param {number} interval - the interval in seconds until the next update should be triggered
@@ -82,4 +83,5 @@ module.exports = class StatTrack extends EventEmitter {
         this.guilds = guilds;
         this.users = users;
     }
-};
+}
+module.exports = StatTrack;

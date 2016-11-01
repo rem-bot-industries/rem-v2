@@ -12,7 +12,7 @@ const client = new commando.Client({
 let shard = {id: process.env.SHARD_ID, count: process.env.SHARD_COUNT};
 client.on('error', winston.error);
 client.on('warn', winston.warn);
-client.on('debug', winston.info);
+// client.on('debug', winston.info);
 client.on('ready', () => {
     winston.log(`Client ready, logged in as ${client.user.username}#${client.user.discriminator} shard:${shard.id}`);
 });
