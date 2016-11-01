@@ -1,6 +1,3 @@
-/**
- * Created by julia on 01.11.2016.
- */
 let Discord = require('discord.js');
 let config = require('./config/main.json');
 let StatTrack = require('./modules/statTrack');
