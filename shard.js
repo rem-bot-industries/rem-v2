@@ -10,12 +10,12 @@ const client = new commando.Client({
     commandPrefix: '!w.',
     unknownCommandResponse: false
 });
-// let shard = {id: process.env.SHARD_ID, count: process.env.SHARD_COUNT};
+let shard = {id: process.env.SHARD_ID, count: process.env.SHARD_COUNT};
 client.on('error', winston.error);
 client.on('warn', winston.warn);
 // client.on('debug', winston.general);
 client.on('ready', () => {
-    winston.log(`Client ready, logged in as ${client.user.username}#${client.user.discriminator} `);
+    winston.log(`Client ready, logged in as ${client.user.username}#${client.user.discriminator} shard:${shard.id}`);
 });
 client.on('disconnect', () => {
     winston.warn('Disconnected!');
@@ -59,4 +59,4 @@ client.registry
     ])
     .registerCommandsIn(path.join(__dirname, 'commands'));
 client.login(config.token);
-//uwu shard:${shard.id}
+//uwu
