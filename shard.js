@@ -4,18 +4,18 @@
 const winston = require('winston');
 const commando = require('discord.js-commando');
 const config = require('./config/main.json');
-var path = require("path");
+var path = require('path');
 const client = new commando.Client({
     owner: config.owner_id,
     commandPrefix: '!w.',
     unknownCommandResponse: false
 });
-let shard = {id: process.env.SHARD_ID, count: process.env.SHARD_COUNT};
+// let shard = {id: process.env.SHARD_ID, count: process.env.SHARD_COUNT};
 client.on('error', winston.error);
 client.on('warn', winston.warn);
 // client.on('debug', winston.general);
 client.on('ready', () => {
-    winston.log(`Client ready, logged in as ${client.user.username}#${client.user.discriminator} shard:${shard.id}`);
+    winston.log(`Client ready, logged in as ${client.user.username}#${client.user.discriminator} `);
 });
 client.on('disconnect', () => {
     winston.warn('Disconnected!');
@@ -57,7 +57,6 @@ client.registry
     .registerGroups([
         ['general', 'general']
     ])
-    .registerDefaults()
     .registerCommandsIn(path.join(__dirname, 'commands'));
 client.login(config.token);
-//uwu
+//uwu shard:${shard.id}

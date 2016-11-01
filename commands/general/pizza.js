@@ -2,15 +2,16 @@
  * Created by julia on 01.11.2016.
  */
 const {Command} = require('discord.js-commando');
-class PingCommand extends Command {
+class PizzaCommand extends Command {
     constructor(client) {
         super(client, {
-            name: 'ping',
+            name: 'pizza',
+            memberName:'pizza',
             group: 'general',
             description: 'That is so complicated',
             format: '',
             details: 'Rip me',
-            examples: ['ping', 'areyouevenonline'],
+            examples: ['pizza'],
             guildOnly: false
         });
     }
