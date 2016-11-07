@@ -2,6 +2,8 @@
  * Created by julia on 01.11.2016.
  */
 var CmdManager = require('./modules/cmdManager');
+var db = require('./modules/dbManager');
+db.connect();
 var CMD;
 var config = require('./config/main.json');
 var winston = require('winston');
@@ -27,8 +29,8 @@ bot.on('ready', () => {
     CMD = new CmdManager();
     CMD.on('ready', (cmds) => {
         console.log('commands are ready!');
-        console.log(cmds);
-    })
+        // console.log(cmds);
+    });
 });
 // bot.on('debug', info => winston.info('Debug:' + info));
 bot.on("message", (msg) => {

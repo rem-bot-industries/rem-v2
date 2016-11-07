@@ -2,6 +2,8 @@
  * Created by julia on 07.11.2016.
  */
 var EventEmitter = require('events');
+var db = require('./dbManager');
+var r = db.getR();
 var beta = require('../config/main.json').beta;
 var url;
 if (beta) {

@@ -3,10 +3,10 @@
  */
 var voiceManager = require('../modules/voiceManager');
 var Command = require('../Objects/command');
-class Join extends Command {
+class Play extends Command {
     constructor(t) {
         super();
-        this.cmd = "voice";
+        this.cmd = "play";
         this.cat = "voice";
         this.needGuild = true;
         this.t = t;
@@ -14,7 +14,9 @@ class Join extends Command {
     }
 
    run(msg) {
-       voiceManager.join(msg);
+       voiceManager.play(msg, (err) => {
+            if (err) return this.emit(err);
+       });
     }
 }
-module.exports = Join;
+module.exports = Play;

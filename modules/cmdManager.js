@@ -22,7 +22,6 @@ class CmdManager extends EventEmitter {
                 if (file.endsWith('.js')) {
                     var command = require(path.join(__dirname, '../commands/', file));
                     let cmd = new command('t');
-                    console.log(util.inspect(cmd));
                     commands[cmd.cmd] = cmd;
                 }
             }
@@ -44,8 +43,6 @@ class CmdManager extends EventEmitter {
         if (this.ready && msg.content.startsWith('!w.')) {
             try {
                 let command = msg.content.substr('!w.'.length).split(' ')[0];
-                console.log(command);
-                console.log(this.commands);
                 this.commands[command].run(msg);
             }
             catch (err) {

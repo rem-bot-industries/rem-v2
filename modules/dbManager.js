@@ -14,4 +14,10 @@ var getConnection = () => {
 var setConnection = (conn) => {
     connection = conn;
 };
-module.exports = {connect:connect, getConnection:getConnection, setConnection:setConnection};
+var getR = () => {
+    return r;
+};
+var setR = (r) => {
+    this.r = r;
+};
+module.exports = {connect:connect, getConnection:getConnection, setConnection:setConnection, getR:getR, setR:setR};
