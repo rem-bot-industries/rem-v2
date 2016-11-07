@@ -3,6 +3,7 @@
  */
 var voiceManager = require('../modules/voiceManager');
 var Command = require('../Objects/command');
+var SongImporter = require('../modules/songImporter');
 class Play extends Command {
     constructor(t) {
         super();
@@ -14,8 +15,14 @@ class Play extends Command {
     }
 
    run(msg) {
-       voiceManager.play(msg, (err) => {
-            if (err) return this.emit(err);
+       let importer = new SongImporter(msg);
+       importer.on('done', (info) =>  {
+           console.log(info);
+           let Song = {url:info.loaderUrl, title:info.title};
+           voiceManager.play(msg, Song.url);
+           voiceManager.on('error', (err) => {
+
+           })
        });
     }
 }

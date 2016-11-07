@@ -1,46 +1,57 @@
 /**
  * Created by julia on 07.11.2016.
  */
-var players = {};
 var Player = require('./player');
 var ytdl = require('ytdl-core');
 var winston = require('winston');
-var join = (msg, cb) => {
-    if (msg.guild) {
-        if (!msg.guild.voiceConnection) {
-            if (msg.member.voiceChannel) {
-                msg.member.voiceChannel.join().then((connection) => {
-                    cb(null, connection);
-                }).catch(err => {
-                    cb('no-access-voice');
-                });
+var EventEmitter = require('events');
+class VoiceManager extends EventEmitter {
+    constructor(bot) {
+        super();
+        this.setMaxListeners(20);
+        this.players = {};
+    }
+    join(msg, cb) {
+        if (msg.guild) {
+            if (!msg.guild.voiceConnection) {
+                if (msg.member.voiceChannel) {
+                    msg.member.voiceChannel.join().then((connection) => {
+                        cb(null, connection);
+                    }).catch(err => {
+                        cb('no-access-voice');
+                    });
+                } else {
+                    cb('no-voice');
+                }
             } else {
-                cb('no-voice');
+                cb(null, msg.guild.voiceConnection);
             }
-        } else {
-            cb(null, msg.guild.voiceConnection);
         }
     }
-};
-var play = (msg, cb) => {
-    join(msg, (err, conn) => {
-        if (err) return cb(err);
-        players[msg.guild.id] = new Player(msg, conn, ytdl);
-        players[msg.guild.id].play({url:'https://www.youtube.com/watch?v=iopIBbBcksE', title:'uwu'})
-    });
-};
-var pause = (msg) => {
-    try {
-        players[msg.guild.id].pause();
-    } catch(e) {
 
+    play(msg, url) {
+        this.join(msg, (err, conn) => {
+            if (err) return this.emit('error',err);
+            this.players[msg.guild.id] = new Player(msg, conn, ytdl);
+            this.players[msg.guild.id].play({url: url, title: 'uwu'});
+        });
     }
-};
-var resume = (msg) => {
-    try {
-        players[msg.guild.id].resume();
-    } catch(e) {
 
+    pause(msg) {
+        try {
+            this.players[msg.guild.id].pause();
+        } catch (e) {
+
+        }
     }
-};
-module.exports = {join: join, play:play, pause:pause, resume:resume};
+
+    resume(msg) {
+        try {
+            this.players[msg.guild.id].resume();
+        } catch (e) {
+
+        }
+    }
+}
+var manager = new VoiceManager();
+module.exports = manager;

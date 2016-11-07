@@ -21,6 +21,7 @@
     "request": "^2.76.0",
     "rethinkdb": "^2.3.3",
     "winston": "^2.2.0",
+    "youtube-dl": "^1.11.1",
     "ytdl-core": "^0.7.19"
   },
   "devDependencies": {

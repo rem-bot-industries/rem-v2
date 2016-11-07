@@ -39,7 +39,7 @@ class Player extends EventEmitter {
                 };
                 stream = this.ytdl(Song.url, options)
             } else {
-                stream = request(`${url}${Song.id}`);
+                stream = request(Song.url);
             }
             this.dispatcher = this.connection.playStream(stream, {volume: 0.25, passes: 3});
             // winston.info(path.resolve(Song.path));
@@ -55,7 +55,11 @@ class Player extends EventEmitter {
                 // }));
                 this.emit('announce', Song.title);
             this.dispatcher.on("end", function () {
-                this.dispatcher.setVolume(0);
+                try {
+                    this.dispatcher.setVolume(0);
+                } catch (e) {
+
+                }
                 winston.info("File ended!");
                 this.nextSong(Song);
             });
