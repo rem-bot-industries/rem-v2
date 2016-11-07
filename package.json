@@ -17,8 +17,11 @@
     "eventemitter3": "^2.0.2",
     "node-dogstatsd": "^0.0.6",
     "node-opus": "^0.2.2",
+    "raven": "^0.12.1",
     "request": "^2.76.0",
-    "winston": "^2.2.0"
+    "rethinkdb": "^2.3.3",
+    "winston": "^2.2.0",
+    "ytdl-core": "^0.7.19"
   },
   "devDependencies": {
     "eslint": "^3.9.1",
