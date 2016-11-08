@@ -11,7 +11,7 @@ class SoundcloudImporter extends BasicImporter {
     }
 
     loadSong() {
-        this.youtubedl.getInfo(url, (err, info) => {
+        this.ytdl.getInfo(url, (err, info) => {
             if (err) {
                 this.emit('error', err);
             } else {
