@@ -11,6 +11,7 @@ class VoiceManager extends EventEmitter {
         this.setMaxListeners(20);
         this.players = {};
     }
+
     join(msg, cb) {
         if (msg.guild) {
             if (!msg.guild.voiceConnection) {
@@ -31,7 +32,7 @@ class VoiceManager extends EventEmitter {
 
     play(msg, url) {
         this.join(msg, (err, conn) => {
-            if (err) return this.emit('error',err);
+            if (err) return this.emit('error', err);
             this.players[msg.guild.id] = new Player(msg, conn, ytdl);
             this.players[msg.guild.id].play({url: url, title: 'uwu'});
         });
@@ -50,6 +51,20 @@ class VoiceManager extends EventEmitter {
             this.players[msg.guild.id].resume();
         } catch (e) {
 
+        }
+    }
+
+    addToQueue(msg, url) {
+        this.join(msg, (err, conn) => {
+            if (err) return this.emit('error', err);
+            if (typeof (this.players[msg.guild.id]) !== 'undefined') {
+                this.players[msg.guild.id].addToQueue({url: url, title: 'test2'});
+            }
+        });
+    }
+    forceSkip(msg) {
+        if (typeof (this.players[msg.guild.id]) !== 'undefined') {
+            this.players[msg.guild.id].nextSong();
         }
     }
 }

@@ -5,19 +5,18 @@ var voiceManager = require('../modules/voiceManager');
 var Command = require('../Objects/command');
 var SongImporter = require('../modules/songImporter');
 /**
- * The play command
- * plays a song duh.
+ * The addToQueueCommand
  * @extends Command
  *
  */
 class Play extends Command {
     /**
-     * Create the play command
+     * Create the pause command
      * @param {Function} t - the translation module
      */
     constructor(t) {
         super();
-        this.cmd = "play";
+        this.cmd = "qa";
         this.cat = "voice";
         this.needGuild = true;
         this.t = t;
@@ -29,7 +28,7 @@ class Play extends Command {
        importer.on('done', (info) =>  {
            // console.log(info);
            let Song = {url:info.loaderUrl, title:info.title};
-           voiceManager.play(msg, Song.url);
+           voiceManager.addToQueue(msg, Song.url);
            voiceManager.on('error', (err) => {
 
            })

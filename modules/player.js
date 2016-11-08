@@ -21,16 +21,25 @@ var path = require("path");
  *
  */
 class Player extends EventEmitter {
+    /**
+     * Create the pause command
+     * @param {Object} msg - the message
+     * @param {Object} connection the voice connection
+     * @param {Object} ytdl
+     */
     constructor(msg,connection, ytdl) {
         super();
         this.setMaxListeners(1);
         this.msg = msg;
-        this.queue = {repeat:false, repeatId:'', voteskips:[]};
+        this.queue = {repeat:false, repeatId:'', voteskips:[], songs:[]};
         this.dispatcher = null;
         this.time = "";
         this.ytdl = ytdl;
         this.connection = connection;
         this.song = null;
+        setInterval(() => {
+            console.log(this.queue.songs);
+        }, 10*1000);
         // this.play();
     }
     /**
@@ -39,6 +48,7 @@ class Player extends EventEmitter {
      */
     play(Song) {
         if (this.connection) {
+            this.queue.songs.push(Song);
             let stream;
             if (YoutubeReg.test(Song.url)) {
                 var options = {
@@ -70,7 +80,7 @@ class Player extends EventEmitter {
 
                 }
                 winston.info("File ended!");
-                this.nextSong(Song);
+                this.nextSong();
             });
             this.dispatcher.on("debug", information => {
                 winston.info(`Debug: ${information}`);
@@ -105,8 +115,14 @@ class Player extends EventEmitter {
             this.emit('debug', e);
         }
     }
+    addToQueue(Song) {
+        this.queue.songs.push(Song);
+    }
     nextSong(Song) {
-
+        this.queue.songs.shift();
+        if (this.queue.songs.length > 0) {
+            this.play(this.queue.songs[0]);
+        }
         // if (inVoiceChannel(message)) {
         //     let connectionVoice = getVoiceConnection(message);
         //     let dispatcher = getDispatcherFromConnection(connectionVoice);
