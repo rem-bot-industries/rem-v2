@@ -118,7 +118,7 @@ class Player extends EventEmitter {
     addToQueue(Song) {
         this.queue.songs.push(Song);
     }
-    nextSong(Song) {
+    nextSong() {
         this.queue.songs.shift();
         if (this.queue.songs.length > 0) {
             this.play(this.queue.songs[0]);
