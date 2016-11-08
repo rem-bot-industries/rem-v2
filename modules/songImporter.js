@@ -5,8 +5,16 @@ var EventEmitter = require('events');
 var YoutubeReg = /(?:http?s?:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=)?([a-zA-Z0-9_-]+)(&.*|)/;
 var SoundcloudReg = /(?:http?s?:\/\/)?(?:www\.)?(?:soundcloud\.com|snd\.sc)\/(?:.*)/;
 var osuRegex = /(?:http(?:s|):\/\/osu.ppy.sh\/(s|b)\/([0-9]*)((\?|\&)m=[0-9]|))/;
+var sc = require('./soundCloudImporter');
+var yt = require('./youtubeImporter');
+
 var ytdl = require('ytdl-core');
 var youtubedl = require('youtube-dl');
+/**
+ * The Songimporter
+ * @extends EventEmitter
+ *
+ */
 class SongImporter extends EventEmitter {
     constructor(msg) {
         super();
@@ -25,32 +33,24 @@ class SongImporter extends EventEmitter {
         }
         if (YoutubeReg.test(messageSearch)) {
             this.youtube(messageSearch);
-        } else if (SoundcloudReg.test(messageSearch)) {
-            this.soundcloud(messageSearch);
-        } else if (osuRegex.test(messageSearch)) {
+        }  else if (osuRegex.test(messageSearch)) {
             this.osu(messageSearch);
+        } else {
+            this.soundcloud(messageSearch);
         }
     }
 
     youtube(url) {
-        this.ytdl.getInfo(url, (err, info) => {
-            if (err) {
-                this.emit('error', err);
-            } else {
-                info.id = info.video_id;
-                this.emit('done', info);
-            }
+        let importer = new yt(url, this.ytdl);
+        importer.on('done', () => {
+            this.emit('done');
         });
     }
 
     soundcloud(url) {
-        this.youtubedl.getInfo(url, (err, info) => {
-            if (err) {
-                this.emit('error', err);
-            } else {
-                info.loaderUrl = info.url;
-                this.emit('done', info);
-            }
+        let importer = new yt(url, this.youtubedl);
+        importer.on('done', () => {
+            this.emit('done');
         });
     }
 

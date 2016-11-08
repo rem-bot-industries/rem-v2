@@ -15,12 +15,17 @@ var YoutubeReg = /(?:http?s?:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:watc
 var winston = require('winston');
 var request = require("request");
 var path = require("path");
+/**
+ * The audio player
+ * @extends EventEmitter
+ *
+ */
 class Player extends EventEmitter {
     constructor(msg,connection, ytdl) {
         super();
         this.setMaxListeners(1);
         this.msg = msg;
-        this.queue = {};
+        this.queue = {repeat:false, repeatId:'', voteskips:[]};
         this.dispatcher = null;
         this.time = "";
         this.ytdl = ytdl;
@@ -28,6 +33,10 @@ class Player extends EventEmitter {
         this.song = null;
         // this.play();
     }
+    /**
+     * Create the stats engine.
+     * @param {number} Song - the song to play
+     */
     play(Song) {
         if (this.connection) {
             let stream;
@@ -97,6 +106,7 @@ class Player extends EventEmitter {
         }
     }
     nextSong(Song) {
+
         // if (inVoiceChannel(message)) {
         //     let connectionVoice = getVoiceConnection(message);
         //     let dispatcher = getDispatcherFromConnection(connectionVoice);

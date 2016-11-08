@@ -4,7 +4,17 @@
 var voiceManager = require('../modules/voiceManager');
 var Command = require('../Objects/command');
 var SongImporter = require('../modules/songImporter');
+/**
+ * The play command
+ * plays a song duh.
+ * @extends Command
+ *
+ */
 class Play extends Command {
+    /**
+     * Create the stats engine.
+     * @param {number} t - the translation module
+     */
     constructor(t) {
         super();
         this.cmd = "play";

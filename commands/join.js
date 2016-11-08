@@ -3,6 +3,11 @@
  */
 var voiceManager = require('../modules/voiceManager');
 var Command = require('../Objects/command');
+/**
+ * The join command
+ * @extends Command
+ *
+ */
 class Join extends Command {
     constructor(t) {
         super();
