@@ -13,11 +13,11 @@ class YoutubeImporter extends BasicImporter {
     constructor(url,ytdl) {
         super();
         this.url = url;
-        this.ytdl = ytdl;
+        this.dl = ytdl;
         this.loadSong();
     }
     loadSong(){
-        this.ytdl.getInfo(this.url, (err, info) => {
+        this.dl.getInfo(this.url, (err, info) => {
             if (err) {
                 this.emit('error', err);
             } else {

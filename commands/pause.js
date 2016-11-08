@@ -24,7 +24,7 @@ class Play extends Command {
         this.accessLevel = 0;
     }
 
-    run(msg) {
+   run(msg) {
        let importer = new SongImporter(msg);
        importer.on('done', (info) =>  {
            // console.log(info);

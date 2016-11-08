@@ -3,15 +3,15 @@
  */
 var BasicImporter = require('../Objects/basicImporter');
 class SoundcloudImporter extends BasicImporter {
-    constructor(url,ytdl) {
+    constructor(url,loader) {
         super();
         this.url = url;
+        this.dl = loader;
         this.loadSong();
-        this.ytdl = ytdl;
     }
 
     loadSong() {
-        this.ytdl.getInfo(url, (err, info) => {
+        this.dl.getInfo(url, (err, info) => {
             if (err) {
                 this.emit('error', err);
             } else {

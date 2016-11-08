@@ -51,5 +51,8 @@ class CmdManager extends EventEmitter {
             }
         }
     }
+    loadServer() {
+
+    }
 }
 module.exports = CmdManager;
