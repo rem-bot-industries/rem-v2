@@ -7,21 +7,22 @@ var fs = require("fs");
 var path = require("path");
 var util = require("util");
 class CmdManager extends EventEmitter {
-    constructor() {
+    constructor(l) {
         super();
         this.setMaxListeners(1);
-        this.load();
+        this.l = l;
+        this.l.on('ready', (t) => this.load(t));
         this.commands = {};
         this.ready = false;
     }
 
-    load() {
+    load(t) {
         fs.readdir(path.join(__dirname, '../commands'), (err, files) => {
             let commands = {};
             for (let file of files) {
                 if (file.endsWith('.js')) {
                     var command = require(path.join(__dirname, '../commands/', file));
-                    let cmd = new command('t');
+                    let cmd = new command(t);
                     commands[cmd.cmd] = cmd;
                 }
             }
@@ -47,7 +48,7 @@ class CmdManager extends EventEmitter {
             }
             catch (err) {
                 winston.error(err.message);
-                // winston.error(err.stack);
+                winston.error(err.stack);
             }
         }
     }

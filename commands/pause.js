@@ -27,8 +27,12 @@ class Pause extends Command {
     run(msg) {
         voiceManager.pause(msg);
         voiceManager.on('error', (err) => {
+            msg.channel.sendMessage(err);
+        });
+        voiceManager.on('success', () => {
+            msg.channel.sendMessage(':ok_hand: ');
+        });
 
-        })
     }
 }
 module.exports = Pause;

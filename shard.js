@@ -2,9 +2,11 @@
  * Created by julia on 01.11.2016.
  */
 var CmdManager = require('./modules/cmdManager');
+var LanguageManager = require('./modules/langManager');
 var db = require('./modules/dbManager');
 db.connect();
 var CMD;
+var LANG;
 var config = require('./config/main.json');
 var winston = require('winston');
 var raven = require('raven');
@@ -26,7 +28,8 @@ if (!config.beta) {
     });
 }
 bot.on('ready', () => {
-    CMD = new CmdManager();
+    LANG = new LanguageManager();
+    CMD = new CmdManager(LANG);
     CMD.on('ready', (cmds) => {
         console.log('commands are ready!');
         // console.log(cmds);

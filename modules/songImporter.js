@@ -42,19 +42,23 @@ class SongImporter extends EventEmitter {
     youtube(url) {
         let importer = new yt(url, this.ytdl);
         importer.on('done', (info) => {
-            this.emit('done', info);
+            this.done(info);
         });
     }
 
     soundcloud(url) {
         let importer = new sc(url, this.youtubedl);
         importer.on('done', (info) => {
-            this.emit('done', info);
+            this.done(info);
         });
     }
 
     osu(url) {
-
+        // this.done(info);
+    }
+    done(info) {
+        let Song = {url:info.loaderUrl, title:info.title, id:info.id};
+        this.emit('done', Song);
     }
 }
 module.exports = SongImporter;

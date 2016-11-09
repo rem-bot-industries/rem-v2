@@ -25,15 +25,10 @@ class Play extends Command {
     }
 
     run(msg) {
-       let importer = new SongImporter(msg);
-       importer.on('done', (info) =>  {
-           // console.log(info);
-           let Song = {url:info.loaderUrl, title:info.title, id:info.id};
-           voiceManager.play(msg, Song);
-           voiceManager.on('error', (err) => {
+        voiceManager.play(msg);
+        voiceManager.on('error', (err) => {
 
-           })
-       });
+        })
     }
 }
 module.exports = Play;

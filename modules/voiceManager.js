@@ -5,6 +5,7 @@ var Player = require('./player');
 var ytdl = require('ytdl-core');
 var winston = require('winston');
 var EventEmitter = require('events');
+var SongImporter = require('./songImporter');
 class VoiceManager extends EventEmitter {
     constructor(bot) {
         super();
@@ -30,41 +31,58 @@ class VoiceManager extends EventEmitter {
         }
     }
 
-    play(msg, Song) {
+    play(msg) {
         this.join(msg, (err, conn) => {
             if (err) return this.emit('error', err);
-            this.players[msg.guild.id] = new Player(msg, conn, ytdl);
-            this.players[msg.guild.id].play(Song);
+            let importer = new SongImporter(msg);
+            importer.on('error', (err) => {
+                msg.channel.sendMessage(err);
+            });
+            importer.on('done', (Song) => {
+                msg.channel.sendMessage(`Now Playing ${Song.title}`);
+                this.players[msg.guild.id] = new Player(msg, conn, ytdl);
+                this.players[msg.guild.id].play(Song);
+            });
         });
     }
 
     pause(msg) {
         try {
             this.players[msg.guild.id].pause();
+            this.emit('success');
         } catch (e) {
-
+            this.emit('error');
         }
     }
 
     resume(msg) {
         try {
             this.players[msg.guild.id].resume();
+            this.emit('success');
         } catch (e) {
-
+            this.emit('error');
         }
     }
 
-    addToQueue(msg, Song) {
+    addToQueue(msg) {
         this.join(msg, (err, conn) => {
             if (err) return this.emit('error', err);
-            if (typeof (this.players[msg.guild.id]) !== 'undefined') {
-                this.players[msg.guild.id].addToQueue(Song);
-            } else {
-                this.players[msg.guild.id] = new Player(msg, conn, ytdl);
-                this.players[msg.guild.id].addToQueue(Song);
-            }
+            let importer = new SongImporter(msg);
+            importer.on('error', (err) => {
+                msg.channel.sendMessage(err);
+            });
+            importer.on('done', (Song) => {
+                msg.channel.sendMessage(`Now Playing ${Song.title}`);
+                if (typeof (this.players[msg.guild.id]) !== 'undefined') {
+                    this.players[msg.guild.id].addToQueue(Song);
+                } else {
+                    this.players[msg.guild.id] = new Player(msg, conn, ytdl);
+                    this.players[msg.guild.id].addToQueue(Song);
+                }
+            });
         });
     }
+
     forceSkip(msg) {
         if (typeof (this.players[msg.guild.id]) !== 'undefined') {
             this.players[msg.guild.id].nextSong();

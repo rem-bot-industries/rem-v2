@@ -27,7 +27,10 @@ class Resume extends Command {
     run(msg) {
         voiceManager.resume(msg);
         voiceManager.on('error', (err) => {
-
+            msg.channel.sendMessage(err);
+        });
+        voiceManager.on('success', () => {
+            msg.channel.sendMessage(':ok_hand: ');
         });
     }
 }
