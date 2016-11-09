@@ -18,10 +18,12 @@ class Join extends Command {
         this.accessLevel = 0;
     }
 
-   run(msg) {
-       voiceManager.join(msg, (err) => {
+    run(msg) {
+        voiceManager.join(msg, (err) => {
+            if (err) return msg.reply(this.t(err));
+        });
 
-       });
+
     }
 }
 module.exports = Join;

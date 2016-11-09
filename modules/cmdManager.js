@@ -52,7 +52,7 @@ class CmdManager extends EventEmitter {
             }
         }
     }
-    loadServer() {
+    loadServer(msg) {
 
     }
 }

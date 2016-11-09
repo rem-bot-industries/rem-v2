@@ -27,7 +27,7 @@ class Play extends Command {
     run(msg) {
         voiceManager.play(msg);
         voiceManager.on('error', (err) => {
-
+            (this.t(err));
         })
     }
 }

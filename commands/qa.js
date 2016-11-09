@@ -30,7 +30,7 @@ class Play extends Command {
            let Song = {url:info.loaderUrl, title:info.title, id:info.id};
            voiceManager.addToQueue(msg, Song);
            voiceManager.on('error', (err) => {
-
+               (this.t(err));
            })
        });
     }

@@ -44,12 +44,18 @@ class SongImporter extends EventEmitter {
         importer.on('done', (info) => {
             this.done(info);
         });
+        importer.on('error', (err) => {
+            this.emit('error', err);
+        });
     }
 
     soundcloud(url) {
         let importer = new sc(url, this.youtubedl);
         importer.on('done', (info) => {
             this.done(info);
+        });
+        importer.on('error', (err) => {
+            this.emit('error', err);
         });
     }
 
@@ -59,6 +65,9 @@ class SongImporter extends EventEmitter {
     done(info) {
         let Song = {url:info.loaderUrl, title:info.title, id:info.id};
         this.emit('done', Song);
+    }
+    saveSong(Song) {
+
     }
 }
 module.exports = SongImporter;

@@ -20,10 +20,10 @@ class VoiceManager extends EventEmitter {
                     msg.member.voiceChannel.join().then((connection) => {
                         cb(null, connection);
                     }).catch(err => {
-                        cb('no-access-voice');
+                        cb('joinVoice.error');
                     });
                 } else {
-                    cb('no-voice');
+                    cb('joinVoice.no-voice');
                 }
             } else {
                 cb(null, msg.guild.voiceConnection);
@@ -36,7 +36,7 @@ class VoiceManager extends EventEmitter {
             if (err) return this.emit('error', err);
             let importer = new SongImporter(msg);
             importer.on('error', (err) => {
-                msg.channel.sendMessage(err);
+                this.emit('error', err);
             });
             importer.on('done', (Song) => {
                 msg.channel.sendMessage(`Now Playing ${Song.title}`);
@@ -69,7 +69,7 @@ class VoiceManager extends EventEmitter {
             if (err) return this.emit('error', err);
             let importer = new SongImporter(msg);
             importer.on('error', (err) => {
-                msg.channel.sendMessage(err);
+                this.emit('error', err);
             });
             importer.on('done', (Song) => {
                 msg.channel.sendMessage(`Now Playing ${Song.title}`);

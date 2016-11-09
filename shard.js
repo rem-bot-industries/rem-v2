@@ -3,8 +3,7 @@
  */
 var CmdManager = require('./modules/cmdManager');
 var LanguageManager = require('./modules/langManager');
-var db = require('./modules/dbManager');
-db.connect();
+var serverModel = require('./DB/server');
 var CMD;
 var LANG;
 var config = require('./config/main.json');
@@ -40,7 +39,26 @@ bot.on("message", (msg) => {
     CMD.check(msg);
 });
 bot.on('guildCreate', (Guild) => {
+    serverModel.findOne({id: Guild.id}, (err, server) => {
+        if (err) return winston.error(err);
+        if (server) {
 
+        } else {
+            let server = new serverModel({
+                id: Guild.id,
+                nsfwChannels: [],
+                cmdChannels: [],
+                lastVoiceChannel: "",
+                levelEnabled: true,
+                pmNotifications: true,
+                chNotifications: false,
+                prefix: "!w."
+            });
+            server.save((err) => {
+                if (err) return winston.info(err);
+            });
+        }
+    });
 });
 bot.on('guildMemberAdd', (member) => {
 
