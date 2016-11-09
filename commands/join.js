@@ -19,7 +19,9 @@ class Join extends Command {
     }
 
    run(msg) {
-       voiceManager.join(msg);
+       voiceManager.join(msg, (err) => {
+
+       });
     }
 }
 module.exports = Join;

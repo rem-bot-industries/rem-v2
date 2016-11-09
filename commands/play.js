@@ -28,8 +28,8 @@ class Play extends Command {
        let importer = new SongImporter(msg);
        importer.on('done', (info) =>  {
            // console.log(info);
-           let Song = {url:info.loaderUrl, title:info.title};
-           voiceManager.play(msg, Song.url);
+           let Song = {url:info.loaderUrl, title:info.title, id:info.id};
+           voiceManager.play(msg, Song);
            voiceManager.on('error', (err) => {
 
            })

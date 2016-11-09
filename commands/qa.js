@@ -27,8 +27,8 @@ class Play extends Command {
        let importer = new SongImporter(msg);
        importer.on('done', (info) =>  {
            // console.log(info);
-           let Song = {url:info.loaderUrl, title:info.title};
-           voiceManager.addToQueue(msg, Song.url);
+           let Song = {url:info.loaderUrl, title:info.title, id:info.id};
+           voiceManager.addToQueue(msg, Song);
            voiceManager.on('error', (err) => {
 
            })

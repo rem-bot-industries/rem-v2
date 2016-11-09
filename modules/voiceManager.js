@@ -30,11 +30,11 @@ class VoiceManager extends EventEmitter {
         }
     }
 
-    play(msg, url) {
+    play(msg, Song) {
         this.join(msg, (err, conn) => {
             if (err) return this.emit('error', err);
             this.players[msg.guild.id] = new Player(msg, conn, ytdl);
-            this.players[msg.guild.id].play({url: url, title: 'uwu'});
+            this.players[msg.guild.id].play(Song);
         });
     }
 
@@ -54,11 +54,14 @@ class VoiceManager extends EventEmitter {
         }
     }
 
-    addToQueue(msg, url) {
+    addToQueue(msg, Song) {
         this.join(msg, (err, conn) => {
             if (err) return this.emit('error', err);
             if (typeof (this.players[msg.guild.id]) !== 'undefined') {
-                this.players[msg.guild.id].addToQueue({url: url, title: 'test2'});
+                this.players[msg.guild.id].addToQueue(Song);
+            } else {
+                this.players[msg.guild.id] = new Player(msg, conn, ytdl);
+                this.players[msg.guild.id].addToQueue(Song);
             }
         });
     }

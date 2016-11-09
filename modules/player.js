@@ -27,11 +27,11 @@ class Player extends EventEmitter {
      * @param {Object} connection the voice connection
      * @param {Object} ytdl
      */
-    constructor(msg,connection, ytdl) {
+    constructor(msg, connection, ytdl) {
         super();
         this.setMaxListeners(1);
         this.msg = msg;
-        this.queue = {repeat:false, repeatId:'', voteskips:[], songs:[]};
+        this.queue = {repeat: false, repeatId: '', voteskips: [], songs: []};
         this.dispatcher = null;
         this.time = "";
         this.ytdl = ytdl;
@@ -39,12 +39,13 @@ class Player extends EventEmitter {
         this.song = null;
         setInterval(() => {
             console.log(this.queue.songs);
-        }, 10*1000);
+        }, 10 * 1000);
         // this.play();
     }
+
     /**
      * Create the stats engine.
-     * @param {number} Song - the song to play
+     * @param {Object} Song - the song to play
      */
     play(Song) {
         if (this.connection) {
@@ -53,7 +54,7 @@ class Player extends EventEmitter {
             if (YoutubeReg.test(Song.url)) {
                 var options = {
                     filter: (format) => format.container === 'mp4' && format.audioEncoding || format.container === 'webm' && format.audioEncoding,
-                    quality: ['140', '141', '139', 'lowest'],
+                    quality: ['250', '249', '140', '141', '139', 'lowest'],
                     audioonly: true
                 };
                 stream = this.ytdl(Song.url, options)
@@ -67,25 +68,25 @@ class Player extends EventEmitter {
             // }).catch(err => {
             //     winston.error(err);
             // });
-                // message.channel.sendMessage(t('play.playing', {
-                //     lngs: message.lang,
-                //     song: Song.title,
-                //     interpolation: {escape: false}
-                // }));
-                this.emit('announce', Song.title);
-            this.dispatcher.on("end", function () {
-                try {
-                    this.dispatcher.setVolume(0);
-                } catch (e) {
-
-                }
+            // message.channel.sendMessage(t('play.playing', {
+            //     lngs: message.lang,
+            //     song: Song.title,
+            //     interpolation: {escape: false}
+            // }));
+            this.announce(Song);
+            this.dispatcher.on("end", () => {
+                // try {
+                //     this.dispatcher.setVolume(0);
+                // } catch (e) {
+                //
+                // }
                 winston.info("File ended!");
-                this.nextSong();
+                this.nextSong(Song);
             });
             this.dispatcher.on("debug", information => {
                 winston.info(`Debug: ${information}`);
             });
-            this.dispatcher.on("error", function (err) {
+            this.dispatcher.on("error", (err) => {
                 winston.info(`Error: ${err}`);
             });
             // });
@@ -99,6 +100,7 @@ class Player extends EventEmitter {
             // });
         }
     }
+
     pause() {
         try {
             this.dispatcher.resume();
@@ -107,6 +109,7 @@ class Player extends EventEmitter {
             this.emit('debug', e);
         }
     }
+
     resume() {
         try {
             this.dispatcher.resume();
@@ -115,14 +118,29 @@ class Player extends EventEmitter {
             this.emit('debug', e);
         }
     }
+
     addToQueue(Song) {
         this.queue.songs.push(Song);
-    }
-    nextSong() {
-        this.queue.songs.shift();
-        if (this.queue.songs.length > 0) {
-            this.play(this.queue.songs[0]);
+        if (this.queue.songs.length === 1) {
+            this.play(Song);
         }
+    }
+
+    nextSong(Song) {
+        if (this.queue.songs.length > 0) {
+            if (typeof (Song) !== 'undefined') {
+                if (Song.id === this.queue.songs[0].id) {
+                    this.queue.songs.shift();
+                    this.play(this.queue.songs[0]);
+                }
+            } else {
+                this.queue.songs.shift();
+                this.play(this.queue.songs[0]);
+            }
+        }
+        // if (this.queue.songs.length > 0) {
+        //     this.play(this.queue.songs[0]);
+        // }
         // if (inVoiceChannel(message)) {
         //     let connectionVoice = getVoiceConnection(message);
         //     let dispatcher = getDispatcherFromConnection(connectionVoice);
@@ -205,9 +223,15 @@ class Player extends EventEmitter {
         //     });
         // }
     }
+
+    announce(Song) {
+
+    }
+
     startQueue(msg) {
 
     }
+
     setTime(time) {
         this.time = time;
     }
