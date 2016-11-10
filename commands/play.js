@@ -25,7 +25,7 @@ class Play extends Command {
     }
 
     run(msg) {
-        voiceManager.addToQueue(msg, true);
+        voiceManager.play(msg);
         voiceManager.on('error', (err) => {
             (this.t(err));
         })

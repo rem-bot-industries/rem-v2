@@ -31,7 +31,7 @@ class VoiceManager extends EventEmitter {
         }
     }
 
-    play(msg, immediate) {
+    play(msg) {
         this.join(msg, (err, conn) => {
             if (err) return this.emit('error', err);
             let importer = new SongImporter(msg);
@@ -40,8 +40,12 @@ class VoiceManager extends EventEmitter {
             });
             importer.on('done', (Song) => {
                 msg.channel.sendMessage(`Now Playing ${Song.title}`);
-                this.players[msg.guild.id] = new Player(msg, conn, ytdl);
-                this.players[msg.guild.id].play(Song,immediate);
+                if (typeof (this.players[msg.guild.id]) !== 'undefined') {
+                    this.players[msg.guild.id].addToQueue(Song, true);
+                } else {
+                    this.players[msg.guild.id] = new Player(msg, conn, ytdl);
+                    this.players[msg.guild.id].addToQueue(Song, true);
+                }
             });
         });
     }
@@ -64,7 +68,7 @@ class VoiceManager extends EventEmitter {
         }
     }
 
-    addToQueue(msg) {
+    addToQueue(msg, immediate) {
         this.join(msg, (err, conn) => {
             if (err) return this.emit('error', err);
             let importer = new SongImporter(msg);
@@ -74,20 +78,25 @@ class VoiceManager extends EventEmitter {
             importer.on('done', (Song) => {
                 msg.channel.sendMessage(`Queued ${Song.title}`);
                 if (typeof (this.players[msg.guild.id]) !== 'undefined') {
-                    this.players[msg.guild.id].addToQueue(Song);
+                    this.players[msg.guild.id].addToQueue(Song, immediate);
                 } else {
                     this.players[msg.guild.id] = new Player(msg, conn, ytdl);
-                    this.players[msg.guild.id].addToQueue(Song);
+                    this.players[msg.guild.id].addToQueue(Song, immediate);
                 }
             });
         });
     }
 
     getQueue(msg) {
-        if (typeof (this.players[msg.guild.id]) !== 'undefined' && this.players[msg.guild.id].queue.songs.length > 0) {
-            this.emit('queue', this.players[msg.guild.id].queue);
-        } else {
-            this.emit('error', 'generic.no-song-in-queue');
+        if (typeof (this.players[msg.guild.id]) !== 'undefined') {
+            let queue = this.players[msg.guild.id].getQueue();
+            winston.info(queue.songs.length);
+            if (queue.songs.length > 0) {
+                console.log('emit');
+                this.emit('queue', queue);
+            } else {
+                this.emit('error', 'generic.no-song-in-queue');
+            }
         }
     }
 

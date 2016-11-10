@@ -29,6 +29,8 @@ class Queue extends Command {
             msg.channel.sendMessage(this.t(err));
         });
         voiceManager.on('queue', (queue) => {
+            console.log('nice');
+            console.log(queue);
             msg.channel.sendCode('', JSON.stringify(queue));
         });
     }

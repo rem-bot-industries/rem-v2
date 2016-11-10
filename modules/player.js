@@ -227,7 +227,9 @@ class Player extends EventEmitter {
         //     });
         // }
     }
-
+    getQueue() {
+        return this.queue;
+    }
     announce(Song) {
 
     }
