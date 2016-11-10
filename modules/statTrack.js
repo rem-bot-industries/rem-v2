@@ -7,7 +7,7 @@ var StatsD = require('node-dogstatsd').StatsD;
 var dogstatsd = new StatsD();
 var request = require('request');
 const config = require('../config/main.json');
-var EventEmitter = require('events');
+var EventEmitter = require('eventemitter3');
 /**
  * The stattrack engine
  * @extends EventEmitter

@@ -1,7 +1,7 @@
 /**
  * Created by julia on 07.11.2016.
  */
-var EventEmitter = require('events');
+var EventEmitter = require('eventemitter3');
 // var db = require('./dbManager');
 // var r = db.getR();
 var beta = require('../config/main.json').beta;
@@ -49,7 +49,6 @@ class Player extends EventEmitter {
      */
     play(Song) {
         if (this.connection) {
-            this.queue.songs.push(Song);
             let stream;
             if (YoutubeReg.test(Song.url)) {
                 var options = {

@@ -1,7 +1,7 @@
 /**
  * Created by julia on 07.11.2016.
  */
-var EventEmitter = require('events');
+var EventEmitter = require('eventemitter3');
 var YoutubeReg = /(?:http?s?:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=)?([a-zA-Z0-9_-]+)(&.*|)/;
 var SoundcloudReg = /(?:http?s?:\/\/)?(?:www\.)?(?:soundcloud\.com|snd\.sc)\/(?:.*)/;
 var osuRegex = /(?:http(?:s|):\/\/osu.ppy.sh\/(s|b)\/([0-9]*)((\?|\&)m=[0-9]|))/;
@@ -9,6 +9,7 @@ var sc = require('./soundCloudImporter');
 var yt = require('./youtubeImporter');
 var ytdl = require('ytdl-core');
 var youtubedl = require('youtube-dl');
+var songModel = require('../DB/song');
 /**
  * The Songimporter
  * @extends EventEmitter
@@ -67,7 +68,9 @@ class SongImporter extends EventEmitter {
         this.emit('done', Song);
     }
     saveSong(Song) {
+        let song = new songModel({
 
+        })
     }
 }
 module.exports = SongImporter;

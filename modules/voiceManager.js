@@ -4,7 +4,7 @@
 var Player = require('./player');
 var ytdl = require('ytdl-core');
 var winston = require('winston');
-var EventEmitter = require('events');
+var EventEmitter = require('eventemitter3');
 var SongImporter = require('./songImporter');
 class VoiceManager extends EventEmitter {
     constructor(bot) {
@@ -72,7 +72,7 @@ class VoiceManager extends EventEmitter {
                 this.emit('error', err);
             });
             importer.on('done', (Song) => {
-                msg.channel.sendMessage(`Now Playing ${Song.title}`);
+                msg.channel.sendMessage(`Queued ${Song.title}`);
                 if (typeof (this.players[msg.guild.id]) !== 'undefined') {
                     this.players[msg.guild.id].addToQueue(Song);
                 } else {
