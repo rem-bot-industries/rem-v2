@@ -118,9 +118,14 @@ class Player extends EventEmitter {
         }
     }
 
-    addToQueue(Song) {
-        this.queue.songs.push(Song);
-        if (this.queue.songs.length === 1) {
+    addToQueue(Song, immediate) {
+        if (immediate) {
+            this.queue.songs.unshift(Song);
+            this.play(Song);
+        } else {
+            this.queue.songs.push(Song);
+        }
+        if (this.queue.songs.length === 1 && !immediate) {
             this.play(Song);
         }
     }

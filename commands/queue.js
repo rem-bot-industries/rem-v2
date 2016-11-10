@@ -3,20 +3,20 @@
  */
 var voiceManager = require('../modules/voiceManager');
 var Command = require('../Objects/command');
-var SongImporter = require('../modules/songImporter');
 /**
- * The addToQueueCommand
+ * The show queue command,
+ * shows the current queue
  * @extends Command
  *
  */
-class Play extends Command {
+class Queue extends Command {
     /**
-     * Create the pause command
+     * Create the resume command
      * @param {Function} t - the translation module
      */
     constructor(t) {
         super();
-        this.cmd = "qa";
+        this.cmd = "queue";
         this.cat = "voice";
         this.needGuild = true;
         this.t = t;
@@ -24,10 +24,13 @@ class Play extends Command {
     }
 
     run(msg) {
-        voiceManager.addToQueue(msg, false);
+        voiceManager.getQueue(msg);
         voiceManager.on('error', (err) => {
-            (this.t(err));
-        })
+            msg.channel.sendMessage(this.t(err));
+        });
+        voiceManager.on('queue', (queue) => {
+            msg.channel.sendCode('', JSON.stringify(queue));
+        });
     }
 }
-module.exports = Play;
+module.exports = Queue;

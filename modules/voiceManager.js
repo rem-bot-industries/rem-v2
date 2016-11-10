@@ -31,7 +31,7 @@ class VoiceManager extends EventEmitter {
         }
     }
 
-    play(msg) {
+    play(msg, immediate) {
         this.join(msg, (err, conn) => {
             if (err) return this.emit('error', err);
             let importer = new SongImporter(msg);
@@ -41,7 +41,7 @@ class VoiceManager extends EventEmitter {
             importer.on('done', (Song) => {
                 msg.channel.sendMessage(`Now Playing ${Song.title}`);
                 this.players[msg.guild.id] = new Player(msg, conn, ytdl);
-                this.players[msg.guild.id].play(Song);
+                this.players[msg.guild.id].play(Song,immediate);
             });
         });
     }
@@ -81,6 +81,14 @@ class VoiceManager extends EventEmitter {
                 }
             });
         });
+    }
+
+    getQueue(msg) {
+        if (typeof (this.players[msg.guild.id]) !== 'undefined' && this.players[msg.guild.id].queue.songs.length > 0) {
+            this.emit('queue', this.players[msg.guild.id].queue);
+        } else {
+            this.emit('error', 'generic.no-song-in-queue');
+        }
     }
 
     forceSkip(msg) {
