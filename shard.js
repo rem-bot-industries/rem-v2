@@ -15,7 +15,7 @@ var options = {
     messageCacheMaxSize: 2500,
     disableEveryone: true,
     fetchAllMembers: true,
-    disabledEvents: ['typingStart', 'typingStop']
+    disabledEvents: ['typingStart', 'typingStop','guildMemberSpeaking', 'messageUpdate']
 };
 winston.info(options);
 var bot = new Discord.Client(options);
