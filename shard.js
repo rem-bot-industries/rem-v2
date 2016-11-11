@@ -3,9 +3,11 @@
  */
 var CmdManager = require('./modules/cmdManager');
 var LanguageManager = require('./modules/langManager');
+var VoiceManager = require('./modules/voiceManager');
 var serverModel = require('./DB/server');
 var CMD;
 var LANG;
+var VOICE;
 var config = require('./config/main.json');
 var winston = require('winston');
 var raven = require('raven');
@@ -28,7 +30,8 @@ if (!config.beta) {
 }
 bot.on('ready', () => {
     LANG = new LanguageManager();
-    CMD = new CmdManager(LANG);
+    VOICE = new VoiceManager();
+    CMD = new CmdManager(LANG, VOICE);
     CMD.on('ready', (cmds) => {
         console.log('commands are ready!');
         // console.log(cmds);

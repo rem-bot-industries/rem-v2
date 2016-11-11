@@ -1,7 +1,6 @@
 /**
  * Created by julia on 07.11.2016.
  */
-var voiceManager = require('../modules/voiceManager');
 var Command = require('../Objects/command');
 /**
  * The join command
@@ -9,21 +8,20 @@ var Command = require('../Objects/command');
  *
  */
 class Join extends Command {
-    constructor(t) {
+    constructor(t,v) {
         super();
         this.cmd = "voice";
         this.cat = "voice";
         this.needGuild = true;
         this.t = t;
+        this.v = v;
         this.accessLevel = 0;
     }
 
     run(msg) {
-        voiceManager.join(msg, (err) => {
+        this.v.join(msg, (err) => {
             if (err) return msg.reply(this.t(err));
         });
-
-
     }
 }
 module.exports = Join;

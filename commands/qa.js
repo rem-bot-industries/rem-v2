@@ -1,33 +1,32 @@
 /**
  * Created by julia on 07.11.2016.
  */
-var voiceManager = require('../modules/voiceManager');
 var Command = require('../Objects/command');
-var SongImporter = require('../modules/songImporter');
 /**
  * The addToQueueCommand
  * @extends Command
  *
  */
-class Play extends Command {
+class AddToQueue extends Command {
     /**
      * Create the pause command
      * @param {Function} t - the translation module
      */
-    constructor(t) {
+    constructor(t,v) {
         super();
         this.cmd = "qa";
         this.cat = "voice";
         this.needGuild = true;
         this.t = t;
+        this.v = v;
         this.accessLevel = 0;
     }
 
     run(msg) {
-        voiceManager.addToQueue(msg, false);
-        voiceManager.on('error', (err) => {
-            (this.t(err));
-        })
+        this.v.once('error', (err) => {
+            msg.channel.sendMessage(this.t(err));
+        });
+        this.v.addToQueue(msg, false);
     }
 }
-module.exports = Play;
+module.exports = AddToQueue;

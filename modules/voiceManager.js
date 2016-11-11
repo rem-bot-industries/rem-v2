@@ -7,9 +7,9 @@ var winston = require('winston');
 var EventEmitter = require('eventemitter3');
 var SongImporter = require('./songImporter');
 class VoiceManager extends EventEmitter {
-    constructor(bot) {
+    constructor() {
         super();
-        this.setMaxListeners(20);
+        this.setMaxListeners(200);
         this.players = {};
     }
 
@@ -93,6 +93,7 @@ class VoiceManager extends EventEmitter {
             winston.info(queue.songs.length);
             if (queue.songs.length > 0) {
                 console.log('emit');
+                console.log(queue);
                 this.emit('queue', queue);
             } else {
                 this.emit('error', 'generic.no-song-in-queue');
@@ -106,5 +107,4 @@ class VoiceManager extends EventEmitter {
         }
     }
 }
-var manager = new VoiceManager();
-module.exports = manager;
+module.exports =  VoiceManager;

@@ -14,15 +14,7 @@ class CmdManager extends EventEmitter {
         this.ready = false;
     }
     saveSong(song) {
-        r.table("songs").insert({
-            id: song.id,
-            playCount:0,
-            addedBy:song.addedBy,
-            length:song.length,
 
-        }).run(db.getConnection(), (err) => {
-            if (err) return winston.info(err);
-        });
     }
     searchSong(song) {
 

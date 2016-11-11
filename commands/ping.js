@@ -13,13 +13,13 @@ class Ping extends Command {
     }
 
    run(msg) {
-        this.emit('run');
+        // this.emit('run');
         var start = Date.now();
         msg.channel.sendMessage("pong").then(sendedMsg => {
             var stop = Date.now();
             var diff = (stop - start);
             sendedMsg.edit(`pong \`${diff}ms\``);
-            this.emit('done');
+            // this.emit('done');
         }).catch(e => this.emit('error', {msg:msg, cmd:this.cmd, e:e}));
     }
 }
