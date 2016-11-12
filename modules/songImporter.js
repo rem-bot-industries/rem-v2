@@ -5,8 +5,10 @@ var EventEmitter = require('eventemitter3');
 var YoutubeReg = /(?:http?s?:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=)?([a-zA-Z0-9_-]+)(&.*|)/;
 var SoundcloudReg = /(?:http?s?:\/\/)?(?:www\.)?(?:soundcloud\.com|snd\.sc)\/(?:.*)/;
 var osuRegex = /(?:http(?:s|):\/\/osu.ppy.sh\/(s|b)\/([0-9]*)((\?|\&)m=[0-9]|))/;
+var playlistReg = /[&?]list=([a-z0-9_\-]+)/gi;
 var sc = require('./soundCloudImporter');
 var yt = require('./youtubeImporter');
+var pl = require('./playlistImporter');
 var ytdl = require('ytdl-core');
 var youtubedl = require('youtube-dl');
 var songModel = require('../DB/song');
@@ -32,7 +34,13 @@ class SongImporter extends EventEmitter {
         for (var i = 1; i < this.messageSplit.length; i++) {
             messageSearch = messageSearch + " " + this.messageSplit[i]
         }
+
         if (YoutubeReg.test(messageSearch)) {
+            let m;
+            if ((m = playlistReg.exec(messageSearch)) !== null) {
+                winston.info('using Playlist!');
+
+            }
             this.youtube(messageSearch);
         } else if (osuRegex.test(messageSearch)) {
             this.osu(messageSearch);
@@ -49,6 +57,10 @@ class SongImporter extends EventEmitter {
         importer.on('error', (err) => {
             this.emit('error', err);
         });
+    }
+
+    playlist(id) {
+        let importer = new pl(id, this.ytdl);
     }
 
     soundcloud(url) {
@@ -86,6 +98,7 @@ class SongImporter extends EventEmitter {
         let song = new songModel({
             title: info.title,
             alt_title: info.alt_title,
+            url: info.loaderUrl,
             path: "-",
             addedAt: new Date(),
             id: info.id,
@@ -96,8 +109,11 @@ class SongImporter extends EventEmitter {
             votedDownBy: [],
             lastPlay: null
         });
-        song.save(err => {
-            if (err) return cb(err);
+        song.save((err) => {
+            if (err) {
+                console.log(err);
+                return cb(err);
+            }
             cb(null, song);
         });
     }

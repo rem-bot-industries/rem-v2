@@ -23,6 +23,7 @@
     "raven": "^0.12.1",
     "request": "^2.76.0",
     "winston": "^2.2.0",
+    "youtube-api": "^2.0.4",
     "youtube-dl": "^1.11.1",
     "ytdl-core": "^0.7.19"
   },

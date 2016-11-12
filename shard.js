@@ -11,6 +11,11 @@ var VOICE;
 var config = require('./config/main.json');
 var winston = require('winston');
 var raven = require('raven');
+var mongoose = require('mongoose');
+let url = config.beta ? 'mongodb://localhost/discordbot-beta' : 'mongodb://localhost/discordbot';
+mongoose.connect(url, (err) => {
+    if (err) return winston.error('Failed to connect to the database!');
+});
 var blocked = require('blocked');
 blocked(function (ms) {
     console.log('Shard:' + process.env.SHARD_ID + ' BLOCKED FOR %sms', ms | 0);
@@ -21,7 +26,7 @@ var options = {
     messageCacheMaxSize: 1000,
     disableEveryone: true,
     fetchAllMembers: true,
-    disabledEvents: ['typingStart', 'typingStop','guildMemberSpeaking', 'messageUpdate']
+    disabledEvents: ['typingStart', 'typingStop', 'guildMemberSpeaking', 'messageUpdate']
 };
 winston.info(options);
 var bot = new Discord.Client(options);
