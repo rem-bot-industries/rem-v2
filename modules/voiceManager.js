@@ -36,6 +36,7 @@ class VoiceManager extends EventEmitter {
             if (msg.guild.voiceConnection) {
                 let conn = msg.guild.voiceConnection;
                 conn.channel.leave();
+                this.players[msg.guild.id] = null;
                 delete this.players[msg.guild.id];
                 cb();
             } else {

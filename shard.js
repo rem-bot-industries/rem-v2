@@ -4,7 +4,7 @@
 var CmdManager = require('./modules/cmdManager');
 var LanguageManager = require('./modules/langManager');
 var VoiceManager = require('./modules/voiceManager');
-var serverModel = require('./DB/server');
+var guildModel = require('./DB/guild');
 var CMD;
 var LANG;
 var VOICE;
@@ -46,12 +46,12 @@ bot.on("message", (msg) => {
     CMD.check(msg);
 });
 bot.on('guildCreate', (Guild) => {
-    serverModel.findOne({id: Guild.id}, (err, server) => {
+    guildModel.findOne({id: Guild.id}, (err, guild) => {
         if (err) return winston.error(err);
-        if (server) {
+        if (guild) {
 
         } else {
-            let server = new serverModel({
+            let guild = new guildModel({
                 id: Guild.id,
                 nsfwChannels: [],
                 cmdChannels: [],
@@ -61,7 +61,7 @@ bot.on('guildCreate', (Guild) => {
                 chNotifications: false,
                 prefix: "!w."
             });
-            server.save((err) => {
+            guild.save((err) => {
                 if (err) return winston.info(err);
             });
         }

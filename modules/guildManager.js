@@ -2,13 +2,48 @@
  * Created by julia on 10.11.2016.
  */
 var EventEmitter = require('eventemitter3');
-class CmdManager extends EventEmitter {
+var guildModel = require('../DB/guild');
+class GuildManager extends EventEmitter {
     constructor() {
         super();
-        this.setMaxListeners(1);
-        this.ready = false;
     }
 
+    createGuild(id, cb) {
+        let guild = new guildModel({
+            id: id,
+            nsfwChannels: [],
+            cmdChannels: [],
+            lastVoiceChannel: "",
+            levelEnabled: true,
+            pmNotifications: true,
+            chNotifications: false,
+            prefix: "!w."
+        });
+        guild.save((err) => {
+            if (err) return cb(err);
+            cb();
+        });
+    }
+
+    loadGuild(id, cb) {
+        guildModel.findOne({id: id}, (err, Guild) => {
+            if (err) return cb(err);
+            if (Guild) {
+
+            }
+        });
+    }
+
+    loadLang(id, cb) {
+        guildModel.findOne({id: id}, (err, Guild) => {
+            if (err) return cb(err);
+            if (Guild) {
+
+            } else {
+
+            }
+        });
+    }
 
 }
-module.exports = CmdManager;
+module.exports = GuildManager;

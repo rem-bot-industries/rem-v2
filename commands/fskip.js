@@ -3,7 +3,7 @@
  */
 var Command = require('../Objects/command');
 /**
- * The addToQueueCommand
+ * The force skip command
  * @extends Command
  *
  */
@@ -25,7 +25,7 @@ class ForceSkip extends Command {
 
     run(msg) {
         this.v.once('error', (err) => {
-
+            this.v.removeListener('error');
         });
         this.v.forceSkip(msg);
     }

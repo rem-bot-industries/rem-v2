@@ -54,7 +54,8 @@ class CmdManager extends EventEmitter {
             }
         }
     }
-    loadServer(msg) {
+
+    loadGuild(msg, cb) {
 
     }
 }
