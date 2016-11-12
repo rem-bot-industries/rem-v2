@@ -29,9 +29,8 @@ class Player extends EventEmitter {
         super();
         this.setMaxListeners(1);
         this.msg = msg;
-        this.queue = {repeat: false, repeatId: '', voteskips: [], songs: []};
+        this.queue = {repeat: false, repeatId: '', voteskips: [], songs: [], time: ""};
         this.dispatcher = null;
-        this.time = "";
         this.ytdl = ytdl;
         this.connection = connection;
         this.song = null;
@@ -86,17 +85,10 @@ class Player extends EventEmitter {
             this.dispatcher.on("error", (err) => {
                 winston.info(`Error: ${err}`);
             });
-            // });
-            // player.on('error', (e) => {
-            //     winston.error(e);
-            // })
         } else {
-            // client.captureMessage(`No connection found for Guild ${message.guild.name}`, {
-            //     extra: {'Guild': message.guild.id},
-            //     'voiceConnection': message.guild.voiceConnection
-            // });
         }
     }
+
     /**
      * Pauses the song
      */
@@ -227,10 +219,17 @@ class Player extends EventEmitter {
         //     });
         // }
     }
+
     getQueue() {
+        this.queue.time = this.convertSeconds(Math.floor(this.dispatcher.time / 1000));
         return this.queue;
     }
+
     announce(Song) {
+
+    }
+
+    updatePlays(Song) {
 
     }
 
@@ -238,8 +237,8 @@ class Player extends EventEmitter {
 
     }
 
-    setTime(time) {
-        this.time = time;
+    convertSeconds(s) {
+        return (s - (s %= 60)) / 60 + (9 < s ? ':' : ':0') + s
     }
 }
 module.exports = Player;

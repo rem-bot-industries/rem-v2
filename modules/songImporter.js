@@ -10,6 +10,7 @@ var yt = require('./youtubeImporter');
 var ytdl = require('ytdl-core');
 var youtubedl = require('youtube-dl');
 var songModel = require('../DB/song');
+var winston = require('winston');
 /**
  * The song importer
  * @extends EventEmitter
@@ -63,15 +64,52 @@ class SongImporter extends EventEmitter {
     osu(url) {
         // this.done(info);
     }
+
     done(info) {
-        let Song = {url:info.loaderUrl, title:info.title, id:info.id,addedBy:{name:this.msg.author.username, id:this.msg.author.id}};
+        let Song = {
+            url: info.loaderUrl,
+            title: info.title,
+            id: info.id,
+            addedBy: {name: this.msg.author.username, id: this.msg.author.id},
+            duration: this.convertDuration(info)
+        };
         this.emit('done', Song);
     }
 
     saveSong(Song) {
-        let song = new songModel({
-
-        })
+        let song = new songModel({})
     }
+
+    convertDuration(info) {
+        let durationConv = null;
+        if (typeof (info.duration) === 'undefined' && typeof (info.length_seconds) === 'undefined') {
+            return durationConv;
+        }
+        if (typeof (info.duration) !== 'undefined') {
+            let durationSplit = info.duration.split(':');
+            for (var i = 0; i < durationSplit.length; i++) {
+                if (i !== durationSplit.length - 1) {
+                    if (durationSplit[i].length === 1) {
+                        durationConv = durationConv + '0' + durationSplit[i] + ':';
+                    } else {
+                        durationConv = durationConv + durationSplit[i] + ':';
+                    }
+                } else {
+                    if (durationSplit[i].length === 1) {
+                        durationConv = durationConv + '0' + durationSplit[i];
+                    } else {
+                        durationConv = durationConv + durationSplit[i];
+                    }
+                }
+            }
+            winston.info(durationConv);
+        } else if (typeof (info.length_seconds) !== 'undefined') {
+            let d = Number(info.length_seconds);
+            var h = Math.floor(d / 3600);
+            var m = Math.floor(d % 3600 / 60);
+            var s = Math.floor(d % 3600 % 60);
+            return ((h > 0 ? h + ":" + (m < 10 ? "0" : "") : "") + m + ":" + (s < 10 ? "0" : "") + s);
+        }
+    };
 }
 module.exports = SongImporter;

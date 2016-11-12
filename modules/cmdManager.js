@@ -28,7 +28,6 @@ class CmdManager extends EventEmitter {
                 }
             }
             this.commands = commands;
-            console.log(util.inspect(this.commands));
             this.emit('ready', commands);
             this.ready = true;
         });
@@ -46,6 +45,7 @@ class CmdManager extends EventEmitter {
         if (this.ready && msg.content.startsWith('!w.')) {
             try {
                 let command = msg.content.substr('!w.'.length).split(' ')[0];
+                msg.lang = ['en'];
                 this.commands[command].run(msg);
             }
             catch (err) {

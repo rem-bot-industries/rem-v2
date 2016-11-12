@@ -90,10 +90,7 @@ class VoiceManager extends EventEmitter {
     getQueue(msg) {
         if (typeof (this.players[msg.guild.id]) !== 'undefined') {
             let queue = this.players[msg.guild.id].getQueue();
-            winston.info(queue.songs.length);
             if (queue.songs.length > 0) {
-                console.log('emit');
-                console.log(queue);
                 this.emit('queue', queue);
             } else {
                 this.emit('error', 'generic.no-song-in-queue');

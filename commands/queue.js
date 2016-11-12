@@ -34,11 +34,61 @@ class Queue extends Command {
             msg.channel.sendMessage(this.t(err));
         });
         this.v.once('queue', (queue) => {
-            console.log('nice');
-            console.log(queue);
-            msg.channel.sendCode('', JSON.stringify(queue));
+            msg.channel.sendMessage(this.buildReply(queue, msg));
         });
         this.v.getQueue(msg);
+    }
+
+    /**
+     * Builds the reply
+     * @param Queue - the queue pbject
+     */
+    buildReply(Queue, message) {
+        let reply = "";
+        let iteration = Queue.songs.length > 20 ? 20 : Queue.songs.length;
+        for (var q = 0; q < iteration; q++) {
+            if (q === 0) {
+                let repeat = Queue.repeat ? this.t('np.repeat-on', {lngs: message.lang}) : "";
+                if (typeof (Queue.songs[0].duration) !== 'undefined' && Queue.songs[0].duration !== '') {
+                    reply = reply + `${this.t('np.song-duration', {
+                            lngs: message.lang,
+                            title: Queue.songs[0].title,
+                            repeat: repeat,
+                            duration: Queue.songs[0].duration,
+                            current: Queue.time,
+                            interpolation: {escape: false}
+                        })} \n`;
+                } else {
+                    reply = reply + `${this.t('np.song', {
+                            lngs: message.lang,
+                            title: Queue.songs[0].title,
+                            repeat: repeat,
+                            interpolation: {escape: false}
+                        })}\n`;
+                }
+                if (Queue.songs.length > 1) {
+                    reply = `${reply}${this.t('queue.queued', {lngs: message.lang})}\n\`\`\``;
+                }
+            } else {
+                let end = '\n';
+                if (q === Queue.songs.length - 1) {
+                    end = `\`\`\``;
+                }
+                if (typeof (Queue.songs[q].duration) !== 'undefined') {
+                    reply = reply + `${parseInt(q + 1)}. ${Queue.songs[q].title} ${Queue.songs[q].duration}${end}`;
+                } else {
+                    reply = reply + `${parseInt(q + 1)}. ${Queue.songs[q].title}${end}`;
+                }
+            }
+
+        }
+        if (Queue.songs.length > 20) {
+            reply = reply + `${parseInt(21)}. ${this.t('generic.more', {
+                    lngs: message.lang,
+                    number: Queue.songs.length - 20
+                })}...\`\`\``;
+        }
+        return reply;
     }
 }
 module.exports = Queue;
