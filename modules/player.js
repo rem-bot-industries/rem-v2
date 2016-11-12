@@ -3,12 +3,6 @@
  */
 var EventEmitter = require('eventemitter3');
 var beta = require('../config/main.json').beta;
-var url;
-if (beta) {
-    url = 'http://localhost:7011/s/'
-} else {
-    url = 'http://localhost:7010/s/'
-}
 var YoutubeReg = /(?:http?s?:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=)?([a-zA-Z0-9_-]+)(&.*|)/;
 var winston = require('winston');
 var request = require("request");
