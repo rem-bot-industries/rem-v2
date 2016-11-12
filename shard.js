@@ -18,7 +18,7 @@ blocked(function (ms) {
 var client = new raven.Client(config.sentry_token);
 var Discord = require("discord.js");
 var options = {
-    messageCacheMaxSize: 2500,
+    messageCacheMaxSize: 1000,
     disableEveryone: true,
     fetchAllMembers: true,
     disabledEvents: ['typingStart', 'typingStop','guildMemberSpeaking', 'messageUpdate']

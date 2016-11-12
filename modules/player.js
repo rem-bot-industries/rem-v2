@@ -121,11 +121,15 @@ class Player extends EventEmitter {
             if (typeof (Song) !== 'undefined') {
                 if (Song.id === this.queue.songs[0].id) {
                     this.queue.songs.shift();
-                    this.play(this.queue.songs[0]);
+                    if (this.queue.songs[0]) {
+                        this.play(this.queue.songs[0]);
+                    }
                 }
             } else {
                 this.queue.songs.shift();
-                this.play(this.queue.songs[0]);
+                if (this.queue.songs[0]) {
+                    this.play(this.queue.songs[0]);
+                }
             }
         }
         // if (this.queue.songs.length > 0) {

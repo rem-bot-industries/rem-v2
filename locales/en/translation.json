@@ -272,7 +272,7 @@
     "region": "Region",
     "owner": "Owner"
   },
-  "leave": "Ok i left the voice channel.",
+  "leave": "Ok I left the voice channel.",
   "play": {
     "no-result": "No song found!",
     "playing": ":musical_note: Now playing **{{- song}}**"

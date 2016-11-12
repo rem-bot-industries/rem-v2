@@ -32,9 +32,11 @@ class Queue extends Command {
     run(msg) {
         this.v.once('error', (err) => {
             msg.channel.sendMessage(this.t(err));
+            this.v.removeListener('queue');
         });
         this.v.once('queue', (queue) => {
             msg.channel.sendMessage(this.buildReply(queue, msg));
+            this.v.removeListener('error');
         });
         this.v.getQueue(msg);
     }
@@ -42,6 +44,7 @@ class Queue extends Command {
     /**
      * Builds the reply
      * @param Queue - the queue pbject
+     * @param message - the message that triggered the command
      */
     buildReply(Queue, message) {
         let reply = "";

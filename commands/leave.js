@@ -26,6 +26,7 @@ class Leave extends Command {
     run(msg) {
         this.v.leave(msg, (err) => {
             if (err) return msg.reply(this.t(err));
+            msg.channel.sendMessage(this.t('leave'));
         });
     }
 }

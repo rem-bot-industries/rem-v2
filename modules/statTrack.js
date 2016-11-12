@@ -1,7 +1,6 @@
 /***
  * Created by julia on 01.11.2016.
  */
-// var EventEmitter = require('eventemitter3');
 
 var StatsD = require('node-dogstatsd').StatsD;
 var dogstatsd = new StatsD();

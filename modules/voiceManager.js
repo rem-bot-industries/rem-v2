@@ -36,6 +36,7 @@ class VoiceManager extends EventEmitter {
             if (msg.guild.voiceConnection) {
                 let conn = msg.guild.voiceConnection;
                 conn.channel.leave();
+                delete this.players[msg.guild.id];
                 cb();
             } else {
                 cb('generic.no-voice');
@@ -107,6 +108,8 @@ class VoiceManager extends EventEmitter {
             } else {
                 this.emit('error', 'generic.no-song-in-queue');
             }
+        } else {
+            this.emit('error', 'generic.no-song-in-queue');
         }
     }
 
