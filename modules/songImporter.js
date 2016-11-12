@@ -11,7 +11,7 @@ var ytdl = require('ytdl-core');
 var youtubedl = require('youtube-dl');
 var songModel = require('../DB/song');
 /**
- * The Songimporter
+ * The song importer
  * @extends EventEmitter
  *
  */
@@ -64,9 +64,10 @@ class SongImporter extends EventEmitter {
         // this.done(info);
     }
     done(info) {
-        let Song = {url:info.loaderUrl, title:info.title, id:info.id};
+        let Song = {url:info.loaderUrl, title:info.title, id:info.id,addedBy:{name:this.msg.author.username, id:this.msg.author.id}};
         this.emit('done', Song);
     }
+
     saveSong(Song) {
         let song = new songModel({
 

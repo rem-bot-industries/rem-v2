@@ -11,8 +11,9 @@ var util = require("util");
  */
 class Queue extends Command {
     /**
-     * Create the resume command
+     * Create the command
      * @param {Function} t - the translation module
+     * @param {Object} v - the voice manager
      */
     constructor(t, v) {
         super();
@@ -24,6 +25,10 @@ class Queue extends Command {
         this.accessLevel = 0;
     }
 
+    /**
+     * The main function of the command
+     * @param msg
+     */
     run(msg) {
         this.v.once('error', (err) => {
             msg.channel.sendMessage(this.t(err));

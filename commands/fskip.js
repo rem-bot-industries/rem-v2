@@ -9,8 +9,9 @@ var Command = require('../Objects/command');
  */
 class ForceSkip extends Command {
     /**
-     * Create the pause command
+     * Create the command
      * @param {Function} t - the translation module
+     * @param {Object} v - the voice manager
      */
     constructor(t, v) {
         super();

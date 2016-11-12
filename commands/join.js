@@ -8,6 +8,11 @@ var Command = require('../Objects/command');
  *
  */
 class Join extends Command {
+    /**
+     * Create the command
+     * @param {Function} t - the translation module
+     * @param {Object} v - the voice manager
+     */
     constructor(t,v) {
         super();
         this.cmd = "voice";

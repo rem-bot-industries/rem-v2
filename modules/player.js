@@ -2,8 +2,6 @@
  * Created by julia on 07.11.2016.
  */
 var EventEmitter = require('eventemitter3');
-// var db = require('./dbManager');
-// var r = db.getR();
 var beta = require('../config/main.json').beta;
 var url;
 if (beta) {
@@ -22,7 +20,7 @@ var path = require("path");
  */
 class Player extends EventEmitter {
     /**
-     * Create the pause command
+     * Create the audio player
      * @param {Object} msg - the message
      * @param {Object} connection the voice connection
      * @param {Object} ytdl
@@ -44,7 +42,7 @@ class Player extends EventEmitter {
     }
 
     /**
-     * Create the stats engine.
+     * Plays a Song
      * @param {Object} Song - the song to play
      */
     play(Song) {
@@ -99,7 +97,9 @@ class Player extends EventEmitter {
             // });
         }
     }
-
+    /**
+     * Pauses the song
+     */
     pause() {
         try {
             this.dispatcher.resume();

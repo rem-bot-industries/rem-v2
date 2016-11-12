@@ -12,5 +12,12 @@ class Command extends EventEmitter {
         super();
         this.setMaxListeners(50);
     }
+    /**
+     * The main function of the command
+     * @param {Object} msg
+     */
+    run(msg) {
+
+    }
 }
 module.exports = Command;

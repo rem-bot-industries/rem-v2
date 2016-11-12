@@ -10,8 +10,9 @@ var Command = require('../Objects/command');
  */
 class Play extends Command {
     /**
-     * Create the play command
+     * Create the command
      * @param {Function} t - the translation module
+     * @param {Object} v - the voice manager
      */
     constructor(t, v) {
         super();
