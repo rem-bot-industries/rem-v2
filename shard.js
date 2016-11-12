@@ -11,6 +11,10 @@ var VOICE;
 var config = require('./config/main.json');
 var winston = require('winston');
 var raven = require('raven');
+var blocked = require('blocked');
+blocked(function (ms) {
+    console.log('Shard:' + process.env.SHARD_ID + ' BLOCKED FOR %sms', ms | 0);
+});
 var client = new raven.Client(config.sentry_token);
 var Discord = require("discord.js");
 var options = {
