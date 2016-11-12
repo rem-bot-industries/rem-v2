@@ -30,7 +30,7 @@ class Player extends EventEmitter {
         this.song = null;
         setInterval(() => {
             console.log(this.queue.songs);
-        }, 10 * 1000);
+        }, 30 * 1000);
         // this.play();
     }
 

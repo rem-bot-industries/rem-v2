@@ -31,6 +31,18 @@ class VoiceManager extends EventEmitter {
         }
     }
 
+    leave(msg, cb) {
+        if (msg.guild) {
+            if (msg.guild.voiceConnection) {
+                let conn = msg.guild.voiceConnection;
+                conn.channel.leave();
+                cb();
+            } else {
+                cb('generic.no-voice');
+            }
+        }
+    }
+
     play(msg) {
         this.join(msg, (err, conn) => {
             if (err) return this.emit('error', err);
