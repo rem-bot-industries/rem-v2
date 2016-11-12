@@ -66,18 +66,40 @@ class SongImporter extends EventEmitter {
     }
 
     done(info) {
-        let Song = {
-            url: info.loaderUrl,
-            title: info.title,
-            id: info.id,
-            addedBy: {name: this.msg.author.username, id: this.msg.author.id},
-            duration: this.convertDuration(info)
-        };
-        this.emit('done', Song);
+        info.user = {name: this.msg.author.username, id: this.msg.author.id};
+        this.saveSong(info, (err, Song) => {
+            if (err) return this.emit('error', 'generic.error');
+            console.log(Song);
+            this.emit('done', Song);
+        });
+        // let Song = {
+        //     url: info.loaderUrl,
+        //     title: info.title,
+        //     id: info.id,
+        //     addedBy: {name: this.msg.author.username, id: this.msg.author.id},
+        //
+        // };
+        // this.emit('done', Song);
     }
 
-    saveSong(Song) {
-        let song = new songModel({})
+    saveSong(info, cb) {
+        let song = new songModel({
+            title: info.title,
+            alt_title: info.alt_title,
+            path: "-",
+            addedAt: new Date(),
+            id: info.id,
+            user: info.user,
+            duration: this.convertDuration(info),
+            plays: 0,
+            votedUpBy: [],
+            votedDownBy: [],
+            lastPlay: null
+        });
+        song.save(err => {
+            if (err) return cb(err);
+            cb(null, song);
+        });
     }
 
     convertDuration(info) {

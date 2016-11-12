@@ -6,7 +6,6 @@ var songSchema = mongoose.Schema({
     title:String,
     alt_title:String,
     path:String,
-    addedBy:String,
     addedAt:Date,
     id:String,
     type:String,
@@ -21,9 +20,6 @@ var songSchema = mongoose.Schema({
     votedUpBy:[],
     duration:String,
     user:Object,
-    cached:Boolean,
-    cachedAt:Date,
-    cachedUntil: Date,
     lastPlay: Date
 });
 songSchema.methods.updateVotes = function updateVotes(vote,cb) {

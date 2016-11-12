@@ -5,12 +5,11 @@ var mongoose = require('mongoose');
 var playlistSchema = mongoose.Schema({
     title:String,
     createdBy:String,
-    serverPlaylist:Boolean,
+    guildPlaylist: Boolean,
     createdAt:Date,
     id:String,
     public:Boolean,
     songs:[]
-
 });
 var playlistModel = mongoose.model('Playlists', playlistSchema);
 playlistSchema.methods.addSong = function addSong(song, cb) {
