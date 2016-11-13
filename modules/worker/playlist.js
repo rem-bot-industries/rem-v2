@@ -27,15 +27,16 @@ function loadPlaylist(id, cb) {
         if (err) return winston.info(err);
         let songs = [];
         async.eachSeries(data.items, (item, cb) => {
-            loadSong(`https://youtube.com/watch?v=${item.contentDetails.videoId}`, (err, info) => {
+            loadSong({
+                url: `https://youtube.com/watch?v=${item.contentDetails.videoId}`,
+                id: item.contentDetails.videoId
+            }, (err, info) => {
                 if (err) {
                     async.setImmediate(cb);
                 } else {
                     songs.push(info.title);
                     prefetch(info);
-                    setTimeout(() => {
-                        cb();
-                    }, 2000);
+                    async.setImmediate(cb);
                 }
             });
         }, (err) => {
@@ -44,8 +45,8 @@ function loadPlaylist(id, cb) {
         })
     });
 }
-function loadSong(url, cb) {
-    ytdl.getInfo(url, (err, info) => {
+function loadSong(info, cb) {
+    ytdl.getInfo(info.url, (err, info) => {
         if (err) {
             return cb(err);
         } else {
@@ -53,10 +54,11 @@ function loadSong(url, cb) {
             cb(null, info);
         }
     });
+
 }
 function prefetch(info) {
-    if (count < 20) {
-        self.postMessage({type: 'info', info: info});
+    if (count < 5) {
+        self.postMessage({type: 'info', info: info, count: count});
         count += 1;
     }
 }

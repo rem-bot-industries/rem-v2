@@ -23,14 +23,14 @@ class PlaylistImporter extends BasicImporter {
         loader.postMessage(id);
         loader.onmessage = (ev) => {
             if (ev.data.type === 'info') {
-                this.emit('prefetch', ev.data.info);
+                this.emit('prefetch', ev.data.info, ev.data.count);
             } else {
                 if (ev.data.err) {
                     winston.error(ev.data.err);
                     this.emit('error', 'generic.error');
                 } else {
                     this.emit('done', ev.data.songs);
-                    // loader.terminate();
+                    loader.terminate();
                 }
             }
         }

@@ -72,14 +72,22 @@ class SongImporter extends EventEmitter {
 
     playlist(id) {
         let importer = new pl(id, this.ytdl);
-        importer.on('prefetch', (info) => {
-            this.saveSong(info, (err, Song) => {
-                if (err) return winston.info(err);
-                this.emit('pre', Song);
+        importer.on('prefetch', (info, count) => {
+            this.findSong(info.loaderUrl, (err, Song) => {
+                if (err) {
+                    winston.error(err);
+                }
+                if (Song) {
+                    this.emit('pre', Song, count);
+                } else {
+                    this.saveSong(info, (err, Song) => {
+                        if (err) return winston.info(err);
+                        this.emit('pre', Song, count);
+                    });
+                }
             });
         });
         importer.once('done', (info) => {
-            console.log(info);
             this.emit('playlist', info);
             importer.removeAllListeners();
         });
@@ -187,6 +195,9 @@ class SongImporter extends EventEmitter {
             var s = Math.floor(d % 3600 % 60);
             return ((h > 0 ? h + ":" + (m < 10 ? "0" : "") : "") + m + ":" + (s < 10 ? "0" : "") + s);
         }
-    };
+    }
+    ;
 }
-module.exports = SongImporter;
+
+module
+    .exports = SongImporter;

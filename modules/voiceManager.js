@@ -88,8 +88,10 @@ class VoiceManager extends EventEmitter {
         this.join(msg, (err, conn) => {
             if (err) return this.emit('error', err);
             let importer = new SongImporter(msg);
-            importer.on('pre', (Song) => {
-                msg.channel.sendMessage(`Queued ${Song.title}`);
+            importer.on('pre', (Song, count) => {
+                if (count === 0) {
+                    msg.channel.sendMessage(`Queued ${Song.title}`);
+                }
                 if (typeof (this.players[msg.guild.id]) !== 'undefined') {
                     this.players[msg.guild.id].addToQueue(Song, immediate);
                 } else {
