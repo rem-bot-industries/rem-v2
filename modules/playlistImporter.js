@@ -22,11 +22,16 @@ class PlaylistImporter extends BasicImporter {
         var loader = new Worker(path.join(__dirname, './worker/playlist.js'));
         loader.postMessage(id);
         loader.onmessage = (ev) => {
-            // console.log(ev.data);
-            if (ev.data.err) {
-                this.emit('error', ev.data.err);
+            if (ev.data.type === 'info') {
+                this.emit('prefetch', ev.data.info);
             } else {
-                this.emit('done', ev.data.songs);
+                if (ev.data.err) {
+                    winston.error(ev.data.err);
+                    this.emit('error', 'generic.error');
+                } else {
+                    this.emit('done', ev.data.songs);
+                    // loader.terminate();
+                }
             }
         }
     }

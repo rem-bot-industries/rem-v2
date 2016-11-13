@@ -72,6 +72,12 @@ class SongImporter extends EventEmitter {
 
     playlist(id) {
         let importer = new pl(id, this.ytdl);
+        importer.on('prefetch', (info) => {
+            this.saveSong(info, (err, Song) => {
+                if (err) return winston.info(err);
+                this.emit('pre', Song);
+            });
+        });
         importer.once('done', (info) => {
             console.log(info);
             this.emit('playlist', info);

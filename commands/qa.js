@@ -25,6 +25,7 @@ class AddToQueue extends Command {
 
     run(msg) {
         this.v.once('error', (err) => {
+            // console.log(err);
             msg.channel.sendMessage(this.t(err));
         });
         this.v.addToQueue(msg, false);

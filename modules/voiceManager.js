@@ -16,16 +16,15 @@ class VoiceManager extends EventEmitter {
     join(msg, cb) {
         if (msg.guild) {
             if (!msg.guild.voiceConnection) {
-                // if (msg.member.voiceChannel) {
-                //     msg.member.voiceChannel.join().then((connection) => {
-                //         cb(null, connection);
-                //     }).catch(err => {
-                //         cb('joinVoice.error');
-                //     });
-                // } else {
-                //     cb('joinVoice.no-voice');
-                // }
-                cb();
+                if (msg.member.voiceChannel) {
+                    msg.member.voiceChannel.join().then((connection) => {
+                        cb(null, connection);
+                    }).catch(err => {
+                        cb('joinVoice.error');
+                    });
+                } else {
+                    cb('joinVoice.no-voice');
+                }
             } else {
                 cb(null, msg.guild.voiceConnection);
             }
@@ -89,6 +88,15 @@ class VoiceManager extends EventEmitter {
         this.join(msg, (err, conn) => {
             if (err) return this.emit('error', err);
             let importer = new SongImporter(msg);
+            importer.on('pre', (Song) => {
+                msg.channel.sendMessage(`Queued ${Song.title}`);
+                if (typeof (this.players[msg.guild.id]) !== 'undefined') {
+                    this.players[msg.guild.id].addToQueue(Song, immediate);
+                } else {
+                    this.players[msg.guild.id] = new Player(msg, conn, ytdl);
+                    this.players[msg.guild.id].addToQueue(Song, immediate);
+                }
+            });
             importer.once('playlist', (songs) => {
                 importer.removeAllListeners();
                 msg.channel.sendCode('json', JSON.stringify(songs));

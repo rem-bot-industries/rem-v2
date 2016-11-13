@@ -21,6 +21,7 @@ class YoutubeImporter extends BasicImporter {
             if (err) {
                 this.emit('error', err);
             } else {
+                console.log(info);
                 info.id = info.video_id;
                 this.emit('done', info);
             }
