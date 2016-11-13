@@ -9,6 +9,7 @@ var playlistReg = /[&?]list=([a-z0-9_\-]+)/gi;
 var sc = require('./soundCloudImporter');
 var yt = require('./youtubeImporter');
 var pl = require('./playlistImporter');
+var osu = require('./osuImporter');
 var ytdl = require('ytdl-core');
 var youtubedl = require('youtube-dl');
 var songModel = require('../DB/song');
@@ -42,13 +43,13 @@ class SongImporter extends EventEmitter {
                 this.emit('done', Song);
             } else {
                 if (YoutubeReg.test(messageSearch)) {
-                    let m;
-                    if ((m = playlistReg.exec(messageSearch)) !== null) {
-                        winston.info('using Playlist!');
-                        this.playlist(m[1]);
-                    } else {
+                    // let m;
+                    // if ((m = playlistReg.exec(messageSearch)) !== null) {
+                    //     winston.info('using Playlist!');
+                    //     this.playlist(m[1]);
+                    // } else {
                         this.youtube(messageSearch);
-                    }
+                    // }
                 } else if (osuRegex.test(messageSearch)) {
                     this.osu(messageSearch);
                 } else if (SoundcloudReg.test(messageSearch)) {
@@ -70,32 +71,32 @@ class SongImporter extends EventEmitter {
         });
     }
 
-    playlist(id) {
-        let importer = new pl(id, this.ytdl);
-        importer.on('prefetch', (info, count) => {
-            this.findSong(info.loaderUrl, (err, Song) => {
-                if (err) {
-                    winston.error(err);
-                }
-                if (Song) {
-                    this.emit('pre', Song, count);
-                } else {
-                    this.saveSong(info, (err, Song) => {
-                        if (err) return winston.info(err);
-                        this.emit('pre', Song, count);
-                    });
-                }
-            });
-        });
-        importer.once('done', (info) => {
-            this.emit('playlist', info);
-            importer.removeAllListeners();
-        });
-        importer.once('error', (err) => {
-            this.emit('error', err);
-            importer.removeAllListeners();
-        });
-    }
+    // playlist(id) {
+    //     let importer = new pl(id, this.ytdl);
+    //     importer.on('prefetch', (info, count) => {
+    //         this.findSong(info.loaderUrl, (err, Song) => {
+    //             if (err) {
+    //                 winston.error(err);
+    //             }
+    //             if (Song) {
+    //                 this.emit('pre', Song, count);
+    //             } else {
+    //                 this.saveSong(info, (err, Song) => {
+    //                     if (err) return winston.info(err);
+    //                     this.emit('pre', Song, count);
+    //                 });
+    //             }
+    //         });
+    //     });
+    //     importer.once('done', (info) => {
+    //         this.emit('playlist', info);
+    //         importer.removeAllListeners();
+    //     });
+    //     importer.once('error', (err) => {
+    //         this.emit('error', err);
+    //         importer.removeAllListeners();
+    //     });
+    // }
 
     soundcloud(url) {
         let importer = new sc(url, this.youtubedl);
@@ -110,7 +111,15 @@ class SongImporter extends EventEmitter {
     }
 
     osu(url) {
-        // this.done(info);
+        let importer = new osu(url);
+        importer.once('done', (info) => {
+            this.done(info);
+            importer.removeAllListeners();
+        });
+        importer.once('error', (err) => {
+            this.emit('error', err);
+            importer.removeAllListeners();
+        });
     }
 
     done(info) {
