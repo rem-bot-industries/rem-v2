@@ -12,6 +12,7 @@ var winston = require('winston');
 var fs = require("fs");
 var path = require("path");
 var child_process = require("child_process");
+var winston = require('winston');
 class OsuImporter extends BasicImporter {
     constructor(url) {
         super();
@@ -23,7 +24,7 @@ class OsuImporter extends BasicImporter {
         this.osuMapDownload(this.url).then(Song => {
             this.emit('done', Song);
         }).catch(err => {
-            console.log(err);
+            console.error(err);
             this.emit('error', 'generic.error');
         });
     }
@@ -49,6 +50,9 @@ class OsuImporter extends BasicImporter {
                     reject(m.err);
                 }
             });
+            setTimeout(() => {
+                loader.kill();
+            }, 2000)
         });
     }
 
