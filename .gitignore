@@ -5,3 +5,5 @@ cmd.bat
 .idea
 config/main.json
 docs
+temp
+audio
