@@ -21,7 +21,7 @@ var winston = require('winston');
 class SongImporter extends EventEmitter {
     constructor(msg) {
         super();
-        this.setMaxListeners(20);
+        this.setMaxListeners(0);
         this.msg = msg;
         this.messageSplit = msg.content.split(' ');
         this.ytdl = ytdl;
@@ -34,42 +34,64 @@ class SongImporter extends EventEmitter {
         for (var i = 1; i < this.messageSplit.length; i++) {
             messageSearch = messageSearch + " " + this.messageSplit[i]
         }
-
-        if (YoutubeReg.test(messageSearch)) {
-            let m;
-            if ((m = playlistReg.exec(messageSearch)) !== null) {
-                winston.info('using Playlist!');
-
+        this.findSong(messageSearch.trim(), (err, Song) => {
+            if (err) {
+                winston.error(err);
             }
-            this.youtube(messageSearch);
-        } else if (osuRegex.test(messageSearch)) {
-            this.osu(messageSearch);
-        } else if (SoundcloudReg.test(messageSearch)) {
-            this.soundcloud(messageSearch);
-        }
+            if (Song) {
+                this.emit('done', Song);
+            } else {
+                if (YoutubeReg.test(messageSearch)) {
+                    let m;
+                    if ((m = playlistReg.exec(messageSearch)) !== null) {
+                        winston.info('using Playlist!');
+                        this.playlist(m[1]);
+                    } else {
+                        this.youtube(messageSearch);
+                    }
+                } else if (osuRegex.test(messageSearch)) {
+                    this.osu(messageSearch);
+                } else if (SoundcloudReg.test(messageSearch)) {
+                    this.soundcloud(messageSearch);
+                }
+            }
+        });
     }
 
     youtube(url) {
         let importer = new yt(url, this.ytdl);
-        importer.on('done', (info) => {
+        importer.once('done', (info) => {
             this.done(info);
+            importer.removeListener('error');
         });
-        importer.on('error', (err) => {
+        importer.once('error', (err) => {
             this.emit('error', err);
+            importer.removeListener('done');
         });
     }
 
     playlist(id) {
         let importer = new pl(id, this.ytdl);
+        importer.once('done', (info) => {
+            console.log(info);
+            this.emit('playlist', info);
+            importer.removeListener('error');
+        });
+        importer.once('error', (err) => {
+            this.emit('error', err);
+            importer.removeListener('done');
+        });
     }
 
     soundcloud(url) {
         let importer = new sc(url, this.youtubedl);
-        importer.on('done', (info) => {
+        importer.once('done', (info) => {
             this.done(info);
+            importer.removeListener('error');
         });
-        importer.on('error', (err) => {
+        importer.once('error', (err) => {
             this.emit('error', err);
+            importer.removeListener('done');
         });
     }
 
@@ -92,6 +114,17 @@ class SongImporter extends EventEmitter {
         //
         // };
         // this.emit('done', Song);
+    }
+
+    findSong(query, cb) {
+        songModel.findOne({url: query}, (err, Song) => {
+            if (err) return cb(err);
+            if (Song) {
+                return cb(null, Song);
+            } else {
+                return cb('no-song');
+            }
+        })
     }
 
     saveSong(info, cb) {

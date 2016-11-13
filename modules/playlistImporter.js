@@ -7,10 +7,9 @@
  *
  */
 var BasicImporter = require('../Objects/basicImporter');
-var playlistModel = require('../DB/playlist');
-var config = require('../config/main.json');
 var winston = require('winston');
-var Youtube = require('youtube-api');
+var path = require("path");
+var Worker = require("tiny-worker");
 class PlaylistImporter extends BasicImporter {
     constructor(id, ytdl) {
         super();
@@ -19,30 +18,17 @@ class PlaylistImporter extends BasicImporter {
         this.loadPlaylist(this.id);
     }
 
-    loadSong(cb) {
-        this.dl.getInfo(this.url, (err, info) => {
-            if (err) {
-                return cb(err);
-            } else {
-                info.id = info.video_id;
-                cb(null.info);
-            }
-        });
-    }
-
     loadPlaylist(id) {
-        Youtube.authenticate({
-            type: 'key',
-            key: config.youtube_api,
-        });
-        Youtube.playlistItems.list({
-            part: 'contentDetails',
-            maxResults: 50,
-            playlistId: id,
-        }, function (err, data) {
-            if (err) return winston.info(err);
-            console.log(data);
-        });
+        var loader = new Worker(path.join(__dirname, './worker/playlist.js'));
+        loader.postMessage(id);
+        loader.onmessage = (ev) => {
+            // console.log(ev.data);
+            if (ev.data.err) {
+                this.emit('error', ev.data.err);
+            } else {
+                this.emit('done', ev.data.songs);
+            }
+        }
     }
 }
 module.exports = PlaylistImporter;
