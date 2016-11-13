@@ -12,8 +12,14 @@ process.on('message', (ev) => {
     downloadOsuMap(ev.map).then(map => {
         unpackOsuMap(map).then(map => {
             process.send({type: 'result', map: map});
-        }).catch(err => process.send({type: 'err', err: err}));
-    }).catch(err => process.send({type: 'err', err: err}));
+        }).catch(err => {
+            console.log(err);
+            process.send({type: 'err', err: err})
+        });
+    }).catch(err => {
+        console.log(err);
+        process.send({type: 'err', err: err})
+    });
 });
 function downloadOsuMap(url) {
     return new Promise((resolve, reject) => {

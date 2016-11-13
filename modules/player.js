@@ -76,9 +76,9 @@ class Player extends EventEmitter {
                 winston.info("File ended!");
                 this.nextSong(Song);
             });
-            this.dispatcher.on("debug", information => {
-                winston.info(`Debug: ${information}`);
-            });
+            // this.dispatcher.on("debug", information => {
+            //     winston.info(`Debug: ${information}`);
+            // });
             this.dispatcher.on("error", (err) => {
                 winston.info(`Error: ${err}`);
             });

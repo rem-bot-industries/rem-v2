@@ -52,7 +52,7 @@ class Queue extends Command {
         for (var q = 0; q < iteration; q++) {
             if (q === 0) {
                 let repeat = Queue.repeat ? this.t('np.repeat-on', {lngs: message.lang}) : "";
-                if (typeof (Queue.songs[0].duration) !== 'undefined' && Queue.songs[0].duration !== '') {
+                if (Queue.songs[0].duration && Queue.songs[0].duration !== '') {
                     reply = reply + `${this.t('np.song-duration', {
                             lngs: message.lang,
                             title: Queue.songs[0].title,
@@ -77,7 +77,7 @@ class Queue extends Command {
                 if (q === Queue.songs.length - 1) {
                     end = `\`\`\``;
                 }
-                if (typeof (Queue.songs[q].duration) !== 'undefined') {
+                if (Queue.songs[q].duration) {
                     reply = reply + `${parseInt(q + 1)}. ${Queue.songs[q].title} ${Queue.songs[q].duration}${end}`;
                 } else {
                     reply = reply + `${parseInt(q + 1)}. ${Queue.songs[q].title}${end}`;

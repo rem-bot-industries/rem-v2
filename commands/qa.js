@@ -33,6 +33,9 @@ class AddToQueue extends Command {
             msg.channel.sendMessage(this.t(info, {url: url}));
         });
         this.v.addToQueue(msg, false);
+        setTimeout(() => {
+            this.v.removeListener('info');
+        }, 2000);
     }
 }
 module.exports = AddToQueue;

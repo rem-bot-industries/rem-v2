@@ -43,16 +43,16 @@ class OsuImporter extends BasicImporter {
         return new Promise((resolve, reject) => {
             let loader = child_process.fork('./modules/worker/osu.js');
             loader.send({type: 'info', map: map});
-            loader.on('message', (m) => {
+            loader.once('message', (m) => {
                 if (m.type === 'result') {
                     resolve(m.map)
                 } else {
                     reject(m.err);
                 }
+                setTimeout(() => {
+                    loader.kill();
+                }, 2000)
             });
-            setTimeout(() => {
-                loader.kill();
-            }, 2000)
         });
     }
 
