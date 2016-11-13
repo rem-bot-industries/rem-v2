@@ -5,7 +5,7 @@ var Command = require('../Objects/command');
 class Ping extends Command {
     constructor(t) {
         super();
-        this.cmd = "ping";
+        this.cmd = "setLang";
         this.cat = "generic";
         this.needGuild = false;
         this.t = t;

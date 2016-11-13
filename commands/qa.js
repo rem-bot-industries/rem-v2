@@ -28,6 +28,10 @@ class AddToQueue extends Command {
             // console.log(err);
             msg.channel.sendMessage(this.t(err));
         });
+        this.v.once('info', (info, url) => {
+            // console.log(err);
+            msg.channel.sendMessage(this.t(info, {url: url}));
+        });
         this.v.addToQueue(msg, false);
     }
 }

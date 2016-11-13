@@ -88,6 +88,9 @@ class VoiceManager extends EventEmitter {
         this.join(msg, (err, conn) => {
             if (err) return this.emit('error', err);
             let importer = new SongImporter(msg);
+            importer.once('long', (url) => {
+                this.emit('info', 'qa.started-download', url);
+            });
             importer.on('pre', (Song, count) => {
                 if (count === 0) {
                     msg.channel.sendMessage(`Queued ${Song.title}`);
@@ -139,4 +142,4 @@ class VoiceManager extends EventEmitter {
         }
     }
 }
-module.exports =  VoiceManager;
+module.exports = VoiceManager;

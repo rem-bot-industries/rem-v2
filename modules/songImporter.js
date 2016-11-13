@@ -35,7 +35,8 @@ class SongImporter extends EventEmitter {
         for (var i = 1; i < this.messageSplit.length; i++) {
             messageSearch = messageSearch + " " + this.messageSplit[i]
         }
-        this.findSong(messageSearch.trim(), (err, Song) => {
+        messageSearch = messageSearch.trim();
+        this.findSong(messageSearch, (err, Song) => {
             if (err) {
                 winston.error(err);
             }
@@ -114,7 +115,9 @@ class SongImporter extends EventEmitter {
 
     osu(url) {
         let importer = new osu(url);
+        this.emit('long', url);
         importer.once('done', (info) => {
+            // console.log(info);
             this.done(info);
             importer.removeAllListeners();
         });

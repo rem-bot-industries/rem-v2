@@ -4,7 +4,6 @@
 var Youtube = require('youtube-api');
 var async = require('async');
 var path = require("path");
-var config = require(path.join(__dirname, '../../../config/main.json'));
 var ytdl = require('ytdl-core');
 var winston = require('winston');
 var playlistModel = require(path.join(__dirname, '../../../DB/playlist'));
