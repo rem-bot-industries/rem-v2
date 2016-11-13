@@ -25,8 +25,8 @@ class Join extends Command {
 
     run(msg) {
         this.v.join(msg, (err) => {
-            if (err) return msg.reply(this.t(err));
-            msg.reply(this.t('joinVoice.join'));
+            if (err) return msg.reply(this.t(err, {lngs: msg.lang}));
+            msg.reply(this.t('joinVoice.join', {lngs: message.lang}));
         });
     }
 }

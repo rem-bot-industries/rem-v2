@@ -347,5 +347,9 @@
     "self": "self assignable",
     "lvl": "Available at level",
     "default": "default"
+  },
+  "flip": {
+    "head": "The coin flipped to head {{- url}}",
+    "tail": "The coin flipped to tail {{- url}}"
   }
 }

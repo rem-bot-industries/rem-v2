@@ -26,9 +26,11 @@ class Resume extends Command {
 
     run(msg) {
         this.v.once('error', (err) => {
+            this.v.removeAllListeners();
             msg.channel.sendMessage(err);
         });
         this.v.once('success', () => {
+            this.v.removeAllListeners();
             msg.channel.sendMessage(':ok_hand: ');
         });
         this.v.resume(msg);

@@ -26,7 +26,7 @@ class Play extends Command {
 
     run(msg) {
         this.v.once('error', (err) => {
-            msg.channel.sendMessage(this.t(err));
+            msg.channel.sendMessage(this.t(err, {lngs: msg.lang}));
         });
         this.v.play(msg);
     }

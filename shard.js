@@ -66,7 +66,8 @@ bot.on('guildCreate', (Guild) => {
                 levelEnabled: true,
                 pmNotifications: true,
                 chNotifications: false,
-                prefix: "!w."
+                prefix: "!w.",
+                lng: "en"
             });
             guild.save((err) => {
                 if (err) return winston.info(err);

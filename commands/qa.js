@@ -25,17 +25,25 @@ class AddToQueue extends Command {
 
     run(msg) {
         this.v.once('error', (err) => {
-            // console.log(err);
-            msg.channel.sendMessage(this.t(err));
+            this.clearListeners();
+            msg.channel.sendMessage(this.t(err, {lngs: msg.lang}));
         });
         this.v.once('info', (info, url) => {
-            // console.log(err);
-            msg.channel.sendMessage(this.t(info, {url: url}));
+            this.clearListeners();
+            msg.channel.sendMessage(this.t(info, {url: url, lngs: msg.lang}));
+        });
+        this.v.once('added', (Song) => {
+            this.clearListeners();
+            msg.channel.sendMessage(this.t('qa.success', {song: Song, lngs: msg.lang}));
         });
         this.v.addToQueue(msg, false);
         setTimeout(() => {
             this.v.removeListener('info');
         }, 2000);
+    }
+
+    clearListeners() {
+        this.v.removeAllListeners();
     }
 }
 module.exports = AddToQueue;
