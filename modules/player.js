@@ -91,7 +91,7 @@ class Player extends EventEmitter {
      */
     pause() {
         try {
-            this.dispatcher.resume();
+            this.dispatcher.pause();
             this.emit('pause');
         } catch (e) {
             this.emit('debug', e);

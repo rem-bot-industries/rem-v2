@@ -12,7 +12,6 @@ var winston = require('winston');
 var fs = require("fs");
 var path = require("path");
 var child_process = require("child_process");
-var winston = require('winston');
 class OsuImporter extends BasicImporter {
     constructor(url) {
         super();
