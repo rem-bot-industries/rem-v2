@@ -10,7 +10,8 @@ var winston = require('winston');
 var playlistModel = require(path.join(__dirname, '../../../DB/playlist'));
 self.onmessage = function (ev) {
     loadPlaylist(ev.data, (err, songs) => {
-        self.postMessage({err: err, songs: songs})
+        self.postMessage({err: err, songs: songs});
+        self.terminate();
     });
 };
 function loadPlaylist(id, cb) {
