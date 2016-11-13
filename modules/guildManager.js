@@ -17,7 +17,8 @@ class GuildManager extends EventEmitter {
             levelEnabled: true,
             pmNotifications: true,
             chNotifications: false,
-            prefix: "!w."
+            prefix: "!w.",
+            lng: "en"
         });
         guild.save((err) => {
             if (err) return cb(err);
@@ -29,7 +30,9 @@ class GuildManager extends EventEmitter {
         guildModel.findOne({id: id}, (err, Guild) => {
             if (err) return cb(err);
             if (Guild) {
-
+                cb(null, Guild);
+            } else {
+                this.createGuild(id, cb);
             }
         });
     }

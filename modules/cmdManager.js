@@ -6,6 +6,7 @@ const winston = require('winston');
 var fs = require("fs");
 var path = require("path");
 var util = require("util");
+var GuildManager = require('./guildManager');
 class CmdManager extends EventEmitter {
     constructor(l, v) {
         super();
@@ -13,6 +14,7 @@ class CmdManager extends EventEmitter {
         this.l = l;
         this.v = v;
         this.l.on('ready', (t) => this.load(t,this.v));
+        this.g = new GuildManager();
         this.commands = {};
         this.ready = false;
     }
@@ -42,20 +44,36 @@ class CmdManager extends EventEmitter {
     }
 
     check(msg) {
-        if (this.ready && msg.content.startsWith('!w.')) {
-            try {
-                let command = msg.content.substr('!w.'.length).split(' ')[0];
-                msg.lang = ['en'];
-                this.commands[command].run(msg);
-            }
-            catch (err) {
-                winston.error(err.message);
-                winston.error(err.stack);
+        if (this.ready) {
+            this.loadGuild(msg, (err, Guild) => {
+
+            });
+            if (this.ready && msg.content.startsWith('!w.')) {
+                try {
+                    let command = msg.content.substr('!w.'.length).split(' ')[0];
+                    msg.lang = ['en'];
+                    this.commands[command].run(msg);
+                }
+                catch (err) {
+                    winston.error(err.message);
+                    winston.error(err.stack);
+                }
             }
         }
     }
 
     loadGuild(msg, cb) {
+        if (msg.guild) {
+            this.g.loadGuild(msg.guild.id, (err, Guild) => {
+                if (err) return cb(err);
+                cb(null, Guild);
+            })
+        } else {
+            setImmediate(cb);
+        }
+    }
+
+    loadUser(msg, cb) {
 
     }
 }

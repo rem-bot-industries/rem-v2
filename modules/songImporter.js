@@ -54,6 +54,8 @@ class SongImporter extends EventEmitter {
                     this.osu(messageSearch);
                 } else if (SoundcloudReg.test(messageSearch)) {
                     this.soundcloud(messageSearch);
+                } else {
+                    this.emit('error', 'generic.error');
                 }
             }
         });
@@ -154,7 +156,7 @@ class SongImporter extends EventEmitter {
             title: info.title,
             alt_title: info.alt_title,
             url: info.loaderUrl,
-            path: "-",
+            path: info.path ? info.path : "-",
             addedAt: new Date(),
             id: info.id,
             user: info.user,
@@ -162,7 +164,8 @@ class SongImporter extends EventEmitter {
             plays: 0,
             votedUpBy: [],
             votedDownBy: [],
-            lastPlay: null
+            lastPlay: null,
+            type: info.type ? info.type : "stream"
         });
         song.save((err) => {
             if (err) {

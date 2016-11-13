@@ -27,8 +27,10 @@ class OsuImporter extends BasicImporter {
 
     loadSong() {
         this.osuMapDownload(this.url).then(Song => {
-            console.log(Song);
-        }).catch(winston.error);
+            this.emit('done', Song);
+        }).catch(err => {
+            this.emit('error', err)
+        });
     }
 
     osuMapDownload(url) {
@@ -49,10 +51,8 @@ class OsuImporter extends BasicImporter {
             let notAvailableRegex = /This download is no longer available/i;
             let map = url;
             let mapType = JSON.parse('{"' + map.replace(setRegex, '$2') + '": ' + map.replace(setRegex, '$3') + '}');
-            console.log(mapType);
             osuApi.getBeatmaps(mapType).then(beatmaps => {
                 if (beatmaps.length > 0) {
-                    console.log(beatmaps);
                     let setId = beatmaps[0].beatmapSetId;
                     let beatmap = beatmaps[0];
                     request.post({
@@ -117,7 +117,16 @@ class OsuImporter extends BasicImporter {
         return new Promise((resolve, reject) => {
             fs.unlink(`temp/${map.beatmapSetId}.zip`, err => {
                 if (err) reject(err);
-                let info = {title: `${map.artist} - ${map.title}`, alt_title: map.alt_title, loaderUrl: map.link};
+                let info = {
+                    title: `${map.artist} - ${map.title}`,
+                    alt_title: map.alt_title,
+                    addedAt: new Date(),
+                    loaderUrl: map.link,
+                    id: map.beatmapSetId,
+                    type: "osuV2",
+                    path: map.path,
+                    user: {}
+                };
                 resolve(info);
             });
         });

@@ -7,6 +7,7 @@ var YoutubeReg = /(?:http?s?:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:watc
 var winston = require('winston');
 var request = require("request");
 var path = require("path");
+var fs = require("fs");
 /**
  * The audio player
  * @extends EventEmitter
@@ -31,7 +32,6 @@ class Player extends EventEmitter {
         setInterval(() => {
             console.log(this.queue.songs);
         }, 30 * 1000);
-        // this.play();
     }
 
     /**
@@ -49,7 +49,15 @@ class Player extends EventEmitter {
                 };
                 stream = this.ytdl(Song.url, options)
             } else {
-                stream = request(Song.url);
+                if (Song.type = "osuV2") {
+                    try {
+                        stream = fs.createReadStream(Song.path);
+                    } catch (e) {
+                        this.emit('error', e);
+                    }
+                } else {
+                    stream = request(Song.url);
+                }
             }
             this.dispatcher = this.connection.playStream(stream, {volume: 0.25, passes: 3});
             // winston.info(path.resolve(Song.path));
@@ -65,11 +73,6 @@ class Player extends EventEmitter {
             // }));
             this.announce(Song);
             this.dispatcher.on("end", () => {
-                // try {
-                //     this.dispatcher.setVolume(0);
-                // } catch (e) {
-                //
-                // }
                 winston.info("File ended!");
                 this.nextSong(Song);
             });
@@ -95,6 +98,9 @@ class Player extends EventEmitter {
         }
     }
 
+    /**
+     * Resumes the song
+     */
     resume() {
         try {
             this.dispatcher.resume();
@@ -104,6 +110,11 @@ class Player extends EventEmitter {
         }
     }
 
+    /**
+     * Adds a song to the queue
+     * @param Song - the song that should be added to the queue
+     * @param immediate - if the song should be played immediately
+     */
     addToQueue(Song, immediate) {
         if (immediate) {
             this.queue.songs.unshift(Song);
@@ -116,6 +127,10 @@ class Player extends EventEmitter {
         }
     }
 
+    /**
+     * Plays the next song, can be used to skip songs
+     * @param Song - the song that is skipped (optional)
+     */
     nextSong(Song) {
         if (this.queue.songs.length > 0) {
             if (typeof (Song) !== 'undefined') {
@@ -123,101 +138,33 @@ class Player extends EventEmitter {
                     this.queue.songs.shift();
                     if (this.queue.songs[0]) {
                         this.play(this.queue.songs[0]);
+                    } else {
+                        this.endSong();
                     }
                 }
             } else {
                 this.queue.songs.shift();
                 if (this.queue.songs[0]) {
                     this.play(this.queue.songs[0]);
+                } else {
+                    this.endSong();
                 }
             }
         }
-        // if (this.queue.songs.length > 0) {
-        //     this.play(this.queue.songs[0]);
-        // }
-        // if (inVoiceChannel(message)) {
-        //     let connectionVoice = getVoiceConnection(message);
-        //     let dispatcher = getDispatcherFromConnection(connectionVoice);
-        //     queueModel.findOne({server: message.guild.id}, function (err, Queue) {
-        //         if (err) return winston.info(err);
-        //         if (Queue) {
-        //             if (Queue.songs.length > 0) {
-        //                 if (typeof (Queue.repeat) !== 'undefined' && typeof (Queue.repeatId) !== 'undefined' && Queue.repeat && Song.id === Queue.repeatId) {
-        //                     playSong(message, Song, true);
-        //                 } else if (typeof (Queue.repeat) !== 'undefined' && typeof (Queue.repeatId) !== 'undefined' && Queue.repeat === false) {
-        //                     {
-        //                         Queue.stopRepeat(function (err) {
-        //                             if (err) return winston.info(err);
-        //                             if (Queue.songs[0].id === Song.id) {
-        //                                 queueModel.update({_id: Queue._id}, {$pop: {songs: -1}}, function (err) {
-        //                                     if (err) return winston.info(err);
-        //                                     queueModel.findOne({_id: Queue._id}, function (err, Queue) {
-        //                                         if (err) return winston.info(err);
-        //                                         if (Queue.songs.length > 0) {
-        //                                             Queue.resetVotes(function (err) {
-        //                                                 if (err) return winston.info(err);
-        //                                                 if (Queue.songs[0].type !== 'radio') {
-        //                                                     try {
-        //                                                         dispatcher.setVolume(0);
-        //                                                     } catch (e) {
-        //                                                         winston.info(e);
-        //                                                     }
-        //                                                     playSong(message, Queue.songs[0], true);
-        //                                                 } else {
-        //                                                     nextSong(message, Queue.songs[0]);
-        //                                                 }
-        //                                             });
-        //                                         } else {
-        //                                             Queue.resetVotes();
-        //                                             try {
-        //                                                 dispatcher.end();
-        //                                             } catch (e) {
-        //                                                 winston.info(e);
-        //                                             }
-        //                                         }
-        //                                     });
-        //                                 });
-        //                             }
-        //                         });
-        //                     }
-        //                 } else {
-        //                     if (Queue.songs[0].id === Song.id) {
-        //                         queueModel.update({_id: Queue._id}, {$pop: {songs: -1}}, function (err) {
-        //                             if (err) return winston.info(err);
-        //                             queueModel.findOne({_id: Queue._id}, function (err, Queue) {
-        //                                 if (err) return winston.info(err);
-        //                                 if (Queue.songs.length > 0) {
-        //                                     Queue.resetVotes(function (err) {
-        //                                         if (err) return winston.info(err);
-        //                                         playSong(message, Queue.songs[0], true);
-        //                                     });
-        //                                 } else {
-        //                                     Queue.resetVotes();
-        //                                     try {
-        //                                         dispatcher.end();
-        //                                     } catch (e) {
-        //                                         winston.info(e);
-        //                                     }
-        //                                 }
-        //                             });
-        //                         });
-        //                     }
-        //                 }
-        //             } else {
-        //                 Queue.resetVotes();
-        //                 try {
-        //                     dispatcher.end();
-        //                 } catch (e) {
-        //
-        //                 }
-        //             }
-        //         } else {
-        //
-        //         }
-        //     });
-        // }
     }
 
+    endSong() {
+        try {
+            this.dispatcher.end();
+        } catch (e) {
+            this.emit('debug', e);
+        }
+    }
+
+    /**
+     * Get the current queue of the player
+     * @returns {{repeat: boolean, repeatId: string, voteskips: Array, songs: Array, time: string}|*}
+     */
     getQueue() {
         this.queue.time = this.convertSeconds(Math.floor(this.dispatcher.time / 1000));
         return this.queue;
@@ -235,6 +182,11 @@ class Player extends EventEmitter {
 
     }
 
+    /**
+     * Converts time in seconds like 360 (10Minutes) to 10:00
+     * @param s - the seconds the song has been playing for
+     * @returns {string} - the converted string
+     */
     convertSeconds(s) {
         return (s - (s %= 60)) / 60 + (9 < s ? ':' : ':0') + s
     }
