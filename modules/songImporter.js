@@ -21,7 +21,7 @@ var winston = require('winston');
 class SongImporter extends EventEmitter {
     constructor(msg) {
         super();
-        this.setMaxListeners(0);
+        this.setMaxListeners(10);
         this.msg = msg;
         this.messageSplit = msg.content.split(' ');
         this.ytdl = ytdl;
@@ -62,11 +62,11 @@ class SongImporter extends EventEmitter {
         let importer = new yt(url, this.ytdl);
         importer.once('done', (info) => {
             this.done(info);
-            importer.removeListener('error');
+            importer.removeAllListeners();
         });
         importer.once('error', (err) => {
             this.emit('error', err);
-            importer.removeListener('done');
+            importer.removeAllListeners();
         });
     }
 
@@ -75,11 +75,11 @@ class SongImporter extends EventEmitter {
         importer.once('done', (info) => {
             console.log(info);
             this.emit('playlist', info);
-            importer.removeListener('error');
+            importer.removeAllListeners();
         });
         importer.once('error', (err) => {
             this.emit('error', err);
-            importer.removeListener('done');
+            importer.removeAllListeners();
         });
     }
 
@@ -87,11 +87,11 @@ class SongImporter extends EventEmitter {
         let importer = new sc(url, this.youtubedl);
         importer.once('done', (info) => {
             this.done(info);
-            importer.removeListener('error');
+            importer.removeAllListeners();
         });
         importer.once('error', (err) => {
             this.emit('error', err);
-            importer.removeListener('done');
+            importer.removeAllListeners();
         });
     }
 

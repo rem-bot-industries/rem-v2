@@ -52,8 +52,10 @@ class VoiceManager extends EventEmitter {
             let importer = new SongImporter(msg);
             importer.once('error', (err) => {
                 this.emit('error', err);
+                importer.removeAllListeners();
             });
             importer.once('done', (Song) => {
+                importer.removeAllListeners();
                 msg.channel.sendMessage(`Now Playing ${Song.title}`);
                 if (typeof (this.players[msg.guild.id]) !== 'undefined') {
                     this.players[msg.guild.id].addToQueue(Song, true);
@@ -88,18 +90,15 @@ class VoiceManager extends EventEmitter {
             if (err) return this.emit('error', err);
             let importer = new SongImporter(msg);
             importer.once('playlist', (songs) => {
+                importer.removeAllListeners();
                 msg.channel.sendCode('json', JSON.stringify(songs));
-                importer.removeListener('done');
-                importer.removeListener('error');
             });
             importer.once('error', (err) => {
+                importer.removeAllListeners();
                 this.emit('error', err);
-                importer.removeListener('playlist');
-                importer.removeListener('done');
             });
             importer.once('done', (Song) => {
-                importer.removeListener('playlist');
-                importer.removeListener('error');
+                importer.removeAllListeners();
                 msg.channel.sendMessage(`Queued ${Song.title}`);
                 if (typeof (this.players[msg.guild.id]) !== 'undefined') {
                     this.players[msg.guild.id].addToQueue(Song, immediate);
