@@ -82,3 +82,6 @@ bot.on('guildMemberRemove', (member) => {
 
 });
 bot.login(config.token).then(winston.info('Logged in successfully'));
+process.on("unhandledRejection", err => {
+    console.error("Uncaught Promise Error: \n" + err.stack);
+});

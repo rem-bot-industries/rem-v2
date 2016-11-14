@@ -6,7 +6,7 @@ class Ping extends Command {
     constructor(t) {
         super();
         this.cmd = "setLang";
-        this.cat = "generic";
+        this.cat = "moderation";
         this.needGuild = false;
         this.t = t;
         this.accessLevel = 0;

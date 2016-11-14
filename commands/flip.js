@@ -6,7 +6,7 @@ class FlipCoin extends Command {
     constructor(t) {
         super();
         this.cmd = "flip";
-        this.cat = "generic";
+        this.cat = "fun";
         this.needGuild = false;
         this.t = t;
         this.accessLevel = 0;

@@ -37,16 +37,5 @@ class GuildManager extends EventEmitter {
         });
     }
 
-    loadLang(id, cb) {
-        guildModel.findOne({id: id}, (err, Guild) => {
-            if (err) return cb(err);
-            if (Guild) {
-
-            } else {
-
-            }
-        });
-    }
-
 }
 module.exports = GuildManager;
