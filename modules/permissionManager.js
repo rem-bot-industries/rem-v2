@@ -6,7 +6,13 @@ var winston = require('winston');
 var async = require("async");
 var config = require('../config/main.json');
 var util = require("util");
+/**
+ * The permission manager, it loads all permissions from the database and builds the permission tree
+ */
 class PermissionManager {
+    /**
+     * Initalize the instance variable in the constructor
+     */
     constructor() {
         this.msg = null;
         this.guild = null;
@@ -15,6 +21,12 @@ class PermissionManager {
         this.cmd = null;
     }
 
+    /**
+     * The base function to check if a user is allowed to do sth.
+     * @param msg - The msg of the command that should be check
+     * @param node - the permission node category.command
+     * @param cb - the callback
+     */
     checkPermission(msg, node, cb) {
         this.msg = msg;
         this.guild = msg.guild;
@@ -28,6 +40,11 @@ class PermissionManager {
 
     }
 
+    /**
+     * Loads the permission document out of the database
+     * @param msg - the message, so we can get the id of the guild to load the perms per guild
+     * @param cb - the callback
+     */
     loadPermission(msg, cb) {
         permModel.findOne({id: msg.guild.id}, (err, Perms) => {
             if (err) return cb(err);
@@ -36,8 +53,11 @@ class PermissionManager {
             } else {
                 Perms = [
                     {type: 'guild', id: '228604101800230912', cat: '*', perm: '*', use: true},
-                    {type: 'channel', id: '228604101800230912', cat: 'fun', perm: '*', use: true},
+                    {type: 'guild', id: '228604101800230912', cat: 'fun', perm: 'lenny', use: true},
+                    {type: 'guild', id: '228604101800230912', cat: 'fun', perm: 'lenny', use: false},
+                    {type: 'guild', id: '228604101800230912', cat: 'fun', perm: 'lenny', use: true},
                     {type: 'channel', id: '228604101800230912', cat: 'fun', perm: 'lenny', use: false},
+                    {type: 'channel', id: '228604101800230912', cat: 'fun', perm: 'lenny', use: true},
                     {type: 'role', id: '218549272658968577', cat: 'fun', perm: 'flip', use: true},
                     {type: 'role', id: '244643936553926656', cat: 'fun', perm: 'flip', use: false}
                 ];
@@ -46,6 +66,12 @@ class PermissionManager {
         })
     }
 
+    /**
+     * Build the json object known as the mighty permission tree,
+     * JK it build a big json object with all the perms combined, that makes it easier to
+     * @param Perms
+     * @param cb
+     */
     buildPermTree(Perms, cb) {
         let tree = {channel: {}, user: {}, role: {}};
         async.each(Perms, (Perm, cb) => {
@@ -54,7 +80,12 @@ class PermissionManager {
                     if (!tree[Perm.cat]) {
                         tree[Perm.cat] = {};
                     }
-                    tree[Perm.cat][Perm.perm] = Perm.use;
+                    if (typeof (tree[Perm.cat][Perm.perm]) === 'undefined') {
+                        tree[Perm.cat][Perm.perm] = Perm.use;
+                    }
+                    if (tree[Perm.cat][Perm.perm]) {
+                        tree[Perm.cat][Perm.perm] = Perm.use;
+                    }
                     async.setImmediate(() => {
                         cb();
                     });
@@ -64,7 +95,12 @@ class PermissionManager {
                         if (!tree.channel[Perm.cat]) {
                             tree.channel[Perm.cat] = {};
                         }
-                        tree.channel[Perm.cat][Perm.perm] = Perm.use;
+                        if (typeof (tree.channel[Perm.cat][Perm.perm]) === 'undefined') {
+                            tree.channel[Perm.cat][Perm.perm] = Perm.use;
+                        }
+                        if (tree.channel[Perm.cat][Perm.perm]) {
+                            tree.channel[Perm.cat][Perm.perm] = Perm.use;
+                        }
                     }
                     async.setImmediate(() => {
                         cb();
@@ -91,7 +127,12 @@ class PermissionManager {
                         if (!tree.user[Perm.cat]) {
                             tree.user[Perm.cat] = {};
                         }
-                        tree.user[Perm.cat][Perm.perm] = Perm.use;
+                        if (typeof (tree.user[Perm.cat][Perm.perm]) === 'undefined') {
+                            tree.user[Perm.cat][Perm.perm] = Perm.use;
+                        }
+                        if (tree.user[Perm.cat][Perm.perm]) {
+                            tree.user[Perm.cat][Perm.perm] = Perm.use;
+                        }
                     }
                     async.setImmediate(() => {
                         cb();
