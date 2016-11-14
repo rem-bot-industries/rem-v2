@@ -5,7 +5,7 @@ var Command = require('../Objects/command');
 class FlipCoin extends Command {
     constructor(t) {
         super();
-        this.cmd = "flip";
+        this.cmd = "coin";
         this.cat = "fun";
         this.needGuild = false;
         this.t = t;
