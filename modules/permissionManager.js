@@ -69,7 +69,8 @@ class PermissionManager {
 
     /**
      * Build the json object known as the mighty permission tree,
-     * JK it build a big json object with all the perms combined, that makes it easier to
+     * JK it builds a big json object with all the perms combined,
+     * that makes it easier to evaluate the perms
      * @param Perms
      * @param cb
      */

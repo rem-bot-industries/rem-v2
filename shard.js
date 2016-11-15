@@ -4,10 +4,12 @@
 var CmdManager = require('./modules/cmdManager');
 var LanguageManager = require('./modules/langManager');
 var VoiceManager = require('./modules/voiceManager');
+var RemoteManager = require('./modules/remoteManager');
 var guildModel = require('./DB/guild');
 var CMD;
 var LANG;
 var VOICE;
+var BRIDGE;
 var config = require('./config/main.json');
 var winston = require('winston');
 var raven = require('raven');
@@ -44,6 +46,7 @@ bot.on('ready', () => {
     LANG = new LanguageManager();
     VOICE = new VoiceManager();
     CMD = new CmdManager(LANG, VOICE);
+    BRIDGE = new RemoteManager('127.0.0.1', 8000, process.env.SHARD_ID);
     CMD.on('ready', (cmds) => {
         console.log('commands are ready!');
         // console.log(cmds);

@@ -112,7 +112,6 @@ class VoiceManager extends EventEmitter {
             });
             importer.once('done', (Song) => {
                 importer.removeAllListeners();
-                msg.channel.sendMessage(`Queued ${Song.title}`);
                 this.emit('added', Song);
                 if (typeof (this.players[msg.guild.id]) !== 'undefined') {
                     this.players[msg.guild.id].addToQueue(Song, immediate);

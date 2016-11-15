@@ -22,6 +22,7 @@ class YoutubeImporter extends BasicImporter {
                 this.emit('error', err);
             } else {
                 info.id = info.video_id;
+                info.loaderUrl = `https://www.youtube.com/watch?v=${info.id}`;
                 this.emit('done', info);
             }
         });

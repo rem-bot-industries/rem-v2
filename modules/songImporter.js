@@ -128,7 +128,6 @@ class SongImporter extends EventEmitter {
     }
 
     done(info) {
-        info.user = {name: this.msg.author.username, id: this.msg.author.id};
         this.saveSong(info, (err, Song) => {
             if (err) return this.emit('error', 'generic.error');
             this.emit('done', Song);
