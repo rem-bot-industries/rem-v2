@@ -59,7 +59,8 @@ class PermissionManager {
                     {type: 'channel', id: '228604101800230912', cat: 'fun', perm: 'lenny', use: false},
                     {type: 'channel', id: '228604101800230912', cat: 'fun', perm: 'lenny', use: true},
                     {type: 'role', id: '218549272658968577', cat: 'fun', perm: 'flip', use: true},
-                    {type: 'role', id: '244643936553926656', cat: 'fun', perm: 'flip', use: false}
+                    {type: 'role', id: '244643936553926656', cat: 'fun', perm: 'flip', use: false},
+                    {type: 'user', id: '128392910574977024', cat: 'fun', perm: 'uwu', use: false}
                 ];
                 this.buildPermTree(Perms, cb);
             }
@@ -195,26 +196,28 @@ class PermissionManager {
     }
 
     uwu(tree) {
+        // this.msg.channel.sendCode('json', JSON.stringify(tree));
         if (tree[this.cat] || tree['*']) {
             if (tree[this.cat]) {
                 if (tree[this.cat].hasOwnProperty(this.cmd) || tree[this.cat].hasOwnProperty('*')) {
                     if (tree[this.cat].hasOwnProperty(this.cmd)) {
-                        if (!tree[this.cat][this.cmd]) {
-                            return false;
-                        }
+                        return tree[this.cat][this.cmd];
                     } else {
-                        if (!tree[this.cat]['*']) {
-                            return false;
-                        }
+                        return tree[this.cat]['*'];
                     }
                 } else {
-                    return "-";
+                    if (tree['*']) {
+                        if (tree['*'].hasOwnProperty('*')) {
+                            return tree['*']['*'];
+                        }
+                    } else {
+                        return '-';
+                    }
                 }
             } else {
                 if (!tree['*']['*']) {
                     return false;
                 }
-
             }
             return true;
         } else {

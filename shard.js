@@ -26,13 +26,14 @@ var client = new raven.Client(config.sentry_token);
 var Discord = require("discord.js");
 var options = {
     messageCacheMaxSize: 1000,
+    messageCacheLifetime: 600,
+    messageSweepInterval: 1200,
     disableEveryone: true,
     fetchAllMembers: true,
     disabledEvents: ['typingStart', 'typingStop', 'guildMemberSpeaking', 'messageUpdate']
 };
 winston.info(options);
 var bot = new Discord.Client(options);
-
 if (!config.beta) {
     client.patchGlobal(() => {
         winston.error('Oh no I died!');
@@ -80,6 +81,17 @@ bot.on('guildMemberAdd', (member) => {
 });
 bot.on('guildMemberRemove', (member) => {
 
+});
+bot.on('voiceStateUpdate', (oldMember, newMember) => {
+    if (oldMember.voiceChannel) {
+        if (!newMember.voiceChannel) {
+            console.log('user left voice');
+        }
+    } else {
+        if (newMember.voiceChannel) {
+            console.log('user joined voice');
+        }
+    }
 });
 bot.login(config.token).then(winston.info('Logged in successfully'));
 process.on("unhandledRejection", err => {
