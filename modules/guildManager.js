@@ -37,5 +37,9 @@ class GuildManager extends EventEmitter {
         });
     }
 
+    changeLanguage(id, lng, cb) {
+        guildModel.update({id: id}, {$set: {lng: lng}}, cb);
+    }
+
 }
 module.exports = GuildManager;

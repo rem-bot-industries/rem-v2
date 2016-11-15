@@ -139,6 +139,15 @@ class VoiceManager extends EventEmitter {
     forceSkip(msg) {
         if (typeof (this.players[msg.guild.id]) !== 'undefined') {
             this.players[msg.guild.id].nextSong();
+            this.emit('skipped');
+        }
+    }
+
+    getConnection(msg) {
+        if (typeof (this.players[msg.guild.id]) !== 'undefined') {
+            return this.players[msg.guild.id].connection;
+        } else {
+            return null;
         }
     }
 }

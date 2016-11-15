@@ -16,6 +16,7 @@ class LangManager extends EventEmitter {
         this.commands = {};
         this.i18next = i18next;
         this.t = null;
+        this.list = null;
     }
 
     load() {
@@ -25,6 +26,7 @@ class LangManager extends EventEmitter {
             jsonIndent: 2
         };
         this.getDirs('locales/', (list) => {
+            this.list = list;
             i18next.use(Backend).init({
                 backend: backendOptions,
                 lng: 'en',

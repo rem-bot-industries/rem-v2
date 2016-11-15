@@ -14,7 +14,10 @@ class CmdManager extends EventEmitter {
         this.setMaxListeners(20);
         this.l = l;
         this.v = v;
-        this.l.on('ready', (t) => this.load(t, this.v));
+        this.l.on('ready', (t) => {
+            this.load(t, this.v);
+            this.lngs = this.l.list;
+        });
         this.t = null;
         this.g = new GuildManager();
         this.p = new PermManager();
@@ -55,6 +58,7 @@ class CmdManager extends EventEmitter {
                     try {
                         let cmd = msg.content.substr(Guild.prefix.length).split(' ')[0];
                         msg.lang = [Guild.lng, 'en'];
+                        msg.lngs = this.lngs;
                         let command = this.commands[cmd];
                         let node = `${command.cat}.${command.cmd}`;
                         // console.log(this.commands[command]);
