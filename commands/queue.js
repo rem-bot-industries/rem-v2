@@ -51,7 +51,7 @@ class Queue extends Command {
         let iteration = Queue.songs.length > 20 ? 20 : Queue.songs.length;
         for (var q = 0; q < iteration; q++) {
             if (q === 0) {
-                let repeat = Queue.repeat ? this.t('np.repeat-on', {lngs: message.lang}) : "";
+                let repeat = Queue.repeat ? this.t('np.repeat-on', {lngs: msg.lang}) : "";
                 if (Queue.songs[0].duration && Queue.songs[0].duration !== '') {
                     reply = reply + `${this.t('np.song-duration', {
                             lngs: message.lang,
@@ -70,7 +70,7 @@ class Queue extends Command {
                         })}\n`;
                 }
                 if (Queue.songs.length > 1) {
-                    reply = `${reply}${this.t('queue.queued', {lngs: message.lang})}\n\`\`\``;
+                    reply = `${reply}${this.t('queue.queued', {lngs: msg.lang})}\n\`\`\``;
                 }
             } else {
                 let end = '\n';

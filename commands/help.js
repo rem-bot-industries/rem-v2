@@ -39,7 +39,9 @@ class Ping extends Command {
         for (var command in commands) {
             if (commands.hasOwnProperty(command)) {
                 var cmd = commands[command];
-                if (this.checkCat(cmd.cat, this.categories)) {
+                if (typeof (this.cmd.hidden) !== 'undefined') {
+
+                } else if (this.checkCat(cmd.cat, this.categories)) {
                     this.categories = this.pushCat(cmd, this.categories);
                 } else {
                     this.categories.push({name: cmd.cat, commands: [cmd]});
@@ -55,11 +57,17 @@ class Ping extends Command {
             return true
         }, {time: 1000 * 30});
         collector.on('message', (msg) => {
-            let number = 10;
+            let number = 0;
             try {
                 number = parseInt(msg.content);
             } catch (e) {
-
+                return msg.channel.sendMessage(this.t('generic.whole-num'));
+            }
+            if (isNaN(number)) {
+                return msg.channel.sendMessage(this.t('generic.nan'));
+            }
+            if (number < 1) {
+                return msg.channel.sendMessage(this.t('generic.negative', {number: number}));
             }
             if (msg.content.startsWith(msg.prefix)) {
                 collector.stop();

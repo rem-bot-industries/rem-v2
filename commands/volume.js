@@ -7,7 +7,7 @@ class Volume extends Command {
         super();
         this.cmd = "volume";
         this.cat = "music";
-        this.needGuild = false;
+        this.needGuild = true;
         this.t = t;
         this.v = v;
         this.accessLevel = 0;

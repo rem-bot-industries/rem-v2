@@ -35,6 +35,9 @@ class PermissionManager {
         this.cat = nodeSplit[0];
         this.cmd = nodeSplit[1];
         if (msg.guild) {
+            if (this.checkDiscordRoles(msg)) {
+                return cb();
+            }
             this.loadPermission(msg, (err) => {
                 cb(err);
             });
@@ -53,10 +56,11 @@ class PermissionManager {
         permModel.findOne({id: msg.guild.id}, (err, Perms) => {
             if (err) return cb(err);
             if (Perms) {
-                this.buildPermTree(Perms);
+                this.buildPermTree(Perms.permissions, cb);
             } else {
                 Perms = [
-                    {type: 'guild', id: '228604101800230912', cat: '*', perm: '*', use: true}
+                    {type: 'guild', id: '228604101800230912', cat: 'fun', perm: '*', use: true},
+                    {type: 'guild', id: '228604101800230912', cat: 'generic', perm: '*', use: true}
                 ];
                 this.buildPermTree(Perms, cb);
             }
@@ -239,6 +243,50 @@ class PermissionManager {
         });
         return false;
     }
+
+    createPermission(node, type, id, allow) {
+        let nodeSplit = node.split('.');
+        if (typeof(allow) === 'string') {
+            allow = allow === 'true';
+        }
+        return ({type: type, id: id, cat: nodeSplit[0], perm: nodeSplit[1], use: allow});
+    }
+
+    addPermission(id, perm, cb) {
+        permModel.findOne({id: id}, (err, Perms) => {
+            if (err) return cb(err);
+            if (Perms) {
+                if (Perms.permissions.length > 0) {
+                    if (this.checkExist(perm, Perms.permissions)) {
+                        //TODO ask the user if he wants to overwrite the permission
+                    } else {
+                        permModel.update({id: id}, {$push: {permissions: perm}}, cb);
+                    }
+                } else {
+                    permModel.update({id: id}, {$push: {permissions: perm}}, cb);
+                }
+            } else {
+                this.createDbPerm(id, perm, cb);
+            }
+        });
+    }
+
+    createDbPerm(id, perm, cb) {
+        let perms = new permModel({
+            id: id,
+            permissions: [perm]
+        });
+        perms.save(cb);
+    }
+
+    checkExist(perm, perms) {
+        for (let i = 0; i < perms.length; i++) {
+            if (perm === perms[i]) {
+                return perm;
+            }
+        }
+        return false;
+    }
 }
 //TODO make that shit use the db
 /*
@@ -250,6 +298,6 @@ class PermissionManager {
  {type: 'channel', id: '228604101800230912', cat: 'fun', perm: 'lenny', use: true},
  {type: 'role', id: '218549272658968577', cat: 'fun', perm: 'flip', use: true},
  {type: 'role', id: '244643936553926656', cat: 'fun', perm: '*', use: true},
- {type: 'user', id: '128392910574977024', cat: 'fun', perm: 'uwu', use: false}
+ {type:  'user', id: '128392910574977024', cat: 'fun', perm: 'uwu', use: false}
  */
 module.exports = PermissionManager;
