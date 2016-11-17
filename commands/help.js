@@ -100,7 +100,7 @@ class Ping extends Command {
         let answer = "";
         while (i--) {
             if (list[i] !== 'dev') {
-                answer = answer + `${list[i]}|`;
+                answer = answer + `${list[i]} | `;
             }
         }
         return answer;

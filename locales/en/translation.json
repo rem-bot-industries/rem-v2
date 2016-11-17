@@ -113,7 +113,10 @@
     "roles": "[ROLES]",
     "wip": "[WORK IN PROGRESS]",
     "fun": "[FUN]",
-    "lmg": "Let me google that for you"
+    "lmg": "Let me google that for you",
+    "coin": "flips a coin for you",
+    "nyan": "Nya :3",
+    "uwu": "uwu"
   },
   "version": "Currently i am running on version {{version}}",
   "add": "Use this link to add me to your Server: {{- link}}",
