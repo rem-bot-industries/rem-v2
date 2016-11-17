@@ -150,5 +150,15 @@ class VoiceManager extends EventEmitter {
             return null;
         }
     }
+
+    setVolume(msg, vol) {
+        try {
+            this.players[msg.guild.id].setVolume(vol);
+            this.emit('success');
+        } catch (e) {
+            console.log(e);
+            this.emit('error');
+        }
+    }
 }
 module.exports = VoiceManager;

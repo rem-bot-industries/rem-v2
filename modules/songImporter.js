@@ -35,7 +35,7 @@ class SongImporter extends EventEmitter {
         for (var i = 1; i < this.messageSplit.length; i++) {
             messageSearch = messageSearch + " " + this.messageSplit[i]
         }
-        messageSearch = messageSearch.trim();
+        messageSearch = messageSearch.trim().replace('<', '').replace('>', '');
         this.findSong(messageSearch, (err, Song) => {
             if (err) {
                 winston.error(err);

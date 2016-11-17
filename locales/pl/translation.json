@@ -1,0 +1,327 @@
+{
+  "generic": {
+    "error": "Wystąpił Błąd!",
+    "no-pm": ":no_entry: Ta komenda nie działa w prywatnych kanałach!",
+    "whole-num": "Prosze podaj poprawny numer!",
+    "nan": "Cokolwiek wyślesz, prosze poprostu podaj poprawny numer. :) ",
+    "no-song-in-queue": "Jest piosenka w kolejce, może dodaj jedną :musical_note: ?",
+    "no-song-playing": "Aktualnie nie gra żadna piosenka!",
+    "no-permission": "Nie masz uprawnienia by używać tej komendy, proszę dodaj grupe serverową zwaną WolkeBot dla siebie by używać komend.",
+    "no-voice": "Nie jestem połączona do żadnego kanału głosowego na tym serverze!",
+    "level-update": ":tada: Właśnie osiągnąłeś/aś **Poziom {{level}}** na serverze **{{server}}**",
+    "empty-search": "Nie wpisałeś/aś niczego do wyszukania!",
+    "negative": "Proszę nie używaj negatywnych numerów!",
+    "cancel": "c:Anuluj",
+    "version": "versja",
+    "author": "autor",
+    "lib": "użyta biblioteka",
+    "more": "{{number}} więcej"
+  },
+  "help": {
+    "intro": "bawmy sie razem tutaj na Discordzie (/^▽^)/ Komendy których możesz używać:",
+    "intro_2": "Cześć, jestem",
+    "support": "[SUPPORT]",
+    "bug": "Dostań link servera bota",
+    "help": "Komenda pomocy",
+    "add": "Dostań link by mnie dodać do twojego servera",
+    "music": "[Muzyka]",
+    "voice": "Doszedłam do twojego Kanału Głosowego w którym aktualnie siedzisz (normalne kommendy muzyczne zmuszają bota by wszedł na kanał głosowy też)",
+    "silent": "Wychodzę z kanału głosowego w którym aktualnie jestem. (można używać tylko z grupą WolkeBot)",
+    "play": "Zagraj Piosenke/Filmik Youtube, Maxymalna długość: 1 Godzina 30 Minut (można używać tylko z grupą WolkeBot)",
+    "pause": "Zapauzuj aktualną piosenkę (można używać tylko z grupą WolkeBot)",
+    "resume": "Wznowić zapauzowaną piosenkę (można używać tylko z grupą WolkeBot)",
+    "volume": "Ustawia głośność bota, od 1 do 200 (można używać tylko z grupą WolkeBot)",
+    "forever": "Powtarza graną piosenke dopóki nowe piosenki zostaną dodane, można używać tylko z grupą WolkeBot",
+    "search": "Szuka piosenke w bazie danych bota i pokazuje 5 najlepszych wyników",
+    "skip": "Pomija aktualną piosenke (można używać tylko z grupą WolkeBot)",
+    "voteskip": "Zaczyna głosowanie by pominąć aktualną piosenkę, więcej niż 50% użytkowników musi zagłosować, by pomineło piosenkę.",
+    "qa": "Dodaj Piosenkę/Filmik Youtube do kolejki, Maxymalna długość: 1 Godzina 30 Minut",
+    "qra": "Usuwa albo wszystkie piosenki oprócz tej któa jest grana teraz albo specyficzny numer piosenek (wymaga grupy WolkeBot)",
+    "queue": "Pokazuje aktualną kolejkę",
+    "np": "Pokazuje aktualnie graną Piosenkę",
+    "rq": "Dodaje randomową piosenke/ numer piosenek do kolejki",
+    "stream": "Streams the selected Internet radio, you can search for radios or directly add them by appending -u url to the command",
+    "youtube": "[Youtube]",
+    "yts": "Szuka na Youtube and Daje ci the First Result",
+    "ytq": "Szuka na Youtube i dodaje pierwsze znalezione do Queue",
+    "mod": "Moderacja",
+    "mod-info": "Te wszystkie komendy wymagają użytkownika by posiadał grupe WolkeBot",
+    "info": "Daje ci troche informacji na temat aktualnego servera",
+    "ban": "Banuje użytkownika i usuwa 7 dni jego/jej wiadomości",
+    "kick": "Wykopuje użytkownika",
+    "rm": "Usuwa ostatnie 10 wiadomości, możesz zmienić 10 na inną wartość od 1 do 100",
+    "noLevelServer": "Wyłacza system poziomów dla całego servera, użyj ponownie komendy by ponownie włączyć",
+    "noPmServer": "Wyłacza notyfikacje dla całego servera, użyj ponownie komendy by ponownie włączyć",
+    "noChServer": "Wyłacza notyfikacje dla całego servera i wzamian włacza notyfikacje kanałowe, użyj komende jeszcze raz by odwrócić",
+    "setLewd": "Dodaje aktualny kanał do listy kanałów NSFW",
+    "remLewd": "Usuwa aktualny kanał z listy kanałów NSFW",
+    "setPrefix": "Ustawia prefix bota, brak spacji/wymawiania!",
+    "other": "[Inne Rzeczy]",
+    "r34": "Szuka 'Rule34' z tagami i daje 1 zdjęcie, można używać tylko z grupą WolkeBot lub skonfigurowany kanał NSFW.",
+    "kona": "Szuka Konachan z tagami i daje 1 zdjęcie, można używać tylko z grupą WolkeBot lub skonfigurowany kanał NSFW.",
+    "e621": "Szuka E621 z tagami i daje 1 zdjęcie, można używać tylko z grupą WolkeBot lub skonfigurowany kanał NSFW.",
+    "yandere": "Szuka Yande.re z tagami i daje 1 zdjęcie, można używać tylko z grupą WolkeBot lub skonfigurowany kanał NSFW.",
+    "level": "Twój Poziom i wymagany Exp na następny poziom.",
+    "rank": "Ranking na ten server",
+    "noLevel": "Wyłacza system poziomów dla ciebie. Użyj jeszcze raz by włączyć dla ciebie.",
+    "noPm": "Wyłacza system notyfikacji dla ciebie. Użyj jeszcze raz by włączyć dla ciebie.",
+    "pp": "Kalkuluje PP na mape z opcjonalnym accuracy i modami",
+    "cookie": "Daje ciastko do wymówionego użytkownika albo pokazuje twoje ciasteczka jak nikt nie jest wymówiony. (giving cookies is można używać tylko z grupą WolkeBot)",
+    "eatCookie": "Zjada ciastko.",
+    "git": "Daje ci link githuba bota",
+    "roll": "Rolluje numer pomiędzy zero i numerem, jeżeli nie będzie numeru to będzie z 10",
+    "8ball": "Daje ci opinie magicznej 8ball jak zapytasz sie coś",
+    "garfield": "Daje ci a losową komende z garfieldem",
+    "cat": "Wysyła ci losowy obrazek z kotem",
+    "hug": "Daje ci anime gif z przytulaniem",
+    "slap": "Daje ci anime gif z policzkowaniem",
+    "setLang": "ustawia język. Aktualne języki: {{languages}}",
+    "report": "Jeżeli sie wstydzisz wejść na Discord bota, użyj report by wysłać zgłoszenie do Developera Wolke, lecz nie nadużywaj tego!",
+    "feedback": "By podzielić sie satysfakcją użyj discord bota ^^",
+    "talk": "Jeżeli chcesz ze mną gadać @wymów moje imie :D",
+    "helpReply": "Wysłałam ci liste komend na PW.",
+    "moderation": "[Moderacja]",
+    "misc": "[Różne]",
+    "stats": "[Statystyki]",
+    "user": "[Użytkownik]",
+    "admin": "[Admin]",
+    "nsfw": "[NSFW]",
+    "eastereggs": "[Pisanki]",
+    "proxer": "[KissAnime]",
+    "no-cat": "[Bez Kategori]",
+    "ping": "Daje ci ping bota, to nie jest ping głosowy",
+    "lewd": "Jakie zboczone uwu",
+    "rem": "Daje ci różne zdjęcie z Rem",
+    "wip": "[Praca Trwa]",
+    "gr": "Ustaw wiadomość powitalną używając set greetingMessage, {{user}} będzie wymienione z użytkownikiem który doszedł i {{guild}} będzie zamienione na nazwe servera. To powitanie będzie pokazywać się na kanale w którym komenda zostałą wykonana.",
+    "fw": "Ustaw wiadomość pożegnalną używając set greetingMessage, {{user}} będzie wymienione z użytkownikiem który doszedł i {{guild}} będzie zamienione na nazwe servera. To powitanie będzie pokazywać się na kanale w którym komenda zostałą wykonana.",
+    "s": "Komenda serverowa ustawia rzeczy jak powitania i pożegnania",
+    "shrug": "¯\\_(ツ)_/¯ ",
+    "flip": "(╯°□°）╯︵ ┻━┻ ",
+    "eggplant": "tylko bakłażan",
+    "gtn": "Daje ci randomowy 'green tea neko' komiks, tylko do użycia z grupą WolkeBot albo w skonfigurowanym kanale NSFW.",
+    "cuddle": "Daje ci anime gif z przytuleniem",
+    "trig": "TRIGGERED",
+    "bot": "Daje ci informacje o czasie online Rem, połączeniach głosowych, użytkownikach i wszystkich gildii",
+    "top": "Pokazuje top 10 gildii (użytkowników w gildii) do którego ten odłamek jest połączony",
+    "about": "Pokazuje ci podstawowe informacje o mnie, np. osoba która mnie stworzyła.",
+    "lenny": "( ͡° ͜ʖ ͡°)",
+    "lmg": "Pozwól mi to wygooglować dla ciebie",
+    "fskip": "Przeskakuje aktualnie graną piosenke (tylko do użycia z grupą WolkeBot)",
+    "leave": "Wyszedłam z kanału głosowego w którym byłam. (tylko do użycia z grupą WolkeBot)",
+    "say": "Zmuś Rem by coś powiedziała"
+  },
+  "version": "Aktualnie jestem na versji {{version}}",
+  "add": "Użyj ten link by mnie dodać do twojego servera discord: {{- link}}",
+  "bug": "Dołącz do discordu bota: {{- link}} by zreportować bug.",
+  "level": {
+    "result": "Masz **{{level}} Poziom** Exp: **{{current}}Exp**/**{{needed}}Exp** Łącznie Uzbierany Exp: **{{total}}**",
+    "disabled": "System Exp jest wyłączony na tym serverze!"
+  },
+  "joinVoice": {
+    "join": "Wchodze na twój kanał głosowy",
+    "error": "Wystąpił błąd kiedy próbowałąm się połączyć z twoim kanałem głosowym!",
+    "permission": "Brak Uprawnien! Musisz dać sobie grupe WolkeBot by tego używać.",
+    "no-voice": "Nie jesteś w żadnym kanale głosowym!",
+    "already-voice": "Już jestem w kanale głosowym, przesuń mnie by zmienić go!"
+  },
+  "nsfw-images": {
+    "nothing-found": "Nie znaleziono obrazków z tagami: `{{tags}}`",
+    "no-nsfw-channel": "Proszę ustaw/dodaj kanał NSFW używając komendy !w.setLewd (w jednym kanale NSFW) by używać komend NSFW"
+  },
+  "8ball": {
+    "answers": [
+      "Nie.",
+      "Tak.",
+      "Może.",
+      "Ja tak nie myśle.",
+      "Zdecydowanie nie.",
+      "Poprostu to zrób.",
+      "To jest dobry pomysł.",
+      "Czy jesteś tego pewny?"
+    ],
+    "no-message": "Nie podałeś/aś pytania."
+  },
+  "ban": {
+    "success": "Zbanowano użytkownika {{user}}",
+    "privilege": "Moja grupa nie ma prawa do zbanowania{{user}} !",
+    "err": "Wystąpił błąd podczas próby zbanowania {{user}} !",
+    "perms": "Nie możesz zbanować Właściciela ani nikogo kto posiada grupe WolkeBot.",
+    "self": "Nie możesz zbanować mnie moją własną komendą.",
+    "no-mention": "Wzpomnij użytkownika którego chcesz zbanować."
+  },
+  "kick": {
+    "success": "Wykopano użytkownika {{user}}",
+    "privilege": "Moja grupa nie ma prawa do wykopania {{user}} !",
+    "err": "Wystąpił błąd podczas próby wykopania {{user}} !",
+    "perms": "Nie możesz wykopać Właściciela ani nikogo kto posiada grupe WolkeBot.",
+    "self": "Nie możesz wykopać mnie moją własną komendą.",
+    "no-mention": "Wzpomnij użytkownika którego chcesz wykopać."
+  },
+  "roll": {
+    "whole-number": "Prosze podaj pełny numer!",
+    "negative": "Nie moge zalosować z {{number}}",
+    "success": "Wylosowano {{first}} z {{second}}"
+  },
+  "qa": {
+    "nothing-found": "Nie znaleziono piosenki używając słowa `{{search}}` ",
+    "empty-search": "Nie wpisałeś niczego do wyszukania!",
+    "started-download": "Zaczęto pobieranie `{{- url}}` ",
+    "success": "Dodano do kolejki **{{- song}}**"
+  },
+  "rq": {
+    "db-error": "Wystąpił błąd bazy danych!",
+    "success-multiple": "Dodano piosenki:\n```{{- table}}```",
+    "too-big": "Dodano {{number}} piosenek",
+    "no-songs-added": "Nie mogłam dodać żadnych piosenek dlatego że one już są w kolejce, spróbuj ponownie!",
+    "too-much": "Nie możesz dodać więcej niż {{number}} piosenek pojedyńczo!"
+  },
+  "qra": {
+    "to-small": "Nie możesz usunąć {{number}} piosenek!",
+    "success": "Usunięto następujące piosenki:\n {{- table}}",
+    "too-big": "Usunięto {{number}} piosenek",
+    "one-song": "Użyj {{- prefix}}fskip by pominąć tą piosenkę!"
+  },
+  "cookie": {
+    "give": "Dano użytkownikowi **{{- user}}** **1** Ciastko!",
+    "new-server": "Spróbuj ponownie.",
+    "arere": "Arere... coś poszło nietak...",
+    "perms": "Musisz mieć grupe serverową WolkeBot by rozdawać Cisteczka!",
+    "one-user": "Prosze wspomnij **1 Użytkownika**, nie więcej, nie mniej!",
+    "count": "Masz **{{number}} Ciastko/ek** teraz."
+  },
+  "eastereggs": {
+    "jay": "Jay kocha Ciebie~ :heart: ",
+    "magic": "xX_Cats_Xx był tutaj dnia -10.10.2016"
+  },
+  "set-lang": {
+    "no-lang": "Nie podałeś poprawnego języka!",
+    "success": "Właśnie ustawiłam język serverowy na {{- language}}.",
+    "unsupported": "Ten język nie został jeszcze wprowadzony, ale możesz pomóc z tym dodając go do requestów z twoim językiem na githubie."
+  },
+  "np": {
+    "song-duration": "Aktualnie Grane:` {{- title}} {{current}}/{{duration}} {{repeat}} `",
+    "song": "Aktualnie Grane: `{{-title}} {{repeat}}`",
+    "repeat-on": "powtarzanie:włączone"
+  },
+  "queue": {
+    "queued": "W kolejce:"
+  },
+  "rem-lewd": {
+    "no-nsfw": "Jeszcze nie ma kanałów NSFW.",
+    "success": "Pomyślnie usunięto kanał {{- channel}} z kanałów NSFW!"
+  },
+  "no-level-server": {
+    "success-disable": "Właśnie wyłączyłam system poziomów na tym serverze, wpisz tą tą komende znowu by to włączyć.",
+    "success-enable": "Właśnie włączyłam system poziomów na tym serverze, wpisz tą tą komende znowu by to wyłączyć."
+  },
+  "no-pm-server": {
+    "success-disable": "Właśnie wyłączyłam prywatne wiadomości na tym serverzer, wpisz tą tą komende znowu by to włączyć.",
+    "success-enable": "Właśnie włączyłam prywatne wiadomości na tym serverze, wpisz tą tą komende znowu by to wyłączyć."
+  },
+  "no-channel-server": {
+    "success-disable": "Właśnie wyłączyłam prywatne wiadomości na tym serverze i wyłączyłam notyfikacje kanałowe, wpisz tą tą komende znowu by to włączyć.",
+    "success-enable": "Właśnie włączyłam prywatne wiadomości na tym serverze i włączyłam notyfikacje kanałowe, wpisz tą tą komende znowu by to wyłączyć."
+  },
+  "no-level": {
+    "success-disable": "Właśnie wyłączyłam system poziomów dla ciebie, wpisz tą tą komende znowu by to włączyć.",
+    "success-enable": "Właśnie włączyłam system poziomów dla ciebie, wpisz tą tą komende znowu by to wyłączyć."
+  },
+  "no-pm": {
+    "success-disable": "Właśnie wyłączyłam notyfikacje prywatnych wiadomości dla ciebie, wpisz tą tą komende znowu by to włączyć.",
+    "success-enable": "Właśnie włączyłam notyfikacje prywatnych wiadomości dla ciebie, wpisz tą tą komende znowu by to wyłączyć."
+  },
+  "eat-cookie": {
+    "success": "Właśnie zjadłeś/aś {{number}} Ciastko/ek!",
+    "failure": "Nie masz żadnych ciastek do zjedzenia."
+  },
+  "bot-info": {
+    "uptime": "Czas Online",
+    "users": "Użytkownicy",
+    "channels": "Kanały",
+    "guilds": "Gildie",
+    "avg-channels": "Śrd. Kanały na Gildie",
+    "avg-users": "Śrd. Użytkownicy na Gildie",
+    "voice": "Połączenia głosowe",
+    "shard": "czerep",
+    "guilds-s": "Gildie na tym fragmencie",
+    "channels-s": "Kanały na tym fragmencie",
+    "users-s": "Użytkownicy na tym fragmencie"
+  },
+  "rank": "Możesz znaleźć ranking tego servera tutaj: {{- link}}",
+  "pp": {
+    "err": {
+      "api-body": "Nie można przeanalizować odpowiedźi api!",
+      "osu-api": "Wygląda na to że osu! api ma mały problem.",
+      "no-link": "To nie jest porpawny link osu!",
+      "unvalid-link": "Brak linku mapy!"
+    },
+    "success": "PP do mapy `{{- artist}} - {{- title}} [{{- version}}] z Accuracy {{- accuracy}}%` `{{- pp}}PP` `{{- mods}}`"
+  },
+  "server-info": {
+    "id": "Identyfikator",
+    "name": "Nazwa",
+    "member": "Użytkownicy",
+    "text": "Kanały Pisemne",
+    "voice": "Kanały Głosowe",
+    "roles": "Grupy",
+    "creation": "Data Stworzenia",
+    "region": "Region",
+    "owner": "Właściciel"
+  },
+  "leave": "Wyszedłam z chatu głosowego.",
+  "play": {
+    "no-result": "Nie znaleziono piosenki!",
+    "playing": ":musical_note: Teraz Grane **{{- song}}**"
+  },
+  "prefix": {
+    "success": "Ustawiłam prefix na {{- prefix}}",
+    "no-prefix": "Prosze dodaj prefix!"
+  },
+  "voice": {
+    "in-queue": "**{{- song}}** jest już w kolejce.",
+    "error-volume": "Błąd podczas zmieniana głośności!",
+    "success-volume": "Ustawiono głośnośc do {{- volume}}",
+    "no-volume": "Nie ustalono głośności!",
+    "repeat-start": "Rozpoczęto powtarzanie piosenki **{{- song}}**",
+    "already-playing": "Ta piosenka już gra!",
+    "blocked": "To video nie jest możliwe do pobrania. Może jest za długie albo zablokowane/usunięte",
+    "dl-start": ":hourglass: Ładuje Piosenkę!",
+    "use-proxy": "Próba pobierania z ominięciem proxy, może chwile zająć."
+  },
+  "yts": {
+    "success": "Znaleziono nastempującą piosenkę: {{- link}}"
+  },
+  "skip": {
+    "success": ":track_next: Pominięto piosenkę {{- title}}",
+    "stop": ":stop_button: Zatrzymano aktualną piosenkę"
+  },
+  "vskip": {
+    "user-no-voice": "Nie możesz pominąć, jeżeli nie jesteś w tym samym kanale głosowym!",
+    "same-voice": "Nie jesteś w tym samym kanale głosowym co ja!",
+    "dup": "Już zagłosowałeś!",
+    "success-add": "Dodano twój głos, procent głosów **{{current}}%/{{needed}}%**",
+    "success-skip": "Pominięto Piosenke: **{{- title}}**"
+  },
+  "rm": {
+    "less-2": "Nie możesz usunąć mniej niż 2 wiadomości!",
+    "over-100": "Nie możesz usunąć więcej niż 100 wiadomości!",
+    "success": "Pomyślnie usunięto {{number}} wiadomśości.",
+    "error": "Błąd w trakcie próby usuwania Wiadomości!"
+  },
+  "search": {
+    "success": "Znaleziono następujące Piosenki:"
+  },
+  "set-lewd": {
+    "success": "Pomyślnie dodano {{- channel}} do kanałów NSFW!"
+  },
+  "report": "Wysłałam twój report do Wolke, prosze nie nadużywaj tego, ponieważ możesz zostać zablokowany od używania bota!",
+  "greeting": {
+    "no-greeting": "Nie dodałeś powitania który powinienam użyć!",
+    "no-add": "Możesz ustawić albo zresetować powitanie."
+  },
+  "farewell": {
+    "no-farewell": "Nie dodałeś pożegnania który powinienam użyć!",
+    "no-add": "Możesz ustawić albo zresetować pożegnanie."
+  }
+}

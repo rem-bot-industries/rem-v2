@@ -17,7 +17,7 @@ class Pause extends Command {
     constructor(t,v) {
         super();
         this.cmd = "pause";
-        this.cat = "voice";
+        this.cat = "music";
         this.needGuild = true;
         this.t = t;
         this.v = v;

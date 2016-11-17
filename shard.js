@@ -46,7 +46,7 @@ bot.on('ready', () => {
     LANG = new LanguageManager();
     VOICE = new VoiceManager();
     CMD = new CmdManager(LANG, VOICE);
-    BRIDGE = new RemoteManager('127.0.0.1', 8000, process.env.SHARD_ID);
+    // BRIDGE = new RemoteManager('127.0.0.1', 8000, process.env.SHARD_ID);
     CMD.on('ready', (cmds) => {
         console.log('commands are ready!');
         // console.log(cmds);

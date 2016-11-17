@@ -17,7 +17,7 @@ class Play extends Command {
     constructor(t, v) {
         super();
         this.cmd = "play";
-        this.cat = "voice";
+        this.cat = "music";
         this.needGuild = true;
         this.t = t;
         this.v = v;

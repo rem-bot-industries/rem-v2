@@ -1,0 +1,288 @@
+{
+  "generic": {
+    "error": "Bir hata cikti!",
+    "no-pm": "Bu komut özel mesajlarda çalismiyor!",
+    "whole-num": "lütfen bir tam sayi ekleyin!",
+    "nan": "Ne gönderdiysen.. Lütfen tam sayi aliniz :)",
+    "no-song-in-queue": "su anda müzik yürümiyor, müzik eklesene :musical_note: ?",
+    "no-song-playing": "suanda müzik yürümiyor.",
+    "no-permission": "Bu komut için izinin yok, discorda bir rol ekle adi WolkeBot olsu ve o rola komut ver ",
+    "no-voice": "su anda bu sunucu üzerinde herhangi bir ses kanali ile bagli",
+    "level-update": ":supris: su anda **Level {{level}}** üzerinde **{{server}}** ulastin.",
+    "empty-search": "Bir arama terimi yazmadin!",
+    "negative": "negatif bir sayi kullanmayin lütfen >_<",
+    "cancel": "c:Aramayi iptal"
+  },
+  "help": {
+    "intro": "bu discorda çok eglenek (/^?^)/ Iste benim emir vardir:",
+    "intro_2": "Alo, ben",
+    "support": "SUPPORT",
+    "bug": "sana link gönderiyor Discord-support için",
+    "help": "alternatif komut",
+    "add": "sana bir link gönderiyor beni baska bir discord servere eklemek için",
+    "music": "MÜZIK",
+    "voice": "Ben senin sesli kanalina giriyorum",
+    "silent": "Ben bu sesli kanali terk ediyorum . (WolkeBot rolü ile yalnizca kullanilabilir)",
+    "play": "Bir YT-Link/SC-Link/osu-link oynatiyor, maksimum uzunlugu: 1H30M (WolkeBot rolü ile yalnizca kullanilabilir)",
+    "pause": "Müziki durduriyor (WolkeBot rolü ile yalnizca kullanilabilir)",
+    "resume": "durdurulmus sarkiyi devam ediyor (WolkeBot rolü ile yalnizca kullanilabilir)",
+    "volume": "Müzik sesini ayarlar (WolkeBot rolü ile yalnizca kullanilabilir)",
+    "forever": "Müziki durmadan onynatriyor kuyru yeni müzik ekleniyer kadar (WolkeBot rolü ile yalnizca kullanilabilir)",
+    "search": "iç veritabaninda bir sarki arar ",
+    "skip": "sarki atlar (WolkeBot rolü ile yalnizca kullanilabilir)",
+    "voteskip": "sarkiyi atlatmak için oylama baslatiyor",
+    "qa": "Bir YT-Link/SC-Link/osu-link oynatiyor, maksimum uzunlugu: 1H30M",
+    "qra": "Kuyruktaki tüm sarkilari veya sarki belirtilen sayida ya kaldirir (WolkeBot rolü ile yalnizca kullanilabilir)",
+    "queue": "Kuryru göteriyor",
+    "np": "su andaki müziki gösteriyor",
+    "rq": "siraya bir / birkaç sarki ekler",
+    "stream": "radyo istasyonlari için arama veya dogrudan -u url üzerinde belirli bir akis baslayabilirsiniz.",
+    "youtube": "Youtube",
+    "yts": "Youtube Bagimlilik ve size ilk sonuç verir",
+    "ytq": "Youtube ve Bagimlilik kuyrugunda ilk sonucu ekler.",
+    "mod": "Moderation",
+    "mod-info": "Bu komutlardan her biri sadece WolkeBot rolü ile birlikte kullanilabilir",
+    "info": "Güncel sunucu hakkinda bilgi verir",
+    "ban": "söz konusu kullanicilarin yasaklar ve son 7 gün ondan herhangi bir mesaji siler.",
+    "kick": "kullanciyi serverden atiyor",
+    "rm": "son 10 mesajlari siliyor (Mümkün 2-100 arasindaki degerler)",
+    "noLevelServer": "tüm level sistemi kapatiyor bur server icin , Komut yeniden çalistirilirsan yeniden aktif edilir.",
+    "noPmServer": "Devre disi birakilmis PM tüm sunucu için uyarir, Komut yeniden çalistirilirsa, yeniden aktif edilir.",
+    "noChServer": "tüm sunucu için devre disi PM uyarilari ve etkin kanal uyarilari, Komut yeniden çalistirilirsan diger tekrar dönen oldugunut.",
+    "setLewd": "Geçerli kanal için NSFW komutlari saglayan",
+    "remLewd": "Geçerli kanal için NSFW komutlari devre disi birakir",
+    "setPrefix": "öneki degistirir, bosluk yada mentionlar yasaktir!",
+    "other": "diger",
+    "r34": "Bagimlilik belirtilen etiketleri Rule34 ve 1 Görüntü verir, sadece bir NSFW Kanal kullanilabilir.",
+    "kona": "Bagimlilik belirtilen etiketleri Konachan ve 1 Görüntü verir, sadece bir NSFW Kanal kullanilabilir.",
+    "e621": "Bagimlilik belirtilen etiketleri E621 ve 1 Görüntü verir, sadece bir NSFW Kanal kullanilabilirl.",
+    "yandere": "Bagimlilik belirtilen etiketleri yande.re ve 1 Görüntü verir, adece bir NSFW Kanal kullanilabilir.",
+    "level": "senin suandaki seviyeni Level/Xp Standi gönderir",
+    "rank": "Bu sunucunun siralama",
+    "noLevel": "Senin level sistemini kapatiyor bu serverda . Komut yeniden çalistirilirsan yeniden aktif edilir.",
+    "noPm": "Sizin için bu sunucuda devre disi PM bildirimleri kapatiliyor. Komut yeniden çalistirilirsan yeniden aktif edilir.",
+    "pp": "Istege bagli hassasiyet ve istege bagli mods Beatmap için PP sayior",
+    "cookie": "Belirten kullanici bir bisküvi söz ya da bisküvi sayinizi gösteren, Kullanici adi geçen ise.",
+    "eatCookie": "Bir bisküvi yimek.",
+    "git": "sana benim github linki atiyor",
+    "roll": "1 ve 10 veya istedin sayi atiyor",
+    "8ball": "Magic Ball sana bir cevap veriyor Hayir ve ya yok cevap la",
+    "garfield": "rasgele Garfield çizgi gönderir",
+    "cat": "bir kedi rastgele bir görüntü gönderir",
+    "hug": "sana bir sarilmak anime gif verir",
+    "slap": "sana bir anime tokat gif verir",
+    "setLang": "dili ayarlar, su anda mevcuttur de (deutsch), en (english) und ru (russisch) se (swedish) tr (türkçe)",
+    "report": "Eger destek Discord gelmek için çok utangaç iseniz, bu vesile ile bulut mesaj gönderebilir.",
+    "feedback": "Geri Bildirim için Discord supportu kullanin lütfen ^^",
+    "talk": "Benimle konusmak istiyorsaniz, bana sadece bir mention at  :D",
+    "helpReply": "tamam sana bir list atim PM`ine bak!",
+    "moderation": "",
+    "misc": "",
+    "stats": "",
+    "user": "",
+    "admin": "",
+    "nsfw": "",
+    "eastereggs": "",
+    "proxer": "",
+    "no-cat": ""
+  },
+  "version": "Su anda Sürüm kullaniyorum{{version}}",
+  "add": "Bu linki kulan beni diger servere eklemek için: {{- link}}",
+  "bug": "Lütfen Discord supporta git: {{- link}} bir hata bildirmek için!",
+  "level": {
+    "result": "Su anda **Level {{level}}** XP: **{{current}}XP**/**{{needed}}XP** XP Toplam:**{{total}}**",
+    "disabled": "seviye sistem bu sunucuda kapatilildi!"
+  },
+  "joinVoice": {
+    "join": "Tamam, ben simdik senin Ses Kanalina giriyorum!",
+    "error": "Pardon, bir problem çikti ses kanali girerken!",
+    "permission": "Izinin yok!, Bu komutu çalistirmak için WolkeBot rolünü gerekiyor.",
+    "no-voice": "sen ses kanalin içinde degilsin",
+    "already-voice": "Su anda ben ses kanalim içindeyim .!"
+  },
+  "nsfw-images": {
+    "nothing-found": "but tag le görüntü bulunmadi: `{{- tags}}`",
+    "no-nsfw-channel": "Bir NSFW Kanal ekleyin."
+  },
+  "8ball": {
+    "answers": [
+      "hayir",
+      "evet.",
+      "belki.",
+      "ben sanmiyorum",
+      "Kesinlikle kesinlikle hayir.",
+      "Yapsane onu.",
+      "Bu harika bir fikir!",
+      "emin misin ?"
+    ],
+    "no-message": "Soru yazmadin"
+  },
+  "ban": {
+    "success": "{{user}} yasaklandi!",
+    "privilege": "Benim haklari için yeterli degildir {{- user}} yasaklandirmak için!",
+    "err": "Bir hata çikti {{- user}} yasaklandirmak isterken!",
+    "perms": "Sen WolkeBot rolü ile sahibi ya da birisini kovmasin.",
+    "self": "iyi denemeydi, ama sen benim kendi komutuyla beni kovamasin.",
+    "no-mention": "Lütfen mention ver kimi yasaklandirmak istersen !"
+  },
+  "kick": {
+    "success": "{{- user}} serverdan atildi!",
+    "privilege": "Benim haklari için yeterli degildir {{- user}} serverden atmak için!",
+    "err": "Bir hata çikti {{- user}} serverdan atmak isterken!",
+    "perms": "Sen WolkeBot rolü ile sahibi ya da birisini serverden atamiyorsun.",
+    "self": "iyi denemeydi, ama sen benim kendi komutuyla serverden atamiyorsun!",
+    "no-mention": "Lütfen mention ver brisini serverden atmak istersen!"
+  },
+  "roll": {
+    "whole-number": "Lütfen bir tam sayi gönderin",
+    "negative": "Pardon ama ben bu sayila {{- number}} zar atamiyorum!",
+    "success": "Ben {{first}} ve {{second}} baska bir zar atim!"
+  },
+  "qa": {
+    "nothing-found": "Ben terim ile hiçbir sarki yok `{{- search}}` bulundu!",
+    "empty-search": "Bir arama terimi yazmadin",
+    "started-download": ":hourglass: tamam indiriyorum`{{- url}}` ",
+    "success": "**{{- song}}** Kuyruya girdi!"
+  },
+  "rq": {
+    "db-error": "Bir Problem çikti!",
+    "success-multiple": "Ben su sarkilari ekledim:\n```{{- table}}```"
+  },
+  "qra": {
+    "to-small": "Yapamazsiniz {{number}} Kuyruktaki sarkilari kaldiramasiniz!",
+    "success": "Ben kuyrukta asagidaki sarkilari kaldirdim:\n {{- table}}",
+    "too-big": "Ben su {{number}} Müziki sildim.",
+    "one-song": "Kulan {{- prefix}}fskip suandaki Müziki atlatmak için"
+  },
+  "cookie": {
+    "give": "**{{- user}}** birtane **1** bisküvi verildi!",
+    "new-server": "Lütfen tekrar deneyin!",
+    "arere": "Arere... birsey yanlish yürüdü",
+    "perms": "Sen WolkeBot rolünü lasim bisküvi dagitmak için",
+    "one-user": "Lütfen tek **1 User**, dahada az yada fazla!",
+    "count": "Sana bir **{{number}} bisküvi verildi**"
+  },
+  "eastereggs": {
+    "jay": "Jay seni seviyor~ :heart: ",
+    "magic": "xX_Cats_Xx burdaidi -10.10.2016"
+  },
+  "set-lang": {
+    "no-lang": "Sen dil vermedin! Su anda Su diler var de (Deutsch), en (Englisch) und ru (Russisch) se (swedish) tr (türkce)",
+    "success": "Tamam ben simdik bu dile {{- language}} degistirdim.",
+    "unsupported": "Bu dil eklenmedi, github açmak için istenen dil ile bir pullrequest saglayarak yapabilirsiniz yardim ancak. Su anda Su diler var de (Deutsch), en (Englisch) und ru (Russisch) se (swedish) tr (türkce)"
+  },
+  "np": {
+    "song-duration": "Su anda yüriyor: `{{- title}} {{current}}/{{duration}} {{repeat}} `",
+    "song": "Su anda yüriyor: `{{- title}} {{repeat}}`",
+    "repeat-on": "tekrarlama:aktif"
+  },
+  "queue": {
+    "queued": "Kuyruktaki:"
+  },
+  "rem-lewd": {
+    "no-nsfw": "Simdiye kadar, hiçbir NSFW Kanal henüz eklenmedi",
+    "success": "{{- channel}} basarili bir sekilde NSFW kanallardan silindi!"
+  },
+  "no-level-server": {
+    "success-disable": "Tamam, ben bu server için level sitemi kapatim .",
+    "success-enable": "Tamam, ben bu server için level sistemi geni açtim"
+  },
+  "no-pm-server": {
+    "success-disable": "PM uyarilari artik Genis Sunucu kapali.",
+    "success-enable": "PM uyarilari artik Genis Sunucu açtim."
+  },
+  "no-channel-server": {
+    "success-disable": "PM uyarilari artik Genis Sunucu kapali. Ama Kanal Bildirimleri etkindir.",
+    "success-enable": "PM uyarilari artik Genis Sunucu açtim. Kanal bildirimleri için simdi devre disi birakildi."
+  },
+  "no-level": {
+    "success-disable": "seviye sistemi artik sizin için kapatildi!",
+    "success-enable": "seviye sistemi artik sizin için açildi!"
+  },
+  "no-pm": {
+    "success-disable": "PM uyarilari simdi sizin için kapatilir.",
+    "success-enable": "PM uyarilari simdi sizin için açilir."
+  },
+  "eat-cookie": {
+    "success": "Su anda sen bir {{number}} bisküvi yedin!",
+    "failure": "Hayir! Senin bisküvin kalmadin!"
+  },
+  "bot-info": {
+    "uptime": "zamanit",
+    "users": "kulançi",
+    "channels": "Channel",
+    "guilds": "Server",
+    "avg-channels": "Aramak. Channel per Server",
+    "avg-users": "Aramak. User per Server",
+    "voice": "sesli aramalari",
+    "shard": ""
+  },
+  "rank": "Burada sunucu için siralamalarini görebilirsiniz: {{link}}",
+  "pp": {
+    "err": {
+      "api-body": "Ben cevap Api anlayamadim!",
+      "osu-api": "Bu osu ile küçük bir sorun görünüyor! API problem!",
+      "no-link": "Bu, geçerli bir osu link degil!",
+      "unvalid-link": "Belirtilen hiçbir harita baglantisi vermedin!"
+    },
+    "success": "PP için beatmap `{{- artist}} - {{title}} [{{- version}}] tamamle {{accuracy}}%` `{{pp}}PP` `{{- mods}}`"
+  },
+  "server-info": {
+    "id": "ID",
+    "name": "Adi",
+    "member": "üyeler",
+    "text": "Text Channel",
+    "voice": "Ses Channel",
+    "roles": "rol",
+    "creation": "katma",
+    "region": "bölge",
+    "owner": "sahibi"
+  },
+  "leave": "Tamam, ben selsi kanalli ciktim",
+  "play": {
+    "no-result": "Hiçbir sarki bulundu!",
+    "playing": ":musical_note: suanda onyniyor **{{- song}}**"
+  },
+  "prefix": {
+    "success": "Tamam, ben sadece öneki `{{- prefix}}` dönüstürülmüs!",
+    "no-prefix": "mesaji istenen öneki as Lütfen!"
+  },
+  "voice": {
+    "in-queue": "**{{- song}}** sirada zaten!",
+    "error-volume": "ses ayari bir hata çikti!",
+    "success-volume": "Ses ayari {{volume}} degistrilmis!",
+    "no-volume": "Ses ayar verilmedi!",
+    "repeat-start": ":repeat_one: tekrarlama baslatildi **{{- song}}**",
+    "already-playing": "Bu müzik suanda oniyor!",
+    "blocked": "Bu sarki, belki de çok uzun veya bloke edilmemis indirilebilir olan.",
+    "dl-start": ":hourglass: Download baslatildi!",
+    "use-proxy": "Ben sarkiya almak için bir kaç küçük hileleler deniyorum, lütfen beleyiniz!"
+  },
+  "yts": {
+    "success": "Asagidaki video bulundu: {{- link}}"
+  },
+  "skip": {
+    "success": ":track_next: {{- title}} atlandi!",
+    "stop": ":stop_button: bu müzik dulduruldu."
+  },
+  "vskip": {
+    "user-no-voice": "Sen benle sesli odada deglsin ondan oyu atlatamasin!",
+    "same-voice": "sen oyu atlatamasin sen ayni ses odada deglsin!",
+    "dup": "Sen kararini verdin!",
+    "success-add": "Senin kararin eklendi, geçerli ayakta **{{current}}%/{{needed}}%**",
+    "success-skip": "**{{- title}}** atlandi!"
+  },
+  "rm": {
+    "less-2": "Sen 2 den da az mesajlar silemiyorsun!",
+    "over-100": "Sen 100 den daha cok mesajlar silemiyorsun!",
+    "success": "{{number}} masajlar silindi.",
+    "error": "Bir hata cikti mesajlari silerken!"
+  },
+  "search": {
+    "success": "Asagidaki sarkilar buldu:"
+  },
+  "set-lewd": {
+    "success": "{{- channel}} basarili bir sekilde NSFW-kanalize eklendi!"
+  },
+  "report": "Tamam, bulut üzerinde hata raporu gönderdiginiz. sen-ebil devre disi birakildigi için bu islevi kötüye etmeyiniz!"
+}

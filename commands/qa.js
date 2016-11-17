@@ -16,7 +16,7 @@ class AddToQueue extends Command {
     constructor(t,v) {
         super();
         this.cmd = "qa";
-        this.cat = "voice";
+        this.cat = "music";
         this.needGuild = true;
         this.t = t;
         this.v = v;

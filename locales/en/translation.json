@@ -112,6 +112,7 @@
     "no-cat": "[UNCATEGORIZED]",
     "roles": "[ROLES]",
     "wip": "[WORK IN PROGRESS]",
+    "fun": "[FUN]",
     "lmg": "Let me google that for you"
   },
   "version": "Currently i am running on version {{version}}",

@@ -34,9 +34,13 @@ class PermissionManager {
         let nodeSplit = node.split('.');
         this.cat = nodeSplit[0];
         this.cmd = nodeSplit[1];
-        this.loadPermission(msg, (err) => {
-            cb(err);
-        });
+        if (msg.guild) {
+            this.loadPermission(msg, (err) => {
+                cb(err);
+            });
+        } else {
+            cb();
+        }
 
     }
 
@@ -52,15 +56,7 @@ class PermissionManager {
                 this.buildPermTree(Perms);
             } else {
                 Perms = [
-                    {type: 'guild', id: '228604101800230912', cat: '*', perm: '*', use: true},
-                    {type: 'guild', id: '228604101800230912', cat: 'fun', perm: 'lenny', use: true},
-                    {type: 'guild', id: '228604101800230912', cat: 'fun', perm: 'lenny', use: false},
-                    {type: 'guild', id: '228604101800230912', cat: 'fun', perm: 'lenny', use: true},
-                    {type: 'channel', id: '228604101800230912', cat: 'fun', perm: 'lenny', use: false},
-                    {type: 'channel', id: '228604101800230912', cat: 'fun', perm: 'lenny', use: true},
-                    {type: 'role', id: '218549272658968577', cat: 'fun', perm: 'flip', use: true},
-                    {type: 'role', id: '244643936553926656', cat: 'fun', perm: '*', use: true},
-                    {type: 'user', id: '128392910574977024', cat: 'fun', perm: 'uwu', use: false}
+                    {type: 'guild', id: '228604101800230912', cat: '*', perm: '*', use: true}
                 ];
                 this.buildPermTree(Perms, cb);
             }
@@ -109,7 +105,7 @@ class PermissionManager {
                     });
                     return;
                 case "role":
-                    if (this.msg.member.roles.exists('id', Perm.id)) {
+                    if (this.msg.member.roles.has(Perm.id)) {
                         if (!tree.role[Perm.cat]) {
                             tree.role[Perm.cat] = {};
                         }
@@ -244,4 +240,16 @@ class PermissionManager {
         return false;
     }
 }
+//TODO make that shit use the db
+/*
+
+ {type: 'guild', id: '228604101800230912', cat: 'fun', perm: 'lenny', use: true},
+ {type: 'guild', id: '228604101800230912', cat: 'fun', perm: 'lenny', use: false},
+ {type: 'guild', id: '228604101800230912', cat: 'fun', perm: 'lenny', use: true},
+ {type: 'channel', id: '228604101800230912', cat: 'fun', perm: 'lenny', use: false},
+ {type: 'channel', id: '228604101800230912', cat: 'fun', perm: 'lenny', use: true},
+ {type: 'role', id: '218549272658968577', cat: 'fun', perm: 'flip', use: true},
+ {type: 'role', id: '244643936553926656', cat: 'fun', perm: '*', use: true},
+ {type: 'user', id: '128392910574977024', cat: 'fun', perm: 'uwu', use: false}
+ */
 module.exports = PermissionManager;

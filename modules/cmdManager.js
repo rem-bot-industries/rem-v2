@@ -59,11 +59,15 @@ class CmdManager extends EventEmitter {
                         let cmd = msg.content.substr(Guild.prefix.length).split(' ')[0];
                         msg.lang = [Guild.lng, 'en'];
                         msg.lngs = this.lngs;
+                        msg.cmds = this.commands;
+                        msg.prefix = Guild.prefix;
+                        msg.db = Guild;
                         let command = this.commands[cmd];
                         let node = `${command.cat}.${command.cmd}`;
                         // console.log(this.commands[command]);
                         this.p.checkPermission(msg, node, (err) => {
                             if (err) return msg.channel.sendMessage(`No permission to use \`${node}\``);
+                            console.log(cmd);
                             if (command.needGuild) {
                                 if (msg.guild) {
                                     command.run(msg);

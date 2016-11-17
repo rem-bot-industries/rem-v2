@@ -174,6 +174,14 @@ class Player extends EventEmitter {
 
     }
 
+    setVolume(vol) {
+        try {
+            this.dispatcher.setVolume(vol);
+        } catch (e) {
+            this.emit('error', e);
+        }
+    }
+
     updatePlays(Song) {
 
     }
