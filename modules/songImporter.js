@@ -143,7 +143,13 @@ class SongImporter extends EventEmitter {
     }
 
     findSong(query, cb) {
-        songModel.findOne({url: query}, (err, Song) => {
+        let search = {};
+        if (SoundcloudReg.test(query)) {
+            search.web_url = query
+        } else {
+            search.url = query;
+        }
+        songModel.findOne(search, (err, Song) => {
             if (err) return cb(err);
             if (Song) {
                 return cb(null, Song);
@@ -158,6 +164,7 @@ class SongImporter extends EventEmitter {
             title: info.title,
             alt_title: info.alt_title,
             url: info.loaderUrl,
+            web_url: info.webpage_url,
             path: info.path ? info.path : "-",
             addedAt: new Date(),
             id: info.id,
@@ -172,6 +179,7 @@ class SongImporter extends EventEmitter {
         song.save((err) => {
             if (err) {
                 console.log(err);
+                console.log('error');
                 return cb(err);
             }
             cb(null, song);

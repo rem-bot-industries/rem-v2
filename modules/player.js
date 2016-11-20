@@ -49,7 +49,7 @@ class Player extends EventEmitter {
                 };
                 stream = this.ytdl(Song.url, options)
             } else {
-                if (Song.type = "osuV2") {
+                if (Song.type === "osuV2") {
                     try {
                         stream = fs.createReadStream(Song.path);
                     } catch (e) {

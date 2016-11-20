@@ -3,7 +3,7 @@ let config = require('./config/main.json');
 let StatTrack = require('./modules/statTrack');
 const winston = require('winston');
 let ShardingManager = new Discord.ShardingManager('./shard.js', {}, config.shards, true);
-ShardingManager.spawn(config.shards, 5000).then(shards => {
+ShardingManager.spawn(config.shards).then(shards => {
     winston.info('Spawned Shards!');
     let stats = new StatTrack(60 * 60 * 24);
     stats.on('fetch', () => {
