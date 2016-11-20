@@ -16,6 +16,7 @@ class SoundcloudImporter extends BasicImporter {
                 this.emit('error', err);
             } else {
                 info.loaderUrl = info.url;
+                info.web_url = this.url;
                 this.emit('done', info);
             }
         });

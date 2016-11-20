@@ -2,10 +2,10 @@
  * Created by julia on 07.11.2016.
  */
 var EventEmitter = require('eventemitter3');
-var YoutubeReg = /(?:http?s?:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=)?([a-zA-Z0-9_-]+)(&.*|)/;
+var YoutubeReg = /(?:http?s?:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=)([a-zA-Z0-9_-]+)/;
 var SoundcloudReg = /(?:http?s?:\/\/)?(?:www\.)?(?:soundcloud\.com|snd\.sc)\/(?:.*)/;
 var osuRegex = /(?:http(?:s|):\/\/osu.ppy.sh\/(s|b)\/([0-9]*)((\?|\&)m=[0-9]|))/;
-var playlistReg = /[&?]list=([a-z0-9_\-]+)/gi;
+var playlistReg = /(?:http?s?:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/?(?:playlist|list|)\?list=([0-9a-zA-Z-_]*)/;
 var sc = require('./soundCloudImporter');
 var yt = require('./youtubeImporter');
 var pl = require('./playlistImporter');
@@ -44,13 +44,18 @@ class SongImporter extends EventEmitter {
                 this.emit('done', Song);
             } else {
                 if (YoutubeReg.test(messageSearch)) {
-                    // let m;
-                    // if ((m = playlistReg.exec(messageSearch)) !== null) {
-                    //     winston.info('using Playlist!');
-                    //     this.playlist(m[1]);
-                    // } else {
-                        this.youtube(messageSearch);
-                    // }
+                    console.log('Youtube - single');
+                    this.youtube(messageSearch);
+                } else if (playlistReg.test(messageSearch)) {
+                    let m;
+                    console.log(messageSearch);
+                    if ((m = playlistReg.exec(messageSearch)) !== null) {
+                        winston.info(`using Playlist ${m[1]}`);
+                        this.playlist(m[1]);
+                    } else {
+                        console.log(m);
+                        this.emit('error', 'generic.error');
+                    }
                 } else if (osuRegex.test(messageSearch)) {
                     this.osu(messageSearch);
                 } else if (SoundcloudReg.test(messageSearch)) {
@@ -74,32 +79,32 @@ class SongImporter extends EventEmitter {
         });
     }
 
-    // playlist(id) {
-    //     let importer = new pl(id, this.ytdl);
-    //     importer.on('prefetch', (info, count) => {
-    //         this.findSong(info.loaderUrl, (err, Song) => {
-    //             if (err) {
-    //                 winston.error(err);
-    //             }
-    //             if (Song) {
-    //                 this.emit('pre', Song, count);
-    //             } else {
-    //                 this.saveSong(info, (err, Song) => {
-    //                     if (err) return winston.info(err);
-    //                     this.emit('pre', Song, count);
-    //                 });
-    //             }
-    //         });
-    //     });
-    //     importer.once('done', (info) => {
-    //         this.emit('playlist', info);
-    //         importer.removeAllListeners();
-    //     });
-    //     importer.once('error', (err) => {
-    //         this.emit('error', err);
-    //         importer.removeAllListeners();
-    //     });
-    // }
+    playlist(id) {
+        let importer = new pl(id, this.ytdl);
+        importer.on('prefetch', (info, count) => {
+            this.findSong(info.loaderUrl, (err, Song) => {
+                if (err) {
+                    winston.error(err);
+                }
+                if (Song) {
+                    this.emit('pre', Song, count);
+                } else {
+                    this.saveSong(info, (err, Song) => {
+                        if (err) return winston.info(err);
+                        this.emit('pre', Song, count);
+                    });
+                }
+            });
+        });
+        importer.once('done', (info) => {
+            this.emit('playlist', info);
+            importer.removeAllListeners();
+        });
+        importer.once('error', (err) => {
+            this.emit('error', err);
+            importer.removeAllListeners();
+        });
+    }
 
     soundcloud(url) {
         let importer = new sc(url, this.youtubedl);
@@ -145,6 +150,7 @@ class SongImporter extends EventEmitter {
     findSong(query, cb) {
         let search = {};
         if (SoundcloudReg.test(query)) {
+            console.log('Soundcloud');
             search.web_url = query
         } else {
             search.url = query;
@@ -164,7 +170,7 @@ class SongImporter extends EventEmitter {
             title: info.title,
             alt_title: info.alt_title,
             url: info.loaderUrl,
-            web_url: info.webpage_url,
+            web_url: info.web_url,
             path: info.path ? info.path : "-",
             addedAt: new Date(),
             id: info.id,
@@ -187,7 +193,7 @@ class SongImporter extends EventEmitter {
     }
 
     convertDuration(info) {
-        let durationConv = null;
+        let durationConv = "";
         if (typeof (info.duration) === 'undefined' && typeof (info.length_seconds) === 'undefined') {
             return durationConv;
         }
@@ -209,6 +215,7 @@ class SongImporter extends EventEmitter {
                 }
             }
             winston.info(durationConv);
+            return durationConv;
         } else if (typeof (info.length_seconds) !== 'undefined') {
             let d = Number(info.length_seconds);
             var h = Math.floor(d / 3600);

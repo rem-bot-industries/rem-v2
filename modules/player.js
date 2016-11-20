@@ -2,7 +2,7 @@
  * Created by julia on 07.11.2016.
  */
 var EventEmitter = require('eventemitter3');
-var beta = require('../config/main.json').beta;
+var shortid = require('shortid');
 var YoutubeReg = /(?:http?s?:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=)?([a-zA-Z0-9_-]+)(&.*|)/;
 var winston = require('winston');
 var request = require("request");
@@ -30,7 +30,7 @@ class Player extends EventEmitter {
         this.connection = connection;
         this.song = null;
         setInterval(() => {
-            console.log(this.queue.songs);
+            console.log(this.queue);
         }, 30 * 1000);
     }
 
@@ -116,6 +116,7 @@ class Player extends EventEmitter {
      * @param immediate - if the song should be played immediately
      */
     addToQueue(Song, immediate) {
+        Song.qid = shortid.generate();
         if (immediate) {
             this.queue.songs.unshift(Song);
             this.play(Song);
@@ -134,7 +135,7 @@ class Player extends EventEmitter {
     nextSong(Song) {
         if (this.queue.songs.length > 0) {
             if (typeof (Song) !== 'undefined') {
-                if (Song.id === this.queue.songs[0].id) {
+                if (Song.qid === this.queue.songs[0].qid) {
                     this.queue.songs.shift();
                     if (this.queue.songs[0]) {
                         this.play(this.queue.songs[0]);
@@ -187,6 +188,10 @@ class Player extends EventEmitter {
     }
 
     startQueue(msg) {
+
+    }
+
+    syncQueue() {
 
     }
 

@@ -6,18 +6,22 @@ var async = require('async');
 var path = require("path");
 var ytdl = require('ytdl-core');
 var winston = require('winston');
-var playlistModel = require(path.join(__dirname, '../../../DB/playlist'));
+var playlistModel = require('../../DB/playlist');
+var config = require('../../config/main.json');
 var count = 0;
-self.onmessage = function (ev) {
-    loadPlaylist(ev.data, (err, songs) => {
-        self.postMessage({type: 'result', err: err, songs: songs});
+process.on('message', (ev) => {
+    console.log(ev);
+    loadPlaylist(ev.id, (err, songs) => {
+        process.send({type: 'result', err: err, songs: songs});
     });
-};
+});
 function loadPlaylist(id, cb) {
+    console.log('loading data ' + id);
     Youtube.authenticate({
         type: 'key',
         key: config.youtube_api,
     });
+    console.log('logged in!');
     Youtube.playlistItems.list({
         part: 'contentDetails',
         maxResults: 50,
@@ -25,6 +29,9 @@ function loadPlaylist(id, cb) {
     }, (err, data)=> {
         if (err) return winston.info(err);
         let songs = [];
+        // console.log('received data');
+        // winston.info(data);
+        // console.log('OwO');
         async.eachSeries(data.items, (item, cb) => {
             loadSong({
                 url: `https://youtube.com/watch?v=${item.contentDetails.videoId}`,
@@ -57,7 +64,8 @@ function loadSong(info, cb) {
 }
 function prefetch(info) {
     if (count < 5) {
-        self.postMessage({type: 'info', info: info, count: count});
+        console.log('prefetch');
+        process.send({type: 'info', info: info, count: count});
         count += 1;
     }
 }

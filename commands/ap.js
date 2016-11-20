@@ -19,9 +19,7 @@ class AddPermission extends Command {
 
     run(msg) {
         let messageSplit = msg.content.split(' ').splice(1);
-        let node;
         let args = minimist(messageSplit);
-        let allow = false;
         this.parseArgs(args, (err, args) => {
             if (err) return msg.channel.sendMessage(err);
             console.log(args);

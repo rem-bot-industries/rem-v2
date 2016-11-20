@@ -43,10 +43,10 @@ class Queue extends Command {
 
     /**
      * Builds the reply
-     * @param Queue - the queue pbject
-     * @param message - the message that triggered the command
+     * @param Queue - the queue object
+     * @param msg - the message that triggered the command
      */
-    buildReply(Queue, message) {
+    buildReply(Queue, msg) {
         let reply = "";
         let iteration = Queue.songs.length > 20 ? 20 : Queue.songs.length;
         for (var q = 0; q < iteration; q++) {
@@ -54,7 +54,7 @@ class Queue extends Command {
                 let repeat = Queue.repeat ? this.t('np.repeat-on', {lngs: msg.lang}) : "";
                 if (Queue.songs[0].duration && Queue.songs[0].duration !== '') {
                     reply = reply + `${this.t('np.song-duration', {
-                            lngs: message.lang,
+                            lngs: msg.lang,
                             title: Queue.songs[0].title,
                             repeat: repeat,
                             duration: Queue.songs[0].duration,
@@ -63,7 +63,7 @@ class Queue extends Command {
                         })} \n`;
                 } else {
                     reply = reply + `${this.t('np.song', {
-                            lngs: message.lang,
+                            lngs: msg.lang,
                             title: Queue.songs[0].title,
                             repeat: repeat,
                             interpolation: {escape: false}
@@ -87,7 +87,7 @@ class Queue extends Command {
         }
         if (Queue.songs.length > 20) {
             reply = reply + `${parseInt(21)}. ${this.t('generic.more', {
-                    lngs: message.lang,
+                    lngs: msg.lang,
                     number: Queue.songs.length - 20
                 })}...\`\`\``;
         }

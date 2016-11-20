@@ -5,6 +5,7 @@ var BasicImporter = require('../Objects/basicImporter');
 var winston = require('winston');
 var path = require("path");
 var Worker = require("tiny-worker");
+var child_process = require("child_process");
 /**
  * The playlist importer
  * @extends BasicImporter
@@ -19,24 +20,22 @@ class PlaylistImporter extends BasicImporter {
     }
 
     loadPlaylist(id) {
-        let loader = new Worker(path.join(__dirname, './worker/playlist.js'));
-        loader.postMessage(id);
-        loader.onerror = (err) => {
-
-        };
-        loader.onmessage = (ev) => {
-            if (ev.data.type === 'info') {
-                this.emit('prefetch', ev.data.info, ev.data.count);
+        let loader = child_process.fork(path.join(__dirname, './worker/playlist.js'));
+        loader.send({type: 'info', id: id});
+        loader.on('message', (m) => {
+            console.log(JSON.stringify(m.type));
+            if (m.type === 'info') {
+                this.emit('prefetch', m.info, m.count);
             } else {
-                if (ev.data.err) {
-                    winston.error(ev.data.err);
+                if (m.err) {
+                    winston.error(m.err);
                     this.emit('error', 'generic.error');
                 } else {
-                    this.emit('done', ev.data.songs);
-                    loader.terminate();
+                    this.emit('done', m.songs);
+                    loader.kill();
                 }
             }
-        }
+        });
     }
 }
 module.exports = PlaylistImporter;
