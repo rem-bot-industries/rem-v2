@@ -60,16 +60,32 @@ class Shard extends EventEmitter {
         winston.info(options);
         var bot = new Discord.Client(options);
         this.bot = bot;
-        bot.on('ready', this.clientReady);
-        bot.on('message', this.message);
-        bot.on('guildCreate', this.guildCreate);
-        bot.on('voiceStateUpdate', this.voiceUpdate);
-        bot.on('guildMemberAdd', this.guildMemberAdd);
-        bot.on('guildMemberRemove', this.guildMemberRemove);
+        bot.on('ready', () => {
+            this.clientReady()
+        });
+        bot.on('message', (msg) => {
+            this.message(msg)
+        });
+        bot.on('guildCreate', (Guild) => {
+            this.guildCreate(Guild)
+        });
+        bot.on('voiceStateUpdate', (o, n) => {
+            this.voiceUpdate(o, n)
+        });
+        bot.on('guildMemberAdd', (m) => {
+            this.guildMemberAdd(m)
+        });
+        bot.on('guildMemberRemove', (m) => {
+            this.guildMemberRemove(m)
+        });
         // bot.on('debug', this.debug);
         bot.login(config.token).then(winston.info('Logged in successfully'));
-        process.on('message', this.clusterAction);
-        process.on('SIGINT', this.shutdown);
+        process.on('message', (msg) => {
+            this.clusterAction(msg);
+        });
+        process.on('SIGINT', () => {
+            this.shutdown()
+        });
     }
 
     clientReady() {
@@ -138,12 +154,31 @@ class Shard extends EventEmitter {
     }
 
     clusterAction(m) {
-
+        console.log(m);
+        console.log(this.ready);
+        if (this.ready) {
+            console.log(m);
+            if (m.type === 'guild') {
+                process.send({id: this.id, type: 'guild', d: this.bot.guilds.size});
+            }
+            if (m.type === 'stats') {
+                let users = this.bot.guilds.map(g => g.memberCount);
+                users = users.reduce((prev, val) => prev + val, 0);
+                let guilds = this.bot.guilds.size;
+                console.log(`Users: ${users} Guilds:${guilds}`);
+                process.send({id: this.id, type: 'stats', d: {users: users, guilds: guilds}});
+                console.log('sended message')
+            }
+        }
     }
 
     shutdown() {
         mongoose.connection.close();
-        this.bot.destroy();
+        try {
+            this.bot.destroy();
+        } catch (e) {
+            console.log(e);
+        }
         process.exit(0);
     }
 }

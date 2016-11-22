@@ -2,12 +2,22 @@ const cluster = require('cluster');
 const winston = require('winston');
 const winstonCluster = require('winston-cluster');
 const config = require('./config/main.json');
+var StatTrack = require('./modules/statTrack');
 require('longjohn');
 require('winston-daily-rotate-file');
 var util = require("util");
 const numCPUs = require('os').cpus().length;
 var Shard = require('./shard');
+var responses = 0;
+var users = 0;
+var guilds = 0;
 if (cluster.isMaster) {
+    var tracker = new StatTrack(20);
+    var resp = [];
+    tracker.on('fetch', () => {
+        console.log('fetch');
+        broadcast({type: 'stats'});
+    });
     var workers = [];
     process.on('SIGINT', () => {
         console.log('Received SIGINT');
@@ -28,7 +38,8 @@ if (cluster.isMaster) {
         let workerobject = {worker: worker, shard_id: i, pid: worker.process.pid};
         workers.push(workerobject)
     }
-    winstonCluster.bindListeners();
+    cluster.on('message', handleMessage);
+    // winstonCluster.bindListeners();
     winston.info('Spawned Shards!');
     cluster.on('exit', (worker, code, signal) => {
         console.log(`worker ${worker.process.pid} died`);
@@ -54,7 +65,30 @@ if (cluster.isMaster) {
         // worker.on('online', () => {
         //     console.log('Worker is online!');
         // });
-        winstonCluster.bindListeners();
+        // winstonCluster.bindListeners();
+    }
+
+    function handleMessage(worker, message, handle) {
+        if (message.type === 'stats') {
+            resp.push(message);
+            responses += 1;
+            if (responses === config.shards) {
+                users = 0;
+                guilds = 0;
+                responses = 0;
+                for (var i = 0; i < resp.length; i++) {
+                    users += resp[i].d.users;
+                    guilds += resp[i].d.guilds;
+                }
+                console.log(`Final Users: ${users} Guilds:${guilds}`);
+            }
+        }
+    }
+
+    function broadcast(msg) {
+        for (var i = 0; i < workers.length; i++) {
+            workers[i].worker.send(msg);
+        }
     }
 } else {
     winston.remove(winston.transports.Console);
@@ -62,7 +96,7 @@ if (cluster.isMaster) {
         'timestamp': true,
         'colorize': true
     });
-    winstonCluster.bindTransport();
+    // winstonCluster.bindTransport();
     let client = new Shard(process.env.id, process.env.count);
     winston.info("Worker started!");
 
