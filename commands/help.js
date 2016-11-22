@@ -3,6 +3,7 @@
  */
 var Command = require('../Objects/command');
 var MessageCollector = require('discord.js').MessageCollector;
+var PermManager = require('../modules/permissionManager');
 class Help extends Command {
     constructor(t) {
         super();
@@ -14,14 +15,16 @@ class Help extends Command {
         this.categories = [];
         this.categories_name = [];
         this.msg = null;
+        this.p = new PermManager();
     }
 
     run(msg) {
+        let msgSplit = msg.content.split(' ').splice(1);
         if (this.categories.length < 1) {
             this.buildHelp(msg);
         }
         this.msg = msg;
-        msg.channel.sendMessage("", {
+        msg.author.sendMessage("", {
             embed: {
                 author: {name: "Command categories"},
                 footer: {text: "Type !w.help number to get the commands of a category"},
@@ -31,6 +34,9 @@ class Help extends Command {
         }).then(msg => {
             this.startCollector(msg);
         });
+        if (msg.guild) {
+            msg.reply(this.t('help.helpReply', {lngs: msg.lang, pre: msg.prefix}));
+        }
     }
 
     buildHelp(msg) {
@@ -53,8 +59,10 @@ class Help extends Command {
     }
 
     startCollector(origMsg) {
-        let collector = new MessageCollector(origMsg.channel, () => {
-            return true
+        let collector = new MessageCollector(origMsg.channel, (msg, coll) => {
+            if (msg.author.id === this.msg.author.id) {
+                return true
+            }
         }, {time: 1000 * 30});
         collector.on('message', (msg) => {
             let number = 0;

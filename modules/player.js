@@ -29,9 +29,9 @@ class Player extends EventEmitter {
         this.ytdl = ytdl;
         this.connection = connection;
         this.song = null;
-        setInterval(() => {
-            console.log(this.queue);
-        }, 30 * 1000);
+        // setInterval(() => {
+        //     console.log(this.queue);
+        // }, 30 * 1000);
     }
 
     /**

@@ -12,15 +12,15 @@ var responses = 0;
 var users = 0;
 var guilds = 0;
 if (cluster.isMaster) {
-    var tracker = new StatTrack(20);
+    var tracker = new StatTrack(5 * 60 * 60);
     var resp = [];
     tracker.on('fetch', () => {
-        console.log('fetch');
         broadcast({type: 'stats'});
+        tracker.setStats(guilds, users);
     });
     var workers = [];
     process.on('SIGINT', () => {
-        console.log('Received SIGINT');
+        winston.error('Received SIGINT');
         process.exit(0);
     });
     winston.remove(winston.transports.Console);
@@ -42,7 +42,7 @@ if (cluster.isMaster) {
     // winstonCluster.bindListeners();
     winston.info('Spawned Shards!');
     cluster.on('exit', (worker, code, signal) => {
-        console.log(`worker ${worker.process.pid} died`);
+        winston.error(`worker ${worker.process.pid} died`);
         restartWorker(worker.process.pid);
     });
     function restartWorker(pid) {
@@ -58,12 +58,10 @@ if (cluster.isMaster) {
     }
 
     function spawnWorker(env) {
-        // console.log('Spawned new Worker!');
         let worker = cluster.fork(env);
         let workerobject = {worker: worker, shard_id: env.id, pid: worker.process.pid};
         workers.push(workerobject);
         // worker.on('online', () => {
-        //     console.log('Worker is online!');
         // });
         // winstonCluster.bindListeners();
     }
@@ -80,7 +78,8 @@ if (cluster.isMaster) {
                     users += resp[i].d.users;
                     guilds += resp[i].d.guilds;
                 }
-                console.log(`Final Users: ${users} Guilds:${guilds}`);
+                resp = [];
+                winston.info(`Final Users: ${users} Guilds:${guilds}`);
             }
         }
     }
@@ -98,7 +97,7 @@ if (cluster.isMaster) {
     });
     // winstonCluster.bindTransport();
     let client = new Shard(process.env.id, process.env.count);
-    winston.info("Worker started!");
+    winston.info(`Worker started ${process.env.id}/${process.env.count}`);
 
 }
 process.on('unhandledRejection', (reason, promise) => {

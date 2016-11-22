@@ -15,6 +15,7 @@ class AddPermission extends Command {
         this.t = t;
         this.accessLevel = 0;
         this.p = new PermManager();
+        this.hidden = true;
     }
 
     run(msg) {

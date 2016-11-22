@@ -19,6 +19,7 @@ class ImportPlaylist extends Command {
         this.v = v;
         this.accessLevel = 0;
         this.importer = null;
+        this.hidden = true;
     }
 
     run(msg) {
