@@ -30,7 +30,7 @@ class AddToQueue extends Command {
             msg.channel.sendMessage(this.t('generic.error', {lngs: msg.lang}));
         });
         this.v.once('info', (info, url) => {
-            this.clearListeners();
+            // this.clearListeners();
             msg.channel.sendMessage(this.t(info, {url: url, lngs: msg.lang}));
         });
         this.v.once('added', (Song) => {

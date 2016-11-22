@@ -11,7 +11,7 @@ class AddPermission extends Command {
         super();
         this.cmd = "ap";
         this.cat = "permission";
-        this.needGuild = false;
+        this.needGuild = true;
         this.t = t;
         this.accessLevel = 0;
         this.p = new PermManager();
@@ -23,7 +23,7 @@ class AddPermission extends Command {
         this.parseArgs(args, (err, args) => {
             if (err) return msg.channel.sendMessage(err);
             console.log(args);
-            msg.channel.sendCode('JSON', JSON.stringify(args));
+            // msg.channel.sendCode('JSON', JSON.stringify(args));
             if (args.r) {
                 return this.role(msg, args);
             }

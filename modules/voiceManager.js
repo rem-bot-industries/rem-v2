@@ -6,6 +6,8 @@ var ytdl = require('ytdl-core');
 var winston = require('winston');
 var EventEmitter = require('eventemitter3');
 var SongImporter = require('./songImporter');
+var Selector = require('./selector');
+var async = require("async");
 class VoiceManager extends EventEmitter {
     constructor() {
         super();
@@ -20,7 +22,8 @@ class VoiceManager extends EventEmitter {
                     msg.member.voiceChannel.join().then((connection) => {
                         cb(null, connection);
                     }).catch(err => {
-                        cb('joinVoice.error');
+                        console.log(err);
+                        return cb('joinVoice.error');
                     });
                 } else {
                     cb('joinVoice.no-voice');
@@ -47,15 +50,18 @@ class VoiceManager extends EventEmitter {
 
     play(msg) {
         this.join(msg, (err, conn) => {
-            if (err) return this.emit('error', err);
-            let importer = new SongImporter(msg);
+            if (err) {
+                console.log(err);
+                return this.emit('error', err);
+            }
+            let importer = new SongImporter(msg, true);
             importer.once('error', (err) => {
                 this.emit('error', err);
                 importer.removeAllListeners();
             });
             importer.once('done', (Song) => {
                 importer.removeAllListeners();
-                msg.channel.sendMessage(`Now Playing ${Song.title}`);
+                this.emit('done', Song);
                 if (typeof (this.players[msg.guild.id]) !== 'undefined') {
                     this.players[msg.guild.id].addToQueue(Song, true);
                 } else {
@@ -87,24 +93,9 @@ class VoiceManager extends EventEmitter {
     addToQueue(msg, immediate) {
         this.join(msg, (err, conn) => {
             if (err) return this.emit('error', err);
-            let importer = new SongImporter(msg);
+            let importer = new SongImporter(msg, true);
             importer.once('long', (url) => {
                 this.emit('info', 'qa.started-download', url);
-            });
-            importer.on('pre', (Song, count) => {
-                if (count === 0) {
-                    msg.channel.sendMessage(`Queued ${Song.title}`);
-                }
-                if (typeof (this.players[msg.guild.id]) !== 'undefined') {
-                    this.players[msg.guild.id].addToQueue(Song, immediate);
-                } else {
-                    this.players[msg.guild.id] = new Player(msg, conn, ytdl);
-                    this.players[msg.guild.id].addToQueue(Song, immediate);
-                }
-            });
-            importer.once('playlist', (songs) => {
-                importer.removeAllListeners();
-                msg.channel.sendCode('json', JSON.stringify(songs));
             });
             importer.once('error', (err) => {
                 importer.removeAllListeners();
@@ -159,6 +150,29 @@ class VoiceManager extends EventEmitter {
             console.log(e);
             this.emit('error');
         }
+    }
+
+    addToQueueBatch(msg, songs) {
+        this.join(msg, (err, conn) => {
+            if (err) return this.emit('error', err);
+            console.log('BATCH ' + songs.length);
+            async.eachSeries(songs, (song, cb) => {
+                if (typeof (this.players[msg.guild.id]) !== 'undefined') {
+                    this.players[msg.guild.id].addToQueue(song, false);
+                    setTimeout(() => {
+                        cb();
+                    }, 500);
+                } else {
+                    this.players[msg.guild.id] = new Player(msg, conn, ytdl);
+                    this.players[msg.guild.id].addToQueue(song, false);
+                    setTimeout(() => {
+                        cb();
+                    }, 500);
+                }
+            }, (err) => {
+                if (err) return winston.error(err);
+            });
+        });
     }
 }
 module.exports = VoiceManager;

@@ -2,7 +2,7 @@
  * Created by julia on 07.11.2016.
  */
 var Command = require('../Objects/command');
-class Ping extends Command {
+class Randon extends Command {
     constructor(t) {
         super();
         this.cmd = "randon";
@@ -28,4 +28,4 @@ class Ping extends Command {
         msg.channel.sendMessage("", reply);
     }
 }
-module.exports = Ping;
+module.exports = Randon;

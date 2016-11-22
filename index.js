@@ -1,29 +1,44 @@
-let Discord = require('discord.js');
-let config = require('./config/main.json');
-let StatTrack = require('./modules/statTrack');
+const cluster = require('cluster');
 const winston = require('winston');
-let ShardingManager = new Discord.ShardingManager('./shard.js', {}, config.shards, true);
-ShardingManager.spawn(config.shards).then(shards => {
+const winstonCluster = require('winston-cluster');
+require('longjohn');
+require('winston-daily-rotate-file');
+var util = require("util");
+const numCPUs = require('os').cpus().length;
+if (cluster.isMaster) {
+    process.on('SIGINT', () => {
+        console.log('Received SIGINT');
+
+    });
+    winston.remove(winston.transports.Console);
+    winston.add(winston.transports.Console, {
+        'timestamp': true,
+        'colorize': true
+    });
+    winston.add(winston.transports.DailyRotateFile, {
+        'timestamp': true,
+        'datePattern': '.yyyy-MM-dd',
+        'filename': 'logs/rem.log'
+    });
+    for (var i = 0; i < 2; i++) {
+        cluster.fork()
+    }
+    winstonCluster.bindListeners();
     winston.info('Spawned Shards!');
-    let stats = new StatTrack(60 * 60 * 24);
-    stats.on('fetch', () => {
-        winston.info('fetch!');
-        ShardingManager.fetchClientValues('guilds.size').then(results => {
-            ShardingManager.broadcastEval('var x=0;this.guilds.map(g => {x += g.memberCount});x;').then(res => {
-                let users = res.reduce((a, b) => a + b);
-                let guilds = results.reduce((prev, val) => prev + val, 0);
-                stats.setStats(guilds, users);
-            }).catch(err => {
-                winston.error(err);
-            });
-        }).catch(err => {
-            winston.error(err);
-        });
+    cluster.on('exit', (worker, code, signal) => {
+        console.log(`worker ${worker.process.pid} died`);
     });
-    stats.on('error', (err) => {
-        winston.error(err);
+} else {
+    winston.remove(winston.transports.Console);
+    winston.add(winston.transports.Console, {
+        'timestamp': true,
+        'colorize': true
     });
-    stats.on('info', (info) => {
-        winston.info(info)
-    });
-}).catch(winston.error);
+    winstonCluster.bindTransport();
+    winston.info("Worker started!");
+}
+process.on('unhandledRejection', (reason, promise) => {
+    if (typeof reason === 'undefined') return;
+    winston.error(`Unhandled rejection: ${reason} - ${util.inspect(promise)}`)
+});
+winston.cli();

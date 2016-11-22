@@ -7,3 +7,4 @@ config/main.json
 docs
 temp
 audio
+logs

@@ -287,6 +287,18 @@ class PermissionManager {
         }
         return false;
     }
+
+    getPermDB(msg, cb) {
+        permModel.findOne({id: msg.guild.id}, (err, Perms) => {
+            if (err) return cb(err);
+            if (Perms && Perms.permissions.length > 0) {
+                cb(null, Perms.permissions);
+            } else {
+                cb('no-perms');
+            }
+        })
+    }
+
 }
 //TODO make that shit use the db
 /*

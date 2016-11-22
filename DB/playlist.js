@@ -8,6 +8,7 @@ var playlistSchema = mongoose.Schema({
     guildPlaylist: Boolean,
     createdAt:Date,
     id:String,
+    ytid: String,
     public:Boolean,
     songs:[]
 });

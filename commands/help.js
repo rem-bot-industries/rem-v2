@@ -3,7 +3,7 @@
  */
 var Command = require('../Objects/command');
 var MessageCollector = require('discord.js').MessageCollector;
-class Ping extends Command {
+class Help extends Command {
     constructor(t) {
         super();
         this.cmd = "help";
@@ -39,7 +39,7 @@ class Ping extends Command {
         for (var command in commands) {
             if (commands.hasOwnProperty(command)) {
                 var cmd = commands[command];
-                if (typeof (this.cmd.hidden) !== 'undefined') {
+                if (typeof (cmd.hidden) !== 'undefined') {
 
                 } else if (this.checkCat(cmd.cat, this.categories)) {
                     this.categories = this.pushCat(cmd, this.categories);
@@ -134,4 +134,4 @@ class Ping extends Command {
         return list;
     }
 }
-module.exports = Ping;
+module.exports = Help;
