@@ -6,12 +6,10 @@ var EventEmitter = require('eventemitter3');
 var CmdManager = require('./modules/cmdManager');
 var LanguageManager = require('./modules/langManager');
 var VoiceManager = require('./modules/voiceManager');
-var RemoteManager = require('./modules/remoteManager');
 var guildModel = require('./DB/guild');
 var CMD;
 var LANG;
 var VOICE;
-var BRIDGE;
 var config = require('./config/main.json');
 var winston = require('winston');
 var raven = require('raven');
@@ -23,9 +21,6 @@ mongoose.connect(url, (err) => {
     if (err) return winston.error('Failed to connect to the database!');
 });
 var blocked = require('blocked');
-blocked(function (ms) {
-    console.log('Shard:' + process.env.SHARD_ID + ' BLOCKED FOR %sms', ms | 0);
-});
 var client = new raven.Client(config.sentry_token);
 if (!config.beta) {
     client.patchGlobal(() => {
@@ -44,37 +39,46 @@ class Shard extends EventEmitter {
     }
 
     init() {
+        blocked((ms) => {
+            console.log('Shard:' + this.id + ' BLOCKED FOR %sms', ms | 0);
+        });
         this.initClient();
     }
 
     initClient() {
+        winston.info(typeof(this.count));
         var options = {
             messageCacheMaxSize: 1000,
             messageCacheLifetime: 600,
             messageSweepInterval: 1200,
             disableEveryone: true,
             fetchAllMembers: true,
+            shardId: parseInt(this.id),
+            shardCount: parseInt(this.count),
             disabledEvents: ['typingStart', 'typingStop', 'guildMemberSpeaking', 'messageUpdate']
         };
         winston.info(options);
         var bot = new Discord.Client(options);
+        this.bot = bot;
         bot.on('ready', this.clientReady);
+        bot.on('message', this.message);
         bot.on('guildCreate', this.guildCreate);
         bot.on('voiceStateUpdate', this.voiceUpdate);
         bot.on('guildMemberAdd', this.guildMemberAdd);
         bot.on('guildMemberRemove', this.guildMemberRemove);
         // bot.on('debug', this.debug);
         bot.login(config.token).then(winston.info('Logged in successfully'));
+        process.on('message', this.clusterAction);
+        process.on('SIGINT', this.shutdown);
     }
 
     clientReady() {
         LANG = new LanguageManager();
         VOICE = new VoiceManager();
         CMD = new CmdManager(LANG, VOICE);
-        // BRIDGE = new RemoteManager('127.0.0.1', 8000, process.env.SHARD_ID);
         CMD.on('ready', (cmds) => {
             this.ready = true;
-            console.log('commands are ready!');
+            winston.info('commands are ready!');
             // console.log(cmds);
         });
     }
@@ -103,7 +107,7 @@ class Shard extends EventEmitter {
                     lng: "en"
                 });
                 guild.save((err) => {
-                    if (err) return winston.info(err);
+                    if (err) return winston.error(err);
                 });
             }
         });
@@ -117,7 +121,7 @@ class Shard extends EventEmitter {
 
     }
 
-    voiceUpdate() {
+    voiceUpdate(oldMember, newMember) {
         if (oldMember.voiceChannel) {
             if (!newMember.voiceChannel) {
                 console.log('user left voice');
@@ -131,6 +135,16 @@ class Shard extends EventEmitter {
 
     debug(info) {
 
+    }
+
+    clusterAction(m) {
+
+    }
+
+    shutdown() {
+        mongoose.connection.close();
+        this.bot.destroy();
+        process.exit(0);
     }
 }
 module.exports = Shard;
