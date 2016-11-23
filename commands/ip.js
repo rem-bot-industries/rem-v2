@@ -68,7 +68,7 @@ class ImportPlaylist extends Command {
     loadSongsBatch(msg, songs, cb) {
         let sngs = [];
         let importer = new SongImporter(msg, false);
-        async.each(songs, (info, cb) => {
+        async.eachSeries(songs, (info, cb) => {
             importer.importSongDB(info, (err, Song) => {
                 if (err) return cb(err);
                 if (Song) {
