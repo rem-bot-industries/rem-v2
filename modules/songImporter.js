@@ -120,7 +120,7 @@ class SongImporter extends EventEmitter {
     }
 
     done(info) {
-        this.saveSong(info, (err, Song) => {
+        this.importSongDB(info, (err, Song) => {
             if (err) return this.emit('error', 'generic.error');
             this.emit('done', Song);
         });

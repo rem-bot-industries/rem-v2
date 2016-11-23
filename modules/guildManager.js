@@ -22,7 +22,7 @@ class GuildManager extends EventEmitter {
         });
         guild.save((err) => {
             if (err) return cb(err);
-            cb();
+            cb(null, guild);
         });
     }
 
@@ -39,6 +39,10 @@ class GuildManager extends EventEmitter {
 
     changeLanguage(id, lng, cb) {
         guildModel.update({id: id}, {$set: {lng: lng}}, cb);
+    }
+
+    changePrefix(id, prefix, cb) {
+        guildModel.update({id: id}, {$set: {prefix: prefix}}, cb);
     }
 
 }

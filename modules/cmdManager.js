@@ -92,6 +92,9 @@ class CmdManager extends EventEmitter {
         if (msg.guild) {
             this.g.loadGuild(msg.guild.id, (err, Guild) => {
                 if (err) return cb(err);
+                if (typeof (Guild) === 'undefined') {
+                    Guild = {};
+                }
                 if (typeof (Guild.lng) === 'undefined') {
                     Guild.lng = 'en';
                 }

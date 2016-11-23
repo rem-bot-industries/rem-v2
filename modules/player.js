@@ -144,12 +144,14 @@ class Player extends EventEmitter {
                     }
                 }
             } else {
+                let song = this.queue.songs[0];
                 this.queue.songs.shift();
                 if (this.queue.songs[0]) {
                     this.play(this.queue.songs[0]);
                 } else {
                     this.endSong();
                 }
+                return song;
             }
         }
     }
