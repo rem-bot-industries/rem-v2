@@ -19,11 +19,19 @@ class Help extends Command {
     }
 
     run(msg) {
+        this.categories = [];
+        this.categories_name = [];
         let msgSplit = msg.content.split(' ').splice(1);
         if (this.categories.length < 1) {
             this.buildHelp(msg);
         }
         this.msg = msg;
+        if (msg.guild) {
+            msg.reply(this.t('help.helpReply', {lngs: msg.lang, pre: msg.prefix}));
+        }
+        if (msgSplit.length > 0) {
+            return this.exactHelp(msg, msgSplit);
+        }
         msg.author.sendMessage("", {
             embed: {
                 author: {name: "Command categories"},
@@ -34,9 +42,6 @@ class Help extends Command {
         }).then(msg => {
             this.startCollector(msg);
         });
-        if (msg.guild) {
-            msg.reply(this.t('help.helpReply', {lngs: msg.lang, pre: msg.prefix}));
-        }
     }
 
     buildHelp(msg) {
@@ -55,6 +60,29 @@ class Help extends Command {
                     i += 1;
                 }
             }
+        }
+    }
+
+    exactHelp(msg, msgSplit) {
+        let number = 0;
+        try {
+            number = parseInt(msgSplit[0]);
+        } catch (e) {
+
+        }
+        if (isNaN(number) || number < 1) {
+            let cat = this.checkCat(msgSplit[0], this.categories);
+            if (cat) {
+                this.sendReply(msg, cat);
+            } else {
+                msg.author.sendMessage(this.t('generic.cat-nope', {lngs: msg.lang}))
+            }
+        }
+        if (number < 1) {
+            return msg.channel.sendMessage(this.t('generic.negative', {number: number}));
+        }
+        if (!isNaN(number) && number <= this.categories.length) {
+            this.sendReply(msg, this.categories[number - 1])
         }
     }
 
@@ -85,29 +113,32 @@ class Help extends Command {
             }
             if (!isNaN(number) && number <= this.categories.length) {
                 collector.stop();
-                let data = this.categories[number - 1].commands;
-                let fields = [];
-                for (let i = 0; i < data.length; ++i) {
-                    fields.push({
-                        name: `${this.msg.prefix}${data[i].cmd}`,
-                        value: `${this.t(`help.${data[i].cmd}`, {
-                            lngs: this.msg.lang,
-                            languages: this.buildLang(this.msg.lngs)
-                        })}`,
-                        inline: true
-                    });
-                }
-                let reply = {
-                    embed: {
-                        author: {name: `${this.t(`help.${this.categories[number - 1].name}`, {lngs: this.msg.lang})}`},
-                        fields: fields,
-                        color: 0x00ADFF
-                    }
-                };
-                msg.channel.sendMessage("", reply).then(msg => {
-
-                });
+                this.sendReply(msg, this.categories[number - 1])
             }
+        });
+    }
+
+    sendReply(msg, data) {
+        let fields = [];
+        for (let i = 0; i < data.commands.length; ++i) {
+            fields.push({
+                name: `${this.msg.prefix}${data.commands[i].cmd}`,
+                value: `${this.t(`help.${data.commands[i].cmd}`, {
+                    lngs: this.msg.lang,
+                    languages: this.buildLang(this.msg.lngs)
+                })}`,
+                inline: true
+            });
+        }
+        let reply = {
+            embed: {
+                author: {name: `${this.t(`help.${data.name}`, {lngs: this.msg.lang})}`},
+                fields: fields,
+                color: 0x00ADFF
+            }
+        };
+        msg.author.sendMessage("", reply).then(msg => {
+
         });
     }
 
@@ -126,7 +157,7 @@ class Help extends Command {
         let i = list.length;
         while (i--) {
             if (cat === list[i].name) {
-                return true;
+                return list[i];
             }
         }
         return false;
