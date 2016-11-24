@@ -14,16 +14,16 @@ class Volume extends Command {
     }
 
     run(msg) {
-        var messageSplit = msg.content.split(' ');
+        let volume;
+        let messageSplit = msg.content.split(' ');
         this.v.once('error', (err) => {
             console.log(err);
             msg.channel.sendMessage(this.t('generic.error', {lngs: msg.lang}));
         });
         this.v.once('success', () => {
-            msg.channel.sendMessage(':ok_hand: ');
+            msg.channel.sendMessage(this.t('voice.success-volume', {lngs: msg.lang, volume: volume}));
         });
         if (typeof (messageSplit[1]) !== 'undefined') {
-            let volume;
             try {
                 volume = parseInt(messageSplit[1]);
             } catch (e) {

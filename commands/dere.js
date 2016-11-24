@@ -1,7 +1,7 @@
 /**
  * Created by julia on 07.11.2016.
  */
-var Command = require('../Objects/command');
+let Command = require('../Objects/command');
 class Dere extends Command {
     constructor(t) {
         super();
@@ -31,9 +31,11 @@ class Dere extends Command {
             let dere = this.matchDere(msgSplit);
             if (dere) {
                 msg.channel.sendCode('', this.t(`dere.${dere}`, {lngs: msg.lang}));
+            } else {
+                msg.channel.sendMessage(this.t('dere.no-dere', {lngs: msg.lang}));
             }
         } else {
-            var random = Math.floor(Math.random() * (this.deres.length - 1));
+            let random = Math.floor(Math.random() * (this.deres.length - 1));
             try {
                 msg.channel.sendCode('', this.t(`dere.${this.deres[random - 1]}`, {lngs: msg.lang}));
             } catch (e) {
@@ -43,7 +45,7 @@ class Dere extends Command {
     }
 
     matchDere(msgSplit) {
-        for (var i = 0; i < this.deres.length; i++) {
+        for (let i = 0; i < this.deres.length; i++) {
             if (msgSplit[0].toLowerCase() === this.deres[i]) {
                 return this.deres[i];
             }

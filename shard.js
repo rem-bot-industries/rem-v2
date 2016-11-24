@@ -1,27 +1,27 @@
 /**
  * Created by julia on 01.11.2016.
  */
-var Discord = require("discord.js");
-var EventEmitter = require('eventemitter3');
-var CmdManager = require('./modules/cmdManager');
-var LanguageManager = require('./modules/langManager');
-var VoiceManager = require('./modules/voiceManager');
-var guildModel = require('./DB/guild');
-var CMD;
-var LANG;
-var VOICE;
-var config = require('./config/main.json');
-var winston = require('winston');
-var raven = require('raven');
-var mongoose = require('mongoose');
+const Discord = require("discord.js");
+const EventEmitter = require('eventemitter3');
+const CmdManager = require('./modules/cmdManager');
+const LanguageManager = require('./modules/langManager');
+const VoiceManager = require('./modules/voiceManager');
+const guildModel = require('./DB/guild');
+let CMD;
+let LANG;
+let VOICE;
+const config = require('./config/main.json');
+let winston = require('winston');
+let raven = require('raven');
+let mongoose = require('mongoose');
 let url = config.beta ? 'mongodb://localhost/discordbot-beta' : 'mongodb://localhost/discordbot';
-var Promise = require('bluebird');
+let Promise = require('bluebird');
 mongoose.Promise = Promise;
 mongoose.connect(url, (err) => {
     if (err) return winston.error('Failed to connect to the database!');
 });
-var blocked = require('blocked');
-var client = new raven.Client(config.sentry_token);
+let blocked = require('blocked');
+let client = new raven.Client(config.sentry_token);
 if (!config.beta) {
     client.patchGlobal(() => {
         winston.error('Oh no I died!');
@@ -47,7 +47,7 @@ class Shard extends EventEmitter {
 
     initClient() {
         winston.info(typeof(this.count));
-        var options = {
+        let options = {
             messageCacheMaxSize: 1000,
             messageCacheLifetime: 600,
             messageSweepInterval: 1200,
@@ -58,7 +58,7 @@ class Shard extends EventEmitter {
             disabledEvents: ['typingStart', 'typingStop', 'guildMemberSpeaking', 'messageUpdate']
         };
         winston.info(options);
-        var bot = new Discord.Client(options);
+        let bot = new Discord.Client(options);
         this.bot = bot;
         bot.on('ready', () => {
             this.clientReady()

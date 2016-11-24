@@ -29,7 +29,7 @@ class Pause extends Command {
             msg.channel.sendMessage(this.t(err, {lngs: msg.lang}));
         });
         this.v.once('success', () => {
-            msg.channel.sendMessage(':ok_hand: ');
+            msg.channel.sendMessage(':pause_button: ');
         });
         this.v.pause(msg);
     }

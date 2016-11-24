@@ -1,0 +1,37 @@
+/**
+ * Created by julia on 24.11.2016.
+ */
+let Command = require('../Objects/command');
+let msgModel = require('../DB/message');
+class WhoFuckedWithMe extends Command {
+    constructor(t) {
+        super();
+        this.cmd = "wfwm";
+        this.cat = "admin";
+        this.needGuild = true;
+        this.t = t;
+        this.accessLevel = 0;
+        this.hidden = true;
+    }
+
+    run(msg) {
+        let content = msg.content.substr(msg.prefix.length + this.cmd.length).trim();
+        msgModel.findOne({id: content}, (err, MSG) => {
+            if (err) return msg.channel.sendMessage(MSG);
+            if (MSG) {
+                let reply = {
+                    embed: {
+                        author: {
+                            name: MSG.name
+                        },
+                        fields: [{value: MSG.content, name: 'wrote:'}],
+                        footer: {text: `${MSG.time} - ${MSG.name}`},
+                        color: 0x00ADFF
+                    }
+                };
+                msg.channel.sendMessage("", reply);
+            }
+        });
+    }
+}
+module.exports = WhoFuckedWithMe;

@@ -360,6 +360,7 @@
     "tail": "The coin flipped to tail {{- url}}"
   },
   "dere": {
+    "no-dere": "The dere type you searched for does not exist.",
     "dandere": "The Dandere (だんデレ) type refers to a character who is often silent and to themselves.\n It may be due to shyness or just because they’re the quiet type.\n However,when alone with the person they are attracted to, they usually come out of their shell and become more loving.\n This word is an abbreviation of Danmari (だんまり) which means silent and Deredere (デレデレ) which means lovey dovey.",
     "deredere": "The Deredere (デレデレ) type refers to a character who is completely kind, happy, and energetic.\n No matter what may happen, they quickly revert to their cheerful self.\n This may be the only character type that doesn’t have any abbreviation with the base Deredere (デレデレ) word, although the definition isn’t simply lovey dovey like the other types.",
     "himedere": "The Himedere (ひめデレ) type refers to a character who wishes to be treated like a princess by the person she loves, even if they aren’t royalty in actuality.\nThis word is an abbreviation of Hime (ひめ) which means princess and Deredere (デレデレ) which means lovey dovey.",

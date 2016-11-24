@@ -2,23 +2,23 @@ const cluster = require('cluster');
 const winston = require('winston');
 const winstonCluster = require('winston-cluster');
 const config = require('./config/main.json');
-var StatTrack = require('./modules/statTrack');
+let StatTrack = require('./modules/statTrack');
 require('longjohn');
 require('winston-daily-rotate-file');
-var util = require("util");
+const util = require("util");
 const numCPUs = require('os').cpus().length;
-var Shard = require('./shard');
-var responses = 0;
-var users = 0;
-var guilds = 0;
+let Shard = require('./shard');
+let responses = 0;
+let users = 0;
+let guilds = 0;
 if (cluster.isMaster) {
-    var tracker = new StatTrack(5 * 60 * 60);
-    var resp = [];
+    let tracker = new StatTrack(5 * 60 * 60);
+    let resp = [];
     tracker.on('fetch', () => {
         broadcast({type: 'stats'});
         tracker.setStats(guilds, users);
     });
-    var workers = [];
+    let workers = [];
     process.on('SIGINT', () => {
         winston.error('Received SIGINT');
         process.exit(0);
@@ -33,7 +33,7 @@ if (cluster.isMaster) {
         'datePattern': '.yyyy-MM-dd',
         'filename': 'logs/rem.log'
     });
-    for (var i = 0; i < config.shards; i++) {
+    for (let i = 0; i < config.shards; i++) {
         let worker = cluster.fork({id: i, count: config.shards});
         let workerobject = {worker: worker, shard_id: i, pid: worker.process.pid};
         workers.push(workerobject)
@@ -46,7 +46,7 @@ if (cluster.isMaster) {
         restartWorker(worker.process.pid);
     });
     function restartWorker(pid) {
-        for (var i = 0; i < workers.length; i++) {
+        for (let i = 0; i < workers.length; i++) {
             if (pid === workers[i].pid) {
                 let index = workers.indexOf(workers[i]);
                 if (index > -1) {
@@ -74,7 +74,7 @@ if (cluster.isMaster) {
                 users = 0;
                 guilds = 0;
                 responses = 0;
-                for (var i = 0; i < resp.length; i++) {
+                for (let i = 0; i < resp.length; i++) {
                     users += resp[i].d.users;
                     guilds += resp[i].d.guilds;
                 }
@@ -85,7 +85,7 @@ if (cluster.isMaster) {
     }
 
     function broadcast(msg) {
-        for (var i = 0; i < workers.length; i++) {
+        for (let i = 0; i < workers.length; i++) {
             workers[i].worker.send(msg);
         }
     }

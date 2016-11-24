@@ -31,7 +31,7 @@ class Resume extends Command {
         });
         this.v.once('success', () => {
             this.v.removeAllListeners();
-            msg.channel.sendMessage(':ok_hand: ');
+            msg.channel.sendMessage(':arrow_forward: ');
         });
         this.v.resume(msg);
     }
