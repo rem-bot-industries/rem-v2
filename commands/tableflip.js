@@ -14,7 +14,7 @@ class TableFlip extends Command {
 
     run(msg) {
         // this.emit('run');
-        msg.channel.sendMessage("(╯°□°）╯︵ ┻━┻");
+        msg.channel.createMessage("(╯°□°）╯︵ ┻━┻");
     }
 }
 module.exports = TableFlip;

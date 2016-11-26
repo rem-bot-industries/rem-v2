@@ -1,7 +1,7 @@
 /**
  * Created by haukehannig on 19.11.2016.
  */
-var MessageCollector = require('discord.js').MessageCollector;
+// var MessageCollector = require('discord.js').MessageCollector;
 var AsciiTable = require('ascii-table');
 class Selector {
     constructor(msg, collection, cb) {

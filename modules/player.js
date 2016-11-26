@@ -1,13 +1,13 @@
 /**
  * Created by julia on 07.11.2016.
  */
-var EventEmitter = require('eventemitter3');
-var shortid = require('shortid');
-var YoutubeReg = /(?:http?s?:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=)?([a-zA-Z0-9_-]+)(&.*|)/;
-var winston = require('winston');
-var request = require("request");
-var path = require("path");
-var fs = require("fs");
+let EventEmitter = require('eventemitter3');
+let shortid = require('shortid');
+let YoutubeReg = /(?:http?s?:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=)?([a-zA-Z0-9_-]+)(&.*|)/;
+let winston = require('winston');
+let request = require("request");
+let path = require("path");
+let fs = require("fs");
 /**
  * The audio player
  * @extends EventEmitter
@@ -25,7 +25,6 @@ class Player extends EventEmitter {
         this.setMaxListeners(1);
         this.msg = msg;
         this.queue = {repeat: false, repeatId: '', voteskips: [], songs: [], time: ""};
-        this.dispatcher = null;
         this.ytdl = ytdl;
         this.connection = connection;
         this.song = null;
@@ -42,7 +41,7 @@ class Player extends EventEmitter {
         if (this.connection) {
             let stream;
             if (YoutubeReg.test(Song.url)) {
-                var options = {
+                let options = {
                     filter: (format) => format.container === 'mp4' && format.audioEncoding || format.container === 'webm' && format.audioEncoding,
                     quality: ['250', '249', '140', '141', '139', 'lowest'],
                     audioonly: true
@@ -59,27 +58,28 @@ class Player extends EventEmitter {
                     stream = request(Song.url);
                 }
             }
-            this.dispatcher = this.connection.playStream(stream, {volume: 0.25, passes: 3});
+            this.connection.play(stream, {inlineVolume: true});
+            this.connection.setVolume(0.2);
             // winston.info(path.resolve(Song.path));
             // updatePlays(Song.id).then(() => {
             //
             // }).catch(err => {
             //     winston.error(err);
             // });
-            // message.channel.sendMessage(t('play.playing', {
+            // message.channel.createMessage(t('play.playing', {
             //     lngs: message.lang,
             //     song: Song.title,
             //     interpolation: {escape: false}
             // }));
             this.announce(Song);
-            this.dispatcher.on("end", () => {
+            this.connection.on("end", () => {
                 winston.info("File ended!");
                 this.nextSong(Song);
             });
             // this.dispatcher.on("debug", information => {
             //     winston.info(`Debug: ${information}`);
             // });
-            this.dispatcher.on("error", (err) => {
+            this.connection.on("error", (err) => {
                 winston.info(`Error: ${err}`);
             });
         } else {
@@ -91,7 +91,7 @@ class Player extends EventEmitter {
      */
     pause() {
         try {
-            this.dispatcher.pause();
+            this.connection.pause();
             this.emit('pause');
         } catch (e) {
             this.emit('debug', e);
@@ -103,7 +103,7 @@ class Player extends EventEmitter {
      */
     resume() {
         try {
-            this.dispatcher.resume();
+            this.connection.resume();
             this.emit('resume');
         } catch (e) {
             this.emit('debug', e);
@@ -138,6 +138,7 @@ class Player extends EventEmitter {
                 if (Song.qid === this.queue.songs[0].qid) {
                     this.queue.songs.shift();
                     if (this.queue.songs[0]) {
+                        this.endSong();
                         this.play(this.queue.songs[0]);
                     } else {
                         this.endSong();
@@ -147,6 +148,7 @@ class Player extends EventEmitter {
                 let song = this.queue.songs[0];
                 this.queue.songs.shift();
                 if (this.queue.songs[0]) {
+                    this.endSong();
                     this.play(this.queue.songs[0]);
                 } else {
                     this.endSong();
@@ -158,7 +160,7 @@ class Player extends EventEmitter {
 
     endSong() {
         try {
-            this.dispatcher.end();
+            this.connection.stopPlaying();
         } catch (e) {
             this.emit('debug', e);
         }
@@ -169,7 +171,8 @@ class Player extends EventEmitter {
      * @returns {{repeat: boolean, repeatId: string, voteskips: Array, songs: Array, time: string}|*}
      */
     getQueue() {
-        this.queue.time = this.convertSeconds(Math.floor(this.dispatcher.time / 1000));
+        console.log(this.connection.playTime);
+        this.queue.time = this.convertSeconds(Math.floor(this.connection.playTime / 1000));
         return this.queue;
     }
 
@@ -179,7 +182,7 @@ class Player extends EventEmitter {
 
     setVolume(vol) {
         try {
-            this.dispatcher.setVolume(vol);
+            this.connection.setVolume(vol);
         } catch (e) {
             this.emit('error', e);
         }

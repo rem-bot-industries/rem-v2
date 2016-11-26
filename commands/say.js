@@ -14,7 +14,7 @@ class Say extends Command {
 
     run(msg) {
         let content = msg.content.substr(msg.prefix.length + this.cmd.length).trim();
-        msg.channel.sendMessage('\u200B' + content);
+        msg.channel.createMessage('\u200B' + content);
     }
 }
 module.exports = Say;

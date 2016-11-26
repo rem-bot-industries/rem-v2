@@ -34,7 +34,7 @@ class GetPermission extends Command {
 
     getPerms(msg, type) {
         this.p.getPermDB(msg, (err, Perms) => {
-            if (err) return msg.channel.sendMessage('No perms set yet.');
+            if (err) return msg.channel.createMessage('No perms set yet.');
             let table = new AsciiTable();
             table.setHeading('ID', 'ID', 'type', 'Category', 'Perm', 'Use');
             for (var i = 0; i < Perms.length; i++) {

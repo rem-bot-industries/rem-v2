@@ -1,13 +1,13 @@
 /**
  * Created by julia on 07.11.2016.
  */
-var Player = require('./player');
-var ytdl = require('ytdl-core');
-var winston = require('winston');
-var EventEmitter = require('eventemitter3');
-var SongImporter = require('./songImporter');
-var Selector = require('./selector');
-var async = require("async");
+let Player = require('./player');
+let ytdl = require('ytdl-core');
+let winston = require('winston');
+let EventEmitter = require('eventemitter3');
+let SongImporter = require('./songImporter');
+// let Selector = require('./selector');
+let async = require("async");
 class VoiceManager extends EventEmitter {
     constructor() {
         super();
@@ -17,9 +17,10 @@ class VoiceManager extends EventEmitter {
 
     join(msg, cb) {
         if (msg.guild) {
-            if (!msg.guild.voiceConnection) {
-                if (msg.member.voiceChannel) {
-                    msg.member.voiceChannel.join().then((connection) => {
+            let conn = rem.voiceConnections.get(msg.guild.id);
+            if (!conn) {
+                if (msg.member.voiceState.channelID) {
+                    rem.joinVoiceChannel(msg.member.voiceState.channelID).then((connection) => {
                         cb(null, connection);
                     }).catch(err => {
                         console.log(err);
@@ -29,16 +30,16 @@ class VoiceManager extends EventEmitter {
                     cb('joinVoice.no-voice');
                 }
             } else {
-                cb(null, msg.guild.voiceConnection);
+                cb(null, conn);
             }
         }
     }
 
     leave(msg, cb) {
         if (msg.guild) {
-            if (msg.guild.voiceConnection) {
-                let conn = msg.guild.voiceConnection;
-                conn.channel.leave();
+            let conn = rem.voiceConnections.get(msg.guild.id);
+            if (conn) {
+                conn.disconnect();
                 this.players[msg.guild.id] = null;
                 delete this.players[msg.guild.id];
                 cb();

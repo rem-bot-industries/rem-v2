@@ -1,13 +1,13 @@
 /**
  * Created by julia on 07.11.2016.
  */
-var EventEmitter = require('eventemitter3');
+let EventEmitter = require('eventemitter3');
 const winston = require('winston');
-var fs = require("fs");
-var path = require("path");
-var util = require("util");
-var GuildManager = require('./guildManager');
-var PermManager = require('./permissionManager');
+let fs = require("fs");
+let path = require("path");
+let util = require("util");
+let GuildManager = require('./guildManager');
+let PermManager = require('./permissionManager');
 class CmdManager extends EventEmitter {
     constructor(l, v) {
         super();
@@ -66,13 +66,13 @@ class CmdManager extends EventEmitter {
                         let node = `${command.cat}.${command.cmd}`;
                         // console.log(this.commands[command]);
                         this.p.checkPermission(msg, node, (err) => {
-                            if (err) return msg.channel.sendMessage(`No permission to use \`${node}\``);
+                            if (err) return msg.channel.createMessage(`No permission to use \`${node}\``);
                             console.log(cmd);
                             if (command.needGuild) {
                                 if (msg.guild) {
                                     command.run(msg);
                                 } else {
-                                    return msg.channel.sendMessage(this.t('generic.no-pm', {lngs: msg.lang}))
+                                    return msg.channel.createMessage(this.t('generic.no-pm', {lngs: msg.lang}))
                                 }
                             } else {
                                 command.run(msg);

@@ -27,11 +27,11 @@ class Resume extends Command {
     run(msg) {
         this.v.once('error', (err) => {
             this.v.removeAllListeners();
-            msg.channel.sendMessage(err);
+            msg.channel.createMessage(err);
         });
         this.v.once('success', () => {
             this.v.removeAllListeners();
-            msg.channel.sendMessage(':arrow_forward: ');
+            msg.channel.createMessage(':arrow_forward: ');
         });
         this.v.resume(msg);
     }

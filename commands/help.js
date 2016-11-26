@@ -1,9 +1,10 @@
 /**
  * Created by julia on 07.11.2016.
  */
-var Command = require('../Objects/command');
-var MessageCollector = require('discord.js').MessageCollector;
-var PermManager = require('../modules/permissionManager');
+let Command = require('../Objects/command');
+// let MessageCollector = require('discord.js').MessageCollector;
+let PermManager = require('../modules/permissionManager');
+let winston = require('winston');
 class Help extends Command {
     constructor(t) {
         super();
@@ -27,29 +28,34 @@ class Help extends Command {
         }
         this.msg = msg;
         if (msg.guild) {
-            msg.reply(this.t('help.helpReply', {lngs: msg.lang, pre: msg.prefix}));
+            msg.channel.createMessage(`${msg.author.mention}, ${this.t('help.helpReply', {
+                lngs: msg.lang,
+                pre: msg.prefix
+            })}`);
         }
         if (msgSplit.length > 0) {
             return this.exactHelp(msg, msgSplit);
         }
-        msg.author.sendMessage("", {
-            embed: {
-                author: {name: "Command categories"},
-                footer: {text: "Type !w.help number to get the commands of a category"},
-                fields: this.categories_name,
-                color: 0x00ADFF
-            }
-        }).then(msg => {
-            this.startCollector(msg);
-        });
+        msg.author.getDMChannel().then(channel => {
+            channel.createMessage({
+                embed: {
+                    author: {name: "Command categories"},
+                    footer: {text: "Type !w.help number to get the commands of a category"},
+                    fields: this.categories_name,
+                    color: 0x00ADFF
+                }
+            }).then(msg => {
+
+            });
+        }).catch(e => winston.error);
     }
 
     buildHelp(msg) {
         let commands = msg.cmds;
         let i = 1;
-        for (var command in commands) {
+        for (let command in commands) {
             if (commands.hasOwnProperty(command)) {
-                var cmd = commands[command];
+                let cmd = commands[command];
                 if (typeof (cmd.hidden) !== 'undefined') {
 
                 } else if (this.checkCat(cmd.cat, this.categories)) {
@@ -75,11 +81,15 @@ class Help extends Command {
             if (cat) {
                 this.sendReply(msg, cat);
             } else {
-                msg.author.sendMessage(this.t('generic.cat-nope', {lngs: msg.lang}))
+                msg.author.getDMChannel().then(channel => {
+                    channel.createMessage(this.t('generic.cat-nope', {lngs: msg.lang}));
+                }).catch(e => winston.error);
             }
         }
         if (number < 1) {
-            return msg.channel.sendMessage(this.t('generic.negative', {number: number}));
+            msg.author.getDMChannel().then(channel => {
+                return channel.createMessage(this.t('generic.negative', {number: number}));
+            }).catch(e => winston.error);
         }
         if (!isNaN(number) && number <= this.categories.length) {
             this.sendReply(msg, this.categories[number - 1])
@@ -87,35 +97,35 @@ class Help extends Command {
     }
 
     startCollector(origMsg) {
-        let collector = new MessageCollector(origMsg.channel, (msg, coll) => {
-            if (msg.author.id === this.msg.author.id) {
-                return true
-            }
-        }, {time: 1000 * 30});
-        collector.on('message', (msg) => {
-            let number = 0;
-            try {
-                number = parseInt(msg.content);
-            } catch (e) {
-                return msg.channel.sendMessage(this.t('generic.whole-num'));
-            }
-            if (isNaN(number)) {
-                return msg.channel.sendMessage(this.t('generic.nan'));
-            }
-            if (number < 1) {
-                return msg.channel.sendMessage(this.t('generic.negative', {number: number}));
-            }
-            if (msg.content.startsWith(msg.prefix)) {
-                collector.stop();
-            }
-            if (msg.content === 'c') {
-                collector.stop();
-            }
-            if (!isNaN(number) && number <= this.categories.length) {
-                collector.stop();
-                this.sendReply(msg, this.categories[number - 1])
-            }
-        });
+        // let collector = new MessageCollector(origMsg.channel, (msg, coll) => {
+        //     if (msg.author.id === this.msg.author.id) {
+        //         return true
+        //     }
+        // }, {time: 1000 * 30});
+        // collector.on('message', (msg) => {
+        //     let number = 0;
+        //     try {
+        //         number = parseInt(msg.content);
+        //     } catch (e) {
+        //         return msg.channel.createMessage(this.t('generic.whole-num'));
+        //     }
+        //     if (isNaN(number)) {
+        //         return msg.channel.createMessage(this.t('generic.nan'));
+        //     }
+        //     if (number < 1) {
+        //         return msg.channel.createMessage(this.t('generic.negative', {number: number}));
+        //     }
+        //     if (msg.content.startsWith(msg.prefix)) {
+        //         collector.stop();
+        //     }
+        //     if (msg.content === 'c') {
+        //         collector.stop();
+        //     }
+        //     if (!isNaN(number) && number <= this.categories.length) {
+        //         collector.stop();
+        //         this.sendReply(msg, this.categories[number - 1])
+        //     }
+        // });
     }
 
     sendReply(msg, data) {
@@ -137,9 +147,12 @@ class Help extends Command {
                 color: 0x00ADFF
             }
         };
-        msg.author.sendMessage("", reply).then(msg => {
+        msg.author.getDMChannel().then(channel => {
+            channel.createMessage(reply).then(msg => {
 
-        });
+            });
+        }).catch(e => winston.error);
+
     }
 
     buildLang(list) {

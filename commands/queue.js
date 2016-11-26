@@ -31,11 +31,11 @@ class Queue extends Command {
      */
     run(msg) {
         this.v.once('error', (err) => {
-            msg.channel.sendMessage(this.t(err));
+            msg.channel.createMessage(this.t(err));
             this.v.removeListener('queue');
         });
         this.v.once('queue', (queue) => {
-            msg.channel.sendMessage(this.buildReply(queue, msg));
+            msg.channel.createMessage(this.buildReply(queue, msg));
             this.v.removeListener('error');
         });
         this.v.getQueue(msg);

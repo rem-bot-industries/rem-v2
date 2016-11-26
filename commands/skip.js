@@ -27,11 +27,11 @@ class ForceSkip extends Command {
     run(msg) {
         this.v.once('error', (err) => {
             this.v.removeAllListeners();
-            msg.channel.sendMessage(this.t(err, {lngs: msg.lang}));
+            msg.channel.createMessage(this.t(err, {lngs: msg.lang}));
         });
         this.v.once('skipped', (song) => {
             this.v.removeAllListeners();
-            msg.channel.sendMessage(this.t('skip.success', {lngs: msg.lang, title: song.title}));
+            msg.channel.createMessage(this.t('skip.success', {lngs: msg.lang, title: song.title}));
         });
         if (msg.member.voiceChannel && this.v.getConnection(msg) && msg.member.voiceChannel.equals(this.v.getConnection(msg).channel)) {
             let channel = msg.member.voiceChannel;

@@ -1,7 +1,7 @@
 /**
  * Created by julia on 01.11.2016.
  */
-const Discord = require("discord.js");
+const Eris = require("eris");
 const EventEmitter = require('eventemitter3');
 const CmdManager = require('./modules/cmdManager');
 const LanguageManager = require('./modules/langManager');
@@ -48,44 +48,49 @@ class Shard extends EventEmitter {
     initClient() {
         winston.info(typeof(this.count));
         let options = {
-            messageCacheMaxSize: 1000,
-            messageCacheLifetime: 600,
-            messageSweepInterval: 1200,
+            autoreconnect: true,
+            compress: true,
+            messageLimit: 200,
             disableEveryone: true,
-            fetchAllMembers: true,
-            shardId: parseInt(this.id),
-            shardCount: parseInt(this.count),
-            disabledEvents: ['typingStart', 'typingStop', 'guildMemberSpeaking', 'messageUpdate']
+            getAllUsers: true,
+            firstShardID: parseInt(this.id),
+            lastShardID: parseInt(this.id),
+            maxShards: parseInt(this.count),
+            disableEvents: ['typingStart', 'typingStop', 'guildMemberSpeaking', 'messageUpdate']
         };
         winston.info(options);
-        let bot = new Discord.Client(options);
+        let bot = new Eris(config.token, options);
         this.bot = bot;
+        global.rem = bot;
         bot.on('ready', () => {
             this.clientReady()
         });
-        bot.on('message', (msg) => {
+        bot.on('messageCreate', (msg) => {
             this.message(msg)
         });
         bot.on('guildCreate', (Guild) => {
             this.guildCreate(Guild)
         });
-        bot.on('voiceStateUpdate', (o, n) => {
-            this.voiceUpdate(o, n)
+        bot.on('voiceChannelJoin', (m, n) => {
+            this.voiceUpdate(m, n, false);
         });
-        bot.on('guildMemberAdd', (m) => {
-            this.guildMemberAdd(m)
+        bot.on('voiceChannelLeave', (m, o) => {
+            this.voiceUpdate(m, o, true);
         });
-        bot.on('guildMemberRemove', (m) => {
-            this.guildMemberRemove(m)
+        bot.on('guildMemberAdd', (g, m) => {
+            this.guildMemberAdd(g, m)
+        });
+        bot.on('guildMemberRemove', (g, m) => {
+            this.guildMemberRemove(g, m)
         });
         // bot.on('debug', this.debug);
-        bot.login(config.token).then(winston.info('Logged in successfully'));
         process.on('message', (msg) => {
             this.clusterAction(msg);
         });
         process.on('SIGINT', () => {
             this.shutdown()
         });
+        bot.connect();
     }
 
     clientReady() {
@@ -101,7 +106,7 @@ class Shard extends EventEmitter {
 
     message(msg) {
         if (this.ready) {
-            CMD.check(msg);
+            CMD.check(msg, this.bot);
         }
     }
 
@@ -137,15 +142,11 @@ class Shard extends EventEmitter {
 
     }
 
-    voiceUpdate(oldMember, newMember) {
-        if (oldMember.voiceChannel) {
-            if (!newMember.voiceChannel) {
-                console.log('user left voice');
-            }
+    voiceUpdate(member, channel, leave) {
+        if (!leave) {
+            console.log('user joined voice!');
         } else {
-            if (newMember.voiceChannel) {
-                console.log('user joined voice');
-            }
+            console.log('user left voice!');
         }
     }
 
@@ -175,7 +176,7 @@ class Shard extends EventEmitter {
     shutdown() {
         mongoose.connection.close();
         try {
-            this.bot.destroy();
+            this.bot.disconnect();
         } catch (e) {
             console.log(e);
         }

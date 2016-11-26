@@ -23,7 +23,7 @@ class FlipCoin extends Command {
             url = 'https://rra.ram.moe/i/Byu2fPLWg';
             reply = 'flip.tail';
         }
-        msg.channel.sendMessage(this.t(reply, {lngs: msg.lang, url: url}));
+        msg.channel.createMessage(this.t(reply, {lngs: msg.lang, url: url}));
     }
 }
 module.exports = FlipCoin;

@@ -1,7 +1,7 @@
 /**
  * Created by julia on 07.11.2016.
  */
-var Command = require('../Objects/command');
+let Command = require('../Objects/command');
 class Ping extends Command {
     constructor(t) {
         super();
@@ -14,10 +14,9 @@ class Ping extends Command {
 
    run(msg) {
         // this.emit('run');
-        var start = Date.now();
-        msg.channel.sendMessage("pong").then(sendedMsg => {
-            var stop = Date.now();
-            var diff = (stop - start);
+       let start = Date.now();
+       msg.channel.createMessage("pong").then(sendedMsg => {
+           let diff = (sendedMsg.timestamp - start);
             sendedMsg.edit(`pong \`${diff}ms\``);
             // this.emit('done');
         }).catch(e => this.emit('error', {msg:msg, cmd:this.cmd, e:e}));

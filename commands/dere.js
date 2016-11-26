@@ -30,16 +30,16 @@ class Dere extends Command {
         if (msgSplit.length > 0) {
             let dere = this.matchDere(msgSplit);
             if (dere) {
-                msg.channel.sendCode('', this.t(`dere.${dere}`, {lngs: msg.lang}));
+                msg.channel.createMessage('```' + this.t(`dere.${dere}`, {lngs: msg.lang}) + '```');
             } else {
-                msg.channel.sendMessage(this.t('dere.no-dere', {lngs: msg.lang}));
+                msg.channel.createMessage(this.t('dere.no-dere', {lngs: msg.lang}) + '```');
             }
         } else {
             let random = Math.floor(Math.random() * (this.deres.length - 1));
             try {
-                msg.channel.sendCode('', this.t(`dere.${this.deres[random - 1]}`, {lngs: msg.lang}));
+                msg.channel.createMessage('```' + this.t(`dere.${this.deres[random - 1]}`, {lngs: msg.lang}) + '```');
             } catch (e) {
-                msg.channel.sendCode('', this.t(`dere.${this.deres[0]}`, {lngs: msg.lang}));
+                msg.channel.createMessage('```' + this.t(`dere.${this.deres[0]}`, {lngs: msg.lang}) + '```');
             }
         }
     }

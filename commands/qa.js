@@ -27,15 +27,15 @@ class AddToQueue extends Command {
         this.v.once('error', (err) => {
             this.clearListeners();
             console.log(err);
-            msg.channel.sendMessage(this.t('generic.error', {lngs: msg.lang}));
+            msg.channel.createMessage(this.t('generic.error', {lngs: msg.lang}));
         });
         this.v.once('info', (info, url) => {
             // this.clearListeners();
-            msg.channel.sendMessage(this.t(info, {url: url, lngs: msg.lang}));
+            msg.channel.createMessage(this.t(info, {url: url, lngs: msg.lang}));
         });
         this.v.once('added', (Song) => {
             this.clearListeners();
-            msg.channel.sendMessage(this.t('qa.success', {song: Song.title, lngs: msg.lang}));
+            msg.channel.createMessage(this.t('qa.success', {song: Song.title, lngs: msg.lang}));
         });
         this.v.addToQueue(msg, false);
         setTimeout(() => {

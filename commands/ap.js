@@ -22,7 +22,7 @@ class AddPermission extends Command {
         let messageSplit = msg.content.split(' ').splice(1);
         let args = minimist(messageSplit);
         this.parseArgs(args, (err, args) => {
-            if (err) return msg.channel.sendMessage(err);
+            if (err) return msg.channel.createMessage(err);
             console.log(args);
             // msg.channel.sendCode('JSON', JSON.stringify(args));
             if (args.r) {
@@ -41,8 +41,8 @@ class AddPermission extends Command {
     addPermission(msg, perm) {
         console.log(perm);
         this.p.addPermission(msg.guild.id, perm, (err) => {
-            if (err) return msg.channel.sendMessage(this.t('generic.error', {lngs: msg.lang}));
-            msg.channel.sendMessage(`Ok, the ${perm.type} now has the permission \`${perm.cat}.${perm.perm}\`set to ${perm.use}`);
+            if (err) return msg.channel.createMessage(this.t('generic.error', {lngs: msg.lang}));
+            msg.channel.createMessage(`Ok, the ${perm.type} now has the permission \`${perm.cat}.${perm.perm}\`set to ${perm.use}`);
         })
     }
 
@@ -59,7 +59,7 @@ class AddPermission extends Command {
                 let perm = this.p.createPermission(args.node, "user", user.id, args.allow);
                 this.addPermission(msg, perm);
             } else {
-                msg.channel.sendMessage('NOPE user');
+                msg.channel.createMessage('NOPE user');
             }
         } else {
             let regex = new RegExp(`${args.u}.*`, 'gi');
@@ -69,7 +69,7 @@ class AddPermission extends Command {
             if (users.size > 1) {
                 users = users.array();
                 let collector = new Selector(msg, users, (err, number) => {
-                    if (err) return msg.channel.sendMessage(err);
+                    if (err) return msg.channel.createMessage(err);
                     user = users[number - 1];
                     let perm = this.p.createPermission(args.node, "user", user.id, args.allow);
                     this.addPermission(msg, perm);
@@ -80,7 +80,7 @@ class AddPermission extends Command {
                     let perm = this.p.createPermission(args.node, "user", user.id, args.allow);
                     this.addPermission(msg, perm);
                 } else {
-                    return msg.channel.sendMessage(`No user with name ${args.u} found!`);
+                    return msg.channel.createMessage(`No user with name ${args.u} found!`);
                 }
             }
         }
@@ -94,7 +94,7 @@ class AddPermission extends Command {
                 let perm = this.p.createPermission(args.node, "role", role.id, args.allow);
                 msg.channel.sendCode('json', JSON.stringify(perm));
             } else {
-                msg.channel.sendMessage('NOPE Role');
+                msg.channel.createMessage('NOPE Role');
             }
         } else {
             let regex = new RegExp(`${args.r}.*`, 'gi');
@@ -102,7 +102,7 @@ class AddPermission extends Command {
             if (roles.size > 1) {
                 roles = roles.array();
                 let collector = new Selector(msg, roles, (err, number) => {
-                    if (err) return msg.channel.sendMessage(err);
+                    if (err) return msg.channel.createMessage(err);
                     role = roles[number - 1];
                     let perm = this.p.createPermission(args.node, "role", role.id, args.allow);
                     this.addPermission(msg, perm);
@@ -113,7 +113,7 @@ class AddPermission extends Command {
                     let perm = this.p.createPermission(args.node, "role", role.id, args.allow);
                     this.addPermission(msg, perm);
                 } else {
-                    return msg.channel.sendMessage(`No role with name ${args.r} found!`);
+                    return msg.channel.createMessage(`No role with name ${args.r} found!`);
                 }
             }
         }
@@ -127,7 +127,7 @@ class AddPermission extends Command {
                 let perm = this.p.createPermission(args.node, "channel", channel.id, args.allow);
                 this.addPermission(msg, perm);
             } else {
-                msg.channel.sendMessage('NOPE channel');
+                msg.channel.createMessage('NOPE channel');
             }
         } else {
             let regex = new RegExp(`${args.c}.*`, 'gi');
@@ -137,7 +137,7 @@ class AddPermission extends Command {
             if (channels.size > 1) {
                 channels = channels.array();
                 let collector = new Selector(msg, channels, (err, number) => {
-                    if (err) return msg.channel.sendMessage(err);
+                    if (err) return msg.channel.createMessage(err);
                     channel = channels[number - 1];
                     let perm = this.p.createPermission(args.node, "channel", channel.id, args.allow);
                     this.addPermission(msg, perm);
@@ -148,7 +148,7 @@ class AddPermission extends Command {
                     let perm = this.p.createPermission(args.node, "channel", channel.id, args.allow);
                     this.addPermission(msg, perm);
                 } else {
-                    return msg.channel.sendMessage(`No channel with name ${args.c} found!`);
+                    return msg.channel.createMessage(`No channel with name ${args.c} found!`);
                 }
             }
         }

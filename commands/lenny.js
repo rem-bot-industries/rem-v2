@@ -14,7 +14,7 @@ class Lenny extends Command {
 
     run(msg) {
         // this.emit('run');
-        msg.channel.sendMessage("( ͡° ͜ʖ ͡°)");
+        msg.channel.createMessage("( ͡° ͜ʖ ͡°)");
     }
 }
 module.exports = Lenny;

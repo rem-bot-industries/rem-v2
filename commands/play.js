@@ -27,11 +27,11 @@ class Play extends Command {
     run(msg) {
         this.v.once('error', (err) => {
             this.v.removeAllListeners();
-            msg.channel.sendMessage(this.t(err, {lngs: msg.lang}));
+            msg.channel.createMessage(this.t(err, {lngs: msg.lang}));
         });
         this.v.once('done', (Song) => {
             this.v.removeAllListeners();
-            msg.channel.sendMessage(this.t('play.playing', {lngs: msg.lang, song: Song.title}));
+            msg.channel.createMessage(this.t('play.playing', {lngs: msg.lang, song: Song.title}));
         });
         this.v.play(msg);
     }

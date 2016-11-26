@@ -25,7 +25,7 @@ class Randon extends Command {
                 color: 0x00ADFF
             }
         };
-        msg.channel.sendMessage("", reply);
+        msg.channel.createMessage("", reply);
     }
 }
 module.exports = Randon;

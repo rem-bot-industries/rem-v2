@@ -14,7 +14,7 @@ class uwu extends Command {
 
     run(msg) {
         // this.emit('run');
-        msg.channel.sendMessage("uwu");
+        msg.channel.createMessage("uwu");
     }
 }
 module.exports = uwu;
