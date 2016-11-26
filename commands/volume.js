@@ -1,7 +1,7 @@
 /**
  * Created by julia on 07.11.2016.
  */
-var Command = require('../Objects/command');
+let Command = require('../Objects/command');
 class Volume extends Command {
     constructor(t, v) {
         super();

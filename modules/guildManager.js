@@ -1,8 +1,8 @@
 /**
  * Created by julia on 10.11.2016.
  */
-var EventEmitter = require('eventemitter3');
-var guildModel = require('../DB/guild');
+let EventEmitter = require('eventemitter3');
+let guildModel = require('../DB/guild');
 class GuildManager extends EventEmitter {
     constructor() {
         super();

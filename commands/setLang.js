@@ -1,8 +1,8 @@
 /**
  * Created by julia on 07.11.2016.
  */
-var Command = require('../Objects/command');
-var GuildManager = require('../modules/guildManager');
+let Command = require('../Objects/command');
+let GuildManager = require('../modules/guildManager');
 class SetLanguage extends Command {
     constructor(t) {
         super();

@@ -1,8 +1,8 @@
 /**
  * Created by julia on 23.07.2016.
  */
-var mongoose = require('mongoose');
-var userSchema = mongoose.Schema({
+let mongoose = require('mongoose');
+let userSchema = mongoose.Schema({
     id: String,
     name: String,
     level: Number,
@@ -45,5 +45,5 @@ userSchema.methods.enablePm = function enablePm(id,cb) {
 userSchema.methods.addServer = function addServer(server,cb) {
     this.model('Users').update({id:this.id}, {$addToSet:{servers:server}}, cb);
 };
-var userModel = mongoose.model('Users', userSchema);
+let userModel = mongoose.model('Users', userSchema);
 module.exports = userModel;

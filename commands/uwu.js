@@ -1,7 +1,7 @@
 /**
  * Created by julia on 15.11.2016.
  */
-var Command = require('../Objects/command');
+let Command = require('../Objects/command');
 class uwu extends Command {
     constructor(t) {
         super();

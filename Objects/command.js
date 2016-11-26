@@ -1,7 +1,7 @@
 /**
  * Created by julia on 07.11.2016.
  */
-var EventEmitter = require('eventemitter3');
+let EventEmitter = require('eventemitter3');
 /**
  * The base command class
  * @extends EventEmitter

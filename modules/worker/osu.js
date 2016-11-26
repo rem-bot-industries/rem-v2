@@ -1,12 +1,12 @@
-var fs = require("fs");
-var Promise = require('bluebird');
-var path = require("path");
-var unzip = require("unzip");
-var config = require('../../config/main.json');
+let fs = require("fs");
+let Promise = require('bluebird');
+let path = require("path");
+let unzip = require("unzip");
+let config = require('../../config/main.json');
 const osu = require('node-osu');
-var osuApi = new osu.Api(config.osu_token);
-var request = require('request');
-var shortid = require("shortid");
+let osuApi = new osu.Api(config.osu_token);
+let request = require('request');
+let shortid = require("shortid");
 request = request.defaults({jar: true});
 process.on('message', (ev) => {
     downloadOsuMap(ev.map).then(map => {
@@ -66,9 +66,9 @@ function unpackOsuMap(map) {
         fs.createReadStream(map.path)
             .pipe(unzip.Parse())
             .on('entry', function (entry) {
-                var audioReg = /.*\.(?:mp3|ogg)/g;
-                var fileName = entry.path;
-                var type = entry.type; // 'Directory' or 'File'
+                let audioReg = /.*\.(?:mp3|ogg)/g;
+                let fileName = entry.path;
+                let type = entry.type; // 'Directory' or 'File'
                 if (audioReg.test(fileName) && type === 'File') {
                     map.fileId = shortid.generate();
                     map.path = `audio/osu/${map.fileId}.mp3`;

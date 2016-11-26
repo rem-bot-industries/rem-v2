@@ -1,11 +1,11 @@
 /**
  * Created by julia on 07.11.2016.
  */
-var Command = require('../Objects/command');
-var PermManager = require('../modules/permissionManager');
-var minimist = require('minimist');
-var discordReg = /<?(#|@|@&)[0-9]+>/g;
-var Selector = require('../modules/selector');
+let Command = require('../Objects/command');
+let PermManager = require('../modules/permissionManager');
+let minimist = require('minimist');
+let discordReg = /<?(#|@|@&)[0-9]+>/g;
+let Selector = require('../modules/selector');
 class AddPermission extends Command {
     constructor(t) {
         super();

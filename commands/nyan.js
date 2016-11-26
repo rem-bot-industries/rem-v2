@@ -1,8 +1,8 @@
 /**
  * Created by julia on 15.11.2016.
  */
-var Command = require('../Objects/command');
-var path = require("path");
+let Command = require('../Objects/command');
+let path = require("path");
 class uwu extends Command {
     constructor(t) {
         super();

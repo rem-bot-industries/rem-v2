@@ -1,19 +1,19 @@
 /**
  * Created by julia on 13.11.2016.
  */
-var Youtube = require('youtube-api');
-var async = require('async');
-var path = require("path");
-var ytdl = require('ytdl-core');
-var winston = require('winston');
-var songModel = require('../../DB/song');
-var config = require('../../config/main.json');
-var count = 0;
-var fs = require('fs');
-var maxResults = 0;
-var defaultSongs = 50;
-var loaded = 0;
-var songs = [];
+let Youtube = require('youtube-api');
+let async = require('async');
+let path = require("path");
+let ytdl = require('ytdl-core');
+let winston = require('winston');
+let songModel = require('../../DB/song');
+let config = require('../../config/main.json');
+let count = 0;
+let fs = require('fs');
+let maxResults = 0;
+let defaultSongs = 50;
+let loaded = 0;
+let songs = [];
 process.on('message', (ev) => {
     console.log(ev);
     init();

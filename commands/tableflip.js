@@ -1,7 +1,7 @@
 /**
  * Created by EpicPick on 14.11.2016.
  */
-var Command = require('../Objects/command');
+let Command = require('../Objects/command');
 class TableFlip extends Command {
     constructor(t) {
         super();

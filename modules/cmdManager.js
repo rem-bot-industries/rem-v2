@@ -31,7 +31,7 @@ class CmdManager extends EventEmitter {
             let commands = {};
             for (let file of files) {
                 if (file.endsWith('.js')) {
-                    var command = require(path.join(__dirname, '../commands/', file));
+                    let command = require(path.join(__dirname, '../commands/', file));
                     let cmd = new command(t, v);
                     commands[cmd.cmd] = cmd;
                 }

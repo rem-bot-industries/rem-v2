@@ -1,7 +1,7 @@
 /**
  * Created by EpicPick on 13.11.2016.
  */
-var Command = require('../Objects/command');
+let Command = require('../Objects/command');
 class FlipCoin extends Command {
     constructor(t) {
         super();
@@ -13,7 +13,7 @@ class FlipCoin extends Command {
     }
 
     run(msg) {
-        var rand = 1 + Math.floor(Math.random() * 100);
+        let rand = 1 + Math.floor(Math.random() * 100);
         let reply;
         let url;
         if (rand > 50) {
