@@ -16,7 +16,7 @@ class Ping extends Command {
         // this.emit('run');
        let start = Date.now();
        msg.channel.createMessage("pong").then(sendedMsg => {
-           let diff = (sendedMsg.timestamp - start);
+           let diff = (start - sendedMsg.timestamp );
             sendedMsg.edit(`pong \`${diff}ms\``);
             // this.emit('done');
         }).catch(e => this.emit('error', {msg:msg, cmd:this.cmd, e:e}));

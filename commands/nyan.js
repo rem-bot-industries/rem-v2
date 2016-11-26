@@ -3,6 +3,8 @@
  */
 let Command = require('../Objects/command');
 let path = require("path");
+let request = require("request");
+let winston = require('winston');
 class uwu extends Command {
     constructor(t) {
         super();
@@ -14,8 +16,11 @@ class uwu extends Command {
     }
 
     run(msg) {
-        // this.emit('run');
-        msg.channel.sendFile(path.join(__dirname, "../res/nyan.jpg"));
+        request.get('https://rra.ram.moe/i/r?type=nyan', (err, result, body) => {
+            if (err) return winston.error(err);
+            let parsedBody = JSON.parse(body);
+            msg.channel.createMessage(`https://rra.ram.moe${parsedBody.path}`);
+        });
     }
 }
 module.exports = uwu;
