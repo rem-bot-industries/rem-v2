@@ -65,7 +65,7 @@ class CmdManager extends EventEmitter {
                         msg.cmds = this.commands;
                         msg.prefix = Guild.prefix;
                         let command = this.commands[cmd];
-                        if(command != undefined) {
+                        if(command !== undefined) {
                             let node = `${command.cat}.${command.cmd}`;
                             this.p.checkPermission(msg, node, (err) => {
                                 if (err) return msg.channel.createMessage(`No permission to use \`${node}\``);
