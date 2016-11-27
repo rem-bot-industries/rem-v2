@@ -1,8 +1,8 @@
 /**
  * Created by julia on 10.11.2016.
  */
-var EventEmitter = require('eventemitter3');
-var userModel = require('../DB/user');
+let EventEmitter = require('eventemitter3');
+let userModel = require('../DB/user');
 class UserManager extends EventEmitter {
     constructor() {
         super();

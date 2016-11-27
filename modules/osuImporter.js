@@ -6,12 +6,12 @@
  * @extends EventEmitter
  *
  */
-var Promise = require('bluebird');
-var BasicImporter = require('../Objects/basicImporter');
-var winston = require('winston');
-var fs = require("fs");
-var path = require("path");
-var child_process = require("child_process");
+let Promise = require('bluebird');
+let BasicImporter = require('../Objects/basicImporter');
+let winston = require('winston');
+let fs = require("fs");
+let path = require("path");
+let child_process = require("child_process");
 class OsuImporter extends BasicImporter {
     constructor(url) {
         super();

@@ -1,17 +1,17 @@
 /**
  * Created by julia on 13.11.2016.
  */
-var permModel = require('../DB/permission');
-var winston = require('winston');
-var async = require("async");
-var config = require('../config/main.json');
-var util = require("util");
+let permModel = require('../DB/permission');
+let winston = require('winston');
+let async = require("async");
+let config = require('../config/main.json');
+let util = require("util");
 /**
  * The permission manager, it loads all permissions from the database and builds the permission tree
  */
 class PermissionManager {
     /**
-     * Initalize the instance variable in the constructor
+     * Initalize the instance variables in the constructor
      */
     constructor() {
         this.msg = null;
@@ -60,7 +60,10 @@ class PermissionManager {
             } else {
                 Perms = [
                     {type: 'guild', id: '228604101800230912', cat: 'fun', perm: '*', use: true},
-                    {type: 'guild', id: '228604101800230912', cat: 'generic', perm: '*', use: true}
+                    {type: 'guild', id: '228604101800230912', cat: 'generic', perm: '*', use: true},
+                    {type: 'guild', id: '228604101800230912', cat: 'misc', perm: '*', use: true},
+                    {type: 'guild', id: '228604101800230912', cat: 'music', perm: '*', use: true},
+                    {type: 'guild', id: '228604101800230912', cat: 'music', perm: 'fskip', use: false},
                 ];
                 this.buildPermTree(Perms, cb);
             }
@@ -109,7 +112,7 @@ class PermissionManager {
                     });
                     return;
                 case "role":
-                    if (this.msg.member.roles.has(Perm.id)) {
+                    if (this.checkRoleExistId(this.msg, Perm.id)) {
                         if (!tree.role[Perm.cat]) {
                             tree.role[Perm.cat] = {};
                         }
@@ -230,18 +233,13 @@ class PermissionManager {
         if (msg.author.id === config.owner_id) {
             return true;
         }
-        if (msg.member.roles.exists('name', 'WolkeBot')) {
+        if (this.checkRoleExistName(msg, 'WolkeBot')) {
             return true;
         }
-        if (msg.author.equals(msg.guild.owner.user)) {
+        if (msg.author.id === msg.guild.ownerID) {
             return true;
         }
-        msg.member.roles.map(r => {
-            if (r.hasPermission('ADMINISTRATOR')) {
-                return true;
-            }
-        });
-        return false;
+        return (this.checkRolePerm(msg, 'administrator'));
     }
 
     createPermission(node, type, id, allow) {
@@ -297,6 +295,51 @@ class PermissionManager {
                 cb('no-perms');
             }
         })
+    }
+
+    checkRoleExistName(msg, name) {
+        let roles = this.loadUserRoles(msg);
+        for (let i = 0; i < roles.length; i++) {
+            if (name === roles[i].name) {
+                return roles[i];
+            }
+        }
+        return false;
+    }
+
+    checkRoleExistId(msg, id) {
+        let roles = msg.member.roles;
+        for (let i = 0; i < roles.length; i++) {
+            if (id === roles[i]) {
+                return roles[i];
+            }
+        }
+        return false;
+    }
+
+    checkRolePerm(msg, perm) {
+        let roles = this.loadUserRoles(msg);
+        for (let i = 0; i < roles.length; i++) {
+            if (roles[i].permissions.has(perm)) {
+                return roles[i];
+            }
+        }
+        return false;
+    }
+
+    loadUserRoles(msg) {
+        let member = msg.member;
+        let guild = msg.guild;
+        let roles = [];
+        member.roles.forEach((mRole) => {
+            let role = guild.roles.find((r) => {
+                return r.id === mRole;
+            });
+            if (role) {
+                roles.push(role);
+            }
+        });
+        return roles;
     }
 
 }

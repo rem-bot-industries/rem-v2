@@ -1,13 +1,13 @@
 /**
  * Created by julia on 07.11.2016.
  */
-var EventEmitter = require('eventemitter3');
+let EventEmitter = require('eventemitter3');
 const winston = require('winston');
-var fs = require("fs");
-var path = require("path");
-var util = require("util");
-var i18next = require('i18next');
-var Backend = require('i18next-node-fs-backend');
+let fs = require("fs");
+let path = require("path");
+let util = require("util");
+let i18next = require('i18next');
+let Backend = require('i18next-node-fs-backend');
 class LangManager extends EventEmitter {
     constructor() {
         super();
@@ -20,7 +20,7 @@ class LangManager extends EventEmitter {
     }
 
     load() {
-        var backendOptions = {
+        let backendOptions = {
             loadPath: 'locales/{{lng}}/{{ns}}.json',
             addPath: 'locales/{{lng}}/{{ns}}.missing.json',
             jsonIndent: 2
@@ -45,11 +45,11 @@ class LangManager extends EventEmitter {
 
     getDirs(rootDir, cb) {
         fs.readdir(rootDir, function (err, files) {
-            var dirs = [];
-            for (var index = 0; index < files.length; ++index) {
-                var file = files[index];
+            let dirs = [];
+            for (let index = 0; index < files.length; ++index) {
+                let file = files[index];
                 if (file[0] !== '.') {
-                    var filePath = rootDir + '/' + file;
+                    let filePath = rootDir + '/' + file;
                     fs.stat(filePath, function (err, stat) {
                         if (stat.isDirectory()) {
                             dirs.push(this.file);

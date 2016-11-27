@@ -1,7 +1,7 @@
 /**
  * Created by EpicPick on 14.11.2016.
  */
-var Command = require('../Objects/command');
+let Command = require('../Objects/command');
 class TableFlip extends Command {
     constructor(t) {
         super();
@@ -14,7 +14,7 @@ class TableFlip extends Command {
 
     run(msg) {
         // this.emit('run');
-        msg.channel.sendMessage("(╯°□°）╯︵ ┻━┻");
+        msg.channel.createMessage("(╯°□°）╯︵ ┻━┻");
     }
 }
 module.exports = TableFlip;

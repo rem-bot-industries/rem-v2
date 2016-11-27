@@ -1,8 +1,8 @@
 /**
  * Created by julia on 26.06.2016.
  */
-var mongoose = require('mongoose');
-var songSchema = mongoose.Schema({
+let mongoose = require('mongoose');
+let songSchema = mongoose.Schema({
     title:String,
     alt_title:String,
     path:String,
@@ -26,5 +26,5 @@ var songSchema = mongoose.Schema({
 songSchema.methods.updateVotes = function updateVotes(vote,cb) {
     this.model('Songs').update({id:this.id}, {$inc: {votes:vote}}, cb);
 };
-var songModel = mongoose.model('Songs', songSchema);
+let songModel = mongoose.model('Songs', songSchema);
 module.exports = songModel;

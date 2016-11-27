@@ -17,7 +17,7 @@ class WhoFuckedWithMe extends Command {
     run(msg) {
         let content = msg.content.substr(msg.prefix.length + this.cmd.length).trim();
         msgModel.findOne({id: content}, (err, MSG) => {
-            if (err) return msg.channel.sendMessage(MSG);
+            if (err) return msg.channel.createMessage(MSG);
             if (MSG) {
                 let reply = {
                     embed: {
@@ -29,7 +29,7 @@ class WhoFuckedWithMe extends Command {
                         color: 0x00ADFF
                     }
                 };
-                msg.channel.sendMessage("", reply);
+                msg.channel.createMessage(reply);
             }
         });
     }

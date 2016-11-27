@@ -1,8 +1,8 @@
 /**
  * Created by julia on 07.11.2016.
  */
-var Command = require('../Objects/command');
-var GuildManager = require('../modules/guildManager');
+let Command = require('../Objects/command');
+let GuildManager = require('../modules/guildManager');
 class SetLanguage extends Command {
     constructor(t) {
         super();
@@ -19,14 +19,14 @@ class SetLanguage extends Command {
         if (typeof (msgSplit[1]) !== 'undefined') {
             if (this.checkLang(msgSplit[1], msg.lngs)) {
                 this.g.changeLanguage(msg.guild.id, msgSplit[1], (err) => {
-                    if (err) return msg.channel.sendMessage(this.t('generic.error', {lngs: msg.lang}));
-                    msg.channel.sendMessage(this.t('set-lang.success', {lng: msgSplit[1], language: msgSplit[1]}));
+                    if (err) return msg.channel.createMessage(this.t('generic.error', {lngs: msg.lang}));
+                    msg.channel.createMessage(this.t('set-lang.success', {lng: msgSplit[1], language: msgSplit[1]}));
                 });
             } else {
-                msg.channel.sendMessage(this.t('set-lang.unsupported', {lngs: msg.lang, languages: msg.lngs}));
+                msg.channel.createMessage(this.t('set-lang.unsupported', {lngs: msg.lang, languages: msg.lngs}));
             }
         } else {
-            msg.channel.sendMessage(this.t('set-lang.no-lang', {lngs: msg.lang, languages: msg.lngs}))
+            msg.channel.createMessage(this.t('set-lang.no-lang', {lngs: msg.lang, languages: msg.lngs}))
         }
     }
 

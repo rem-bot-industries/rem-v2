@@ -1,13 +1,13 @@
 /**
  * Created by julia on 08.11.2016.
  */
-var BasicImporter = require('../Objects/basicImporter');
-var winston = require('winston');
-var path = require("path");
-var playlistModel = require('../DB/playlist');
-var child_process = require("child_process");
-var shortid = require('shortid');
-var ytdl = require('ytdl-core');
+let BasicImporter = require('../Objects/basicImporter');
+let winston = require('winston');
+let path = require("path");
+let playlistModel = require('../DB/playlist');
+let child_process = require("child_process");
+let shortid = require('shortid');
+let ytdl = require('ytdl-core');
 /**
  * The playlist importer
  * @extends BasicImporter
@@ -45,7 +45,7 @@ class PlaylistImporter extends BasicImporter {
 
     createPlaylist(songs) {
         let songsId = [];
-        for (var i = 0; i < songs.length; i++) {
+        for (let i = 0; i < songs.length; i++) {
             songsId.push(songs[i].id);
         }
         let playlist = new playlistModel({

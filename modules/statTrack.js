@@ -2,11 +2,11 @@
  * Created by julia on 01.11.2016.
  */
 
-var StatsD = require('node-dogstatsd').StatsD;
-var dogstatsd = new StatsD();
-var request = require('request');
+let StatsD = require('node-dogstatsd').StatsD;
+let dogstatsd = new StatsD();
+let request = require('request');
 const config = require('../config/main.json');
-var EventEmitter = require('eventemitter3');
+let EventEmitter = require('eventemitter3');
 /**
  * The stattrack engine
  * @extends EventEmitter

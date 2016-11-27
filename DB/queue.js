@@ -1,8 +1,8 @@
 /**
  * Created by julia on 10.07.2016.
  */
-var mongoose = require('mongoose');
-var queueSchema = mongoose.Schema({
+let mongoose = require('mongoose');
+let queueSchema = mongoose.Schema({
     server:String,
     voteSkip:Number,
     repeat:Boolean,
@@ -51,5 +51,5 @@ queueSchema.methods.checkVote = function checkVote(Id,cb) {
 queueSchema.methods.updateTitle = function (id, title, cb) {
     this.model('Queues').update({server: this.server, 'songs.id': id}, {$set: {'songs.$.title': title}}, cb);
 };
-var queueModel = mongoose.model('Queues', queueSchema);
+let queueModel = mongoose.model('Queues', queueSchema);
 module.exports = queueModel;

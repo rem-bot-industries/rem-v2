@@ -1,14 +1,14 @@
 /**
  * Created by julia on 07.11.2016.
  */
-var Command = require('../Objects/command');
-var playlistReg = /(?:http?s?:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/?(?:playlist|list|)\?list=([0-9a-zA-Z-_]*)/;
-var winston = require('winston');
-var PlaylistImport = require('../modules/playlistImporter');
-var SongImporter = require('../modules/songImporter');
-var Selector = require('../modules/selector');
-var songModel = require('../DB/song');
-var async = require("async");
+let Command = require('../Objects/command');
+let playlistReg = /(?:http?s?:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/?(?:playlist|list|)\?list=([0-9a-zA-Z-_]*)/;
+let winston = require('winston');
+let PlaylistImport = require('../modules/playlistImporter');
+let SongImporter = require('../modules/songImporter');
+let songModel = require('../DB/song');
+let Selector = require('../modules/selector');
+let async = require("async");
 class ImportPlaylist extends Command {
     constructor(t, v) {
         super();
@@ -23,21 +23,21 @@ class ImportPlaylist extends Command {
     }
 
     run(msg) {
-        var msgSplit = msg.content.split(' ');
-        var messageSearch = "";
-        for (var i = 1; i < msgSplit.length; i++) {
+        let msgSplit = msg.content.split(' ');
+        let messageSearch = "";
+        for (let i = 1; i < msgSplit.length; i++) {
             messageSearch = messageSearch + " " + msgSplit[i]
         }
         messageSearch = messageSearch.trim().replace('<', '').replace('>', '');
         if (playlistReg.test(messageSearch)) {
-            let selector = new Selector(msg, [{name: 'Import Playlist ?'}], (err, number) => {
-                if (err) return msg.channel.sendMessage(err);
+            let selector = new Selector(msg, [{name: 'Import Playlist ?'}], this.t, (err, number) => {
+                if (err) return msg.channel.createMessage(err);
                 if (number === 1) {
                     let m;
                     console.log(messageSearch);
                     if ((m = playlistReg.exec(messageSearch)) !== null) {
                         winston.info(`using Playlist ${m[1]}`);
-                        msg.channel.sendMessage('Ok, I wirru now importu ze pureilisto.. Zis kutto teku a bitto, so I wirru mention yu when I am donu.');
+                        msg.channel.createMessage('Ok, I wirru now importu ze pureilisto.. Zis kutto teku a bitto, so I wirru mention yu when I am donu.');
                         this.playlist(msg, m[1]);
                     } else {
                         console.log(m);
@@ -46,18 +46,18 @@ class ImportPlaylist extends Command {
                 }
             });
         } else {
-            msg.channel.sendMessage('That is not a Playlist link.');
+            msg.channel.createMessage('That is not a Playlist link.');
         }
     }
 
     playlist(msg, id) {
         this.importer = new PlaylistImport(id);
         this.importer.once('error', (err) => {
-            msg.channel.sendMessage(this.t(err, {lngs: msg.lang}));
+            msg.channel.createMessage(this.t(err, {lngs: msg.lang}));
             this.importer.removeAllListeners();
         });
         this.importer.once('done', (playlist, songs) => {
-            msg.reply(`Alright, I just imported the playlist with the id ${playlist.id}, with a total of ${songs.length} Songs`);
+            msg.channel.createMessage(`Alright, I just imported the playlist with the id ${playlist.id}, with a total of ${songs.length} Songs`);
             this.loadSongsBatch(msg, songs, (err, songs) => {
                 if (err) return winston.info(err);
                 this.v.addToQueueBatch(msg, songs);

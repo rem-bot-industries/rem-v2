@@ -1,7 +1,7 @@
 /**
  * Created by julia on 07.11.2016.
  */
-var Command = require('../Objects/command');
+let Command = require('../Objects/command');
 class Randon extends Command {
     constructor(t) {
         super();
@@ -25,7 +25,7 @@ class Randon extends Command {
                 color: 0x00ADFF
             }
         };
-        msg.channel.sendMessage("", reply);
+        msg.channel.createMessage("", reply);
     }
 }
 module.exports = Randon;

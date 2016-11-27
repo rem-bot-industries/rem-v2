@@ -1,7 +1,7 @@
 /**
  * Created by EpicPick on 14.11.2016.
  */
-var Command = require('../Objects/command');
+let Command = require('../Objects/command');
 class Shrug extends Command {
     constructor(t) {
         super();
@@ -14,7 +14,7 @@ class Shrug extends Command {
 
     run(msg) {
         // this.emit('run');
-        msg.channel.sendMessage("¯\\_(ツ)_/¯");
+        msg.channel.createMessage("¯\\_(ツ)_/¯");
     }
 }
 module.exports = Shrug;

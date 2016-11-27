@@ -1,8 +1,8 @@
 /**
  * Created by julia on 07.11.2016.
  */
-var Command = require('../Objects/command');
-var util = require("util");
+let Command = require('../Objects/command');
+let util = require("util");
 /**
  * The show queue command,
  * shows the current queue
@@ -31,11 +31,11 @@ class Queue extends Command {
      */
     run(msg) {
         this.v.once('error', (err) => {
-            msg.channel.sendMessage(this.t(err));
+            msg.channel.createMessage(this.t(err));
             this.v.removeListener('queue');
         });
         this.v.once('queue', (queue) => {
-            msg.channel.sendMessage(this.buildReply(queue, msg));
+            msg.channel.createMessage(this.buildReply(queue, msg));
             this.v.removeListener('error');
         });
         this.v.getQueue(msg);
@@ -49,7 +49,7 @@ class Queue extends Command {
     buildReply(Queue, msg) {
         let reply = "";
         let iteration = Queue.songs.length > 20 ? 20 : Queue.songs.length;
-        for (var q = 0; q < iteration; q++) {
+        for (let q = 0; q < iteration; q++) {
             if (q === 0) {
                 let repeat = Queue.repeat ? this.t('np.repeat-on', {lngs: msg.lang}) : "";
                 if (Queue.songs[0].duration && Queue.songs[0].duration !== '') {

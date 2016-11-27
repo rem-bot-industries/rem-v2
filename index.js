@@ -12,7 +12,7 @@ let responses = 0;
 let users = 0;
 let guilds = 0;
 if (cluster.isMaster) {
-    let tracker = new StatTrack(5 * 60 * 60);
+    let tracker = new StatTrack(3 * 60 * 60);
     let resp = [];
     tracker.on('fetch', () => {
         broadcast({type: 'stats'});

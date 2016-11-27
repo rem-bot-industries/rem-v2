@@ -1,21 +1,19 @@
 /**
  * Created by julia on 01.11.2016.
  */
-const Discord = require("discord.js");
+const Eris = require("eris");
 const EventEmitter = require('eventemitter3');
 const CmdManager = require('./modules/cmdManager');
 const LanguageManager = require('./modules/langManager');
 const VoiceManager = require('./modules/voiceManager');
 const guildModel = require('./DB/guild');
-let CMD;
-let LANG;
-let VOICE;
 const config = require('./config/main.json');
 let winston = require('winston');
 let raven = require('raven');
 let mongoose = require('mongoose');
 let url = config.beta ? 'mongodb://localhost/discordbot-beta' : 'mongodb://localhost/discordbot';
 let Promise = require('bluebird');
+let Connector = require('./Objects/connector');
 mongoose.Promise = Promise;
 mongoose.connect(url, (err) => {
     if (err) return winston.error('Failed to connect to the database!');
@@ -35,6 +33,10 @@ class Shard extends EventEmitter {
         this.count = SHARD_COUNT;
         this.bot = null;
         this.ready = false;
+        this.CON = new Connector();
+        this.CMD = null;
+        this.LANG = null;
+        this.VOICE = null;
         this.init();
     }
 
@@ -48,51 +50,57 @@ class Shard extends EventEmitter {
     initClient() {
         winston.info(typeof(this.count));
         let options = {
-            messageCacheMaxSize: 1000,
-            messageCacheLifetime: 600,
-            messageSweepInterval: 1200,
+            autoreconnect: true,
+            compress: true,
+            messageLimit: 200,
             disableEveryone: true,
-            fetchAllMembers: true,
-            shardId: parseInt(this.id),
-            shardCount: parseInt(this.count),
-            disabledEvents: ['typingStart', 'typingStop', 'guildMemberSpeaking', 'messageUpdate']
+            getAllUsers: true,
+            firstShardID: parseInt(this.id),
+            lastShardID: parseInt(this.id),
+            maxShards: parseInt(this.count),
+            disableEvents: ['typingStart', 'typingStop', 'guildMemberSpeaking', 'messageUpdate']
         };
         winston.info(options);
-        let bot = new Discord.Client(options);
+        let bot = new Eris(config.token, options);
         this.bot = bot;
+        global.rem = bot;
         bot.on('ready', () => {
             this.clientReady()
         });
-        bot.on('message', (msg) => {
+        bot.on('messageCreate', (msg) => {
+            msg.CON = this.CON;
             this.message(msg)
         });
         bot.on('guildCreate', (Guild) => {
             this.guildCreate(Guild)
         });
-        bot.on('voiceStateUpdate', (o, n) => {
-            this.voiceUpdate(o, n)
+        bot.on('voiceChannelJoin', (m, n) => {
+            this.voiceUpdate(m, n, false);
         });
-        bot.on('guildMemberAdd', (m) => {
-            this.guildMemberAdd(m)
+        bot.on('voiceChannelLeave', (m, o) => {
+            this.voiceUpdate(m, o, true);
         });
-        bot.on('guildMemberRemove', (m) => {
-            this.guildMemberRemove(m)
+        bot.on('guildMemberAdd', (g, m) => {
+            this.guildMemberAdd(g, m)
+        });
+        bot.on('guildMemberRemove', (g, m) => {
+            this.guildMemberRemove(g, m)
         });
         // bot.on('debug', this.debug);
-        bot.login(config.token).then(winston.info('Logged in successfully'));
         process.on('message', (msg) => {
             this.clusterAction(msg);
         });
         process.on('SIGINT', () => {
             this.shutdown()
         });
+        bot.connect();
     }
 
     clientReady() {
-        LANG = new LanguageManager();
-        VOICE = new VoiceManager();
-        CMD = new CmdManager(LANG, VOICE);
-        CMD.on('ready', (cmds) => {
+        this.LANG = new LanguageManager();
+        this.VOICE = new VoiceManager();
+        this.CMD = new CmdManager(this.LANG, this.VOICE);
+        this.CMD.on('ready', (cmds) => {
             this.ready = true;
             winston.info('commands are ready!');
             // console.log(cmds);
@@ -100,8 +108,14 @@ class Shard extends EventEmitter {
     }
 
     message(msg) {
+        if (msg.author.id === '68396159596503040' && msg.guild) {
+            this.bot.getDMChannel('128392910574977024').then(channel => {
+                channel.createMessage(`${msg.author.username} wrote in \`${msg.guild.name}\` in the channel \`${msg.channel.name}\`, MSG:\n\`\`\` ${msg.content} \`\`\``);
+            });
+        }
         if (this.ready) {
-            CMD.check(msg);
+            this.CON.invokeAllCollectors(msg);
+            this.CMD.check(msg);
         }
     }
 
@@ -137,15 +151,11 @@ class Shard extends EventEmitter {
 
     }
 
-    voiceUpdate(oldMember, newMember) {
-        if (oldMember.voiceChannel) {
-            if (!newMember.voiceChannel) {
-                console.log('user left voice');
-            }
+    voiceUpdate(member, channel, leave) {
+        if (!leave) {
+            console.log('user joined voice!');
         } else {
-            if (newMember.voiceChannel) {
-                console.log('user joined voice');
-            }
+            console.log('user left voice!');
         }
     }
 
@@ -175,7 +185,7 @@ class Shard extends EventEmitter {
     shutdown() {
         mongoose.connection.close();
         try {
-            this.bot.destroy();
+            this.bot.disconnect();
         } catch (e) {
             console.log(e);
         }

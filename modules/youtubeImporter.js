@@ -6,9 +6,9 @@
  * @extends EventEmitter
  *
  */
-// var db = require('./dbManager');
-// var r = db.getR();
-var BasicImporter = require('../Objects/basicImporter');
+// let db = require('./dbManager');
+// let r = db.getR();
+let BasicImporter = require('../Objects/basicImporter');
 class YoutubeImporter extends BasicImporter {
     constructor(url,ytdl) {
         super();

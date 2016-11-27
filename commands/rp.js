@@ -5,10 +5,11 @@ let Command = require('../Objects/command');
 let PermManager = require('../modules/permissionManager');
 let minimist = require('minimist');
 let AsciiTable = require('ascii-table');
+let async = require('async');
 class GetPermission extends Command {
     constructor(t) {
         super();
-        this.cmd = "gp";
+        this.cmd = "rp";
         this.cat = "permission";
         this.needGuild = true;
         this.t = t;
@@ -35,19 +36,35 @@ class GetPermission extends Command {
         this.p.getPermDB(msg, (err, Perms) => {
             if (err) return msg.channel.createMessage('No perms set yet.');
             let table = new AsciiTable();
-            table.setHeading('ID', 'ID', 'type', 'Category', 'Perm', 'Use');
+            table.setHeading('ID', 'ID', 'Name', 'type', 'Category', 'Perm', 'Use');
             let added = 0;
-            for (let i = 0; i < Perms.length; i++) {
-                if (Perms[i].type === type) {
-                    table.addRow(i + 1, Perms[i].id, Perms[i].type, Perms[i].cat, Perms[i].perm, Perms[i].use);
+            async.eachSeries(Perms, (Perm, cb) => {
+                if (Perm.type === type) {
+                    if (type === 'channel') {
+                        let channel = rem.getChannel(Perm.id);
+                        table.addRow(added + 1, Perm.id, channel.name, Perm.type, Perm.cat, Perm.perm, Perm.use);
+                    } else {
+                        table.addRow(added + 1, Perm.id, '-', Perm.type, Perm.cat, Perm.perm, Perm.use);
+                    }
                     added += 1;
+                    async.setImmediate(() => {
+                        cb();
+                    });
                 }
-            }
-            if (added > 0) {
-                msg.channel.createMessage('```' + table.toString() + '```');
-            } else {
-                msg.channel.createMessage(this.t('gp.no-cat', {lngs: msg.lang, cat: type}))
-            }
+            }, (err) => {
+                if (added > 0) {
+                    msg.channel.createMessage('```' + table.toString() + '```');
+                } else {
+                    msg.channel.createMessage(this.t('gp.no-cat', {lngs: msg.lang, cat: type}))
+                }
+            });
+        });
+    }
+
+    startCollector(msg) {
+        let collector = msg.CON.addCollector(msg.channel.id);
+        collector.on('message', (msg) => {
+
         });
     }
 }

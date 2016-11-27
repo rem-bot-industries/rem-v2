@@ -1,18 +1,18 @@
 /**
  * Created by julia on 07.11.2016.
  */
-var EventEmitter = require('eventemitter3');
-var YoutubeReg = /(?:http?s?:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=)?([a-zA-Z0-9_-]+)(&.*|)/;
-var SoundcloudReg = /(?:http?s?:\/\/)?(?:www\.)?(?:soundcloud\.com|snd\.sc)\/(?:.*)/;
-var osuRegex = /(?:http(?:s|):\/\/osu.ppy.sh\/(s|b)\/([0-9]*)((\?|\&)m=[0-9]|))/;
-var sc = require('./soundCloudImporter');
-var yt = require('./youtubeImporter');
-var pl = require('./playlistImporter');
-var osu = require('./osuImporter');
-var ytdl = require('ytdl-core');
-var youtubedl = require('youtube-dl');
-var songModel = require('../DB/song');
-var winston = require('winston');
+let EventEmitter = require('eventemitter3');
+let YoutubeReg = /(?:http?s?:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=)?([a-zA-Z0-9_-]+)(&.*|)/;
+let SoundcloudReg = /(?:http?s?:\/\/)?(?:www\.)?(?:soundcloud\.com|snd\.sc)\/(?:.*)/;
+let osuRegex = /(?:http(?:s|):\/\/osu.ppy.sh\/(s|b)\/([0-9]*)((\?|\&)m=[0-9]|))/;
+let sc = require('./soundCloudImporter');
+let yt = require('./youtubeImporter');
+let pl = require('./playlistImporter');
+let osu = require('./osuImporter');
+let ytdl = require('ytdl-core');
+let youtubedl = require('youtube-dl');
+let songModel = require('../DB/song');
+let winston = require('winston');
 /**
  * The song importer
  * @extends EventEmitter
@@ -32,8 +32,8 @@ class SongImporter extends EventEmitter {
     }
 
     importSong() {
-        var messageSearch = "";
-        for (var i = 1; i < this.messageSplit.length; i++) {
+        let messageSearch = "";
+        for (let i = 1; i < this.messageSplit.length; i++) {
             messageSearch = messageSearch + " " + this.messageSplit[i]
         }
         messageSearch = messageSearch.trim().replace('<', '').replace('>', '');
@@ -194,7 +194,7 @@ class SongImporter extends EventEmitter {
         }
         if (typeof (info.duration) !== 'undefined') {
             let durationSplit = info.duration.split(':');
-            for (var i = 0; i < durationSplit.length; i++) {
+            for (let i = 0; i < durationSplit.length; i++) {
                 if (i !== durationSplit.length - 1) {
                     if (durationSplit[i].length === 1) {
                         durationConv = durationConv + '0' + durationSplit[i] + ':';
@@ -213,9 +213,9 @@ class SongImporter extends EventEmitter {
             return durationConv;
         } else if (typeof (info.length_seconds) !== 'undefined') {
             let d = Number(info.length_seconds);
-            var h = Math.floor(d / 3600);
-            var m = Math.floor(d % 3600 / 60);
-            var s = Math.floor(d % 3600 % 60);
+            let h = Math.floor(d / 3600);
+            let m = Math.floor(d % 3600 / 60);
+            let s = Math.floor(d % 3600 % 60);
             return ((h > 0 ? h + ":" + (m < 10 ? "0" : "") : "") + m + ":" + (s < 10 ? "0" : "") + s);
         }
     }

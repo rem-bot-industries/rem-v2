@@ -167,9 +167,9 @@
     "magic": "xX_Cats_Xx burdaidi -10.10.2016"
   },
   "set-lang": {
-    "no-lang": "Sen dil vermedin! Su anda Su diler var de (Deutsch), en (Englisch) und ru (Russisch) se (swedish) tr (türkce)",
+    "no-lang": "Sen dil vermedin! Su anda Su diler let de (Deutsch), en (Englisch) und ru (Russisch) se (swedish) tr (türkce)",
     "success": "Tamam ben simdik bu dile {{- language}} degistirdim.",
-    "unsupported": "Bu dil eklenmedi, github açmak için istenen dil ile bir pullrequest saglayarak yapabilirsiniz yardim ancak. Su anda Su diler var de (Deutsch), en (Englisch) und ru (Russisch) se (swedish) tr (türkce)"
+    "unsupported": "Bu dil eklenmedi, github açmak için istenen dil ile bir pullrequest saglayarak yapabilirsiniz yardim ancak. Su anda Su diler let de (Deutsch), en (Englisch) und ru (Russisch) se (swedish) tr (türkce)"
   },
   "np": {
     "song-duration": "Su anda yüriyor: `{{- title}} {{current}}/{{duration}} {{repeat}} `",

@@ -1,8 +1,8 @@
 /**
  * Created by julia on 26.06.2016.
  */
-var mongoose = require('mongoose');
-var guildSchema = mongoose.Schema({
+let mongoose = require('mongoose');
+let guildSchema = mongoose.Schema({
     id: String,
     lastVoiceChannel: String,
     nsfwChannel: String,
@@ -59,5 +59,5 @@ guildSchema.methods.setLeave = function (message, channel, cb) {
 guildSchema.methods.addRole = function (role, cb) {
     this.model('Guilds').update({id: this.id}, {$addToSet: {roles: role}}, cb);
 };
-var guildModel = mongoose.model('Guilds', guildSchema);
+let guildModel = mongoose.model('Guilds', guildSchema);
 module.exports = guildModel;

@@ -1,7 +1,7 @@
 /**
  * Created by julia on 07.11.2016.
  */
-var Command = require('../Objects/command');
+let Command = require('../Objects/command');
 /**
  * The leave command
  * @extends Command
@@ -25,8 +25,8 @@ class Leave extends Command {
 
     run(msg) {
         this.v.leave(msg, (err) => {
-            if (err) return msg.reply(this.t(err, {lngs: msg.lang}));
-            msg.channel.sendMessage(this.t('leave', {lngs: msg.lang}));
+            if (err) return msg.channel.createMessage(`${msg.author.mention},${this.t(err, {lngs: msg.lang})}`);
+            msg.channel.createMessage(this.t('leave', {lngs: msg.lang}));
         });
     }
 }
