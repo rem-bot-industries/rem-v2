@@ -58,7 +58,7 @@ class Player extends EventEmitter {
                     stream = request(Song.url);
                 }
             }
-            this.connection.play(stream, {inlineVolume: true});
+            this.connection.play(stream, {});
             this.connection.setVolume(0.2);
             // winston.info(path.resolve(Song.path));
             // updatePlays(Song.id).then(() => {
@@ -182,11 +182,11 @@ class Player extends EventEmitter {
     }
 
     setVolume(vol) {
-        try {
-            this.connection.setVolume(vol);
-        } catch (e) {
-            this.emit('error', e);
-        }
+        // try {
+        //     this.connection.setVolume(vol);
+        // } catch (e) {
+        //     this.emit('error', e);
+        // }
     }
 
     updatePlays(Song) {
