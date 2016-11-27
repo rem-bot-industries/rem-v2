@@ -2,7 +2,6 @@
  * Created by julia on 07.11.2016.
  */
 let Command = require('../Objects/command');
-// let MessageCollector = require('discord.js').MessageCollector;
 let PermManager = require('../modules/permissionManager');
 let winston = require('winston');
 class Help extends Command {
@@ -92,40 +91,8 @@ class Help extends Command {
             }).catch(e => winston.error);
         }
         if (!isNaN(number) && number <= this.categories.length) {
-            this.sendReply(msg, this.categories[number - 1])
+            this.sendReply(msg, this.categories[number - 1]);
         }
-    }
-
-    startCollector(origMsg) {
-        // let collector = new MessageCollector(origMsg.channel, (msg, coll) => {
-        //     if (msg.author.id === this.msg.author.id) {
-        //         return true
-        //     }
-        // }, {time: 1000 * 30});
-        // collector.on('message', (msg) => {
-        //     let number = 0;
-        //     try {
-        //         number = parseInt(msg.content);
-        //     } catch (e) {
-        //         return msg.channel.createMessage(this.t('generic.whole-num'));
-        //     }
-        //     if (isNaN(number)) {
-        //         return msg.channel.createMessage(this.t('generic.nan'));
-        //     }
-        //     if (number < 1) {
-        //         return msg.channel.createMessage(this.t('generic.negative', {number: number}));
-        //     }
-        //     if (msg.content.startsWith(msg.prefix)) {
-        //         collector.stop();
-        //     }
-        //     if (msg.content === 'c') {
-        //         collector.stop();
-        //     }
-        //     if (!isNaN(number) && number <= this.categories.length) {
-        //         collector.stop();
-        //         this.sendReply(msg, this.categories[number - 1])
-        //     }
-        // });
     }
 
     sendReply(msg, data) {

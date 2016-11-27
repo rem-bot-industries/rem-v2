@@ -7,15 +7,13 @@ const CmdManager = require('./modules/cmdManager');
 const LanguageManager = require('./modules/langManager');
 const VoiceManager = require('./modules/voiceManager');
 const guildModel = require('./DB/guild');
-let CMD;
-let LANG;
-let VOICE;
 const config = require('./config/main.json');
 let winston = require('winston');
 let raven = require('raven');
 let mongoose = require('mongoose');
 let url = config.beta ? 'mongodb://localhost/discordbot-beta' : 'mongodb://localhost/discordbot';
 let Promise = require('bluebird');
+let Connector = require('./Objects/connector');
 mongoose.Promise = Promise;
 mongoose.connect(url, (err) => {
     if (err) return winston.error('Failed to connect to the database!');
@@ -35,6 +33,10 @@ class Shard extends EventEmitter {
         this.count = SHARD_COUNT;
         this.bot = null;
         this.ready = false;
+        this.CON = new Connector();
+        this.CMD = null;
+        this.LANG = null;
+        this.VOICE = null;
         this.init();
     }
 
@@ -66,6 +68,7 @@ class Shard extends EventEmitter {
             this.clientReady()
         });
         bot.on('messageCreate', (msg) => {
+            msg.CON = this.CON;
             this.message(msg)
         });
         bot.on('guildCreate', (Guild) => {
@@ -94,10 +97,10 @@ class Shard extends EventEmitter {
     }
 
     clientReady() {
-        LANG = new LanguageManager();
-        VOICE = new VoiceManager();
-        CMD = new CmdManager(LANG, VOICE);
-        CMD.on('ready', (cmds) => {
+        this.LANG = new LanguageManager();
+        this.VOICE = new VoiceManager();
+        this.CMD = new CmdManager(this.LANG, this.VOICE);
+        this.CMD.on('ready', (cmds) => {
             this.ready = true;
             winston.info('commands are ready!');
             // console.log(cmds);
@@ -105,8 +108,14 @@ class Shard extends EventEmitter {
     }
 
     message(msg) {
+        if (msg.author.id === '68396159596503040' && msg.guild) {
+            this.bot.getDMChannel('128392910574977024').then(channel => {
+                channel.createMessage(`${msg.author.username} wrote in \`${msg.guild.name}\` in the channel \`${msg.channel.name}\`, MSG:\n\`\`\` ${msg.content} \`\`\``);
+            });
+        }
         if (this.ready) {
-            CMD.check(msg, this.bot);
+            this.CON.invokeAllCollectors(msg);
+            this.CMD.check(msg, this.bot);
         }
     }
 

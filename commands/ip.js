@@ -6,8 +6,8 @@ let playlistReg = /(?:http?s?:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/?(?:pl
 let winston = require('winston');
 let PlaylistImport = require('../modules/playlistImporter');
 let SongImporter = require('../modules/songImporter');
-let Selector = require('../modules/selector');
 let songModel = require('../DB/song');
+let Selector = require('../modules/selector');
 let async = require("async");
 class ImportPlaylist extends Command {
     constructor(t, v) {
@@ -30,7 +30,7 @@ class ImportPlaylist extends Command {
         }
         messageSearch = messageSearch.trim().replace('<', '').replace('>', '');
         if (playlistReg.test(messageSearch)) {
-            let selector = new Selector(msg, [{name: 'Import Playlist ?'}], (err, number) => {
+            let selector = new Selector(msg, [{name: 'Import Playlist ?'}], this.t, (err, number) => {
                 if (err) return msg.channel.createMessage(err);
                 if (number === 1) {
                     let m;

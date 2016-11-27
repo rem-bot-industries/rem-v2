@@ -40,7 +40,7 @@ class GetPermission extends Command {
             for (let i = 0; i < Perms.length; i++) {
                 table.addRow(i + 1, Perms[i].id, Perms[i].type, Perms[i].cat, Perms[i].perm, Perms[i].use)
             }
-            msg.channel.sendCode('', table.toString());
+            msg.channel.createMessage('```' + table.toString() + '```');
         });
     }
 }
