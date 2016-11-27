@@ -53,7 +53,7 @@
     "info": "gives you some information about the current server",
     "ban": "Bans a User and deletes 7 Days of his/her messages",
     "kick": "Kicks a User",
-    "rm": "removes the last 10 Messages, you can change 10 to a value between 1-100",
+    "rm": "removes messages, you can filter for bots, users, commands/responses of rem or just delete up to 100 messages",
     "noLevelServer": "Disables the level system for the entire server, use the command again to re-enable it",
     "noPmServer": "Disables the pm notifications for the entire server, use the command again to re-enable it",
     "noChServer": "Disables the pm notifications for the entire server and enables channel notifications instead, use the command again to revert it",
@@ -315,10 +315,11 @@
     "success-skip": "Voteskipped Song: **{{- title}}**"
   },
   "rm": {
-    "less-2": "You can not delete less than 2 messages!",
-    "over-100": "You can not delete more than 100 Messages at once!",
+    "over-limit": "You can not delete less than 2 messages or more than 100 Messages at once!",
     "success": "Successfully deleted {{number}} messages.",
-    "error": "Error while trying to delete Messages!"
+    "error": "Error while trying to delete messages!",
+    "no-limit": "You did not specify how many messages I should delete.",
+    "nothing-found": "I did not find a message that matched the filter!"
   },
   "search": {
     "success": "Found the following Songs:"

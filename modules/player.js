@@ -171,7 +171,9 @@ class Player extends EventEmitter {
      * @returns {{repeat: boolean, repeatId: string, voteskips: Array, songs: Array, time: string}|*}
      */
     getQueue() {
-        this.queue.time = this.convertSeconds(Math.floor(this.connection.current.playTime / 1000));
+        if (this.connection.current) {
+            this.queue.time = this.convertSeconds(Math.floor(this.connection.current.playTime / 1000));
+        }
         return this.queue;
     }
 

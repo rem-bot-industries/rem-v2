@@ -8,6 +8,7 @@ let path = require("path");
 let util = require("util");
 let GuildManager = require('./guildManager');
 let PermManager = require('./permissionManager');
+let CleverBotManager = require('./cleverbot');
 class CmdManager extends EventEmitter {
     constructor(l, v) {
         super();
@@ -21,6 +22,7 @@ class CmdManager extends EventEmitter {
         this.t = null;
         this.g = new GuildManager();
         this.p = new PermManager();
+        this.c = new CleverBotManager();
         this.commands = {};
         this.ready = false;
     }
@@ -54,6 +56,7 @@ class CmdManager extends EventEmitter {
         if (this.ready) {
             this.loadGuild(msg, (err, Guild) => {
                 if (err) return winston.error(err);
+                msg.db = Guild;
                 if (msg.content.startsWith(Guild.prefix)) {
                     try {
                         let cmd = msg.content.substr(Guild.prefix.length).split(' ')[0];
@@ -61,10 +64,8 @@ class CmdManager extends EventEmitter {
                         msg.lngs = this.lngs;
                         msg.cmds = this.commands;
                         msg.prefix = Guild.prefix;
-                        msg.db = Guild;
                         let command = this.commands[cmd];
                         let node = `${command.cat}.${command.cmd}`;
-                        // console.log(this.commands[command]);
                         this.p.checkPermission(msg, node, (err) => {
                             if (err) return msg.channel.createMessage(`No permission to use \`${node}\``);
                             console.log(cmd);
@@ -82,6 +83,14 @@ class CmdManager extends EventEmitter {
                     catch (err) {
                         winston.error(err.message);
                         winston.error(err.stack);
+                    }
+                } else {
+                    if (msg.guild && msg.mentions.length === 1 && msg.mentions[0].id === rem.user.id) {
+                        console.log('talk');
+                        this.p.checkPermission(msg, 'fun.cleverbot', (err) => {
+                            if (err) return msg.channel.createMessage(`No permission to use \`fun.cleverbot\``);
+                            this.c.talk(msg);
+                        });
                     }
                 }
             });
