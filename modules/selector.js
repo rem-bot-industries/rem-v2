@@ -15,7 +15,7 @@ class Selector {
     init(cb) {
         let table = new AsciiTable();
         let i = 1;
-        this.coll.map(c => {
+        this.coll.forEach(c => {
             if (c.name) {
                 table.addRow(i, c.name);
             } else if (c.user.username) {

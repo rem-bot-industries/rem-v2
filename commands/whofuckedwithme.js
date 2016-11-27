@@ -29,7 +29,7 @@ class WhoFuckedWithMe extends Command {
                         color: 0x00ADFF
                     }
                 };
-                msg.channel.createMessage("", reply);
+                msg.channel.createMessage(reply);
             }
         });
     }
