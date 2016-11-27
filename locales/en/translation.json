@@ -360,6 +360,9 @@
     "head": "The coin flipped to head {{- url}}",
     "tail": "The coin flipped to tail {{- url}}"
   },
+  "gp": {
+    "no-cat": "I could not find any permissions with the category {{- cat}}"
+  },
   "dere": {
     "no-dere": "The dere type you searched for does not exist.",
     "dandere": "The Dandere (だんデレ) type refers to a character who is often silent and to themselves.\n It may be due to shyness or just because they’re the quiet type.\n However,when alone with the person they are attracted to, they usually come out of their shell and become more loving.\n This word is an abbreviation of Danmari (だんまり) which means silent and Deredere (デレデレ) which means lovey dovey.",

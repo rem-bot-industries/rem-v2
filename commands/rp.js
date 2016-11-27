@@ -8,7 +8,7 @@ let AsciiTable = require('ascii-table');
 class GetPermission extends Command {
     constructor(t) {
         super();
-        this.cmd = "gp";
+        this.cmd = "rp";
         this.cat = "permission";
         this.needGuild = true;
         this.t = t;
@@ -36,18 +36,10 @@ class GetPermission extends Command {
             if (err) return msg.channel.createMessage('No perms set yet.');
             let table = new AsciiTable();
             table.setHeading('ID', 'ID', 'type', 'Category', 'Perm', 'Use');
-            let added = 0;
             for (let i = 0; i < Perms.length; i++) {
-                if (Perms[i].type === type) {
-                    table.addRow(i + 1, Perms[i].id, Perms[i].type, Perms[i].cat, Perms[i].perm, Perms[i].use);
-                    added += 1;
-                }
+                table.addRow(i + 1, Perms[i].id, Perms[i].type, Perms[i].cat, Perms[i].perm, Perms[i].use)
             }
-            if (added > 0) {
-                msg.channel.createMessage('```' + table.toString() + '```');
-            } else {
-                msg.channel.createMessage(this.t('gp.no-cat', {lngs: msg.lang, cat: type}))
-            }
+            msg.channel.createMessage('```' + table.toString() + '```');
         });
     }
 }

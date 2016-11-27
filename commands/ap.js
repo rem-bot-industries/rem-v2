@@ -23,7 +23,7 @@ class AddPermission extends Command {
         let args = minimist(messageSplit);
         this.parseArgs(args, (err, args) => {
             if (err) return msg.channel.createMessage(err);
-            console.log(args);
+            // console.log(args);
             // msg.channel.sendCode('JSON', JSON.stringify(args));
             if (args.r) {
                 return this.role(msg, args);
@@ -39,7 +39,7 @@ class AddPermission extends Command {
     }
 
     addPermission(msg, perm) {
-        console.log(perm);
+        // console.log(perm);
         this.p.addPermission(msg.guild.id, perm, (err) => {
             if (err) return msg.channel.createMessage(this.t('generic.error', {lngs: msg.lang}));
             msg.channel.createMessage(`Ok, the ${perm.type} now has the permission \`${perm.cat}.${perm.perm}\`set to ${perm.use}`);
@@ -91,7 +91,7 @@ class AddPermission extends Command {
             role = msg.roleMentions[0];
             if (role) {
                 let perm = this.p.createPermission(args.node, "role", role, args.allow);
-                msg.channel.sendCode('```json\n' + JSON.stringify(perm) + '```');
+                // msg.channel.createMessage('```json\n' + JSON.stringify(perm) + '```');
             } else {
                 msg.channel.createMessage('NOPE Role');
             }
