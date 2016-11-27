@@ -59,7 +59,7 @@ class Player extends EventEmitter {
                 }
             }
             this.connection.play(stream, {});
-            this.connection.setVolume(0.2);
+            // this.connection.setVolume(0.2);
             // winston.info(path.resolve(Song.path));
             // updatePlays(Song.id).then(() => {
             //
