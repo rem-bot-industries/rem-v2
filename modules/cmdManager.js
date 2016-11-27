@@ -65,20 +65,22 @@ class CmdManager extends EventEmitter {
                         msg.cmds = this.commands;
                         msg.prefix = Guild.prefix;
                         let command = this.commands[cmd];
-                        let node = `${command.cat}.${command.cmd}`;
-                        this.p.checkPermission(msg, node, (err) => {
-                            if (err) return msg.channel.createMessage(`No permission to use \`${node}\``);
-                            console.log(cmd);
-                            if (command.needGuild) {
-                                if (msg.guild) {
-                                    command.run(msg);
+                        if(command != undefined) {
+                            let node = `${command.cat}.${command.cmd}`;
+                            this.p.checkPermission(msg, node, (err) => {
+                                if (err) return msg.channel.createMessage(`No permission to use \`${node}\``);
+                                console.log(cmd);
+                                if (command.needGuild) {
+                                    if (msg.guild) {
+                                        command.run(msg);
+                                    } else {
+                                        return msg.channel.createMessage(this.t('generic.no-pm', {lngs: msg.lang}))
+                                    }
                                 } else {
-                                    return msg.channel.createMessage(this.t('generic.no-pm', {lngs: msg.lang}))
+                                    command.run(msg);
                                 }
-                            } else {
-                                command.run(msg);
-                            }
-                        });
+                            });
+                        }
                     }
                     catch (err) {
                         winston.error(err.message);
