@@ -30,7 +30,7 @@ class RemoveMessages extends Command {
         args._.splice(1);
         console.log(args);
         // console.log(msg);
-        if (limit > 0) {
+        if (limit > 0 && !isNaN(limit)) {
             this.getMessages(msg, limit, (err, msgs) => {
                 if (err) return msg.channel.createMessage(this.t(err, {lngs: msg.lang}));
                 this.filterMessages(msgs, args, (err, msgs) => {

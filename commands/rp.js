@@ -62,8 +62,25 @@ class GetPermission extends Command {
     }
 
     startCollector(msg) {
-        let collector = msg.CON.addCollector(msg.channel.id);
-        collector.on('message', (msg) => {
+        let collector = msg.CON.addCollector(msg.channel.id, {
+            filter: (newMSG) => {
+                return msg.author.id === newMSG.author.id
+            }
+        });
+        collector.on('message', (collMsg) => {
+            let number = 0;
+            try {
+                number = parseInt(collMsg.content);
+            } catch (e) {
+
+            }
+            if (msg.content.startsWith(msg.prefix)) {
+                collector.stop();
+            }
+            if (collMsg.content === 'c') {
+                collMsg.channel.createMessage(this.t('generic.cancel', {lngs: msg.lang}));
+                collector.stop();
+            }
 
         });
     }
