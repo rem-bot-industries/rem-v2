@@ -47,13 +47,14 @@ class GetPermission extends Command {
                         table.addRow(added + 1, Perm.id, '-', Perm.type, Perm.cat, Perm.perm, Perm.use);
                     }
                     added += 1;
-                    async.setImmediate(() => {
-                        cb();
-                    });
                 }
+                async.setImmediate(() => {
+                    cb();
+                });
             }, (err) => {
                 if (added > 0) {
                     msg.channel.createMessage('```' + table.toString() + '```');
+                    this.startCollector(msg);
                 } else {
                     msg.channel.createMessage(this.t('gp.no-cat', {lngs: msg.lang, cat: type}))
                 }
