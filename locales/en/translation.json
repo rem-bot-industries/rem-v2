@@ -365,7 +365,15 @@
   },
   "gp": {
     "no-cat": "I could not find any permissions with the category {{- cat}}",
-    "no-perms": "You did not add any permissions yet."
+    "no-perms": "You did not add any permissions yet.",
+    "table": {
+      "id": "$t(server-info.id)",
+      "name": "Name",
+      "type": "Type",
+      "cat": "Category",
+      "perm": "Permission",
+      "use": "Use"
+    }
   },
   "rp": {
     "success": "I successfully removed the permission `{{- node}}` from the **{{- type}}** `{{- id}}`"

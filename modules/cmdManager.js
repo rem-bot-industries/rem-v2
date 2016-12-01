@@ -3,7 +3,7 @@
  */
 let EventEmitter = require('eventemitter3');
 const winston = require('winston');
-let fs = require("fs");
+const recursive = require('recursive-readdir');
 let path = require("path");
 let util = require("util");
 let GuildManager = require('./guildManager');
@@ -31,11 +31,11 @@ class CmdManager extends EventEmitter {
 
     load(t, v) {
         this.t = t;
-        fs.readdir(path.join(__dirname, '../commands'), (err, files) => {
+        recursive(path.join(__dirname, '../commands'), (err, files) => {
             let commands = {};
             for (let file of files) {
                 if (file.endsWith('.js')) {
-                    let command = require(path.join(__dirname, '../commands/', file));
+                    let command = require(file);
                     let cmd = new command(t, v);
                     commands[cmd.cmd] = cmd;
                 }
