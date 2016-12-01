@@ -41,9 +41,7 @@ class Selector {
 
     filterMessage(msg) {
         if (msg.author.id === this.msg.author.id) {
-            console.log('uwu');
             if (msg.content === 'c') {
-                console.log('OwO');
                 return true;
             }
             let number = 0;

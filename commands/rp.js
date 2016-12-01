@@ -54,7 +54,7 @@ class GetPermission extends Command {
             }, (err) => {
                 if (added > 0) {
                     msg.channel.createMessage('```' + table.toString() + '```');
-                    this.startCollector(msg);
+                    this.startCollector(msg, added);
                 } else {
                     msg.channel.createMessage(this.t('gp.no-cat', {lngs: msg.lang, cat: type}))
                 }
@@ -62,7 +62,7 @@ class GetPermission extends Command {
         });
     }
 
-    startCollector(msg) {
+    startCollector(msg, added) {
         let collector = msg.CON.addCollector(msg.channel.id, {
             filter: (newMSG) => {
                 return msg.author.id === newMSG.author.id
@@ -82,7 +82,9 @@ class GetPermission extends Command {
                 collMsg.channel.createMessage(this.t('generic.cancel', {lngs: msg.lang}));
                 collector.stop();
             }
-
+            if (number > 0 && number - 1 < added) {
+                console.log(number);
+            }
         });
     }
 }

@@ -12,14 +12,14 @@ class Ping extends Command {
         this.accessLevel = 0;
     }
 
-   run(msg) {
+    run(msg) {
         // this.emit('run');
-       let start = Date.now();
-       msg.channel.createMessage("pong").then(sendedMsg => {
-           let diff = (start - sendedMsg.timestamp);
+        let start = msg.timestamp;
+        msg.channel.createMessage("pong").then(sendedMsg => {
+            let diff = (sendedMsg.timestamp - start);
             sendedMsg.edit(`pong \`${diff}ms\``);
             // this.emit('done');
-        }).catch(e => this.emit('error', {msg:msg, cmd:this.cmd, e:e}));
+        }).catch(e => this.emit('error', {msg: msg, cmd: this.cmd, e: e}));
     }
 }
 module.exports = Ping;

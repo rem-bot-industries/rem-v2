@@ -20,14 +20,14 @@
   },
   "help": {
     "intro": "lets have fun together here on Discord (/^▽^)/ select a command category by responding with {{pre}}help number of command to know more:",
-    "intro_2": "Hey im",
+    "intro_2": "Hey I'm",
     "support": "[SUPPORT]",
     "bug": "get the Link of the support discord",
     "help": "the help command",
     "add": "Get a link to add me to your server",
     "music": "[MUSIC]",
-    "voice": "i join the Voice Channel you are currently in (normal music commands make the bot join the voice channel too)",
-    "leave": "i leave the Voice Channel i am currently connected to. (only usable with WolkeBot Role)",
+    "voice": "I join the Voice Channel you are currently in (normal music commands make the bot join the voice channel too)",
+    "leave": "I leave the Voice Channel I am currently connected to. (only usable with WolkeBot Role)",
     "play": "Play a Song/Youtube Video max Length: 1H30M (only usable with WolkeBot Role)",
     "pause": "Pause the Current Song (only usable with WolkeBot Role)",
     "resume": "Resume the pause Song (only usable with WolkeBot Role)",
@@ -122,7 +122,7 @@
     "uwu": "uwu",
     "dere": "search for a dere definition or get a random one"
   },
-  "version": "Currently i am running on version {{version}}",
+  "version": "Currently I am running on version {{version}}",
   "add": "Use this link to add me to your Server: {{- link}}",
   "bug": "Please join the support discord: {{- link}} to report a bug.",
   "level": {
@@ -207,7 +207,7 @@
   },
   "set-lang": {
     "no-lang": "You did not specify a language! Currently there are {{languages}} available.",
-    "success": "Ok i just set the language for this server to {{- language}}.",
+    "success": "Ok I just set the language for this server to {{- language}}.",
     "unsupported": "This language is not implemented yet, but you can help with it by adding a pull request with your language on github. Currently there are {{languages}} available."
   },
   "np": {
@@ -286,7 +286,7 @@
     "playing": ":musical_note: Now playing **{{- song}}**"
   },
   "prefix": {
-    "success": "Ok i just set the prefix to {{- prefix}}, try `{{- prefix}}ping` to check it",
+    "success": "Ok I just set the prefix to {{- prefix}}, try `{{- prefix}}ping` to check it",
     "no-prefix": "Please add a prefix!"
   },
   "voice": {
