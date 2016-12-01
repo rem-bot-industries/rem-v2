@@ -6,6 +6,7 @@ let winston = require('winston');
 let async = require("async");
 let config = require('../config/main.json');
 let util = require("util");
+let _ = require('lodash');
 /**
  * The permission manager, it loads all permissions from the database and builds the permission tree
  */
@@ -269,6 +270,26 @@ class PermissionManager {
         });
     }
 
+    removePermission(id, perm, cb) {
+        permModel.findOne({id: id}, (err, Perms) => {
+            if (err) {
+                winston.error(err);
+                return cb('generic.error');
+            }
+            if (Perms) {
+                if (Perms.permissions.length > 0) {
+                    let perms = _.reject(Perms.permissions, perm);
+                    console.log(perms);
+                    permModel.update({id: id}, {$set: {permissions: perms}}, cb);
+                } else {
+                    return cb('no-perms');
+                }
+            } else {
+                return cb('no-perms');
+            }
+        });
+    }
+
     createDbPerm(id, perm, cb) {
         let perms = new permModel({
             id: id,
@@ -343,16 +364,4 @@ class PermissionManager {
     }
 
 }
-//TODO make that shit use the db
-/*
-
- {type: 'guild', id: '228604101800230912', cat: 'fun', perm: 'lenny', use: true},
- {type: 'guild', id: '228604101800230912', cat: 'fun', perm: 'lenny', use: false},
- {type: 'guild', id: '228604101800230912', cat: 'fun', perm: 'lenny', use: true},
- {type: 'channel', id: '228604101800230912', cat: 'fun', perm: 'lenny', use: false},
- {type: 'channel', id: '228604101800230912', cat: 'fun', perm: 'lenny', use: true},
- {type: 'role', id: '218549272658968577', cat: 'fun', perm: 'flip', use: true},
- {type: 'role', id: '244643936553926656', cat: 'fun', perm: '*', use: true},
- {type:  'user', id: '128392910574977024', cat: 'fun', perm: 'uwu', use: false}
- */
 module.exports = PermissionManager;

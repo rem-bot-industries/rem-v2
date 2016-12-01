@@ -34,25 +34,26 @@ class GetPermission extends Command {
 
     getPerms(msg, type) {
         this.p.getPermDB(msg, (err, Perms) => {
-            if (err) return msg.channel.createMessage('No perms set yet.');
+            if (err) return msg.channel.createMessage(this.t('gp.no-perms', {lngs: msg.lang}));
             let table = new AsciiTable();
             table.setHeading('ID', 'ID', 'Name', 'type', 'Category', 'Perm', 'Use');
-            let added = 0;
+            let added = [];
             async.eachSeries(Perms, (Perm, cb) => {
                 if (Perm.type === type) {
                     if (type === 'channel') {
                         let channel = rem.getChannel(Perm.id);
-                        table.addRow(added + 1, Perm.id, channel.name, Perm.type, Perm.cat, Perm.perm, Perm.use);
+                        table.addRow(added.length + 1, Perm.id, channel.name, Perm.type, Perm.cat, Perm.perm, Perm.use);
                     } else {
-                        table.addRow(added + 1, Perm.id, '-', Perm.type, Perm.cat, Perm.perm, Perm.use);
+                        table.addRow(added.length + 1, Perm.id, '-', Perm.type, Perm.cat, Perm.perm, Perm.use);
                     }
-                    added += 1;
+                    added.push(Perm);
                 }
                 async.setImmediate(() => {
                     cb();
                 });
             }, (err) => {
-                if (added > 0) {
+                if (added.length > 0) {
+                    table.addRow('c', this.t('generic.cancel'));
                     msg.channel.createMessage('```' + table.toString() + '```');
                     this.startCollector(msg, added);
                 } else {
@@ -79,11 +80,20 @@ class GetPermission extends Command {
                 collector.stop();
             }
             if (collMsg.content === 'c') {
-                collMsg.channel.createMessage(this.t('generic.cancel', {lngs: msg.lang}));
+                collMsg.channel.createMessage(this.t('generic.abort', {lngs: msg.lang}));
                 collector.stop();
             }
-            if (number > 0 && number - 1 < added) {
-                console.log(number);
+            if (number > 0 && number - 1 < added.length) {
+                let perm = added[number - 1];
+                this.p.removePermission(msg.guild.id, perm, (err) => {
+                    if (err) return msg.channel.createMessage(this.t(err, {lngs: msg.lang}));
+                    msg.channel.createMessage(this.t('rp.success', {
+                        lngs: msg.lang,
+                        node: perm.cat + '.' + perm.perm,
+                        type: perm.type,
+                        id: perm.id
+                    }))
+                });
             }
         });
     }

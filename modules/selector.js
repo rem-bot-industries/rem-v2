@@ -31,7 +31,7 @@ class Selector {
             if (this.filterMessage(msg)) {
                 collector.stop();
                 if (msg.content === 'c') {
-                    return cb('canceled');
+                    return cb('generic.abort');
                 } else {
                     return cb(null, this.number);
                 }

@@ -35,6 +35,9 @@ class Volume extends Command {
             if (volume < 0) {
                 return msg.channel.createMessage(`${msg.author.mention},${this.t('generic.negative', {number: volume})}`);
             }
+            if (volume > 200) {
+                return msg.channel.createMessage(`${msg.author.mention},${this.t('voice.too-much', {number: volume})}`);
+            }
             volume = volume / 100;
             this.v.setVolume(msg, volume);
 

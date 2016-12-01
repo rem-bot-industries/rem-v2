@@ -1,22 +1,23 @@
 {
   "generic": {
-    "error": "An error occured!",
+    "error": ":x: An error occured!",
     "no-pm": ":no_entry: This Command does not work in private channels!",
-    "whole-num": "Please use a whole number!",
-    "nan": "Whatever you just send, please just add a whole number. :) ",
-    "no-song-in-queue": "There is no song in the queue, maybe add one :musical_note: ?",
-    "no-song-playing": "There is no song playing at the moment!",
-    "no-permission": "You dont have the permission to use this Command, please add a discord role named WolkeBot to yourself to use it.",
-    "no-voice": "I am not connected to any voice channel on this Server!",
+    "whole-num": ":no_entry_sign: Please use a whole number!",
+    "nan": ":no_entry_sign: Whatever you just send, please just add a whole number. :) ",
+    "no-song-in-queue": ":no_entry_sign: There is no song in the queue, maybe add one :musical_note: ?",
+    "no-song-playing": ":musical_note: There is no song playing at the moment!",
+    "no-permission": ":no_entry_sign: You dont have the permission to use this Command, please add a discord role named WolkeBot to yourself to use it.",
+    "no-voice": ":no_entry_sign: I am not connected to any voice channel on this Server!",
     "level-update": ":tada: You just reached **Level  {{level}}** on **{{- server}}**",
-    "empty-search": "You did not enter a search Term!",
-    "negative": "Please dont use a negative number!",
+    "empty-search": ":no_entry_sign: You did not enter a search Term!",
+    "negative": ":no_entry_sign: Please dont use a negative number!",
     "cancel": "cancel",
+    "abort": ":x: canceled",
     "version": "version",
     "author": "author",
     "lib": "library used",
     "more": "{{number}} more",
-    "cat-nope": "This category does not exist!"
+    "cat-nope": ":no_entry_sign: This category does not exist!"
   },
   "help": {
     "intro": "lets have fun together here on Discord (/^▽^)/ select a command category by responding with {{pre}}help number of command to know more:",
@@ -293,6 +294,7 @@
     "in-queue": "**{{- song}}** is already in the queue.",
     "error-volume": "Error while setting volume!",
     "success-volume": "Set volume to {{- volume}}",
+    "too-much": "You can not set the volume higher than 200!",
     "no-volume": "No volume set!",
     "repeat-start": "Started repeat for **{{- song}}**",
     "already-playing": "This Song is already playing!",
@@ -362,7 +364,11 @@
     "tail": "The coin flipped to tail {{- url}}"
   },
   "gp": {
-    "no-cat": "I could not find any permissions with the category {{- cat}}"
+    "no-cat": "I could not find any permissions with the category {{- cat}}",
+    "no-perms": "You did not add any permissions yet."
+  },
+  "rp": {
+    "success": "I successfully removed the permission `{{- node}}` from the **{{- type}}** `{{- id}}`"
   },
   "dere": {
     "no-dere": "The dere type you searched for does not exist.",

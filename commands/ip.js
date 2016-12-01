@@ -31,7 +31,7 @@ class ImportPlaylist extends Command {
         messageSearch = messageSearch.trim().replace('<', '').replace('>', '');
         if (playlistReg.test(messageSearch)) {
             let selector = new Selector(msg, [{name: 'Import Playlist ?'}], this.t, (err, number) => {
-                if (err) return msg.channel.createMessage(err);
+                if (err) return msg.channel.createMessage(this.t(err, {lngs: msg.lang}));
                 if (number === 1) {
                     let m;
                     console.log(messageSearch);

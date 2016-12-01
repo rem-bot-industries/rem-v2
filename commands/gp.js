@@ -33,13 +33,13 @@ class GetPermission extends Command {
 
     getPerms(msg, type) {
         this.p.getPermDB(msg, (err, Perms) => {
-            if (err) return msg.channel.createMessage('No perms set yet.');
+            if (err) return msg.channel.createMessage(this.t('gp.no-perms', {lngs: msg.lang}));
             let table = new AsciiTable();
             table.setHeading('ID', 'ID', 'type', 'Category', 'Perm', 'Use');
             let added = 0;
             for (let i = 0; i < Perms.length; i++) {
                 if (Perms[i].type === type) {
-                    table.addRow(i + 1, Perms[i].id, Perms[i].type, Perms[i].cat, Perms[i].perm, Perms[i].use);
+                    table.addRow(added + 1, Perms[i].id, Perms[i].type, Perms[i].cat, Perms[i].perm, Perms[i].use);
                     added += 1;
                 }
             }
