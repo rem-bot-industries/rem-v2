@@ -2,6 +2,7 @@
  * Created by julia on 07.11.2016.
  */
 let Command = require('../../Objects/command');
+let winston = require('winston');
 /**
  * The play command
  * plays a song duh.
@@ -27,7 +28,8 @@ class Play extends Command {
     run(msg) {
         this.v.once('error', (err) => {
             this.v.removeAllListeners();
-            msg.channel.createMessage(this.t(err, {lngs: msg.lang}));
+            winston.error(err);
+            msg.channel.createMessage(this.t('generic.error', {lngs: msg.lang}));
         });
         this.v.once('done', (Song) => {
             this.v.removeAllListeners();
