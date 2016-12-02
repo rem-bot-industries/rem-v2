@@ -7,7 +7,7 @@ class WhoFuckedWithMe extends Command {
     constructor(t) {
         super();
         this.cmd = "wfwm";
-        this.cat = "admin";
+        this.cat = "moderation";
         this.needGuild = true;
         this.t = t;
         this.accessLevel = 0;
