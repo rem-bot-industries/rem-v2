@@ -31,11 +31,11 @@ class Play extends Command {
             winston.error(err);
             msg.channel.createMessage(this.t('generic.error', {lngs: msg.lang}));
         });
-        this.v.once('done', (Song) => {
+        this.v.once('added', (Song) => {
             this.v.removeAllListeners();
             msg.channel.createMessage(this.t('play.playing', {lngs: msg.lang, song: Song.title}));
         });
-        this.v.addToQueue(msg, true);
+        this.v.play(msg);
     }
 }
 module.exports = Play;
