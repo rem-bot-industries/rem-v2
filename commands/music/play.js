@@ -35,7 +35,7 @@ class Play extends Command {
             this.v.removeAllListeners();
             msg.channel.createMessage(this.t('play.playing', {lngs: msg.lang, song: Song.title}));
         });
-        this.v.play(msg);
+        this.v.addToQueue(msg, true);
     }
 }
 module.exports = Play;
