@@ -39,7 +39,11 @@ class GetChannelPermission extends Command {
                 });
             }
         }
-        msg.channel.createMessage(final.length - 1 + ' people can view this channel.');
+        if (final.length > 0) {
+            msg.channel.createMessage(final.length - 1 + ' people can view this channel.');
+        } else {
+            msg.channel.createMessage(msg.guild.memberCount + ' people can view this channel.');
+        }
     }
 }
 module.exports = GetChannelPermission;
