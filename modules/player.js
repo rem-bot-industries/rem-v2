@@ -119,6 +119,7 @@ class Player extends EventEmitter {
         Song.qid = shortid.generate();
         if (immediate) {
             this.queue.songs.unshift(Song);
+            this.endSong();
             this.play(Song);
         } else {
             this.queue.songs.push(Song);
