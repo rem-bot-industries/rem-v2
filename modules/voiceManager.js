@@ -50,27 +50,7 @@ class VoiceManager extends EventEmitter {
     }
 
     play(msg) {
-        this.join(msg, (err, conn) => {
-            if (err) {
-                console.log(err);
-                return this.emit('error', err);
-            }
-            let importer = new SongImporter(msg, true);
-            importer.once('error', (err) => {
-                this.emit('error', err);
-                importer.removeAllListeners();
-            });
-            importer.once('done', (Song) => {
-                importer.removeAllListeners();
-                this.emit('done', Song);
-                if (typeof (this.players[msg.guild.id]) !== 'undefined') {
-                    this.players[msg.guild.id].addToQueue(Song, true);
-                } else {
-                    this.players[msg.guild.id] = new Player(msg, conn, ytdl);
-                    this.players[msg.guild.id].addToQueue(Song, true);
-                }
-            });
-        });
+        this.addToQueue(msg, true);
     }
 
     pause(msg) {
