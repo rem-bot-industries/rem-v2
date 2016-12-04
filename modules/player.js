@@ -38,15 +38,40 @@ class Player extends EventEmitter {
      * @param {Object} Song - the song to play
      */
     play(Song) {
-        if (this.connection) {
+        if (this.connection && this.connection.ready) {
             let stream;
+            let opus = false;
             if (YoutubeReg.test(Song.url)) {
-                let options = {
-                    filter: (format) => format.container === 'mp4' && format.audioEncoding || format.container === 'webm' && format.audioEncoding,
-                    quality: ['250', '249', '140', '141', '139', 'lowest'],
-                    audioonly: true
-                };
-                stream = this.ytdl(Song.url, options)
+                this.ytdl.getInfo(Song.url, (err, info) => {
+                    if (err) {
+                        winston.error(err);
+                        this.emit('error');
+                        this.nextSong(Song);
+                    }
+                    console.log('got info!');
+                    let url = this.filterStreams(info.formats);
+                    console.log(url);
+                    if (url) {
+                        console.log(url);
+                        console.log('Streaming opus');
+                        stream = request(url);
+                        opus = true;
+                    } else {
+                        let options = {
+                            filter: (format) => format.container === 'mp4' && format.audioEncoding || format.container === 'webm' && format.audioEncoding,
+                            quality: ['250', '249', '251', '140', '141', '139', 'lowest'],
+                            audioonly: true
+                        };
+                        console.log('Streaming ytdl');
+                        stream = this.ytdl(Song.url, options)
+                    }
+                    let options = {};
+                    if (opus) {
+                        options.format = 'webm';
+                        options.frameDuration = 20;
+                    }
+                    this.connection.play(stream, options);
+                });
             } else {
                 if (Song.type === "osuV2") {
                     try {
@@ -57,9 +82,8 @@ class Player extends EventEmitter {
                 } else {
                     stream = request(Song.url);
                 }
+                this.connection.play(stream);
             }
-            this.connection.play(stream, {inlineVolume: true});
-            this.connection.setVolume(0.2);
             // winston.info(path.resolve(Song.path));
             // updatePlays(Song.id).then(() => {
             //
@@ -83,6 +107,9 @@ class Player extends EventEmitter {
                 winston.info(`Error: ${err}`);
             });
         } else {
+            setTimeout(() => {
+                this.play(Song);
+            }, 500);
         }
     }
 
@@ -208,6 +235,17 @@ class Player extends EventEmitter {
 
     randomizeQueue() {
 
+    }
+
+    filterStreams(formats) {
+        for (let i = 0; i < formats.length; i++) {
+            console.log(formats[i].itag);
+            if (formats[i].itag === '250') {
+                console.log(formats[i]);
+                return formats[i].url;
+            }
+        }
+        return null;
     }
 
     /**
