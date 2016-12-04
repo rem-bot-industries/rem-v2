@@ -114,6 +114,7 @@ class Shard extends EventEmitter {
         //     });
         // }
         if (this.ready && !msg.author.bot) {
+            console.log(msg);
             this.CON.invokeAllCollectors(msg);
             this.CMD.check(msg);
         }

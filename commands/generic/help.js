@@ -35,18 +35,27 @@ class Help extends Command {
         if (msgSplit.length > 0) {
             return this.exactHelp(msg, msgSplit);
         }
-        msg.author.getDMChannel().then(channel => {
-            channel.createMessage({
-                embed: {
-                    author: {name: "Command categories"},
-                    footer: {text: "Type !w.help number to get the commands of a category"},
-                    fields: this.categories_name,
-                    color: 0x00ADFF
-                }
-            }).then(msg => {
+        let reply = {
+            embed: {
+                author: {name: "Command categories"},
+                footer: {text: "Type !w.help number to get the commands of a category"},
+                fields: this.categories_name,
+                color: 0x00ADFF
+            }
+        };
+        if (msg.channel.type !== 1) {
+            msg.author.getDMChannel().then(channel => {
+                this.catReply(channel, reply);
+            }).catch(e => winston.error);
+        } else {
+            this.catReply(msg.channel, reply);
+        }
+    }
 
-            });
-        }).catch(e => winston.error);
+    catReply(channel, reply) {
+        channel.createMessage(reply).then(msg => {
+
+        });
     }
 
     buildHelp(msg) {
@@ -80,15 +89,23 @@ class Help extends Command {
             if (cat) {
                 this.sendReply(msg, cat);
             } else {
-                msg.author.getDMChannel().then(channel => {
-                    channel.createMessage(this.t('generic.cat-nope', {lngs: msg.lang}));
-                }).catch(e => winston.error);
+                if (msg.channel.type !== 1) {
+                    msg.author.getDMChannel().then(channel => {
+                        this.catReply(channel, this.t('generic.cat-nope', {lngs: msg.lang}));
+                    }).catch(e => winston.error);
+                } else {
+                    this.catReply(msg.channel, this.t('generic.cat-nope', {lngs: msg.lang}));
+                }
             }
         }
         if (number < 1) {
-            msg.author.getDMChannel().then(channel => {
-                return channel.createMessage(this.t('generic.negative', {number: number}));
-            }).catch(e => winston.error);
+            if (msg.channel.type !== 1) {
+                msg.author.getDMChannel().then(channel => {
+                    this.catReply(channel, this.t('generic.negative', {number: number}));
+                }).catch(e => winston.error);
+            } else {
+                this.catReply(msg.channel, this.t('generic.negative', {number: number}));
+            }
         }
         if (!isNaN(number) && number <= this.categories.length) {
             this.sendReply(msg, this.categories[number - 1]);
@@ -114,11 +131,13 @@ class Help extends Command {
                 color: 0x00ADFF
             }
         };
-        msg.author.getDMChannel().then(channel => {
-            channel.createMessage(reply).then(msg => {
-
-            });
-        }).catch(e => winston.error);
+        if (msg.channel.type !== 1) {
+            msg.author.getDMChannel().then(channel => {
+                this.catReply(channel, reply);
+            }).catch(e => winston.error);
+        } else {
+            this.catReply(channel, reply);
+        }
 
     }
 
