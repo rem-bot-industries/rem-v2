@@ -281,6 +281,19 @@
     "region": "Region",
     "owner": "Owner"
   },
+  "user-info": {
+    "id": "$t(server-info.id)",
+    "name": "$t(server-info.name)",
+    "discriminator": "discriminator",
+    "nick": "Nickname",
+    "join": "Joined",
+    "created": "Created",
+    "playing": "Playing",
+    "info": "Userinfo",
+    "bot": "Bot",
+    "status": "Status",
+    "role": "Roles"
+  },
   "leave": "Ok I left the voice channel.",
   "play": {
     "no-result": "No song found!",
