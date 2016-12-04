@@ -37,7 +37,7 @@ class ImportPlaylist extends Command {
                     console.log(messageSearch);
                     if ((m = playlistReg.exec(messageSearch)) !== null) {
                         winston.info(`using Playlist ${m[1]}`);
-                        msg.channel.createMessage('Ok, I wirru now importu ze pureilisto.. Zis kutto teku a bitto, so I wirru mention yu when I am donu.');
+                        msg.channel.createMessage('Ok, I will now import the playlist, this will take a bit..');
                         this.playlist(msg, m[1]);
                     } else {
                         console.log(m);
@@ -58,28 +58,15 @@ class ImportPlaylist extends Command {
         });
         this.importer.once('done', (playlist, songs) => {
             msg.channel.createMessage(`Alright, I just imported the playlist with the id ${playlist.id}, with a total of ${songs.length} Songs`);
-            this.loadSongsBatch(msg, songs, (err, songs) => {
+            this.loadSongsBatch(songs, (err, songs) => {
                 if (err) return winston.info(err);
                 this.v.addToQueueBatch(msg, songs);
             });
         });
     }
 
-    loadSongsBatch(msg, songs, cb) {
-        let sngs = [];
-        let importer = new SongImporter(msg, false);
-        async.eachSeries(songs, (info, cb) => {
-            importer.importSongDB(info, (err, Song) => {
-                if (err) return cb(err);
-                if (Song) {
-                    sngs.push(Song);
-                    cb();
-                }
-            })
-        }, (err) => {
-            if (err) return cb(err);
-            cb(null, sngs);
-        });
+    loadSongsBatch(songs, cb) {
+        songModel.find({id: {"$in": songs}}, cb);
     }
 
 }

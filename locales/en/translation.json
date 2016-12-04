@@ -139,7 +139,7 @@
   },
   "nsfw-images": {
     "nothing-found": "No images found with tags: `{{tags}}`",
-    "no-nsfw-channel": "Please set/add a NSFW channel with {{- prefix}}setLewd (in one of the NSFW Channels) to use NSFW Commands"
+    "error-body": "There was an error parsing the api response. Please try again, if the problem persists contact Wolke#6746"
   },
   "8ball": {
     "answers": [

@@ -142,18 +142,22 @@ class VoiceManager extends EventEmitter {
                     this.players[msg.guild.id].addToQueue(song, false);
                     setTimeout(() => {
                         cb();
-                    }, 500);
+                    }, 100);
                 } else {
                     this.players[msg.guild.id] = new Player(msg, conn, ytdl);
                     this.players[msg.guild.id].addToQueue(song, false);
                     setTimeout(() => {
                         cb();
-                    }, 500);
+                    }, 100);
                 }
             }, (err) => {
                 if (err) return winston.error(err);
             });
         });
+    }
+
+    shuffleQueue() {
+
     }
 }
 module.exports = VoiceManager;

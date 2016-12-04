@@ -178,6 +178,10 @@ class Player extends EventEmitter {
         return this.queue;
     }
 
+    setQueue(queue) {
+        this.queue = queue;
+    }
+
     announce(Song) {
 
     }
@@ -199,6 +203,10 @@ class Player extends EventEmitter {
     }
 
     syncQueue() {
+
+    }
+
+    randomizeQueue() {
 
     }
 

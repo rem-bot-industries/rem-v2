@@ -61,7 +61,7 @@ class PlaylistImporter extends BasicImporter {
                 winston.error(err);
                 return this.emit('error', 'generic.error');
             }
-            this.emit('done', playlist, songs);
+            this.emit('done', playlist, songsId);
         });
     }
 }
