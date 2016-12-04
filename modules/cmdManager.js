@@ -55,7 +55,7 @@ class CmdManager extends EventEmitter {
     }
 
     check(msg) {
-        if (this.ready && !msg.author.bot) {
+        if (this.ready) {
             this.loadGuild(msg, (err, Guild) => {
                 if (err) return winston.error(err);
                 msg.db = Guild;

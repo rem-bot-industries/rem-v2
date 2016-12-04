@@ -16,7 +16,7 @@ class SetPrefix extends Command {
 
     run(msg) {
         let msgSplit = msg.content.split(' ');
-        if (typeof (msgSplit[1]) !== 'undefined' && msg.mentions.users.size === 0) {
+        if (typeof (msgSplit[1]) !== 'undefined' && msg.mentions.length === 0) {
             this.g.changePrefix(msg.guild.id, msgSplit[1], (err) => {
                 if (err) return msg.channel.createMessage(this.t('generic.error', {lngs: msg.lang}));
                 msg.channel.createMessage(`${msg.author.mention}, ${this.t('prefix.success', {

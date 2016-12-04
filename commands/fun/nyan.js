@@ -16,7 +16,7 @@ class uwu extends Command {
     }
 
     run(msg) {
-        request.get('https://rra.ram.moe/i/r', { params: {"type": "nyan"} }, (err, result, body) => {
+        request.get('https://rra.ram.moe/i/r', {qs: {"type": "nyan"}}, (err, result, body) => {
             if (err) return winston.error(err);
             let parsedBody = JSON.parse(body);
             msg.channel.createMessage(`https://rra.ram.moe${parsedBody.path}`);
