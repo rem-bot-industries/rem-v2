@@ -4,10 +4,10 @@
 let Command = require('../../Objects/command');
 let winston = require('winston');
 let request = require('request');
-class Konachan extends Command {
+class Yandere extends Command {
     constructor(t) {
         super();
-        this.cmd = "kona";
+        this.cmd = "yandere";
         this.cat = "nsfw";
         this.needGuild = false;
         this.t = t;
@@ -26,7 +26,7 @@ class Konachan extends Command {
             }
         }
         msgSearch = 'order:score rating:questionableplus ' + searchOrig;
-        request.get('https://konachan.com/post.json', {
+        request.get('https://yande.re/post.json', {
             qs: {
                 limit: 200,
                 tags: msgSearch
@@ -58,4 +58,4 @@ class Konachan extends Command {
         });
     }
 }
-module.exports = Konachan;
+module.exports = Yandere;
