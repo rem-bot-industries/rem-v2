@@ -29,12 +29,12 @@ class SayDelete extends Command {
     save(msg) {
         let message = new msgModel({
             id: msg.id,
-            authorId: msg.author.id + '#' + msg.author.discriminator,
+            authorId: msg.author.id,
             channelId: msg.channel.id,
             content: msg.trueContent,
             time: Date.now(),
             guildId: msg.guild.id,
-            name: msg.author.username
+            name: msg.author.username + '#' + msg.author.discriminator
         });
         message.save((err) => {
             if (err) return winston.error(err);
