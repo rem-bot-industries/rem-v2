@@ -136,7 +136,7 @@ class Help extends Command {
                 this.catReply(channel, reply);
             }).catch(e => winston.error);
         } else {
-            this.catReply(channel, reply);
+            this.catReply(msg.channel, reply);
         }
 
     }
