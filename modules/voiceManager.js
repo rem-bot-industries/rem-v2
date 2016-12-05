@@ -30,6 +30,7 @@ class VoiceManager extends EventEmitter {
                     cb('joinVoice.no-voice');
                 }
             } else {
+                console.log('Found Connection!');
                 cb(null, conn);
             }
         }
@@ -39,7 +40,7 @@ class VoiceManager extends EventEmitter {
         if (msg.guild) {
             let conn = rem.voiceConnections.get(msg.guild.id);
             if (conn) {
-                conn.disconnect();
+                rem.voiceConnections.leave(msg.guild.id);
                 this.players[msg.guild.id] = null;
                 delete this.players[msg.guild.id];
                 cb();
@@ -77,6 +78,10 @@ class VoiceManager extends EventEmitter {
             let importer = new SongImporter(msg, true);
             importer.once('long', (url) => {
                 this.emit('info', 'qa.started-download', url);
+            });
+            importer.once('search-result', (results) => {
+                importer.removeAllListeners();
+                this.emit('search-result', results);
             });
             importer.once('error', (err) => {
                 importer.removeAllListeners();

@@ -39,6 +39,7 @@
     "winston-daily-rotate-file": "^1.4.0",
     "youtube-api": "^2.0.4",
     "youtube-dl": "^1.11.1",
+    "youtube-search": "^1.0.6",
     "ytdl-core": "^0.7.20"
   },
   "devDependencies": {

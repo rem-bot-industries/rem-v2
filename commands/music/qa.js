@@ -2,6 +2,7 @@
  * Created by julia on 07.11.2016.
  */
 let Command = require('../../Objects/command');
+let Selector = require('../../modules/selector');
 /**
  * The addToQueueCommand
  * @extends Command
@@ -13,7 +14,7 @@ class AddToQueue extends Command {
      * @param {Function} t - the translation module
      * @param {Object} v - the voice manager
      */
-    constructor(t,v) {
+    constructor(t, v) {
         super();
         this.cmd = "qa";
         this.cat = "music";
@@ -36,6 +37,16 @@ class AddToQueue extends Command {
         this.v.once('added', (Song) => {
             this.clearListeners();
             msg.channel.createMessage(this.t('qa.success', {song: Song.title, lngs: msg.lang}));
+        });
+        this.v.once('search-result', (results) => {
+            let selector = new Selector(msg, results, this.t, (err, number) => {
+                if (err) {
+                    this.clearListeners();
+                    return msg.channel.createMessage(this.t(err, {lngs: msg.lang}));
+                }
+                msg.content = results[number - 1].link;
+                this.v.addToQueue(msg, false);
+            });
         });
         this.v.addToQueue(msg, false);
         setTimeout(() => {

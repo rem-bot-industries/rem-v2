@@ -21,7 +21,7 @@ class Help extends Command {
     run(msg) {
         this.categories = [];
         this.categories_name = [];
-        let msgSplit = msg.content.split(' ').splice(1);
+        let msgSplit = msg.content.split(' ').shift();
         if (this.categories.length < 1) {
             this.buildHelp(msg);
         }

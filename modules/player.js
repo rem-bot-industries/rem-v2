@@ -241,7 +241,7 @@ class Player extends EventEmitter {
         for (let i = 0; i < formats.length; i++) {
             // console.log(formats[i].itag);
             if (formats[i].itag === '250') {
-                console.log(formats[i]);
+                // console.log(formats[i]);
                 return formats[i].url;
             }
         }
