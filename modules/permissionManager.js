@@ -279,7 +279,7 @@ class PermissionManager {
             if (Perms) {
                 if (Perms.permissions.length > 0) {
                     let perms = _.reject(Perms.permissions, perm);
-                    console.log(perms);
+                    // console.log(perms);
                     permModel.update({id: id}, {$set: {permissions: perms}}, cb);
                 } else {
                     return cb('no-perms');

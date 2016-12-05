@@ -324,6 +324,7 @@
   },
   "vskip": {
     "user-no-voice": "You can not voteskip, if you are not in the same voicechannel!",
+    "vote": "Type {{- prefix}}yes to voteskip the current song. Current votepercentage at {{- perct}}%/{{- needed}}\nUsers that have voted:\n ```{{- table}}```",
     "same-voice": "You are not in the same voicechannel as I am!",
     "dup": "You already voted!",
     "success-add": "Added Your Vote, votepercentage at **{{current}}%/{{needed}}%**",

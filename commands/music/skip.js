@@ -2,6 +2,7 @@
  * Created by julia on 07.11.2016.
  */
 let Command = require('../../Objects/command');
+let AsciiTable = require('ascii-table');
 /**
  * The vote skip command
  * @extends Command
@@ -33,33 +34,66 @@ class ForceSkip extends Command {
             this.v.removeAllListeners();
             msg.channel.createMessage(this.t('skip.success', {lngs: msg.lang, title: song.title}));
         });
-        if (msg.member.voiceChannel && this.v.getConnection(msg) && msg.member.voiceChannel.equals(this.v.getConnection(msg).channel)) {
-            let channel = msg.member.voiceChannel;
-            if (channel.members.size > 2) {
+        if (msg.member.voiceState.channelID && rem.voiceConnections.get(msg.guild.id) && msg.member.voiceState.channelID === rem.voiceConnections.get(msg.guild.id).channelID) {
+            let channelID = msg.member.voiceState.channelID;
+            let channel = msg.guild.channels.find((c) => c.id === channelID);
+            // console.log(channel.voiceMembers);
+            console.log(channel.voiceMembers.size);
+            if (channel.voiceMembers.size > 0) {
                 this.msg = msg;
-                this.startVoteskip(msg);
+                this.startVoteskip(msg, channel.voiceMembers.size);
             } else {
+                console.log('Force!');
                 this.v.forceSkip(msg);
             }
         }
     }
 
-    startVoteskip(msg) {
-        let voted = [msg.author.id];
-
-        let collector = new MessageCollector(msg.channel, (msg, coll) => {
-            if (msg.content === `${this.msg.prefix}yes` && this.checkVoted(msg, voted)) {
-                return true
-            }
-        }, {});
-        collector.on('message', (msg) => {
-
+    startVoteskip(msg, size) {
+        let voted = [{id: msg.author.id, name: msg.member.nick ? msg.member.nick : msg.author.username}];
+        let table = new AsciiTable();
+        table.addRow(msg.author.username + '#' + msg.author.discriminator);
+        let percentage = voted.length / size * 100;
+        msg.channel.createMessage(this.t('vskip.vote', {
+            lngs: this.msg.lang,
+            prefix: this.msg.prefix,
+            perct: percentage,
+            needed: 50,
+            table: table.toString()
+        })).then(voteMsg => {
+            let collector = msg.CON.addCollector(msg.channel.id, {});
+            collector.on('message', (msg) => {
+                if (msg.content !== `${this.msg.prefix}yes` && msg.content.startsWith(this.msg.prefix)) {
+                    collector.stop();
+                    voteMsg.delete();
+                    this.v.removeAllListeners();
+                } else {
+                    voted.push({id: msg.author.id, name: msg.member.nick ? msg.member.nick : msg.author.username});
+                    table.addRow(msg.author.username + '#' + msg.author.discriminator);
+                    percentage = voted.length / size * 100;
+                    if (percentage === 50 || percentage > 50) {
+                        collector.stop();
+                        voteMsg.delete();
+                        this.v.forceSkip(msg);
+                    } else {
+                        voteMsg.edit(this.t('vskip.vote', {
+                            lngs: this.msg.lang,
+                            prefix: this.msg.prefix,
+                            perct: percentage,
+                            needed: 50,
+                            table: table.toString()
+                        }));
+                    }
+                }
+            });
         });
+        //&& this.checkVoted(msg, voted))
     }
+
 
     checkVoted(msg, voted) {
         for (let i = 0; i < voted.length; i++) {
-            if (msg.authod.id === voted[i]) {
+            if (msg.author.id === voted[i].id) {
                 return false;
             }
         }

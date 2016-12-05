@@ -40,7 +40,7 @@ class SongImporter extends EventEmitter {
 
     importSong() {
         let messageSearch = "";
-        console.log(this.messageSplit);
+        // console.log(this.messageSplit);
         if (this.messageSplit.length > 1) {
             this.messageSplit.shift();
         }
