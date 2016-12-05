@@ -21,10 +21,8 @@ class Help extends Command {
     run(msg) {
         this.categories = [];
         this.categories_name = [];
-        let msgSplit = msg.content.split(' ').shift();
-        if (this.categories.length < 1) {
-            this.buildHelp(msg);
-        }
+        let msgSplit = msg.content.split(' ').splice(1);
+        this.buildHelp(msg);
         this.msg = msg;
         if (msg.guild) {
             msg.channel.createMessage(`${msg.author.mention}, ${this.t('help.helpReply', {

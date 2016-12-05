@@ -59,6 +59,7 @@ class CmdManager extends EventEmitter {
             this.loadGuild(msg, (err, Guild) => {
                 if (err) return winston.error(err);
                 msg.db = Guild;
+                msg.cmds = this.commands;
                 if (msg.content.startsWith(Guild.prefix)) {
                     try {
                         let cmd = msg.content.substr(Guild.prefix.length).split(' ')[0];
@@ -66,7 +67,6 @@ class CmdManager extends EventEmitter {
                         if(command !== undefined) {
                             msg.lang = [Guild.lng, 'en'];
                             msg.lngs = this.lngs;
-                            msg.cmds = this.commands;
                             msg.prefix = Guild.prefix;
                             let node = `${command.cat}.${command.cmd}`;
                             this.p.checkPermission(msg, node, (err) => {
