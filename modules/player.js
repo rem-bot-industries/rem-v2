@@ -48,11 +48,11 @@ class Player extends EventEmitter {
                         this.emit('error');
                         this.nextSong(Song);
                     }
-                    console.log('got info!');
+                    // console.log('got info!');
                     let url = this.filterStreams(info.formats);
-                    console.log(url);
+                    // console.log(url);
                     if (url) {
-                        console.log(url);
+                        // console.log(url);
                         console.log('Streaming opus');
                         stream = request(url);
                         opus = true;
@@ -239,7 +239,7 @@ class Player extends EventEmitter {
 
     filterStreams(formats) {
         for (let i = 0; i < formats.length; i++) {
-            console.log(formats[i].itag);
+            // console.log(formats[i].itag);
             if (formats[i].itag === '250') {
                 console.log(formats[i]);
                 return formats[i].url;
