@@ -122,7 +122,8 @@
     "coin": "flips a coin for you",
     "nyan": "Nya :3",
     "uwu": "uwu",
-    "dere": "search for a dere definition or get a random one"
+    "dere": "search for a dere definition or get a random one",
+    "love": "Gives the mentioned user a love point, add - to reduce the lovepoints of the user by 1"
   },
   "version": "Currently I am running on version {{version}}",
   "add": "Use this link to add me to your Server: {{- link}}",
