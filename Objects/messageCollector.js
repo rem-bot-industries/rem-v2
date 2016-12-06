@@ -6,7 +6,7 @@ Array.prototype.removeItem = function (item) {
 };
 let EventEmitter = require('eventemitter3');
 class MessageCollector extends EventEmitter {
-    constructor(channelID, opts, filter) {
+    constructor(channelID, opts) {
         super();
         this.max = 1000;
         this.filter = (msg) => {

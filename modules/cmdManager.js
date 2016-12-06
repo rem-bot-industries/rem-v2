@@ -3,12 +3,13 @@
  */
 let EventEmitter = require('eventemitter3');
 const winston = require('winston');
-let fs = require("fs");
+const recursive = require('recursive-readdir');
 let path = require("path");
 let util = require("util");
 let GuildManager = require('./guildManager');
 let PermManager = require('./permissionManager');
 let CleverBotManager = require('./cleverbot');
+let StatManager = require('./statManager');
 class CmdManager extends EventEmitter {
     constructor(l, v) {
         super();
@@ -23,17 +24,18 @@ class CmdManager extends EventEmitter {
         this.g = new GuildManager();
         this.p = new PermManager();
         this.c = new CleverBotManager();
+        this.s = new StatManager();
         this.commands = {};
         this.ready = false;
     }
 
     load(t, v) {
         this.t = t;
-        fs.readdir(path.join(__dirname, '../commands'), (err, files) => {
+        recursive(path.join(__dirname, '../commands'), (err, files) => {
             let commands = {};
             for (let file of files) {
                 if (file.endsWith('.js')) {
-                    let command = require(path.join(__dirname, '../commands/', file));
+                    let command = require(file);
                     let cmd = new command(t, v);
                     commands[cmd.cmd] = cmd;
                 }
@@ -57,26 +59,32 @@ class CmdManager extends EventEmitter {
             this.loadGuild(msg, (err, Guild) => {
                 if (err) return winston.error(err);
                 msg.db = Guild;
+                msg.cmds = this.commands;
                 if (msg.content.startsWith(Guild.prefix)) {
                     try {
                         let cmd = msg.content.substr(Guild.prefix.length).split(' ')[0];
-                        msg.lang = [Guild.lng, 'en'];
-                        msg.lngs = this.lngs;
-                        msg.cmds = this.commands;
-                        msg.prefix = Guild.prefix;
                         let command = this.commands[cmd];
                         if(command !== undefined) {
+                            msg.lang = [Guild.lng, 'en'];
+                            msg.lngs = this.lngs;
+                            msg.prefix = Guild.prefix;
                             let node = `${command.cat}.${command.cmd}`;
                             this.p.checkPermission(msg, node, (err) => {
-                                if (err) return msg.channel.createMessage(`No permission to use \`${node}\``);
+                                if (err) {
+                                    this.s.logCmdStat(msg, cmd, false, 'permission');
+                                    return msg.channel.createMessage(`No permission to use \`${node}\``);
+                                }
                                 console.log(cmd);
                                 if (command.needGuild) {
                                     if (msg.guild) {
+                                        this.s.logCmdStat(msg, cmd, true);
                                         command.run(msg);
                                     } else {
+                                        this.s.logCmdStat(msg, cmd, false, 'need-guild');
                                         return msg.channel.createMessage(this.t('generic.no-pm', {lngs: msg.lang}))
                                     }
                                 } else {
+                                    this.s.logCmdStat(msg, cmd, true);
                                     command.run(msg);
                                 }
                             });
@@ -88,9 +96,12 @@ class CmdManager extends EventEmitter {
                     }
                 } else {
                     if (msg.guild && msg.mentions.length === 1 && msg.mentions[0].id === rem.user.id) {
-                        console.log('talk');
                         this.p.checkPermission(msg, 'fun.cleverbot', (err) => {
-                            if (err) return msg.channel.createMessage(`No permission to use \`fun.cleverbot\``);
+                            if (err) {
+                                this.s.logCmdStat(msg, 'cleverbot', false, 'permission');
+                                return msg.channel.createMessage(`No permission to use \`fun.cleverbot\``);
+                            }
+                            this.s.logCmdStat(msg, 'cleverbot', true);
                             this.c.talk(msg);
                         });
                     }

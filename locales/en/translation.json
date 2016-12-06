@@ -1,33 +1,34 @@
 {
   "generic": {
-    "error": "An error occured!",
+    "error": ":x: An error occured!",
     "no-pm": ":no_entry: This Command does not work in private channels!",
-    "whole-num": "Please use a whole number!",
-    "nan": "Whatever you just send, please just add a whole number. :) ",
-    "no-song-in-queue": "There is no song in the queue, maybe add one :musical_note: ?",
-    "no-song-playing": "There is no song playing at the moment!",
-    "no-permission": "You dont have the permission to use this Command, please add a discord role named WolkeBot to yourself to use it.",
-    "no-voice": "I am not connected to any voice channel on this Server!",
+    "whole-num": ":no_entry_sign: Please use a whole number!",
+    "nan": ":no_entry_sign: Whatever you just send, please just add a whole number. :) ",
+    "no-song-in-queue": ":no_entry_sign: There is no song in the queue, maybe add one :musical_note: ?",
+    "no-song-playing": ":musical_note: There is no song playing at the moment!",
+    "no-permission": ":no_entry_sign: You dont have the permission to use this Command, please add a discord role named WolkeBot to yourself to use it.",
+    "no-voice": ":no_entry_sign: I am not connected to any voice channel on this Server!",
     "level-update": ":tada: You just reached **Level  {{level}}** on **{{- server}}**",
-    "empty-search": "You did not enter a search Term!",
-    "negative": "Please dont use a negative number!",
+    "empty-search": ":no_entry_sign: You did not enter a search Term!",
+    "negative": ":no_entry_sign: Please dont use a negative number!",
     "cancel": "cancel",
+    "abort": ":x: canceled",
     "version": "version",
     "author": "author",
     "lib": "library used",
     "more": "{{number}} more",
-    "cat-nope": "This category does not exist!"
+    "cat-nope": ":no_entry_sign: This category does not exist!"
   },
   "help": {
     "intro": "lets have fun together here on Discord (/^▽^)/ select a command category by responding with {{pre}}help number of command to know more:",
-    "intro_2": "Hey im",
+    "intro_2": "Hey I'm",
     "support": "[SUPPORT]",
     "bug": "get the Link of the support discord",
     "help": "the help command",
     "add": "Get a link to add me to your server",
     "music": "[MUSIC]",
-    "voice": "i join the Voice Channel you are currently in (normal music commands make the bot join the voice channel too)",
-    "leave": "i leave the Voice Channel i am currently connected to. (only usable with WolkeBot Role)",
+    "voice": "I join the Voice Channel you are currently in (normal music commands make the bot join the voice channel too)",
+    "leave": "I leave the Voice Channel I am currently connected to. (only usable with WolkeBot Role)",
     "play": "Play a Song/Youtube Video max Length: 1H30M (only usable with WolkeBot Role)",
     "pause": "Pause the Current Song (only usable with WolkeBot Role)",
     "resume": "Resume the pause Song (only usable with WolkeBot Role)",
@@ -122,7 +123,7 @@
     "uwu": "uwu",
     "dere": "search for a dere definition or get a random one"
   },
-  "version": "Currently i am running on version {{version}}",
+  "version": "Currently I am running on version {{version}}",
   "add": "Use this link to add me to your Server: {{- link}}",
   "bug": "Please join the support discord: {{- link}} to report a bug.",
   "level": {
@@ -138,7 +139,7 @@
   },
   "nsfw-images": {
     "nothing-found": "No images found with tags: `{{tags}}`",
-    "no-nsfw-channel": "Please set/add a NSFW channel with {{- prefix}}setLewd (in one of the NSFW Channels) to use NSFW Commands"
+    "error-body": "There was an error parsing the api response. Please try again, if the problem persists contact Wolke#6746"
   },
   "8ball": {
     "answers": [
@@ -207,7 +208,7 @@
   },
   "set-lang": {
     "no-lang": "You did not specify a language! Currently there are {{languages}} available.",
-    "success": "Ok i just set the language for this server to {{- language}}.",
+    "success": "Ok I just set the language for this server to {{- language}}.",
     "unsupported": "This language is not implemented yet, but you can help with it by adding a pull request with your language on github. Currently there are {{languages}} available."
   },
   "np": {
@@ -280,19 +281,33 @@
     "region": "Region",
     "owner": "Owner"
   },
+  "user-info": {
+    "id": "$t(server-info.id)",
+    "name": "$t(server-info.name)",
+    "discriminator": "discriminator",
+    "nick": "Nickname",
+    "join": "Joined",
+    "created": "Created",
+    "playing": "Playing",
+    "info": "Userinfo",
+    "bot": "Bot",
+    "status": "Status",
+    "role": "Roles"
+  },
   "leave": "Ok I left the voice channel.",
   "play": {
     "no-result": "No song found!",
     "playing": ":musical_note: Now playing **{{- song}}**"
   },
   "prefix": {
-    "success": "Ok i just set the prefix to {{- prefix}}, try `{{- prefix}}ping` to check it",
+    "success": "Ok I just set the prefix to {{- prefix}}, try `{{- prefix}}ping` to check it",
     "no-prefix": "Please add a prefix!"
   },
   "voice": {
     "in-queue": "**{{- song}}** is already in the queue.",
     "error-volume": "Error while setting volume!",
     "success-volume": "Set volume to {{- volume}}",
+    "too-much": "You can not set the volume higher than 200!",
     "no-volume": "No volume set!",
     "repeat-start": "Started repeat for **{{- song}}**",
     "already-playing": "This Song is already playing!",
@@ -309,6 +324,7 @@
   },
   "vskip": {
     "user-no-voice": "You can not voteskip, if you are not in the same voicechannel!",
+    "vote": "Type {{- prefix}}yes to voteskip the current song. Current votepercentage at {{- perct}}%/{{- needed}}\nUsers that have voted:\n ```{{- table}}```",
     "same-voice": "You are not in the same voicechannel as I am!",
     "dup": "You already voted!",
     "success-add": "Added Your Vote, votepercentage at **{{current}}%/{{needed}}%**",
@@ -362,10 +378,22 @@
     "tail": "The coin flipped to tail {{- url}}"
   },
   "gp": {
-    "no-cat": "I could not find any permissions with the category {{- cat}}"
+    "no-cat": "I could not find any permissions with the category {{- cat}}",
+    "no-perms": "You did not add any permissions yet.",
+    "table": {
+      "id": "$t(server-info.id)",
+      "name": "Name",
+      "type": "Type",
+      "cat": "Category",
+      "perm": "Permission",
+      "use": "Use"
+    }
+  },
+  "rp": {
+    "success": "I successfully removed the permission `{{- node}}` from the **{{- type}}** `{{- id}}`"
   },
   "dere": {
-    "no-dere": "The dere type you searched for does not exist.",
+    "no-dere": "The dere type you searched for does not exist. Here is a list of possible deres:\n",
     "dandere": "The Dandere (だんデレ) type refers to a character who is often silent and to themselves.\n It may be due to shyness or just because they’re the quiet type.\n However,when alone with the person they are attracted to, they usually come out of their shell and become more loving.\n This word is an abbreviation of Danmari (だんまり) which means silent and Deredere (デレデレ) which means lovey dovey.",
     "deredere": "The Deredere (デレデレ) type refers to a character who is completely kind, happy, and energetic.\n No matter what may happen, they quickly revert to their cheerful self.\n This may be the only character type that doesn’t have any abbreviation with the base Deredere (デレデレ) word, although the definition isn’t simply lovey dovey like the other types.",
     "himedere": "The Himedere (ひめデレ) type refers to a character who wishes to be treated like a princess by the person she loves, even if they aren’t royalty in actuality.\nThis word is an abbreviation of Hime (ひめ) which means princess and Deredere (デレデレ) which means lovey dovey.",

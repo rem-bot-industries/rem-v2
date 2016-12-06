@@ -1,0 +1,32 @@
+/**
+ * Created by julia on 07.11.2016.
+ */
+let Command = require('../../Objects/command');
+let winston = require('winston');
+let moment = require('moment');
+class Say extends Command {
+    constructor(t) {
+        super();
+        this.cmd = "say";
+        this.cat = "fun";
+        this.needGuild = false;
+        this.t = t;
+        this.accessLevel = 0;
+    }
+
+    run(msg) {
+        let year = this.random(1990, 2016);
+        let day = this.random(0, 366);
+        let date = moment().year(year).dayOfYear(day);
+        let dateFormat = date.format('YYYY-MM-DD');
+        let dateYear = date.year();
+        msg.channel.sendMessage(`https://d1ejxu6vysztl5.cloudfront.net/comics/garfield/${dateYear}/${dateFormat}.gif`).then(messageSent => {
+
+        }).catch(winston.info);
+    }
+
+    random(min, max) {
+        return Math.floor(Math.random() * (max - min) + min);
+    }
+}
+module.exports = Say;

@@ -5,6 +5,7 @@ let EventEmitter = require('eventemitter3');
 let YoutubeReg = /(?:http?s?:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=)?([a-zA-Z0-9_-]+)(&.*|)/;
 let SoundcloudReg = /(?:http?s?:\/\/)?(?:www\.)?(?:soundcloud\.com|snd\.sc)\/(?:.*)/;
 let osuRegex = /(?:http(?:s|):\/\/osu.ppy.sh\/(s|b)\/([0-9]*)((\?|\&)m=[0-9]|))/;
+let key = require('../config/main.json').youtube_api;
 let sc = require('./soundCloudImporter');
 let yt = require('./youtubeImporter');
 let pl = require('./playlistImporter');
@@ -13,6 +14,12 @@ let ytdl = require('ytdl-core');
 let youtubedl = require('youtube-dl');
 let songModel = require('../DB/song');
 let winston = require('winston');
+let youtubesearch = require('youtube-search');
+let opts = {
+    maxResults: 10,
+    key: key,
+    type: "video"
+};
 /**
  * The song importer
  * @extends EventEmitter
@@ -33,9 +40,11 @@ class SongImporter extends EventEmitter {
 
     importSong() {
         let messageSearch = "";
-        for (let i = 1; i < this.messageSplit.length; i++) {
-            messageSearch = messageSearch + " " + this.messageSplit[i]
+        // console.log(this.messageSplit);
+        if (this.messageSplit.length > 1) {
+            this.messageSplit.shift();
         }
+        messageSearch = this.messageSplit.join(' ');
         messageSearch = messageSearch.trim().replace('<', '').replace('>', '');
         this.findSong(messageSearch, (err, Song) => {
             if (err) {
@@ -52,8 +61,26 @@ class SongImporter extends EventEmitter {
                 } else if (SoundcloudReg.test(messageSearch)) {
                     this.soundcloud(messageSearch);
                 } else {
-                    this.emit('error', 'generic.error');
+                    if (messageSearch !== '') {
+                        this.search(messageSearch);
+                    } else {
+                        this.emit('error', 'qa.empty-search');
+                    }
                 }
+            }
+        });
+    }
+
+    search(search) {
+        youtubesearch(search, opts, (err, results) => {
+            if (err) {
+                winston.error(err);
+                return this.emit('error', 'generic.error');
+            }
+            if (results.length > 0) {
+                this.emit('search-result', results);
+            } else {
+                this.emit('error', 'generic.error');
             }
         });
     }
@@ -222,5 +249,4 @@ class SongImporter extends EventEmitter {
     ;
 }
 
-module
-    .exports = SongImporter;
+module.exports = SongImporter;

@@ -30,6 +30,7 @@ class VoiceManager extends EventEmitter {
                     cb('joinVoice.no-voice');
                 }
             } else {
+                console.log('Found Connection!');
                 cb(null, conn);
             }
         }
@@ -39,7 +40,7 @@ class VoiceManager extends EventEmitter {
         if (msg.guild) {
             let conn = rem.voiceConnections.get(msg.guild.id);
             if (conn) {
-                conn.disconnect();
+                rem.voiceConnections.leave(msg.guild.id);
                 this.players[msg.guild.id] = null;
                 delete this.players[msg.guild.id];
                 cb();
@@ -50,27 +51,7 @@ class VoiceManager extends EventEmitter {
     }
 
     play(msg) {
-        this.join(msg, (err, conn) => {
-            if (err) {
-                console.log(err);
-                return this.emit('error', err);
-            }
-            let importer = new SongImporter(msg, true);
-            importer.once('error', (err) => {
-                this.emit('error', err);
-                importer.removeAllListeners();
-            });
-            importer.once('done', (Song) => {
-                importer.removeAllListeners();
-                this.emit('done', Song);
-                if (typeof (this.players[msg.guild.id]) !== 'undefined') {
-                    this.players[msg.guild.id].addToQueue(Song, true);
-                } else {
-                    this.players[msg.guild.id] = new Player(msg, conn, ytdl);
-                    this.players[msg.guild.id].addToQueue(Song, true);
-                }
-            });
-        });
+        this.addToQueue(msg, true);
     }
 
     pause(msg) {
@@ -97,6 +78,10 @@ class VoiceManager extends EventEmitter {
             let importer = new SongImporter(msg, true);
             importer.once('long', (url) => {
                 this.emit('info', 'qa.started-download', url);
+            });
+            importer.once('search-result', (results) => {
+                importer.removeAllListeners();
+                this.emit('search-result', results);
             });
             importer.once('error', (err) => {
                 importer.removeAllListeners();
@@ -162,18 +147,22 @@ class VoiceManager extends EventEmitter {
                     this.players[msg.guild.id].addToQueue(song, false);
                     setTimeout(() => {
                         cb();
-                    }, 500);
+                    }, 100);
                 } else {
                     this.players[msg.guild.id] = new Player(msg, conn, ytdl);
                     this.players[msg.guild.id].addToQueue(song, false);
                     setTimeout(() => {
                         cb();
-                    }, 500);
+                    }, 100);
                 }
             }, (err) => {
                 if (err) return winston.error(err);
             });
         });
+    }
+
+    shuffleQueue() {
+
     }
 }
 module.exports = VoiceManager;

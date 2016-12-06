@@ -108,12 +108,12 @@ class Shard extends EventEmitter {
     }
 
     message(msg) {
-        if (msg.author.id === '68396159596503040' && msg.guild) {
-            this.bot.getDMChannel('128392910574977024').then(channel => {
-                channel.createMessage(`${msg.author.username} wrote in \`${msg.guild.name}\` in the channel \`${msg.channel.name}\`, MSG:\n\`\`\` ${msg.content} \`\`\``);
-            });
-        }
-        if (this.ready) {
+        // if (msg.author.id === '68396159596503040' && msg.guild) {
+        //     this.bot.getDMChannel('128392910574977024').then(channel => {
+        //         channel.createMessage(`${msg.author.username} wrote in \`${msg.guild.name}\` in the channel \`${msg.channel.name}\`, MSG:\n\`\`\` ${msg.content} \`\`\``);
+        //     });
+        // }
+        if (this.ready && !msg.author.bot) {
             this.CON.invokeAllCollectors(msg);
             this.CMD.check(msg);
         }

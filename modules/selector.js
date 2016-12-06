@@ -3,6 +3,7 @@
  */
 // let MessageCollector = require('discord.js').MessageCollector;
 let AsciiTable = require('ascii-table');
+let winston = require('winston');
 class Selector {
     constructor(msg, collection, t, cb) {
         this.msg = msg;
@@ -18,6 +19,8 @@ class Selector {
         this.coll.forEach(c => {
             if (c.name) {
                 table.addRow(i, c.name);
+            } else if (c.title) {
+                table.addRow(i, c.title);
             } else if (c.user.username) {
                 table.addRow(i, c.user.username);
             }
@@ -25,25 +28,26 @@ class Selector {
             i += 1;
         });
         table.addRow('c', this.t('generic.cancel', {lngs: this.msg.lang}));
-        this.msg.channel.createMessage('```' + table.toString() + '```');
-        let collector = this.msg.CON.addCollector(this.msg.channel.id);
-        collector.on('message', (msg) => {
-            if (this.filterMessage(msg)) {
-                collector.stop();
-                if (msg.content === 'c') {
-                    return cb('canceled');
-                } else {
-                    return cb(null, this.number);
+        this.msg.channel.createMessage('```' + table.toString() + '```').then(tableMsg => {
+            let collector = this.msg.CON.addCollector(this.msg.channel.id);
+            collector.on('message', (msg) => {
+                if (this.filterMessage(msg)) {
+                    collector.stop();
+                    tableMsg.delete();
+                    msg.delete().then().catch(err => winston.error(err));
+                    if (msg.content === 'c') {
+                        return cb('generic.abort');
+                    } else {
+                        return cb(null, this.number);
+                    }
                 }
-            }
-        });
+            });
+        }).catch(err => winston.error(err));
     }
 
     filterMessage(msg) {
         if (msg.author.id === this.msg.author.id) {
-            console.log('uwu');
             if (msg.content === 'c') {
-                console.log('OwO');
                 return true;
             }
             let number = 0;
