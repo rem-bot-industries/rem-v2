@@ -17,7 +17,8 @@
     "author": "author",
     "lib": "library used",
     "more": "{{number}} more",
-    "cat-nope": ":no_entry_sign: This category does not exist!"
+    "cat-nope": ":no_entry_sign: This category does not exist!",
+    "mention": "Please mention a user."
   },
   "help": {
     "intro": "lets have fun together here on Discord (/^▽^)/ select a command category by responding with {{pre}}help number of command to know more:",
@@ -391,6 +392,12 @@
   },
   "rp": {
     "success": "I successfully removed the permission `{{- node}}` from the **{{- type}}** `{{- id}}`"
+  },
+  "love": {
+    "success": "You just gave **{{- target}}** **{{- rep}}** :heart: Love Point. Remaining uses **{{uses}}**.",
+    "error-cd": "You can only give **2** :heart: Love Points per Day, next use {{- time}}.",
+    "next": " Next use {{- time}}",
+    "self": ":broken_heart: You can not give Love Points to yourself."
   },
   "dere": {
     "no-dere": "The dere type you searched for does not exist. Here is a list of possible deres:\n",

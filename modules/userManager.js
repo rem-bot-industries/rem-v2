@@ -8,31 +8,70 @@ class UserManager extends EventEmitter {
         super();
     }
 
-    createUser(id, cb) {
-        let user = new userModel({
-            id: id,
-            nsfwChannels: [],
-            cmdChannels: [],
-            lastVoiceChannel: "",
+    createUser(user, cb) {
+        let User = new userModel({
+            id: user.id,
+            name: user.username,
+            servers: [],
+            settings: [],
+            marriages: [],
             levelEnabled: true,
             pmNotifications: true,
-            chNotifications: false,
-            prefix: "!w."
+            avatar: user.avatarURL ? user.avatarURL : user.defaultAvatarURL,
+            created: new Date(),
+            blacklist: false,
+            verified: false,
+            credits: 0,
+            rep: 0,
+            creditCooldown: new Date(),
+            reps: []
         });
-        user.save((err) => {
+        User.save((err) => {
             if (err) return cb(err);
-            cb();
+            cb(null, User);
         });
     }
 
-    loadUser(id, cb) {
-        userModel.findOne({id: id}, (err, Guild) => {
+    loadUser(user, cb) {
+        userModel.findOne({id: user.id}, (err, User) => {
             if (err) return cb(err);
-            if (Guild) {
-                return cb(null, Guild);
+            if (User) {
+                cb(null, User);
             } else {
-                this.createuser(id, cb);
+                this.createUser(user, cb);
             }
+        });
+    }
+
+    love(target, rep, cb) {
+        this.loadUser(target, (err, user) => {
+            if (err) return cb(err);
+            return user.updateRep(rep, cb);
+        });
+    }
+
+    checkLoveCD(user) {
+        for (let i = 0; i < user.reps.length; i++) {
+            if (user.reps[i] < Date.now) {
+                return true;
+            }
+        }
+        return (user.reps.length === 0 || user.reps.length === 1);
+    }
+
+    addLoveCd(user, cb) {
+        let reps = [];
+        for (let i = 0; i < user.reps.length; i++) {
+            if (user.reps[i] < Date.now) {
+
+            } else {
+                reps.push(user.reps[i])
+            }
+        }
+        reps.push(Date.now() + 1000 * 60 * 60 * 24);
+        userModel.update({id: user.id}, {$set: {reps: reps}}, (err) => {
+            if (err) return cb(err);
+            cb(null, reps);
         });
     }
 

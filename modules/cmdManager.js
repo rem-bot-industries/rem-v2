@@ -5,11 +5,12 @@ let EventEmitter = require('eventemitter3');
 const winston = require('winston');
 const recursive = require('recursive-readdir');
 let path = require("path");
-let util = require("util");
 let GuildManager = require('./guildManager');
+let UserManager = require('./userManager');
 let PermManager = require('./permissionManager');
 let CleverBotManager = require('./cleverbot');
 let StatManager = require('./statManager');
+let async = require('async');
 class CmdManager extends EventEmitter {
     constructor(l, v) {
         super();
@@ -25,6 +26,7 @@ class CmdManager extends EventEmitter {
         this.p = new PermManager();
         this.c = new CleverBotManager();
         this.s = new StatManager();
+        this.u = new UserManager();
         this.commands = {};
         this.ready = false;
     }
@@ -56,15 +58,18 @@ class CmdManager extends EventEmitter {
 
     check(msg) {
         if (this.ready) {
-            this.loadGuild(msg, (err, Guild) => {
+            this.loadData(msg, (err, Data) => {
                 if (err) return winston.error(err);
+                let Guild = Data.guild;
+                let User = Data.user;
                 msg.db = Guild;
+                msg.dbUser = User;
                 msg.cmds = this.commands;
                 if (msg.content.startsWith(Guild.prefix)) {
                     try {
                         let cmd = msg.content.substr(Guild.prefix.length).split(' ')[0];
                         let command = this.commands[cmd];
-                        if(command !== undefined) {
+                        if (command !== undefined) {
                             msg.lang = [Guild.lng, 'en'];
                             msg.lngs = this.lngs;
                             msg.prefix = Guild.prefix;
@@ -104,10 +109,26 @@ class CmdManager extends EventEmitter {
                             this.s.logCmdStat(msg, 'cleverbot', true);
                             this.c.talk(msg);
                         });
+                    } else if (msg.guild) {
+                        //TODO Increase level of user here
                     }
                 }
             });
         }
+    }
+
+    loadData(msg, cb) {
+        async.parallel({
+            guild: (cb) => {
+                this.loadGuild(msg, cb);
+            },
+            user: (cb) => {
+                this.loadUser(msg, cb);
+            }
+        }, (err, results) => {
+            if (err) return cb(err);
+            cb(null, results);
+        });
     }
 
     loadGuild(msg, cb) {
@@ -132,7 +153,7 @@ class CmdManager extends EventEmitter {
     }
 
     loadUser(msg, cb) {
-
+        this.u.loadUser(msg.author, cb);
     }
 }
 module.exports = CmdManager;
