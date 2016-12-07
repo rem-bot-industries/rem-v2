@@ -4,10 +4,10 @@
 let Command = require('../../Objects/command');
 let winston = require('winston');
 let moment = require('moment');
-class Say extends Command {
+class Garfield extends Command {
     constructor(t) {
         super();
-        this.cmd = "say";
+        this.cmd = "garfield";
         this.cat = "fun";
         this.needGuild = false;
         this.t = t;
@@ -29,4 +29,4 @@ class Say extends Command {
         return Math.floor(Math.random() * (max - min) + min);
     }
 }
-module.exports = Say;
+module.exports = Garfield;
