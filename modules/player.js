@@ -28,9 +28,7 @@ class Player extends EventEmitter {
         this.ytdl = ytdl;
         this.connection = connection;
         this.song = null;
-        setInterval(() => {
-            console.log(this.queue);
-        }, 30 * 1000);
+        this.channel = '';
     }
 
     /**
@@ -227,9 +225,18 @@ class Player extends EventEmitter {
     }
 
     announce(Song) {
-
+        if (this.channel !== '') {
+            this.emit('announce', Song, this.channel);
+        }
     }
 
+    bind(id) {
+        if (this.channel !== '') {
+            this.channel = "";
+        } else {
+            this.channel = id;
+        }
+    }
     setVolume(vol) {
         try {
             this.connection.setVolume(vol);

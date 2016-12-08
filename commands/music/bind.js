@@ -3,12 +3,12 @@
  */
 let Command = require('../../Objects/command');
 /**
- * The repeat command,
- * repeats the current song/the queue
+ * The bind command,
+ * binds Rem to a channel
  * @extends Command
  *
  */
-class Repeat extends Command {
+class Bind extends Command {
     /**
      * Create the command
      * @param {Function} t - the translation module
@@ -16,7 +16,7 @@ class Repeat extends Command {
      */
     constructor(t, v) {
         super();
-        this.cmd = "repeat";
+        this.cmd = "bind";
         this.cat = "music";
         this.needGuild = true;
         this.t = t;
@@ -25,8 +25,8 @@ class Repeat extends Command {
     }
 
     run(msg) {
-        let result = this.v.repeat(msg);
-        msg.channel.createMessage(this.t(`np.emoji-repeat-${result}`, {lngs: msg.lang}));
+        this.v.bind(msg);
+        msg.channel.createMessage(':white_check_mark: ');
     }
 }
-module.exports = Repeat;
+module.exports = Bind;
