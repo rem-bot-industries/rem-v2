@@ -115,14 +115,15 @@ class VoiceManager extends EventEmitter {
 
     forceSkip(msg) {
         if (typeof (this.players[msg.guild.id]) !== 'undefined') {
+            this.players[msg.guild.id].toggleRepeatSingle(true);
             let song = this.players[msg.guild.id].nextSong();
             this.emit('skipped', song);
         }
     }
 
-    getConnection(msg) {
+    repeat(msg) {
         if (typeof (this.players[msg.guild.id]) !== 'undefined') {
-            return this.players[msg.guild.id].connection;
+            return this.players[msg.guild.id].toggleRepeatSingle();
         } else {
             return null;
         }

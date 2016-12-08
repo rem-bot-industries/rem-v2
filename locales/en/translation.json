@@ -216,7 +216,11 @@
   "np": {
     "song-duration": "Currently playing:` {{- title}} {{current}}/{{duration}} {{repeat}} `",
     "song": "Currently playing: `{{-title}} {{repeat}}`",
-    "repeat-on": "repeat:on"
+    "repeat-single": "repeat: single",
+    "repeat-queue": "repeat: queue",
+    "emoji-repeat-single": ":repeat_one: ",
+    "emoji-repeat-queue": ":repeat: ",
+    "emoji-repeat-off": ":heavy_check_mark: "
   },
   "queue": {
     "queued": "Queued:"

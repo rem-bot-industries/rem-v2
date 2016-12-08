@@ -51,7 +51,7 @@ class Queue extends Command {
         let iteration = Queue.songs.length > 20 ? 20 : Queue.songs.length;
         for (let q = 0; q < iteration; q++) {
             if (q === 0) {
-                let repeat = Queue.repeat ? this.t('np.repeat-on', {lngs: msg.lang}) : "";
+                let repeat = Queue.repeat !== 'off' ? this.t(`np.repeat-${Queue.repeat}`, {lngs: msg.lang}) : "";
                 if (Queue.songs[0].duration && Queue.songs[0].duration !== '') {
                     reply = reply + `${this.t('np.song-duration', {
                             lngs: msg.lang,

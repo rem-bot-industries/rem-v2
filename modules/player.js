@@ -24,13 +24,13 @@ class Player extends EventEmitter {
         super();
         this.setMaxListeners(1);
         this.msg = msg;
-        this.queue = {repeat: false, repeatId: '', voteskips: [], songs: [], time: ""};
+        this.queue = {repeat: 'off', repeatId: '', voteskips: [], songs: [], time: ""};
         this.ytdl = ytdl;
         this.connection = connection;
         this.song = null;
-        // setInterval(() => {
-        //     console.log(this.queue);
-        // }, 30 * 1000);
+        setInterval(() => {
+            console.log(this.queue);
+        }, 30 * 1000);
     }
 
     /**
@@ -96,9 +96,11 @@ class Player extends EventEmitter {
             //     interpolation: {escape: false}
             // }));
             this.announce(Song);
-            this.connection.on("end", () => {
+            this.connection.once("end", () => {
                 winston.info("File ended!");
-                this.nextSong(Song);
+                setTimeout(() => {
+                    this.nextSong(Song);
+                }, 100);
             });
             // this.dispatcher.on("debug", information => {
             //     winston.info(`Debug: ${information}`);
@@ -143,6 +145,7 @@ class Player extends EventEmitter {
      * @param immediate - if the song should be played immediately
      */
     addToQueue(Song, immediate) {
+        this.toggleRepeatSingle(true);
         Song.qid = shortid.generate();
         if (immediate) {
             this.queue.songs.unshift(Song);
@@ -165,6 +168,13 @@ class Player extends EventEmitter {
             if (typeof (Song) !== 'undefined') {
                 if (Song.qid === this.queue.songs[0].qid) {
                     this.queue.songs.shift();
+                    if (this.queue.repeat === 'single') {
+                        Song.qid = shortid.generate();
+                        this.queue.songs.unshift(Song);
+                    }
+                    if (this.queue.repeat === 'queue') {
+                        this.queue.songs.push(Song);
+                    }
                     if (this.queue.songs[0]) {
                         this.endSong();
                         this.play(this.queue.songs[0]);
@@ -175,6 +185,13 @@ class Player extends EventEmitter {
             } else {
                 let song = this.queue.songs[0];
                 this.queue.songs.shift();
+                if (this.queue.repeat === 'single') {
+                    song.qid = shortid.generate();
+                    this.queue.songs.unshift(song);
+                }
+                if (this.queue.repeat === 'queue') {
+                    this.queue.songs.push(song);
+                }
                 if (this.queue.songs[0]) {
                     this.endSong();
                     this.play(this.queue.songs[0]);
@@ -218,6 +235,23 @@ class Player extends EventEmitter {
             this.connection.setVolume(vol);
         } catch (e) {
             this.emit('error', e);
+        }
+    }
+
+    toggleRepeatSingle(off) {
+        if (off) {
+            this.queue.repeat = 'off';
+        } else {
+            if (this.queue.repeat === 'off') {
+                this.queue.repeat = 'single';
+                return 'single';
+            } else if (this.queue.repeat === 'single') {
+                this.queue.repeat = 'queue';
+                return 'queue';
+            } else {
+                this.queue.repeat = 'off';
+                return 'off';
+            }
         }
     }
 
