@@ -240,7 +240,7 @@ class Player extends EventEmitter {
     filterStreams(formats) {
         for (let i = 0; i < formats.length; i++) {
             // console.log(formats[i].itag);
-            if (formats[i].itag === '250') {
+            if (formats[i].itag === '250' || formats[i].itag === '251' || formats[i].itag === '249') {
                 // console.log(formats[i]);
                 return formats[i].url;
             }
@@ -250,11 +250,15 @@ class Player extends EventEmitter {
 
     /**
      * Converts time in seconds like 360 (10Minutes) to 10:00
-     * @param s - the seconds the song has been playing for
+     * @param time - the seconds the song has been playing for
      * @returns {string} - the converted string
      */
-    convertSeconds(s) {
-        return (s - (s %= 60)) / 60 + (9 < s ? ':' : ':0') + s
+    convertSeconds(time) {
+        let d = Number(time);
+        let h = Math.floor(d / 3600);
+        let m = Math.floor(d % 3600 / 60);
+        let s = Math.floor(d % 3600 % 60);
+        return ((h > 0 ? h + ":" + (m < 10 ? "0" : "") : "") + m + ":" + (s < 10 ? "0" : "") + s);
     }
 }
 module.exports = Player;
