@@ -31,7 +31,9 @@ if (cluster.isMaster) {
     });
     hub.on('_guild_update', (sid, guilds) => {
         shards[sid] = {guilds};
-        console.log(shards);
+    });
+    hub.on('_user_update', (sid, users) => {
+        shards[sid] = {users};
     });
     tracker.on('fetch', () => {
         let guilds = 0;

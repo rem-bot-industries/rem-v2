@@ -233,8 +233,10 @@ class Player extends EventEmitter {
     bind(id) {
         if (this.channel !== '') {
             this.channel = "";
+            return false;
         } else {
             this.channel = id;
+            return true;
         }
     }
     setVolume(vol) {

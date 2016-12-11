@@ -105,6 +105,7 @@ class Shard extends EventEmitter {
         this.CMD.on('ready', (cmds) => {
             this.ready = true;
             this.HUB.emit('_guild_update', this.id, this.bot.guilds.size);
+            this.HUB.emit('_user_update', this.id, this.bot.users.size);
             winston.info('commands are ready!');
             // console.log(cmds);
         });
@@ -119,6 +120,7 @@ class Shard extends EventEmitter {
 
     guildCreate(Guild) {
         this.HUB.emit('_guild_update', this.id, this.bot.guilds.size);
+        this.HUB.emit('_user_update', this.id, this.bot.users.size);
         guildModel.findOne({id: Guild.id}, (err, guild) => {
             if (err) return winston.error(err);
             if (guild) {
@@ -144,6 +146,7 @@ class Shard extends EventEmitter {
 
     guildDelete(Guild) {
         this.HUB.emit('_guild_update', this.id, this.bot.guilds.size);
+        this.HUB.emit('_user_update', this.id, this.bot.users.size);
     }
 
     guildMemberAdd(member) {

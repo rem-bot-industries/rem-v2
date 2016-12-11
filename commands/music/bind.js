@@ -25,8 +25,9 @@ class Bind extends Command {
     }
 
     run(msg) {
-        this.v.bind(msg);
-        msg.channel.createMessage(':white_check_mark: ');
+        this.v.bind(msg, (res) => {
+            msg.channel.createMessage(res ? ':white_check_mark: ' : ':x: ');
+        });
     }
 }
 module.exports = Bind;

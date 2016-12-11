@@ -131,12 +131,15 @@ class VoiceManager extends EventEmitter {
         }
     }
 
-    bind(msg) {
+    bind(msg, cb) {
         if (typeof (this.players[msg.guild.id]) !== 'undefined') {
-            this.players[msg.guild.id].bind(msg.channel.id);
+            let res = this.players[msg.guild.id].bind(msg.channel.id);
             this.players[msg.guild.id].on('announce', (song, channel) => {
                 rem.createMessage(channel, `:arrow_forward: **${song.title}** \<${song.url}\>`)
             });
+            cb(res);
+        } else {
+            cb(null);
         }
     }
 
