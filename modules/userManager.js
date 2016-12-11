@@ -62,9 +62,7 @@ class UserManager extends EventEmitter {
     addLoveCd(user, cb) {
         let reps = [];
         for (let i = 0; i < user.reps.length; i++) {
-            if (user.reps[i] < Date.now()) {
-
-            } else {
+            if (user.reps[i] > Date.now()) {
                 reps.push(user.reps[i])
             }
         }
