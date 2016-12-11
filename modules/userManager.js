@@ -52,7 +52,7 @@ class UserManager extends EventEmitter {
 
     checkLoveCD(user) {
         for (let i = 0; i < user.reps.length; i++) {
-            if (user.reps[i] < Date.now) {
+            if (user.reps[i] < Date.now() + 1000 * 60 * 60 * 24) {
                 return true;
             }
         }
@@ -62,7 +62,7 @@ class UserManager extends EventEmitter {
     addLoveCd(user, cb) {
         let reps = [];
         for (let i = 0; i < user.reps.length; i++) {
-            if (user.reps[i] < Date.now) {
+            if (user.reps[i] < Date.now()) {
 
             } else {
                 reps.push(user.reps[i])

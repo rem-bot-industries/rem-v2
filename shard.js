@@ -27,7 +27,7 @@ if (!config.beta) {
     });
 }
 class Shard extends EventEmitter {
-    constructor(SHARD_ID, SHARD_COUNT) {
+    constructor(SHARD_ID, SHARD_COUNT, hub) {
         super();
         this.id = SHARD_ID;
         this.count = SHARD_COUNT;
@@ -37,6 +37,8 @@ class Shard extends EventEmitter {
         this.CMD = null;
         this.LANG = null;
         this.VOICE = null;
+        this.HUB = hub;
+        this.MSG = null;
         this.init();
     }
 
@@ -74,6 +76,9 @@ class Shard extends EventEmitter {
         bot.on('guildCreate', (Guild) => {
             this.guildCreate(Guild)
         });
+        bot.on('guildDelete', (Guild) => {
+
+        });
         bot.on('voiceChannelJoin', (m, n) => {
             this.voiceUpdate(m, n, false);
         });
@@ -87,9 +92,6 @@ class Shard extends EventEmitter {
             this.guildMemberRemove(g, m)
         });
         // bot.on('debug', this.debug);
-        process.on('message', (msg) => {
-            this.clusterAction(msg);
-        });
         process.on('SIGINT', () => {
             this.shutdown()
         });
@@ -102,17 +104,13 @@ class Shard extends EventEmitter {
         this.CMD = new CmdManager(this.LANG, this.VOICE);
         this.CMD.on('ready', (cmds) => {
             this.ready = true;
+            this.HUB.emit('_guild_update', this.id, this.bot.guilds.size);
             winston.info('commands are ready!');
             // console.log(cmds);
         });
     }
 
     message(msg) {
-        // if (msg.author.id === '68396159596503040' && msg.guild) {
-        //     this.bot.getDMChannel('128392910574977024').then(channel => {
-        //         channel.createMessage(`${msg.author.username} wrote in \`${msg.guild.name}\` in the channel \`${msg.channel.name}\`, MSG:\n\`\`\` ${msg.content} \`\`\``);
-        //     });
-        // }
         if (this.ready && !msg.author.bot) {
             this.CON.invokeAllCollectors(msg);
             this.CMD.check(msg);
@@ -120,6 +118,7 @@ class Shard extends EventEmitter {
     }
 
     guildCreate(Guild) {
+        this.HUB.emit('_guild_update', this.id, this.bot.guilds.size);
         guildModel.findOne({id: Guild.id}, (err, guild) => {
             if (err) return winston.error(err);
             if (guild) {
@@ -143,6 +142,10 @@ class Shard extends EventEmitter {
         });
     }
 
+    guildDelete(Guild) {
+        this.HUB.emit('_guild_update', this.id, this.bot.guilds.size);
+    }
+
     guildMemberAdd(member) {
 
     }
@@ -161,25 +164,6 @@ class Shard extends EventEmitter {
 
     debug(info) {
 
-    }
-
-    clusterAction(m) {
-        console.log(m);
-        console.log(this.ready);
-        if (this.ready) {
-            console.log(m);
-            if (m.type === 'guild') {
-                process.send({id: this.id, type: 'guild', d: this.bot.guilds.size});
-            }
-            if (m.type === 'stats') {
-                let users = this.bot.guilds.map(g => g.memberCount);
-                users = users.reduce((prev, val) => prev + val, 0);
-                let guilds = this.bot.guilds.size;
-                console.log(`Users: ${users} Guilds:${guilds}`);
-                process.send({id: this.id, type: 'stats', d: {users: users, guilds: guilds}});
-                console.log('sended message')
-            }
-        }
     }
 
     shutdown() {

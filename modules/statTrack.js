@@ -1,9 +1,6 @@
 /***
  * Created by julia on 01.11.2016.
  */
-
-let StatsD = require('node-dogstatsd').StatsD;
-let dogstatsd = new StatsD();
 let request = require('request');
 const config = require('../config/main.json');
 let EventEmitter = require('eventemitter3');
@@ -20,68 +17,50 @@ class StatTrack extends EventEmitter {
     constructor(interval) {
         super();
         this.setMaxListeners(20);
-        this.guilds = 0;
-        this.users = 0;
         this.interval = setInterval(() => {
-            this.update()
+            this.emit('fetch');
         }, interval * 1000)
     }
 
     /**
      * Updates the stats on carbonitex and bots.discord.pw
      */
-    update() {
-        this.emit('fetch');
-        if (this.guilds > 0 && this.users > 0) {
-            if (!config.beta) {
-                dogstatsd.gauge('musicbot.guilds', this.guilds);
-                dogstatsd.gauge('musicbot.users', this.users);
+    update(guilds) {
+        let requestOptions = {
+            headers: {
+                Authorization: config.discord_bots_token
+            },
+            url: `https://bots.discord.pw/api/bots/${config.bot_id}/stats`,
+            method: 'POST',
+            json: {
+                'server_count': guilds
             }
-            let requestOptions = {
-                headers: {
-                    Authorization: config.discord_bots_token
-                },
-                url: `https://bots.discord.pw/api/bots/${config.bot_id}/stats`,
+        };
+        request(requestOptions, (err, response, body) => {
+            if (err) {
+                return this.emit('error', err);
+            }
+            this.emit('info', 'Stats Updated!');
+            this.emit('info', body);
+        });
+        if (!config.beta) {
+            let requestOptionsCarbon = {
+                url: 'https://www.carbonitex.net/discord/data/botdata.php',
                 method: 'POST',
                 json: {
-                    'server_count': this.guilds
+                    'server_count': guilds,
+                    'key': config.carbon_token
                 }
             };
-            request(requestOptions, (err, response, body) => {
+            request(requestOptionsCarbon, (err, response, body) => {
                 if (err) {
-                    return this.emit('error', err);
+                    return this.emit('error', err)
                 }
-                this.emit('info', 'Stats Updated!');
+                this.emit('info', 'Stats Updated Carbon!');
                 this.emit('info', body);
             });
-            if (!config.beta) {
-                let requestOptionsCarbon = {
-                    url: 'https://www.carbonitex.net/discord/data/botdata.php',
-                    method: 'POST',
-                    json: {
-                        'server_count': this.guilds,
-                        'key': config.carbon_token
-                    }
-                };
-                request(requestOptionsCarbon, (err, response, body) => {
-                    if (err) {
-                        return this.emit('error', err)
-                    }
-                    this.emit('info', 'Stats Updated Carbon!');
-                    this.emit('info', body);
-                });
-            }
         }
-    }
 
-    /**
-     * Save the guilds and the users
-     * @param {number} guilds the number of the guilds
-     * @param {number} users the number of the users
-     */
-    setStats(guilds, users) {
-        this.guilds = guilds;
-        this.users = users;
     }
 }
 module.exports = StatTrack;
