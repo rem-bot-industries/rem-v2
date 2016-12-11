@@ -73,5 +73,32 @@ class UserManager extends EventEmitter {
         });
     }
 
+    increaseExperience(user, guildId, cb) {
+        let userGuild = this.getServerData(user, guildId);
+    }
+
+    increaseLevel(user, cb) {
+
+    }
+
+    addServerData() {
+
+    }
+
+    getServerData(user, guildId) {
+        for (let i = 0; i < user.servers.length; i++) {
+            if (user.servers[i].id === guildId) {
+                return user.servers[i];
+            }
+        }
+        let server = {
+            id: guildId,
+            pm: true,
+            level: 1,
+            xp: 5,
+
+        }
+    }
+
 }
 module.exports = UserManager;

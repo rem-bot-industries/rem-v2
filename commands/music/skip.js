@@ -68,6 +68,9 @@ class ForceSkip extends Command {
             table: table.toString()
         })).then(voteMsg => {
             let collector = msg.CON.addCollector(msg.channel.id, {});
+            setTimeout(() => {
+                delete this.inprogress[msg.channel.id];
+            }, 1000 * 60);
             collector.on('message', (msg) => {
                 if (msg.content !== `${this.msg.prefix}yes` && (msg.content === `${this.msg.prefix}fskip` || msg.content === `${this.msg.prefix}play`)) {
                     collector.stop();
