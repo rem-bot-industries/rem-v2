@@ -334,7 +334,8 @@
     "same-voice": "You are not in the same voicechannel as I am!",
     "dup": "You already voted!",
     "success-add": "Added Your Vote, votepercentage at **{{current}}%/{{needed}}%**",
-    "success-skip": "Voteskipped Song: **{{- title}}**"
+    "success-skip": "Voteskipped Song: **{{- title}}**",
+    "in-prog": "There is already a voteskip in progress, use {{- prefix}}yes to skip the current song."
   },
   "rm": {
     "over-limit": "You can not delete less than 2 messages or more than 100 Messages at once!",

@@ -44,7 +44,7 @@ class Player extends EventEmitter {
                     if (err) {
                         winston.error(err);
                         this.emit('error');
-                        this.nextSong(Song);
+                        return this.nextSong(Song);
                     }
                     // console.log('got info!');
                     let url = this.filterStreams(info.formats);
