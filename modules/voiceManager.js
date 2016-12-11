@@ -117,7 +117,9 @@ class VoiceManager extends EventEmitter {
         if (typeof (this.players[msg.guild.id]) !== 'undefined') {
             this.players[msg.guild.id].toggleRepeatSingle(true);
             let song = this.players[msg.guild.id].nextSong();
-            this.emit('skipped', song);
+            if (song) {
+                this.emit('skipped', song);
+            }
         }
     }
 

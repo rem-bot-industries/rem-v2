@@ -45,6 +45,9 @@ class AddToQueue extends Command {
                     return msg.channel.createMessage(this.t(err, {lngs: msg.lang}));
                 }
                 msg.content = results[number - 1].link;
+                setTimeout(() => {
+                    this.clearListeners();
+                }, 3000);
                 this.v.addToQueue(msg, false);
             });
         });
