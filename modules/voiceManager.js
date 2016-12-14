@@ -57,18 +57,18 @@ class VoiceManager extends EventEmitter {
     pause(msg) {
         try {
             this.players[msg.guild.id].pause();
-            this.emit('success');
+            this.emit(`${msg.id}_success`);
         } catch (e) {
-            this.emit('error');
+            this.emit(`${msg.id}_error`);
         }
     }
 
     resume(msg) {
         try {
             this.players[msg.guild.id].resume();
-            this.emit('success');
+            this.emit(`${msg.id}_success`);
         } catch (e) {
-            this.emit('error');
+            this.emit(`${msg.id}_error`);
         }
     }
 
@@ -77,19 +77,19 @@ class VoiceManager extends EventEmitter {
             if (err) return this.emit('error', err);
             let importer = new SongImporter(msg, true);
             importer.once('long', (url) => {
-                this.emit('info', 'qa.started-download', url);
+                this.emit(`${msg.id}_info`, 'qa.started-download', url);
             });
             importer.once('search-result', (results) => {
                 importer.removeAllListeners();
-                this.emit('search-result', results);
+                this.emit(`${msg.id}_search-result`, results);
             });
             importer.once('error', (err) => {
                 importer.removeAllListeners();
-                this.emit('error', err);
+                this.emit(`${msg.id}_error`, err);
             });
             importer.once('done', (Song) => {
                 importer.removeAllListeners();
-                this.emit('added', Song);
+                this.emit(`${msg.id}_added`, Song);
                 if (typeof (this.players[msg.guild.id]) !== 'undefined') {
                     this.players[msg.guild.id].addToQueue(Song, immediate);
                 } else {
@@ -104,12 +104,12 @@ class VoiceManager extends EventEmitter {
         if (typeof (this.players[msg.guild.id]) !== 'undefined') {
             let queue = this.players[msg.guild.id].getQueue();
             if (queue.songs.length > 0) {
-                this.emit('queue', queue);
+                this.emit(`${msg.id}_queue`, queue);
             } else {
-                this.emit('error', 'generic.no-song-in-queue');
+                this.emit(`${msg.id}_error`, 'generic.no-song-in-queue');
             }
         } else {
-            this.emit('error', 'generic.no-song-in-queue');
+            this.emit(`${msg.id}_error`, 'generic.no-song-in-queue');
         }
     }
 
@@ -118,7 +118,7 @@ class VoiceManager extends EventEmitter {
             this.players[msg.guild.id].toggleRepeatSingle(true);
             let song = this.players[msg.guild.id].nextSong();
             if (song) {
-                this.emit('skipped', song);
+                this.emit(`${msg.id}_skipped`, song);
             }
         }
     }

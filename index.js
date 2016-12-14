@@ -10,6 +10,7 @@ require('winston-daily-rotate-file');
 const util = require("util");
 const numCPUs = require('os').cpus().length;
 let Shard = require('./shard');
+let async = require('async');
 if (cluster.isMaster) {
     let tracker = new StatTrack(3 * 60 * 60);
     let resp = [];
@@ -46,11 +47,9 @@ if (cluster.isMaster) {
         winston.error('Received SIGINT');
         process.exit(0);
     });
-    for (let i = 0; i < config.shards; i++) {
-        let worker = cluster.fork({id: i, count: config.shards});
-        let workerobject = {worker: worker, shard_id: i, pid: worker.process.pid};
-        workers.push(workerobject)
-    }
+    let worker = cluster.fork({id: i, count: config.shards});
+    let workerobject = {worker: worker, shard_id: i, pid: worker.process.pid};
+    workers.push(workerobject);
     winston.info('Spawned Shards!');
     winstonCluster.bindListeners();
 

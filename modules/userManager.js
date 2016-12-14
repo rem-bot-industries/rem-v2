@@ -3,6 +3,7 @@
  */
 let EventEmitter = require('eventemitter3');
 let userModel = require('../DB/user');
+let Promise = require('bluebird');
 class UserManager extends EventEmitter {
     constructor() {
         super();
@@ -73,31 +74,64 @@ class UserManager extends EventEmitter {
         });
     }
 
-    increaseExperience(user, guildId, cb) {
-        let userGuild = this.getServerData(user, guildId);
+    calcLevelXp(level) {
+        return Math.floor(level * 2 * 3.14 * 15);
+    }
+
+    calcXp(msg) {
+        let bonus = Math.floor(msg.content.length / 50);
+        bonus = bonus > 10 ? 10 : bonus;
+        return 5 + bonus;
+    }
+
+    increaseExperience(msg, user, cb) {
+        this.getServerData(user, msg.guild.id).then(data => {
+
+        }).catch(cb);
     }
 
     increaseLevel(user, cb) {
 
     }
 
-    addServerData() {
-
+    addServerData(user, data) {
+        return new Promise((resolve, reject) => {
+            userModel.update({id: user.id}, {$push: {servers: data}}).then(resolve).catch(reject);
+        });
     }
 
     getServerData(user, guildId) {
-        for (let i = 0; i < user.servers.length; i++) {
-            if (user.servers[i].id === guildId) {
-                return user.servers[i];
+        return new Promise((resolve, reject) => {
+            for (let i = 0; i < user.servers.length; i++) {
+                if (user.servers[i].id === guildId || user.servers[i].serverId === guildId) {
+                    resolve(user.servers[i]);
+                    break;
+                }
             }
-        }
-        let server = {
-            id: guildId,
-            pm: true,
-            level: 1,
-            xp: 5,
+            let data = {
+                id: guildId,
+                pm: true,
+                level: 1,
+                xp: 5,
+                totalXp: 5,
+                cooldown: Date.now() + 10000,
+                muted: false,
+                mutedCd: Date.now(),
+                credits: 0,
+                inventory: [],
+                modCases: []
+            };
+            this.addServerData(user, data).then(resolve).catch(reject);
+        });
+    }
 
-        }
+    updateServerData(user, data) {
+        return new Promise((reject, resolve) => {
+            userModel.update({
+                id: user.id,
+                $or: [{'servers.$.id': data.id}, {'servers.$.serverId': data.id}]
+            }, {$set: {'servers.$': data}}).then(resolve).catch(reject);
+        });
     }
 
 }

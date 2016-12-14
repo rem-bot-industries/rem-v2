@@ -100,7 +100,7 @@ class CmdManager extends EventEmitter {
                         winston.error(err.stack);
                     }
                 } else {
-                    if (msg.guild && msg.mentions.length === 1 && msg.mentions[0].id === rem.user.id) {
+                    if (msg.guild && msg.content.startsWith(rem.user.mention)) {
                         this.p.checkPermission(msg, 'fun.cleverbot', (err) => {
                             if (err) {
                                 this.s.logCmdStat(msg, 'cleverbot', false, 'permission');
