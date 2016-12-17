@@ -36,6 +36,9 @@ class PermissionManager {
         this.cat = nodeSplit[0];
         this.cmd = nodeSplit[1];
         if (msg.guild) {
+            if (this.cat === 'eastereggs') {
+                return cb();
+            }
             if (this.checkDiscordRoles(msg)) {
                 return cb();
             }
