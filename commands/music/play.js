@@ -27,16 +27,16 @@ class Play extends Command {
     }
 
     run(msg) {
-        this.v.once('error', (err) => {
+        this.v.once(`${msg.id}_error`, (err) => {
             this.v.removeAllListeners();
             winston.error(err);
             msg.channel.createMessage(this.t('generic.error', {lngs: msg.lang}));
         });
-        this.v.once('info', (info, url) => {
+        this.v.once(`${msg.id}_info`, (info, url) => {
             // this.clearListeners();
             msg.channel.createMessage(this.t(info, {url: url, lngs: msg.lang}));
         });
-        this.v.once('search-result', (results) => {
+        this.v.once(`${msg.id}_search-result`, (results) => {
             let selector = new Selector(msg, results, this.t, (err, number) => {
                 if (err) {
                     this.clearListeners();
@@ -46,7 +46,7 @@ class Play extends Command {
                 this.v.play(msg);
             });
         });
-        this.v.once('added', (Song) => {
+        this.v.once(`${msg.id}_added`, (Song) => {
             this.v.removeAllListeners();
             msg.channel.createMessage(this.t('play.playing', {lngs: msg.lang, song: Song.title}));
         });

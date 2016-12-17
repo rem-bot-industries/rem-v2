@@ -2,27 +2,20 @@ const cluster = require('cluster');
 const winston = require('winston');
 const winstonCluster = require('winston-cluster');
 const config = require('./config/main.json');
+let hub = require('clusterhub');
 let StatTrack = require('./modules/statTrack');
+let _ = require('lodash');
 require('longjohn');
 require('winston-daily-rotate-file');
 const util = require("util");
 const numCPUs = require('os').cpus().length;
 let Shard = require('./shard');
-let responses = 0;
-let users = 0;
-let guilds = 0;
+let async = require('async');
 if (cluster.isMaster) {
     let tracker = new StatTrack(3 * 60 * 60);
     let resp = [];
-    tracker.on('fetch', () => {
-        broadcast({type: 'stats'});
-        tracker.setStats(guilds, users);
-    });
     let workers = [];
-    process.on('SIGINT', () => {
-        winston.error('Received SIGINT');
-        process.exit(0);
-    });
+    let shards = {};
     winston.remove(winston.transports.Console);
     winston.add(winston.transports.Console, {
         'timestamp': true,
@@ -33,18 +26,35 @@ if (cluster.isMaster) {
         'datePattern': '.yyyy-MM-dd',
         'filename': 'logs/rem.log'
     });
-    for (let i = 0; i < config.shards; i++) {
-        let worker = cluster.fork({id: i, count: config.shards});
-        let workerobject = {worker: worker, shard_id: i, pid: worker.process.pid};
-        workers.push(workerobject)
-    }
-    cluster.on('message', handleMessage);
-    // winstonCluster.bindListeners();
-    winston.info('Spawned Shards!');
     cluster.on('exit', (worker, code, signal) => {
         winston.error(`worker ${worker.process.pid} died`);
         restartWorker(worker.process.pid);
     });
+    hub.on('_guild_update', (sid, guilds) => {
+        shards[sid] = {guilds};
+    });
+    hub.on('_user_update', (sid, users) => {
+        shards[sid] = {users};
+    });
+    tracker.on('fetch', () => {
+        let guilds = 0;
+        _.forIn(shards, (value, key) => {
+            guilds += value.guilds;
+        });
+        tracker.update(guilds);
+    });
+    process.on('SIGINT', () => {
+        winston.error('Received SIGINT');
+        process.exit(0);
+    });
+    for (let i = 0; i < config.shards; i++) {
+        let worker = cluster.fork({id: i, count: config.shards});
+        let workerobject = {worker: worker, shard_id: i, pid: worker.process.pid};
+        workers.push(workerobject);
+    }
+    winston.info('Spawned Shards!');
+    winstonCluster.bindListeners();
+
     function restartWorker(pid) {
         for (let i = 0; i < workers.length; i++) {
             if (pid === workers[i].pid) {
@@ -61,33 +71,7 @@ if (cluster.isMaster) {
         let worker = cluster.fork(env);
         let workerobject = {worker: worker, shard_id: env.id, pid: worker.process.pid};
         workers.push(workerobject);
-        // worker.on('online', () => {
-        // });
-        // winstonCluster.bindListeners();
-    }
-
-    function handleMessage(worker, message, handle) {
-        if (message.type === 'stats') {
-            resp.push(message);
-            responses += 1;
-            if (responses === config.shards) {
-                users = 0;
-                guilds = 0;
-                responses = 0;
-                for (let i = 0; i < resp.length; i++) {
-                    users += resp[i].d.users;
-                    guilds += resp[i].d.guilds;
-                }
-                resp = [];
-                winston.info(`Final Users: ${users} Guilds:${guilds}`);
-            }
-        }
-    }
-
-    function broadcast(msg) {
-        for (let i = 0; i < workers.length; i++) {
-            workers[i].worker.send(msg);
-        }
+        winstonCluster.bindListeners();
     }
 } else {
     winston.remove(winston.transports.Console);
@@ -95,8 +79,8 @@ if (cluster.isMaster) {
         'timestamp': true,
         'colorize': true
     });
-    // winstonCluster.bindTransport();
-    let client = new Shard(process.env.id, process.env.count);
+    winstonCluster.bindTransport();
+    let client = new Shard(process.env.id, process.env.count, hub);
     winston.info(`Worker started ${process.env.id}/${process.env.count}`);
 
 }

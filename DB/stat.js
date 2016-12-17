@@ -6,7 +6,7 @@ let statSchema = mongoose.Schema({
     id: String,
     userId: String,
     guildId: {type: String, default: "PM"},
-    date: {type: Date, default: Date.now},
+    date: {type: Date, default: Date.now()},
     run: Boolean,
     reason: String,
     cmd: String,

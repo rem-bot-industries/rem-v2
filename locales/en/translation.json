@@ -17,7 +17,8 @@
     "author": "author",
     "lib": "library used",
     "more": "{{number}} more",
-    "cat-nope": ":no_entry_sign: This category does not exist!"
+    "cat-nope": ":no_entry_sign: This category does not exist!",
+    "mention": "Please mention a user."
   },
   "help": {
     "intro": "lets have fun together here on Discord (/^▽^)/ select a command category by responding with {{pre}}help number of command to know more:",
@@ -28,20 +29,20 @@
     "add": "Get a link to add me to your server",
     "music": "[MUSIC]",
     "voice": "I join the Voice Channel you are currently in (normal music commands make the bot join the voice channel too)",
-    "leave": "I leave the Voice Channel I am currently connected to. (only usable with WolkeBot Role)",
-    "play": "Play a Song/Youtube Video max Length: 1H30M (only usable with WolkeBot Role)",
-    "pause": "Pause the Current Song (only usable with WolkeBot Role)",
-    "resume": "Resume the pause Song (only usable with WolkeBot Role)",
+    "leave": "I leave the Voice Channel I am currently connected to.",
+    "play": "Play something from /Youtube/Soundcloud/Osu/search",
+    "pause": "Pause the Current Song",
+    "resume": "Resume the pause Song",
     "volume": "Sets the Volume of the Bot, Values between 1-200 (only usable with WolkeBot Role)",
     "ping": "Gives you the ping of the bot, be aware that this is not the voice ping.",
     "lewd": "So lewd uwu",
     "rem": "Gives you a random pic of rem",
-    "forever": "Plays a song on Repeat until new ones are added to the queue, only usable with the WolkeBot Role",
+    "repeat": "Plays a song/the queue on Repeat until new ones are added to the queue.",
     "search": "Searches for a Song in the Bot Database and shows the 5 best Results",
-    "fskip": "Skips the Current Song (only usable with WolkeBot Role)",
+    "fskip": "Skips the Current Song",
     "skip": "Starts a Voteskip for the current Song, more than 50% of the channel have to vote, then it is skipped.",
     "qa": "Adds a Song/Youtube Video to the Queue max Length: 1H30M",
-    "qra": "removes either all Songs except the one that is playing right now or a certain number of songs (requires WolkeBot Role)",
+    "qra": "removes either all Songs except the one that is playing right now or a certain number of songs.",
     "queue": "Shows the current Queue",
     "np": "Shows the currently playing Song",
     "rq": "Adds a random Song/a number of songs to the Queue",
@@ -121,7 +122,8 @@
     "coin": "flips a coin for you",
     "nyan": "Nya :3",
     "uwu": "uwu",
-    "dere": "search for a dere definition or get a random one"
+    "dere": "search for a dere definition or get a random one",
+    "love": "Gives the mentioned user a love point, add - to reduce the lovepoints of the user by 1"
   },
   "version": "Currently I am running on version {{version}}",
   "add": "Use this link to add me to your Server: {{- link}}",
@@ -214,7 +216,11 @@
   "np": {
     "song-duration": "Currently playing:` {{- title}} {{current}}/{{duration}} {{repeat}} `",
     "song": "Currently playing: `{{-title}} {{repeat}}`",
-    "repeat-on": "repeat:on"
+    "repeat-single": "repeat: single",
+    "repeat-queue": "repeat: queue",
+    "emoji-repeat-single": ":repeat_one: ",
+    "emoji-repeat-queue": ":repeat: ",
+    "emoji-repeat-off": ":heavy_check_mark: "
   },
   "queue": {
     "queued": "Queued:"
@@ -328,7 +334,8 @@
     "same-voice": "You are not in the same voicechannel as I am!",
     "dup": "You already voted!",
     "success-add": "Added Your Vote, votepercentage at **{{current}}%/{{needed}}%**",
-    "success-skip": "Voteskipped Song: **{{- title}}**"
+    "success-skip": "Voteskipped Song: **{{- title}}**",
+    "in-prog": "There is already a voteskip in progress, use {{- prefix}}yes to skip the current song."
   },
   "rm": {
     "over-limit": "You can not delete less than 2 messages or more than 100 Messages at once!",
@@ -391,6 +398,12 @@
   },
   "rp": {
     "success": "I successfully removed the permission `{{- node}}` from the **{{- type}}** `{{- id}}`"
+  },
+  "love": {
+    "success": "You just gave **{{- target}}** **{{- rep}}** :heart: Love Point. Remaining uses **{{uses}}**.",
+    "error-cd": "You can only give **2** :heart: Love Points per Day, next use {{- time}}.",
+    "next": " Next use {{- time}}",
+    "self": ":broken_heart: You can not give Love Points to yourself."
   },
   "dere": {
     "no-dere": "The dere type you searched for does not exist. Here is a list of possible deres:\n",

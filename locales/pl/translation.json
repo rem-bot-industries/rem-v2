@@ -109,7 +109,12 @@
     "lmg": "Pozwól mi to wygooglować dla ciebie",
     "fskip": "Przeskakuje aktualnie graną piosenke (tylko do użycia z grupą WolkeBot)",
     "leave": "Wyszedłam z kanału głosowego w którym byłam. (tylko do użycia z grupą WolkeBot)",
-    "say": "Zmuś Rem by coś powiedziała"
+    "say": "Zmuś Rem by coś powiedziała",
+    "ar": "Dodaj grupe dla siebie lub uzytkownika",
+    "cr": "Stwórz grupe lub dodaj grube dla bota -d -> standardowa, -l2 -> daje grupe do uzytkownika kiedy dostanie 2 poziom, -s -> ustaw grupe by uzytkownik mógl sam nadac, przyklad -> cr -l 20 nazwagrupy, dodaje grupe i uzytkownik z poziomem 20 dostaje ta grupe",
+    "lr": "Podaje liste grup które sa polaczone z Rem w aktualnym momencie",
+    "rr": "Usuwa grupe od siebie, innego uzytkownika lub servera",
+    "roles": "[GRUPY]"
   },
   "version": "Aktualnie jestem na versji {{version}}",
   "add": "Użyj ten link by mnie dodać do twojego servera discord: {{- link}}",
@@ -323,5 +328,26 @@
   "farewell": {
     "no-farewell": "Nie dodałeś pożegnania który powinienam użyć!",
     "no-add": "Możesz ustawić albo zresetować pożegnanie."
+  },
+  "add-role": {
+    "ok": "Wlasnie dalam {{- user}} grupe {{- role}} "
+  },
+  "create-role": {
+    "missing": "Grupa która podales/as nie istnieje na tym serverze!",
+    "new": "Chcesz bym zrobila grupe za Ciebie?",
+    "no-args": "Nie dodales/as zadnych argumentów do komend",
+    "ok": "Stworzylam grupe {{- role}}",
+    "exists": "Grupa {{- role}} juz istnieje w bazie danych"
+  },
+  "remove-role": {
+    "ok": "Zdjelam grupe {{- role}} z {{- user}}"
+  },
+  "list-roles": {
+    "nr": "nr.",
+    "id": "id",
+    "name": "nazwa",
+    "self": "mozna dodac sobie samemu",
+    "lvl": "dostepne od poziomu",
+    "default": "standardowe"
   }
 }

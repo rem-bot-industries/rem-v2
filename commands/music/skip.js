@@ -23,9 +23,13 @@ class ForceSkip extends Command {
         this.v = v;
         this.msg = null;
         this.accessLevel = 0;
+        this.inprogress = {};
     }
 
     run(msg) {
+        if (typeof(this.inprogress[msg.channel.id]) !== 'undefined') {
+            return msg.channel.createMessage(this.t('vskip.in-prog', {lngs: msg.lang, prefix: msg.prefix}));
+        }
         this.v.once('error', (err) => {
             this.v.removeAllListeners();
             msg.channel.createMessage(this.t(err, {lngs: msg.lang}));
@@ -41,7 +45,7 @@ class ForceSkip extends Command {
             console.log(channel.voiceMembers.size);
             if (channel.voiceMembers.size > 0) {
                 this.msg = msg;
-                this.startVoteskip(msg, channel.voiceMembers.size);
+                this.startVoteskip(msg, channel);
             } else {
                 console.log('Force!');
                 this.v.forceSkip(msg);
@@ -49,7 +53,9 @@ class ForceSkip extends Command {
         }
     }
 
-    startVoteskip(msg, size) {
+    startVoteskip(msg, channel) {
+        this.inprogress[msg.channel.id] = {inprogress: true, id: msg.channel.id};
+        let size = channel.voiceMembers.size;
         let voted = [{id: msg.author.id, name: msg.member.nick ? msg.member.nick : msg.author.username}];
         let table = new AsciiTable();
         table.addRow(msg.author.username + '#' + msg.author.discriminator);
@@ -62,32 +68,43 @@ class ForceSkip extends Command {
             table: table.toString()
         })).then(voteMsg => {
             let collector = msg.CON.addCollector(msg.channel.id, {});
+            setTimeout(() => {
+                delete this.inprogress[msg.channel.id];
+            }, 1000 * 60);
             collector.on('message', (msg) => {
-                if (msg.content !== `${this.msg.prefix}yes` && msg.content.startsWith(this.msg.prefix)) {
+                if (msg.content !== `${this.msg.prefix}yes` && (msg.content === `${this.msg.prefix}fskip` || msg.content === `${this.msg.prefix}play`)) {
                     collector.stop();
                     voteMsg.delete();
+                    delete this.inprogress[msg.channel.id];
                     this.v.removeAllListeners();
-                } else {
-                    voted.push({id: msg.author.id, name: msg.member.nick ? msg.member.nick : msg.author.username});
-                    table.addRow(msg.author.username + '#' + msg.author.discriminator);
-                    percentage = voted.length / size * 100;
-                    if (percentage === 50 || percentage > 50) {
-                        collector.stop();
-                        voteMsg.delete();
-                        this.v.forceSkip(msg);
+                } else if (msg.content === `${this.msg.prefix}yes`) {
+                    if (this.checkVoted(msg, voted)) {
+                        size = channel.voiceMembers.size;
+                        voted.push({id: msg.author.id, name: msg.member.nick ? msg.member.nick : msg.author.username});
+                        table.addRow(msg.author.username + '#' + msg.author.discriminator);
+                        percentage = voted.length / size * 100;
+                        if (percentage === 50 || percentage > 50) {
+                            collector.stop();
+                            voteMsg.delete();
+                            delete this.inprogress[msg.channel.id];
+                            this.v.forceSkip(msg);
+                        } else {
+                            voteMsg.edit(this.t('vskip.vote', {
+                                lngs: this.msg.lang,
+                                prefix: this.msg.prefix,
+                                perct: percentage,
+                                needed: 50,
+                                table: table.toString()
+                            }));
+                        }
                     } else {
-                        voteMsg.edit(this.t('vskip.vote', {
-                            lngs: this.msg.lang,
-                            prefix: this.msg.prefix,
-                            perct: percentage,
-                            needed: 50,
-                            table: table.toString()
-                        }));
+                        msg.channel.createMessage(this.t('vskip.dup', {lngs: msg.lang}));
                     }
+
                 }
             });
         });
-        //&& this.checkVoted(msg, voted))
+
     }
 
 

@@ -30,11 +30,11 @@ class Queue extends Command {
      * @param msg
      */
     run(msg) {
-        this.v.once('error', (err) => {
+        this.v.once(`${msg.id}error`, (err) => {
             msg.channel.createMessage(this.t(err));
             this.v.removeListener('queue');
         });
-        this.v.once('queue', (queue) => {
+        this.v.once(`${msg.id}_queue`, (queue) => {
             msg.channel.createMessage(this.buildReply(queue, msg));
             this.v.removeListener('error');
         });
@@ -51,7 +51,7 @@ class Queue extends Command {
         let iteration = Queue.songs.length > 20 ? 20 : Queue.songs.length;
         for (let q = 0; q < iteration; q++) {
             if (q === 0) {
-                let repeat = Queue.repeat ? this.t('np.repeat-on', {lngs: msg.lang}) : "";
+                let repeat = Queue.repeat !== 'off' ? this.t(`np.repeat-${Queue.repeat}`, {lngs: msg.lang}) : "";
                 if (Queue.songs[0].duration && Queue.songs[0].duration !== '') {
                     reply = reply + `${this.t('np.song-duration', {
                             lngs: msg.lang,

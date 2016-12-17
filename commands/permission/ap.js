@@ -67,7 +67,7 @@ class AddPermission extends Command {
             });
             if (users.length > 1) {
                 let collector = new Selector(msg, users, this.t, (err, number) => {
-                    if (err) return msg.channel.createMessage(err);
+                    if (err) return msg.channel.createMessage(this.t(err, {lngs: msg.lang}));
                     user = users[number - 1];
                     let perm = this.p.createPermission(args.node, "user", user.id, args.allow);
                     this.addPermission(msg, perm);

@@ -2,15 +2,15 @@
   "generic": {
     "error": "Ett fel uppstod!",
     "no-pm": ":no_entry: Det här kommandot fungerar inte i privata kanaler!",
-    "whole-num": "let snäll och skriv ett heltal!",
-    "nan": "Vad du än skriver nu så let snäll och skriv ett heltal. :)",
+    "whole-num": "Var snäll och skriv ett heltal!",
+    "nan": "Vad du än skriver nu så var snäll och skriv ett heltal. :)",
     "no-song-in-queue": "Det finns ingen låt i kön, du kanske vill lägga till en :musical_note: ?",
     "no-song-playing": "Ingen låt spelas för tillfället!",
     "no-permission": "Du har inte tillåtelse att utföra det här kommandot, du behöver rollen WolkeBot för att kunna använda det.",
     "no-voice": "Jag är inte ansluten till någon röstkanal på denna server!",
     "level-update": ":tada: Du nådde precis **Level  {{level}}** på **{{server}}**",
     "empty-search": "Du angav ingen sökterm!",
-    "negative": "let snäll och ange inte ett negativt nummer!",
+    "negative": "Var snäll och ange inte ett negativt nummer!",
     "cancel": "c:avbryta",
     "version": "version",
     "author": "skribent",
@@ -89,7 +89,7 @@
     "eastereggs": "[PÅSKÄGG]",
     "proxer": "[PROXER]",
     "no-cat": "[OKATEGORISERAT]",
-    "ping": "Ger dig pingen till botten, let uppmärksam på att det inte är röstlatensen.",
+    "ping": "Ger dig pingen till botten, var uppmärksam på att det inte är röstlatensen.",
     "lewd": "Så snuskigt uwu",
     "rem": "Ger dig en slumpmässig bild på rem",
     "wip": "[ARBETE UNDER VÄG]",
@@ -132,7 +132,7 @@
   },
   "nsfw-images": {
     "nothing-found": "Ingen bild hittas med taggarna: `{{tags}}`",
-    "no-nsfw-channel": "let snäll och lägg till en NSFW-kanal med !w.setLewd (Du måste vara i kanalen) för att kunna använda NSFW-kommandon."
+    "no-nsfw-channel": "Var snäll och lägg till en NSFW-kanal med !w.setLewd (Du måste vara i kanalen) för att kunna använda NSFW-kommandon."
   },
   "8ball": {
     "answers": [
@@ -153,7 +153,7 @@
     "err": "Ett fel uppstod när jag skulle banna: {{user}} !",
     "perms": "Du kan inte banna Ägaren eller någon med WolkeBot-rollen.",
     "self": "Du kan inte banna mig med mina egna kommandon.",
-    "no-mention": "let snäll och @-nämn den som skall bannas."
+    "no-mention": "Var snäll och @-nämn den som skall bannas."
   },
   "kick": {
     "success": "Kickade användaren: {{user}}",
@@ -161,10 +161,10 @@
     "err": "Ett fel uppstod när jag skulle kicka: {{user}} !",
     "perms": "Du kan inte kicka Ägaren eller någon med WolkeBot-rollen.",
     "self": "Du kan inte kicka mig med mina egna kommandon.",
-    "no-mention": "let snäll och @-nämn den som skall kickas."
+    "no-mention": "Var snäll och @-nämn den som skall kickas."
   },
   "roll": {
-    "whole-number": "let snäll och lägg till ett heltal!",
+    "whole-number": "Var snäll och lägg till ett heltal!",
     "negative": "Jag kan inte rulla tärningen med {{number}}",
     "success": "Tärningen rullade {{first}} av {{second}}"
   },
@@ -192,12 +192,12 @@
     "new-server": "Försök igen är du snäll.",
     "arere": "Arere... något gick snett...",
     "perms": "Du behöver en Discord-roll som heter WolkeBot för att ge kakor!",
-    "one-user": "let snäll och nämn enbart **1 Användare**, inte mer, inte mindre!",
+    "one-user": "Var snäll och nämn enbart **1 Användare**, inte mer, inte mindre!",
     "count": "Du har **{{number}} Kakor** just nu."
   },
   "eastereggs": {
     "jay": "Jay älskar dig~ :heart: ",
-    "magic": "xX_Cats_Xx let här -10.10.2016"
+    "magic": "xX_Cats_Xx var här -10.10.2016"
   },
   "set-lang": {
     "no-lang": "Du specifierade inte ett språk! För tillfället så finns de (Tyska), en (Engelska), se (Svenska) och ru (Ryska) tillgängliga.,",
@@ -281,7 +281,7 @@
   },
   "prefix": {
     "success": "Ok, jag satte prefixet till {{- prefix}}",
-    "no-prefix": "let snäll och lägg till ett Prefix!"
+    "no-prefix": "Var snäll och lägg till ett Prefix!"
   },
   "voice": {
     "in-queue": "**{{- song}}** är redan i kön.",
@@ -320,7 +320,7 @@
   "set-lewd": {
     "success": "La till {{- channel}} till NSFW-kanalerna!"
   },
-  "report": "Ok, jag skickade din rapport till Wolke, let snäll och använd detta sparsamt eller så kan du riskera att bli bannad från botten.",
+  "report": "Ok, jag skickade din rapport till Wolke, var snäll och använd detta sparsamt eller så kan du riskera att bli bannad från botten.",
   "greeting": {
     "no-greeting": "Du lade inte till vilken hälsning jag skulle använda!",
     "no-add": "Du kan antingen sätta eller återställa hälsningen."

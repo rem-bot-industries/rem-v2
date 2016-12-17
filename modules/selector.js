@@ -33,7 +33,7 @@ class Selector {
             collector.on('message', (msg) => {
                 if (this.filterMessage(msg)) {
                     collector.stop();
-                    tableMsg.delete();
+                    tableMsg.delete().then().catch(err => winston.error(err));
                     msg.delete().then().catch(err => winston.error(err));
                     if (msg.content === 'c') {
                         return cb('generic.abort');
