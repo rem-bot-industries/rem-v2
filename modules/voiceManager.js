@@ -113,6 +113,19 @@ class VoiceManager extends EventEmitter {
         }
     }
 
+    getCurrentSong(msg) {
+        if (typeof (this.players[msg.guild.id]) !== 'undefined') {
+            let queue = this.players[msg.guild.id].getQueue();
+            if (queue.songs.length > 0) {
+                this.emit(`${msg.id}_queue`, queue);
+            } else {
+                this.emit(`${msg.id}_error`, 'generic.no-song-in-queue');
+            }
+        } else {
+            this.emit(`${msg.id}_error`, 'generic.no-song-in-queue');
+        }
+    }
+
     forceSkip(msg) {
         if (typeof (this.players[msg.guild.id]) !== 'undefined') {
             this.players[msg.guild.id].toggleRepeatSingle(true);

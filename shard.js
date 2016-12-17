@@ -92,6 +92,8 @@ class Shard extends EventEmitter {
             this.guildMemberRemove(g, m)
         });
         // bot.on('debug', this.debug);
+        bot.on('warn', this.warn);
+        bot.on('error', this.error);
         process.on('SIGINT', () => {
             this.shutdown()
         });
@@ -166,7 +168,15 @@ class Shard extends EventEmitter {
     }
 
     debug(info) {
+        console.debug(info);
+    }
 
+    warn(info) {
+        winston.warn(info);
+    }
+
+    error(err) {
+        winston.error(err);
     }
 
     shutdown() {

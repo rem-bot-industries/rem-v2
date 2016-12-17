@@ -47,9 +47,11 @@ if (cluster.isMaster) {
         winston.error('Received SIGINT');
         process.exit(0);
     });
-    let worker = cluster.fork({id: i, count: config.shards});
-    let workerobject = {worker: worker, shard_id: i, pid: worker.process.pid};
-    workers.push(workerobject);
+    for (let i = 0; i < config.shards; i++) {
+        let worker = cluster.fork({id: i, count: config.shards});
+        let workerobject = {worker: worker, shard_id: i, pid: worker.process.pid};
+        workers.push(workerobject);
+    }
     winston.info('Spawned Shards!');
     winstonCluster.bindListeners();
 

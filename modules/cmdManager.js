@@ -8,6 +8,7 @@ let path = require("path");
 let GuildManager = require('./guildManager');
 let UserManager = require('./userManager');
 let PermManager = require('./permissionManager');
+let ReactionManager = require('./reactionManager');
 let CleverBotManager = require('./cleverbot');
 let StatManager = require('./statManager');
 let async = require('async');
@@ -27,6 +28,7 @@ class CmdManager extends EventEmitter {
         this.c = new CleverBotManager();
         this.s = new StatManager();
         this.u = new UserManager();
+        this.r = new ReactionManager();
         this.commands = {};
         this.ready = false;
     }
@@ -110,7 +112,7 @@ class CmdManager extends EventEmitter {
                             this.c.talk(msg);
                         });
                     } else if (msg.guild) {
-                        //TODO Increase level of user here
+                        this.r.filterReaction(msg);
                     }
                 }
             });
