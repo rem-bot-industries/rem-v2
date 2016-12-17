@@ -103,6 +103,9 @@ class CmdManager extends EventEmitter {
                     }
                 } else {
                     if (msg.guild && msg.content.startsWith(rem.user.mention)) {
+                        if (msg.content === `${rem.user.mention} prefix`) {
+                            return msg.channel.createMessage(`\`${msg.db.prefix}\``);
+                        }
                         this.p.checkPermission(msg, 'fun.cleverbot', (err) => {
                             if (err) {
                                 this.s.logCmdStat(msg, 'cleverbot', false, 'permission');
@@ -113,6 +116,9 @@ class CmdManager extends EventEmitter {
                         });
                     } else if (msg.guild) {
                         this.r.filterReaction(msg);
+                        this.u.increaseExperience(msg).then(() => {
+
+                        }).catch(err => winston.error);
                     }
                 }
             });

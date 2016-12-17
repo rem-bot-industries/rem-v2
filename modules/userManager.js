@@ -84,53 +84,69 @@ class UserManager extends EventEmitter {
         return 5 + bonus;
     }
 
-    increaseExperience(msg, user, cb) {
-        this.getServerData(user, msg.guild.id).then(data => {
-
-        }).catch(cb);
-    }
-
-    increaseLevel(user, cb) {
-
+    increaseExperience(msg) {
+        return new Promise((resolve, reject) => {
+            this.getServerData(msg.dbUser, msg.guild.id).then(data => {
+                if (data.cooldown < Date.now()) {
+                    data.id = data.id ? data.id : data.serverId;
+                    data.xp += this.calcXp(msg);
+                    data.totalXp += this.calcXp(msg);
+                    data.cooldown = Date.now() + 10000;
+                    if (data.xp >= this.calcLevelXp(data.level)) {
+                        data.level += 1;
+                        data.xp = 0;
+                    }
+                    this.updateServerData(msg.dbUser, data).then(resolve).catch(reject);
+                }
+            }).catch(reject);
+        });
     }
 
     addServerData(user, data) {
         return new Promise((resolve, reject) => {
-            userModel.update({id: user.id}, {$push: {servers: data}}).then(resolve).catch(reject);
+            userModel.update({id: user.id}, {$addToSet: {servers: data}}).then(resolve).catch(reject);
         });
     }
 
     getServerData(user, guildId) {
         return new Promise((resolve, reject) => {
+            let found = false;
             for (let i = 0; i < user.servers.length; i++) {
-                if (user.servers[i].id === guildId || user.servers[i].serverId === guildId) {
+                if (user.servers[i].serverId === guildId) {
+                    found = true;
                     resolve(user.servers[i]);
                     break;
                 }
             }
-            let data = {
-                id: guildId,
-                pm: true,
-                level: 1,
-                xp: 5,
-                totalXp: 5,
-                cooldown: Date.now() + 10000,
-                muted: false,
-                mutedCd: Date.now(),
-                credits: 0,
-                inventory: [],
-                modCases: []
-            };
-            this.addServerData(user, data).then(resolve).catch(reject);
+            if (!found) {
+                let data = {
+                    id: guildId,
+                    serverId: guildId,
+                    pm: true,
+                    level: 1,
+                    xp: 5,
+                    totalXp: 5,
+                    cooldown: Date.now() + 10000,
+                    muted: false,
+                    mutedCd: Date.now(),
+                    credits: 0,
+                    inventory: [],
+                    modCases: []
+                };
+                this.addServerData(user, data).then(resolve).catch(reject);
+            }
         });
     }
 
     updateServerData(user, data) {
         return new Promise((reject, resolve) => {
-            userModel.update({
-                id: user.id,
-                $or: [{'servers.$.id': data.id}, {'servers.$.serverId': data.id}]
-            }, {$set: {'servers.$': data}}).then(resolve).catch(reject);
+            userModel.update({id: user.id, 'servers.serverId': data.serverId}, {
+                $set: {
+                    'servers.$.cooldown': data.cooldown,
+                    'servers.$.xp': data.xp,
+                    'servers.$.totalXp': data.totalXp
+                }
+            }).then(resolve).catch(reject);
         });
     }
 
