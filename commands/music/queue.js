@@ -30,7 +30,7 @@ class Queue extends Command {
      * @param msg
      */
     run(msg) {
-        this.v.once(`${msg.id}error`, (err) => {
+        this.v.once(`${msg.id}_error`, (err) => {
             msg.channel.createMessage(this.t(err));
             this.v.removeListener('queue');
         });
