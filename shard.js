@@ -69,6 +69,7 @@ class Shard extends EventEmitter {
         this.bot = bot;
         global.rem = bot;
         bot.on('ready', () => {
+            bot.editStatus(`online`, {name: `!w.help for commands`});
             this.clientReady()
         });
         bot.on('messageCreate', (msg) => {
