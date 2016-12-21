@@ -20,7 +20,7 @@ class Garfield extends Command {
         let date = moment().year(year).dayOfYear(day);
         let dateFormat = date.format('YYYY-MM-DD');
         let dateYear = date.year();
-        msg.channel.sendMessage(`https://d1ejxu6vysztl5.cloudfront.net/comics/garfield/${dateYear}/${dateFormat}.gif`).then(messageSent => {
+        msg.channel.createMessage(`https://d1ejxu6vysztl5.cloudfront.net/comics/garfield/${dateYear}/${dateFormat}.gif`).then(messageSent => {
 
         }).catch(winston.info);
     }
