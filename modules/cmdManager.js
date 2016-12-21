@@ -12,6 +12,8 @@ let ReactionManager = require('./reactionManager');
 let CleverBotManager = require('./cleverbot');
 let StatManager = require('./statManager');
 let async = require('async');
+let StatsD = require('node-dogstatsd').StatsD;
+let dogstatsd = new StatsD();
 class CmdManager extends EventEmitter {
     constructor(l, v) {
         super();
@@ -72,26 +74,27 @@ class CmdManager extends EventEmitter {
                         let cmd = msg.content.substr(Guild.prefix.length).split(' ')[0];
                         let command = this.commands[cmd];
                         if (command !== undefined) {
+                            dogstatsd.increment('musicbot.commands');
                             msg.lang = [Guild.lng, 'en'];
                             msg.lngs = this.lngs;
                             msg.prefix = Guild.prefix;
                             let node = `${command.cat}.${command.cmd}`;
                             this.p.checkPermission(msg, node, (err) => {
                                 if (err) {
-                                    this.s.logCmdStat(msg, cmd, false, 'permission');
+                                    // this.s.logCmdStat(msg, cmd, false, 'permission');
                                     return msg.channel.createMessage(`No permission to use \`${node}\``);
                                 }
                                 console.log(cmd);
                                 if (command.needGuild) {
                                     if (msg.guild) {
-                                        this.s.logCmdStat(msg, cmd, true);
+                                        // this.s.logCmdStat(msg, cmd, true);
                                         command.run(msg);
                                     } else {
-                                        this.s.logCmdStat(msg, cmd, false, 'need-guild');
+                                        // this.s.logCmdStat(msg, cmd, false, 'need-guild');
                                         return msg.channel.createMessage(this.t('generic.no-pm', {lngs: msg.lang}))
                                     }
                                 } else {
-                                    this.s.logCmdStat(msg, cmd, true);
+                                    // this.s.logCmdStat(msg, cmd, true);
                                     command.run(msg);
                                 }
                             });
@@ -108,17 +111,17 @@ class CmdManager extends EventEmitter {
                         }
                         this.p.checkPermission(msg, 'fun.cleverbot', (err) => {
                             if (err) {
-                                this.s.logCmdStat(msg, 'cleverbot', false, 'permission');
+                                // this.s.logCmdStat(msg, 'cleverbot', false, 'permission');
                                 return msg.channel.createMessage(`No permission to use \`fun.cleverbot\``);
                             }
-                            this.s.logCmdStat(msg, 'cleverbot', true);
+                            // this.s.logCmdStat(msg, 'cleverbot', true);
                             this.c.talk(msg);
                         });
                     } else if (msg.guild) {
-                        this.r.filterReaction(msg);
-                        this.u.increaseExperience(msg).then(() => {
-
-                        }).catch(err => winston.error);
+                        // this.r.filterReaction(msg);
+                        // this.u.increaseExperience(msg).then(() => {
+                        //
+                        // }).catch(err => winston.error);
                     }
                 }
             });

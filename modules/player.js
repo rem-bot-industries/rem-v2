@@ -32,9 +32,9 @@ class Player extends EventEmitter {
         this.channel = '';
         this.started = false;
         this.autoplay();
-        setInterval(() => {
-            this.emit('sync', this.queue);
-        }, 1000 * 300);
+        // setInterval(() => {
+        //     this.emit('sync', this.queue);
+        // }, 1000 * 300);
     }
 
     /**

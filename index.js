@@ -12,7 +12,7 @@ const numCPUs = require('os').cpus().length;
 let Shard = require('./shard');
 let async = require('async');
 if (cluster.isMaster) {
-    let tracker = new StatTrack(3 * 60 * 60);
+    let tracker = new StatTrack(60 * 30);
     let resp = [];
     let workers = [];
     let shards = {};
@@ -38,10 +38,13 @@ if (cluster.isMaster) {
     });
     tracker.on('fetch', () => {
         let guilds = 0;
+        let users = 0;
         _.forIn(shards, (value, key) => {
             guilds += value.guilds;
+            users += value.users;
+
         });
-        tracker.update(guilds);
+        tracker.update(guilds, users);
     });
     process.on('SIGINT', () => {
         winston.error('Received SIGINT');

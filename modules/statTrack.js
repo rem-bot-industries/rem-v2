@@ -4,6 +4,8 @@
 let request = require('request');
 const config = require('../config/main.json');
 let EventEmitter = require('eventemitter3');
+let StatsD = require('node-dogstatsd').StatsD;
+let dogstatsd = new StatsD();
 /**
  * The stattrack engine
  * @extends EventEmitter
@@ -25,7 +27,9 @@ class StatTrack extends EventEmitter {
     /**
      * Updates the stats on carbonitex and bots.discord.pw
      */
-    update(guilds) {
+    update(guilds, users) {
+        dogstatsd.gauge('musicbot.guilds', guilds);
+        dogstatsd.gauge('musicbot.users', users);
         let requestOptions = {
             headers: {
                 Authorization: config.discord_bots_token
