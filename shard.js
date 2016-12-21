@@ -2,6 +2,8 @@
  * Created by julia on 01.11.2016.
  */
 const Eris = require("eris");
+let StatsD = require('node-dogstatsd').StatsD;
+let dogstatsd = new StatsD();
 const EventEmitter = require('eventemitter3');
 const CmdManager = require('./modules/cmdManager');
 const LanguageManager = require('./modules/langManager');
@@ -70,6 +72,9 @@ class Shard extends EventEmitter {
             this.clientReady()
         });
         bot.on('messageCreate', (msg) => {
+            if (!config.beta) {
+                dogstatsd.increment('musicbot.messages');
+            }
             msg.CON = this.CON;
             this.message(msg)
         });
@@ -160,11 +165,11 @@ class Shard extends EventEmitter {
     }
 
     voiceUpdate(member, channel, leave) {
-        if (!leave) {
-            console.log('user joined voice!');
-        } else {
-            console.log('user left voice!');
-        }
+        // if (!leave) {
+        //     console.log('user joined voice!');
+        // } else {
+        //     console.log('user left voice!');
+        // }
     }
 
     debug(info) {

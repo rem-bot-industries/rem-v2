@@ -18,17 +18,23 @@ class Player extends EventEmitter {
      * Create the audio player
      * @param {Object} msg - the message
      * @param {Object} connection the voice connection
-     * @param {Object} ytdl
+     * @param {Object} ytdl Youtube Download
+     * @param {Object} queue The queue
      */
-    constructor(msg, connection, ytdl) {
+    constructor(msg, connection, ytdl, queue) {
         super();
-        this.setMaxListeners(1);
+        this.setMaxListeners(20);
         this.msg = msg;
-        this.queue = {repeat: 'off', repeatId: '', voteskips: [], songs: [], time: ""};
+        this.queue = queue ? queue : {id: msg.guild.id, repeat: 'off', voteskips: [], songs: [], time: ""};
         this.ytdl = ytdl;
         this.connection = connection;
         this.song = null;
         this.channel = '';
+        this.started = false;
+        this.autoplay();
+        // setInterval(() => {
+        //     this.emit('sync', this.queue);
+        // }, 1000 * 300);
     }
 
     /**
@@ -52,7 +58,14 @@ class Player extends EventEmitter {
                     if (url) {
                         // console.log(url);
                         console.log('Streaming opus');
-                        stream = request(url);
+                        try {
+                            stream = request(url);
+                        } catch (e) {
+                            winston.error(e);
+                        }
+                        stream.on('error', (err) => {
+                            winston.error(err);
+                        });
                         opus = true;
                     } else {
                         let options = {
@@ -61,7 +74,14 @@ class Player extends EventEmitter {
                             audioonly: true
                         };
                         console.log('Streaming ytdl');
-                        stream = this.ytdl(Song.url, options)
+                        try {
+                            stream = this.ytdl(Song.url, options)
+                        } catch (e) {
+                            winston.error(e);
+                        }
+                        stream.on('error', (err) => {
+                            winston.error(err);
+                        });
                     }
                     let options = {};
                     if (opus) {
@@ -77,8 +97,14 @@ class Player extends EventEmitter {
                     } catch (e) {
                         this.emit('error', e);
                     }
+                    stream.on('error', (err) => {
+                        winston.error(err);
+                    });
                 } else {
                     stream = request(Song.url);
+                    stream.on('error', (err) => {
+                        winston.error(err);
+                    });
                 }
                 this.connection.play(stream);
             }
@@ -152,8 +178,16 @@ class Player extends EventEmitter {
         } else {
             this.queue.songs.push(Song);
         }
-        if (this.queue.songs.length === 1 && !immediate) {
-            this.play(Song);
+        if (this.queue.songs.length === 1 && !immediate || this.queue.songs.length > 0 && !this.started) {
+            this.started = true;
+            this.play(this.queue.songs[0]);
+        }
+    }
+
+    autoplay() {
+        if (this.queue.songs.length > 0 && !this.started) {
+            this.started = true;
+            this.play(this.queue.songs[0]);
         }
     }
 
@@ -239,6 +273,7 @@ class Player extends EventEmitter {
             return true;
         }
     }
+
     setVolume(vol) {
         try {
             this.connection.setVolume(vol);

@@ -52,12 +52,15 @@ class UserManager extends EventEmitter {
     }
 
     checkLoveCD(user) {
+        if (user.reps.length === 0 || user.reps.length === 1) {
+            return true;
+        }
         for (let i = 0; i < user.reps.length; i++) {
-            if (user.reps[i] < Date.now() + 1000 * 60 * 60 * 24) {
+            if (user.reps[i] < Date.now()) {
                 return true;
             }
         }
-        return (user.reps.length === 0 || user.reps.length === 1);
+        return false;
     }
 
     addLoveCd(user, cb) {

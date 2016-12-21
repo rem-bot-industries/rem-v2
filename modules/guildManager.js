@@ -45,5 +45,6 @@ class GuildManager extends EventEmitter {
         guildModel.update({id: id}, {$set: {prefix: prefix}}, cb);
     }
 
+
 }
 module.exports = GuildManager;

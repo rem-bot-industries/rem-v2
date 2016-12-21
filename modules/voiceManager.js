@@ -6,6 +6,7 @@ let ytdl = require('ytdl-core');
 let winston = require('winston');
 let EventEmitter = require('eventemitter3');
 let SongImporter = require('./songImporter');
+let queueModel = require('../DB/queue');
 // let Selector = require('./selector');
 let async = require("async");
 class VoiceManager extends EventEmitter {
@@ -21,6 +22,9 @@ class VoiceManager extends EventEmitter {
             if (!conn) {
                 if (msg.member.voiceState.channelID) {
                     rem.joinVoiceChannel(msg.member.voiceState.channelID).then((connection) => {
+                        if (typeof (this.players[msg.guild.id]) === 'undefined') {
+                            this.createPlayer(msg, connection, ytdl);
+                        }
                         cb(null, connection);
                     }).catch(err => {
                         console.log(err);
@@ -93,8 +97,9 @@ class VoiceManager extends EventEmitter {
                 if (typeof (this.players[msg.guild.id]) !== 'undefined') {
                     this.players[msg.guild.id].addToQueue(Song, immediate);
                 } else {
-                    this.players[msg.guild.id] = new Player(msg, conn, ytdl);
-                    this.players[msg.guild.id].addToQueue(Song, immediate);
+                    this.createPlayer(msg, conn, ytdl).then(player => {
+                        this.players[msg.guild.id].addToQueue(Song, immediate);
+                    }).catch(err => winston.error);
                 }
             });
         });
@@ -177,11 +182,12 @@ class VoiceManager extends EventEmitter {
                         cb();
                     }, 100);
                 } else {
-                    this.players[msg.guild.id] = new Player(msg, conn, ytdl);
-                    this.players[msg.guild.id].addToQueue(song, false);
-                    setTimeout(() => {
-                        cb();
-                    }, 100);
+                    this.createPlayer(msg, conn, ytdl).then(player => {
+                        player.addToQueue(song, false);
+                        setTimeout(() => {
+                            cb();
+                        }, 100);
+                    }).catch(err => cb);
                 }
             }, (err) => {
                 if (err) return winston.error(err);
@@ -189,8 +195,55 @@ class VoiceManager extends EventEmitter {
         });
     }
 
+    createPlayer(msg, conn, ytdl) {
+        return new Promise((resolve, reject) => {
+            this.loadQueue(msg.guild.id, (err, queue) => {
+                if (err) {
+                    winston.error(err);
+                    reject(err);
+                } else {
+                    this.players[msg.guild.id] = new Player(msg, conn, ytdl, queue);
+                    this.players[msg.guild.id].on('sync', (queue) => {
+                        this.syncQueue(queue)
+                    });
+                    resolve(this.players[msg.guild.id]);
+                }
+            });
+
+        });
+
+    }
+
     shuffleQueue() {
 
+    }
+
+    syncQueue(queue) {
+        this.loadQueue(queue.id, (err, dbQueue) => {
+            if (err) return winston.error(err);
+            queueModel.update({id: queue.id}, {$set: queue}, (err) => {
+                if (err) return winston.error(err);
+                console.log('synced Queue')
+            });
+        });
+    }
+
+    loadQueue(id, cb) {
+        queueModel.findOne({id: id}, (err, Queue) => {
+            if (err) return cb(err);
+            if (Queue) {
+                cb(null, Queue);
+            } else {
+                this.createQueue(id, cb);
+            }
+        });
+    }
+
+    createQueue(id, cb) {
+        let Queue = new queueModel({
+            id: id
+        });
+        Queue.save(cb);
     }
 }
 module.exports = VoiceManager;
