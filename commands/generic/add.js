@@ -2,10 +2,10 @@
  * Created by julia on 07.11.2016.
  */
 let Command = require('../../Objects/command');
-class Ping extends Command {
+class Add extends Command {
     constructor(t) {
         super();
-        this.cmd = "bug";
+        this.cmd = "add";
         this.cat = "generic";
         this.needGuild = false;
         this.t = t;
@@ -19,4 +19,4 @@ class Ping extends Command {
         msg.channel.createMessage(`:ok_hand: `);
     }
 }
-module.exports = Ping;
+module.exports = Add;
