@@ -43,7 +43,7 @@ class ForceSkip extends Command {
             let channel = msg.guild.channels.find((c) => c.id === channelID);
             // console.log(channel.voiceMembers);
             console.log(channel.voiceMembers.size);
-            if (channel.voiceMembers.size > 0) {
+            if (channel.voiceMembers.size > 1) {
                 this.msg = msg;
                 this.startVoteskip(msg, channel);
             } else {
