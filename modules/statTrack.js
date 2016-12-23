@@ -20,7 +20,6 @@ class StatTrack extends EventEmitter {
         super();
         this.setMaxListeners(20);
         this.interval = setInterval(() => {
-            console.log('fetched');
             this.emit('fetch');
         }, interval * 1000)
     }
