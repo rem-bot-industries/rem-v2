@@ -2,7 +2,7 @@
  * Created by julia on 01.11.2016.
  */
 const Eris = require("eris");
-let StatsD = require('node-dogstatsd').StatsD;
+let StatsD = require('hot-shots');
 let dogstatsd = new StatsD();
 const EventEmitter = require('eventemitter3');
 const CmdManager = require('./modules/cmdManager');
