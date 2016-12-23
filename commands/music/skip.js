@@ -30,11 +30,11 @@ class ForceSkip extends Command {
         if (typeof(this.inprogress[msg.channel.id]) !== 'undefined') {
             return msg.channel.createMessage(this.t('vskip.in-prog', {lngs: msg.lang, prefix: msg.prefix}));
         }
-        this.v.once('error', (err) => {
+        this.v.once(`${msg.id}_error`, (err) => {
             this.v.removeAllListeners();
             msg.channel.createMessage(this.t(err, {lngs: msg.lang}));
         });
-        this.v.once('skipped', (song) => {
+        this.v.once(`${msg.id}_skipped`, (song) => {
             this.v.removeAllListeners();
             msg.channel.createMessage(this.t('skip.success', {lngs: msg.lang, title: song.title}));
         });
@@ -43,7 +43,7 @@ class ForceSkip extends Command {
             let channel = msg.guild.channels.find((c) => c.id === channelID);
             // console.log(channel.voiceMembers);
             console.log(channel.voiceMembers.size);
-            if (channel.voiceMembers.size > 1) {
+            if (channel.voiceMembers.size > 2) {
                 this.msg = msg;
                 this.startVoteskip(msg, channel);
             } else {
@@ -55,7 +55,7 @@ class ForceSkip extends Command {
 
     startVoteskip(msg, channel) {
         this.inprogress[msg.channel.id] = {inprogress: true, id: msg.channel.id};
-        let size = channel.voiceMembers.size;
+        let size = channel.voiceMembers.size - 1;
         let voted = [{id: msg.author.id, name: msg.member.nick ? msg.member.nick : msg.author.username}];
         let table = new AsciiTable();
         table.addRow(msg.author.username + '#' + msg.author.discriminator);
