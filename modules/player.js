@@ -135,7 +135,7 @@ class Player extends EventEmitter {
         } else {
             setTimeout(() => {
                 this.play(Song);
-            }, 500);
+            }, 1000);
         }
     }
 
