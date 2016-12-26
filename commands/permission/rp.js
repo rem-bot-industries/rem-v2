@@ -50,7 +50,7 @@ class GetPermission extends Command {
                 if (Perm.type === type) {
                     if (type === 'channel') {
                         let channel = rem.getChannel(Perm.id);
-                        table.addRow(added.length + 1, Perm.id, channel.name, Perm.type, Perm.cat, Perm.perm, Perm.use);
+                        table.addRow(added + 1, Perms[i].id, channel ? channel.name : 'deleted', Perms[i].type, Perms[i].cat, Perms[i].perm, Perms[i].use);
                     } else {
                         table.addRow(added.length + 1, Perm.id, '-', Perm.type, Perm.cat, Perm.perm, Perm.use);
                     }
