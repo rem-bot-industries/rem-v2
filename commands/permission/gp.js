@@ -49,11 +49,11 @@ class GetPermission extends Command {
                 if (Perms[i].type === type) {
                     if (Perms[i].type === 'channel') {
                         let channel = rem.getChannel(Perms[i].id);
-                        table.addRow(added + 1, Perms[i].id, channel.name, Perms[i].type, Perms[i].cat, Perms[i].perm, Perms[i].use);
+                        table.addRow(added + 1, Perms[i].id, channel ? channel.name : 'deleted', Perms[i].type, Perms[i].cat, Perms[i].perm, Perms[i].use);
                         added += 1;
                     } else if (Perms[i].type === 'user') {
                         let user = rem.users.find(u => u.id === Perms[i].id);
-                        table.addRow(added + 1, Perms[i].id, user.username + '#' + user.discriminator, Perms[i].type, Perms[i].cat, Perms[i].perm, Perms[i].use);
+                        table.addRow(added + 1, Perms[i].id, user ? `${user.username}#${user.discriminator}` : 'deleted', Perms[i].type, Perms[i].cat, Perms[i].perm, Perms[i].use);
                         added += 1;
                     } else {
                         table.addRow(added + 1, Perms[i].id, '-', Perms[i].type, Perms[i].cat, Perms[i].perm, Perms[i].use);
