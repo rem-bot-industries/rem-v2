@@ -41,6 +41,7 @@ class Shard extends EventEmitter {
         this.VOICE = null;
         this.HUB = hub;
         this.MSG = null;
+        this.interval = null;
         this.init();
     }
 
@@ -113,8 +114,9 @@ class Shard extends EventEmitter {
         this.CMD.on('ready', (cmds) => {
             this.ready = true;
             this.HUB.emit('_guild_update', this.id, this.bot.guilds.size);
-            this.HUB.emit('_user_update', this.id, this.bot.users.size);
+            this.HUB.emit('_user_update', this.id, this.bot.guilds.map(g => g.memberCount).reduce((a, b) => a + b));
             winston.info('commands are ready!');
+            this.createInterval();
             // console.log(cmds);
         });
     }
@@ -128,7 +130,7 @@ class Shard extends EventEmitter {
 
     guildCreate(Guild) {
         this.HUB.emit('_guild_update', this.id, this.bot.guilds.size);
-        this.HUB.emit('_user_update', this.id, this.bot.users.size);
+        this.HUB.emit('_user_update', this.id, this.bot.guilds.map(g => g.memberCount).reduce((a, b) => a + b));
         guildModel.findOne({id: Guild.id}, (err, guild) => {
             if (err) return winston.error(err);
             if (guild) {
@@ -154,7 +156,7 @@ class Shard extends EventEmitter {
 
     guildDelete(Guild) {
         this.HUB.emit('_guild_update', this.id, this.bot.guilds.size);
-        this.HUB.emit('_user_update', this.id, this.bot.users.size);
+        this.HUB.emit('_user_update', this.id, this.bot.guilds.map(g => g.memberCount).reduce((a, b) => a + b));
     }
 
     guildMemberAdd(member) {
@@ -186,6 +188,7 @@ class Shard extends EventEmitter {
     }
 
     shutdown() {
+        clearInterval(this.interval);
         mongoose.connection.close();
         try {
             this.bot.disconnect();
@@ -194,5 +197,14 @@ class Shard extends EventEmitter {
         }
         process.exit(0);
     }
+
+    createInterval() {
+        this.interval = setInterval(() => {
+            this.HUB.emit('_guild_update', this.id, this.bot.guilds.size);
+            this.HUB.emit('_user_update', this.id, this.bot.guilds.map(g => g.memberCount).reduce((a, b) => a + b));
+        }, 30);
+    }
+
+
 }
 module.exports = Shard;
