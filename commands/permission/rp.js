@@ -49,7 +49,7 @@ class GetPermission extends Command {
             async.eachSeries(Perms, (Perm, cb) => {
                 if (Perm.type === type) {
                     if (type === 'channel') {
-                        let channel = rem.getChannel(Perm.id);
+                        let channel = rem.getChannel(Perms[i].id);
                         table.addRow(added + 1, Perms[i].id, channel ? channel.name : 'deleted', Perms[i].type, Perms[i].cat, Perms[i].perm, Perms[i].use);
                     } else {
                         table.addRow(added.length + 1, Perm.id, '-', Perm.type, Perm.cat, Perm.perm, Perm.use);

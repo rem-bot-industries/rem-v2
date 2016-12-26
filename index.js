@@ -37,6 +37,7 @@ if (cluster.isMaster) {
         shards[sid].users = users;
     });
     tracker.on('fetch', () => {
+        console.log(shards);
         let guilds = 0;
         let users = 0;
         _.forIn(shards, (value, key) => {
