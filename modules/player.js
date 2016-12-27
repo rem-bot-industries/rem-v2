@@ -34,7 +34,7 @@ class Player extends EventEmitter {
         this.autoplay();
         // setInterval(() => {
         //     this.emit('sync', this.queue);
-        // }, 1000 * 300);
+        // }, 1000 * 30);
     }
 
     /**

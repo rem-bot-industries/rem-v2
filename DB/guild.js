@@ -14,7 +14,6 @@ let guildSchema = mongoose.Schema({
     levelEnabled: Boolean,
     pmNotifications: Boolean,
     chNotifications: Boolean,
-    volume: Number,
     joinText: String,
     joinChannel: String,
     leaveText: String,
