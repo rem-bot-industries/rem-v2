@@ -21,8 +21,10 @@ class Selector {
                 table.addRow(i, c.name);
             } else if (c.title) {
                 table.addRow(i, c.title);
-            } else if (c.user.username) {
+            } else if (typeof (c.user) !== 'undefined' && c.user.username) {
                 table.addRow(i, c.user.username);
+            } else if (typeof (c.snippet) !== 'undefined') {
+                table.addRow(i, c.snippet.title);
             }
 
             i += 1;

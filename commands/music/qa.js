@@ -44,7 +44,7 @@ class AddToQueue extends Command {
                     this.clearListeners();
                     return msg.channel.createMessage(this.t(err, {lngs: msg.lang}));
                 }
-                msg.content = results[number - 1].link;
+                msg.content = `https://youtube.com/watch?v=${results[number - 1].id}`;
                 setTimeout(() => {
                     this.clearListeners();
                 }, 3000);
