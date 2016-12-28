@@ -12,7 +12,7 @@ const numCPUs = require('os').cpus().length;
 let Shard = require('./shard');
 let async = require('async');
 if (cluster.isMaster) {
-    let tracker = new StatTrack(20);
+    let tracker = new StatTrack(60);
     let resp = [];
     let workers = [];
     let shards = {};
@@ -36,8 +36,10 @@ if (cluster.isMaster) {
     hub.on('_user_update', (sid, users) => {
         shards[sid].users = users;
     });
+    tracker.on('error', (err) => {
+
+    });
     tracker.on('fetch', () => {
-        console.log(shards);
         let guilds = 0;
         let users = 0;
         _.forIn(shards, (value, key) => {
@@ -45,6 +47,7 @@ if (cluster.isMaster) {
             users += value.users;
 
         });
+        console.log(`Total Guilds: ${guilds}, Total Users: ${users}`);
         tracker.update(guilds, users);
     });
     process.on('SIGINT', () => {

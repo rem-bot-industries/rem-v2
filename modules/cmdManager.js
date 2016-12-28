@@ -81,20 +81,20 @@ class CmdManager extends EventEmitter {
                             let node = `${command.cat}.${command.cmd}`;
                             this.p.checkPermission(msg, node, (err) => {
                                 if (err) {
-                                    // this.s.logCmdStat(msg, cmd, false, 'permission');
+                                    this.s.logCmdStat(msg, cmd, false, 'permission');
                                     return msg.channel.createMessage(`No permission to use \`${node}\``);
                                 }
                                 console.log(cmd);
                                 if (command.needGuild) {
                                     if (msg.guild) {
-                                        // this.s.logCmdStat(msg, cmd, true);
+                                        this.s.logCmdStat(msg, cmd, true);
                                         command.run(msg);
                                     } else {
-                                        // this.s.logCmdStat(msg, cmd, false, 'need-guild');
+                                        this.s.logCmdStat(msg, cmd, false, 'need-guild');
                                         return msg.channel.createMessage(this.t('generic.no-pm', {lngs: msg.lang}))
                                     }
                                 } else {
-                                    // this.s.logCmdStat(msg, cmd, true);
+                                    this.s.logCmdStat(msg, cmd, true);
                                     command.run(msg);
                                 }
                             });
@@ -111,10 +111,10 @@ class CmdManager extends EventEmitter {
                         }
                         this.p.checkPermission(msg, 'fun.cleverbot', (err) => {
                             if (err) {
-                                // this.s.logCmdStat(msg, 'cleverbot', false, 'permission');
+                                this.s.logCmdStat(msg, 'cleverbot', false, 'permission');
                                 return msg.channel.createMessage(`No permission to use \`fun.cleverbot\``);
                             }
-                            // this.s.logCmdStat(msg, 'cleverbot', true);
+                            this.s.logCmdStat(msg, 'cleverbot', true);
                             this.c.talk(msg);
                         });
                     } else if (msg.guild) {

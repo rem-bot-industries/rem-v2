@@ -12,17 +12,14 @@ class Help extends Command {
         this.needGuild = false;
         this.t = t;
         this.accessLevel = 0;
-        this.categories = [];
-        this.categories_name = [];
         this.msg = null;
         this.p = new PermManager();
     }
 
     run(msg) {
-        this.categories = [];
-        this.categories_name = [];
+
         let msgSplit = msg.content.split(' ').splice(1);
-        this.buildHelp(msg);
+        let categoriesData = this.buildHelp(msg);
         this.msg = msg;
         if (msg.guild) {
             msg.channel.createMessage(`${msg.author.mention}, ${this.t('help.helpReply', {
@@ -31,13 +28,13 @@ class Help extends Command {
             })}`);
         }
         if (msgSplit.length > 0) {
-            return this.exactHelp(msg, msgSplit);
+            return this.exactHelp(msg, msgSplit, categoriesData);
         }
         let reply = {
             embed: {
                 author: {name: "Command categories"},
                 footer: {text: "Type !w.help number to get the commands of a category"},
-                fields: this.categories_name,
+                fields: categoriesData.categories_name,
                 color: 0x00ADFF
             }
         };
@@ -58,24 +55,27 @@ class Help extends Command {
 
     buildHelp(msg) {
         let commands = msg.cmds;
+        let categories = [];
+        let categories_name = [];
         let i = 1;
         for (let command in commands) {
             if (commands.hasOwnProperty(command)) {
                 let cmd = commands[command];
                 if (typeof (cmd.hidden) !== 'undefined') {
 
-                } else if (this.checkCat(cmd.cat, this.categories)) {
-                    this.categories = this.pushCat(cmd, this.categories);
+                } else if (this.checkCat(cmd.cat, categories)) {
+                    categories = this.pushCat(cmd, categories);
                 } else {
-                    this.categories.push({name: cmd.cat, commands: [cmd]});
-                    this.categories_name.push({name: i, value: cmd.cat, inline: true});
+                    categories.push({name: cmd.cat, commands: [cmd]});
+                    categories_name.push({name: i, value: cmd.cat, inline: true});
                     i += 1;
                 }
             }
         }
+        return {categories, categories_name};
     }
 
-    exactHelp(msg, msgSplit) {
+    exactHelp(msg, msgSplit, {categories}) {
         let number = 0;
         try {
             number = parseInt(msgSplit[0]);
@@ -83,7 +83,7 @@ class Help extends Command {
 
         }
         if (isNaN(number) || number < 1) {
-            let cat = this.checkCat(msgSplit[0], this.categories);
+            let cat = this.checkCat(msgSplit[0], categories);
             if (cat) {
                 this.sendReply(msg, cat);
             } else {
@@ -105,8 +105,8 @@ class Help extends Command {
                 this.catReply(msg.channel, this.t('generic.negative', {number: number}));
             }
         }
-        if (!isNaN(number) && number <= this.categories.length) {
-            this.sendReply(msg, this.categories[number - 1]);
+        if (!isNaN(number) && number <= categories.length) {
+            this.sendReply(msg, categories[number - 1]);
         }
     }
 
