@@ -145,7 +145,7 @@ class VoiceManager extends EventEmitter {
         if (typeof (this.players[msg.guild.id]) !== 'undefined') {
             return this.players[msg.guild.id].toggleRepeatSingle();
         } else {
-            return null;
+            return 'off';
         }
     }
 
