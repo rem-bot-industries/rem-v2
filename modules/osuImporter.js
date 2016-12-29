@@ -7,7 +7,7 @@
  *
  */
 let Promise = require('bluebird');
-let BasicImporter = require('../Objects/basicImporter');
+let BasicImporter = require('../structures/basicImporter');
 let winston = require('winston');
 let fs = require("fs");
 let path = require("path");

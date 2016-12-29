@@ -1,10 +1,8 @@
 /**
  * Created by julia on 15.11.2016.
  */
-let Command = require('../../Objects/command');
-let request = require("request");
-let winston = require('winston');
-class RemImage extends Command {
+let RRACommand = require('../../structures/rraCommand');
+class RemImage extends RRACommand {
     constructor(t) {
         super();
         this.cmd = "rem";
@@ -12,14 +10,6 @@ class RemImage extends Command {
         this.needGuild = false;
         this.t = t;
         this.accessLevel = 0;
-    }
-
-    run(msg) {
-        request.get('https://rra.ram.moe/i/r', {qs: {"type": "rem"}}, (err, result, body) => {
-            if (err) return winston.error(err);
-            let parsedBody = JSON.parse(body);
-            msg.channel.createMessage(`https://rra.ram.moe${parsedBody.path}`);
-        });
     }
 }
 module.exports = RemImage;

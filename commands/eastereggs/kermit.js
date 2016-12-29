@@ -1,16 +1,15 @@
 /**
  * Created by julia on 15.11.2016.
  */
-
 let RRACommand = require('../../structures/rraCommand');
-class LewdImage extends RRACommand {
+class KermitImage extends RRACommand {
     constructor(t) {
         super();
-        this.cmd = "lewd";
-        this.cat = "fun";
+        this.cmd = "kermit";
+        this.cat = "eastereggs";
         this.needGuild = false;
         this.t = t;
         this.accessLevel = 0;
     }
 }
-module.exports = LewdImage;
+module.exports = KermitImage;

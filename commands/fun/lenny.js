@@ -1,7 +1,7 @@
 /**
  * Created by EpicPick on 13.11.2016.
  */
-let Command = require('../../Objects/command');
+let Command = require('../../structures/command');
 class Lenny extends Command {
     constructor(t) {
         super();

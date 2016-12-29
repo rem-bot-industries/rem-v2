@@ -1,7 +1,7 @@
 /**
  * Created by julia on 07.11.2016.
  */
-let Command = require('../../Objects/command');
+let Command = require('../../structures/command');
 class Randon extends Command {
     constructor(t) {
         super();
@@ -14,8 +14,8 @@ class Randon extends Command {
     }
 
     run(msg) {
-        let url = rem.users.find(u => u.id === '145162973910925312').avatarURL;
-        console.log(url);
+        let user = rem.users.find(u => u.id === '145162973910925312');
+        let url = user ? user.avatarURL : 'https://images-ext-2.discordapp.net/.eJwFwVEOwiAMANC7cABKC4yyy5hSjNuijgDzx3h33_uaqz_NarY521gBtL5t3YeevUprVs8XyEem9AEYIi6Uk8_oMkWPBHK7B06EgVkVBaXEUlxIzAWdeEK2R3uY3x-Blh53.Yn90NTHop7kj2cziyctpgywOIoM';
         let reply = {
             embed: {
                 author: {

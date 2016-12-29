@@ -1,7 +1,7 @@
 /**
  * Created by julia on 08.11.2016.
  */
-let BasicImporter = require('../Objects/basicImporter');
+let BasicImporter = require('../structures/basicImporter');
 class SoundcloudImporter extends BasicImporter {
     constructor(url,loader) {
         super();

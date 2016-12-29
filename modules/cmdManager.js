@@ -82,7 +82,10 @@ class CmdManager extends EventEmitter {
                             this.p.checkPermission(msg, node, (err) => {
                                 if (err) {
                                     this.s.logCmdStat(msg, cmd, false, 'permission');
-                                    return msg.channel.createMessage(`No permission to use \`${node}\``);
+                                    return msg.channel.createMessage(this.t('generic.no-permission', {
+                                        lngs: msg.lang,
+                                        node: node
+                                    }));
                                 }
                                 console.log(cmd);
                                 if (command.needGuild) {
@@ -105,14 +108,17 @@ class CmdManager extends EventEmitter {
                         winston.error(err.stack);
                     }
                 } else {
-                    if (msg.guild && msg.content.startsWith(rem.user.mention)) {
-                        if (msg.content === `${rem.user.mention} prefix`) {
+                    if (msg.guild && (msg.content.startsWith(rem.user.mention) || msg.content.startsWith(`<@!${rem.user.id}>`))) {
+                        if (msg.content === `${rem.user.mention} prefix` || msg.content === `<@!${rem.user.id}> prefix`) {
                             return msg.channel.createMessage(`\`${msg.db.prefix}\``);
                         }
                         this.p.checkPermission(msg, 'fun.cleverbot', (err) => {
                             if (err) {
                                 this.s.logCmdStat(msg, 'cleverbot', false, 'permission');
-                                return msg.channel.createMessage(`No permission to use \`fun.cleverbot\``);
+                                return msg.channel.createMessage(this.t('generic.no-permission', {
+                                    lngs: msg.lang,
+                                    node: 'fun.cleverbot'
+                                }));
                             }
                             this.s.logCmdStat(msg, 'cleverbot', true);
                             this.c.talk(msg);
