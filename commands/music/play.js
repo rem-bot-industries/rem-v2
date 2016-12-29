@@ -36,19 +36,18 @@ class Play extends Command {
             // this.clearListeners();
             msg.channel.createMessage(this.t(info, {url: url, lngs: msg.lang}));
         });
+
         this.v.once(`${msg.id}_search-result`, (results) => {
-            this.v.once(`${msg.id}_search-result`, (results) => {
-                let selector = new Selector(msg, results, this.t, (err, number) => {
-                    if (err) {
-                        this.clearListeners();
-                        return msg.channel.createMessage(this.t(err, {lngs: msg.lang}));
-                    }
-                    msg.content = `https://youtube.com/watch?v=${results[number - 1].id}`;
-                    setTimeout(() => {
-                        this.clearListeners();
-                    }, 3000);
-                    this.v.play(msg);
-                });
+            let selector = new Selector(msg, results, this.t, (err, number) => {
+                if (err) {
+                    this.clearListeners();
+                    return msg.channel.createMessage(this.t(err, {lngs: msg.lang}));
+                }
+                msg.content = `https://youtube.com/watch?v=${results[number - 1].id}`;
+                setTimeout(() => {
+                    this.clearListeners();
+                }, 3000);
+                this.v.play(msg);
             });
         });
         this.v.once(`${msg.id}_added`, (Song) => {

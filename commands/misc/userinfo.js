@@ -17,7 +17,6 @@ class UserInfo extends Command {
     }
 
     run(msg) {
-        msg = msg;
         let user;
         let member;
         if (msg.mentions.length > 0) {
