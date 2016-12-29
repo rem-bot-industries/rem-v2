@@ -1,7 +1,7 @@
 /**
  * Created by julia on 07.11.2016.
  */
-let Command = require('../../Objects/command');
+let Command = require('../../structures/command');
 let winston = require('winston');
 let request = require('request');
 let key = require('../../config/main.json').lbsearch_sfw_key;

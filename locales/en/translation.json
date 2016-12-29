@@ -6,7 +6,7 @@
     "nan": ":no_entry_sign: Whatever you just send, please just add a whole number. :) ",
     "no-song-in-queue": ":no_entry_sign: There is no song in the queue, maybe add one :musical_note: ?",
     "no-song-playing": ":musical_note: There is no song playing at the moment!",
-    "no-permission": ":no_entry_sign: You dont have the permission to use this Command, please add a discord role named WolkeBot to yourself to use it.",
+    "no-permission": ":no_entry_sign: You dont have the permission to use this command, please add the permission `{{- node}}` to yourself to use it.",
     "no-voice": ":no_entry_sign: I am not connected to any voice channel on this Server!",
     "level-update": ":tada: You just reached **Level  {{level}}** on **{{- server}}**",
     "empty-search": ":no_entry_sign: You did not enter a search Term!",

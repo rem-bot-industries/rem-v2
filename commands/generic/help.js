@@ -1,7 +1,7 @@
 /**
  * Created by julia on 07.11.2016.
  */
-let Command = require('../../Objects/command');
+let Command = require('../../structures/command');
 let PermManager = require('../../modules/permissionManager');
 let winston = require('winston');
 class Help extends Command {

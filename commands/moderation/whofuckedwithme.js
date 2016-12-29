@@ -1,7 +1,7 @@
 /**
  * Created by julia on 24.11.2016.
  */
-let Command = require('../../Objects/command');
+let Command = require('../../structures/command');
 let msgModel = require('../../DB/message');
 class WhoFuckedWithMe extends Command {
     constructor(t) {

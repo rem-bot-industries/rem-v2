@@ -15,7 +15,7 @@ let raven = require('raven');
 let mongoose = require('mongoose');
 let url = config.beta ? 'mongodb://localhost/discordbot-beta' : 'mongodb://localhost/discordbot';
 let Promise = require('bluebird');
-let Connector = require('./Objects/connector');
+let Connector = require('./structures/connector');
 mongoose.Promise = Promise;
 mongoose.connect(url, (err) => {
     if (err) return winston.error('Failed to connect to the database!');

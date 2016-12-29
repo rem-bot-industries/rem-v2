@@ -1,7 +1,7 @@
 /**
  * Created by julia on 07.11.2016.
  */
-let Command = require('../../Objects/command');
+let Command = require('../../structures/command');
 let winston = require('winston');
 var request = require("request");
 class Cat extends Command {

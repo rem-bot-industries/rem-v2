@@ -1,7 +1,7 @@
 /**
  * Created by julia on 15.11.2016.
  */
-let Command = require('../../Objects/command');
+let Command = require('../../structures/command');
 let path = require("path");
 let request = require("request");
 let winston = require('winston');
