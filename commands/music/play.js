@@ -59,5 +59,9 @@ class Play extends Command {
             this.v.removeListener('info');
         }, 2000);
     }
+
+    clearListeners() {
+        this.v.removeAllListeners();
+    }
 }
 module.exports = Play;
