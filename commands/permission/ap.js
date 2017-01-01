@@ -97,7 +97,7 @@ class AddPermission extends Command {
             let roles = msg.guild.roles.filter(r => regex.test(r.name));
             if (roles.length > 1) {
                 let collector = new Selector(msg, roles, this.t, (err, number) => {
-                    if (err) return msg.channel.createMessage(err);
+                    if (err) return msg.channel.createMessage(this.t(err, {lngs: msg.lang}));
                     role = roles[number - 1];
                     let perm = this.p.createPermission(args.node, "role", role.id, args.allow);
                     this.addPermission(msg, perm);
@@ -131,7 +131,7 @@ class AddPermission extends Command {
             });
             if (channels.length > 1) {
                 let collector = new Selector(msg, channels, this.t, (err, number) => {
-                    if (err) return msg.channel.createMessage(err);
+                    if (err) return msg.channel.createMessage(this.t(err, {lngs: msg.lang}));
                     channel = channels[number - 1];
                     let perm = this.p.createPermission(args.node, "channel", channel.id, args.allow);
                     this.addPermission(msg, perm);
