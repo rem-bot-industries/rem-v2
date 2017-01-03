@@ -10,6 +10,7 @@ class KermitImage extends RRACommand {
         this.needGuild = false;
         this.t = t;
         this.accessLevel = 0;
+        this.hidden = true;
     }
 }
 module.exports = KermitImage;

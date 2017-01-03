@@ -41,7 +41,8 @@
     "winston-daily-rotate-file": "^1.4.0",
     "youtube-api": "^2.0.4",
     "youtube-dl": "^1.11.1",
-    "ytdl-core": "^0.7.21"
+    "ytdl-core": "^0.7.21",
+    "youtube-search": "latest"
   },
   "devDependencies": {
     "babel-cli": "^6.18.0",

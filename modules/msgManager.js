@@ -14,7 +14,7 @@ let StatManager = require('./statManager');
 let async = require('async');
 let StatsD = require('node-dogstatsd').StatsD;
 let dogstatsd = new StatsD();
-class CmdManager extends EventEmitter {
+class MessageManager extends EventEmitter {
     constructor(l, v) {
         super();
         this.setMaxListeners(20);
@@ -173,4 +173,4 @@ class CmdManager extends EventEmitter {
         this.u.loadUser(msg.author, cb);
     }
 }
-module.exports = CmdManager;
+module.exports = MessageManager;

@@ -14,7 +14,13 @@ let ytdl = require('ytdl-core');
 let youtubedl = require('youtube-dl');
 let songModel = require('../DB/song');
 let winston = require('winston');
-let youtubesearch = require('./youtube/search').search;
+let youtubesearch = require('youtube-search');
+let opts = {
+    maxResults: 10,
+    key: key,
+    type: 'video',
+    order: 'relevance'
+};
 /**
  * The song importer
  * @extends EventEmitter
@@ -67,16 +73,16 @@ class SongImporter extends EventEmitter {
     }
 
     search(search) {
-        youtubesearch(search, 5).then(results => {
+        youtubesearch(search, opts, (err, results) => {
+            if (err) {
+                winston.error(err);
+                return this.emit('error', 'generic.error');
+            }
             if (results.length > 0) {
                 this.emit('search-result', results);
             } else {
                 this.emit('error', 'generic.error');
             }
-        }).catch(err => {
-            console.log(err);
-            winston.error(err);
-            return this.emit('error', 'generic.error');
         });
     }
 
