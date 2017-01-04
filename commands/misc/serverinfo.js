@@ -5,7 +5,7 @@ let Command = require('../../structures/command');
 let moment = require('moment');
 let GuildManager = require('../../modules/guildManager');
 let winston = require('winston');
-class UserInfo extends Command {
+class ServerInfo extends Command {
     constructor(t) {
         super();
         this.cmd = "sinfo";
@@ -71,4 +71,4 @@ class UserInfo extends Command {
         return fields;
     }
 }
-module.exports = UserInfo;
+module.exports = ServerInfo;

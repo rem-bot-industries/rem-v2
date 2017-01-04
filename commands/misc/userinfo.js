@@ -31,7 +31,8 @@ class UserInfo extends Command {
     }
 
     buildReply(msg, user, member) {
-        let avatar = user.avatarURL ? user.avatarURL : user.defaultAvatarURL;
+        let avatar = user.avatarURL ? (user.avatar.startsWith('a_') ? `​https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.gif` : user.avatarURL) : user.defaultAvatarURL;
+        avatar = avatar.replace(/[^a-zA-Z0-9_\-./:]/, "");
         this.u.loadUser(user, (err, dbUser) => {
             if (err) return winston.error(err);
             let reply = {
@@ -45,7 +46,9 @@ class UserInfo extends Command {
                     color: 0x00ADFF
                 }
             };
-            msg.channel.createMessage(reply);
+            msg.channel.createMessage(reply).then().catch(err => {
+                // console.error(err);
+            });
         });
     }
 

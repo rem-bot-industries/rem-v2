@@ -2,7 +2,7 @@
  * Created by julia on 07.11.2016.
  */
 let Command = require('../../structures/command');
-class Magic extends Command {
+class Yui extends Command {
     constructor(t) {
         super();
         this.cmd = "yui";
@@ -17,4 +17,4 @@ class Magic extends Command {
         msg.channel.createMessage('https://rra.ram.moe/i/rkL9kPXNl.gif');
     }
 }
-module.exports = Magic;
+module.exports = Yui;

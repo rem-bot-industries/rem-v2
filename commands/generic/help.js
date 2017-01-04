@@ -17,7 +17,6 @@ class Help extends Command {
     }
 
     run(msg) {
-
         let msgSplit = msg.content.split(' ').splice(1);
         let categoriesData = this.buildHelp(msg);
         this.msg = msg;
@@ -30,6 +29,7 @@ class Help extends Command {
         if (msgSplit.length > 0) {
             return this.exactHelp(msg, msgSplit, categoriesData);
         }
+        categoriesData.categories_name.push({name: `Donate`, value: `https://www.patreon.com/rem_bot`});
         let reply = {
             embed: {
                 author: {name: "Command categories"},
@@ -67,7 +67,7 @@ class Help extends Command {
                     categories = this.pushCat(cmd, categories);
                 } else {
                     categories.push({name: cmd.cat, commands: [cmd]});
-                    categories_name.push({name: i, value: cmd.cat, inline: true});
+                    categories_name.push({name: i, value: cmd.cat});
                     i += 1;
                 }
             }
@@ -118,10 +118,13 @@ class Help extends Command {
                 value: `${this.t(`help.${data.commands[i].cmd}`, {
                     lngs: this.msg.lang,
                     languages: this.buildLang(this.msg.lngs)
-                })}`,
-                inline: true
+                })}`
             });
         }
+        fields.push({
+            name: `Donate`,
+            value: `https://www.patreon.com/rem_bot`
+        });
         let reply = {
             embed: {
                 author: {name: `${this.t(`help.${data.name}`, {lngs: this.msg.lang})}`},

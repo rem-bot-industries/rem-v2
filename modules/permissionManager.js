@@ -36,9 +36,6 @@ class PermissionManager {
         this.cat = nodeSplit[0];
         this.cmd = nodeSplit[1];
         if (msg.guild) {
-            if (this.cat === 'eastereggs') {
-                return cb();
-            }
             if (this.checkDiscordRoles(msg)) {
                 return cb();
             }
@@ -64,6 +61,7 @@ class PermissionManager {
             } else {
                 Perms = [
                     {type: 'guild', id: '228604101800230912', cat: 'fun', perm: '*', use: true},
+                    {type: 'guild', id: '228604101800230912', cat: 'eastereggs', perm: '*', use: true},
                     {type: 'guild', id: '228604101800230912', cat: 'generic', perm: '*', use: true},
                     {type: 'guild', id: '228604101800230912', cat: 'misc', perm: '*', use: true},
                     {type: 'guild', id: '228604101800230912', cat: 'music', perm: '*', use: true},

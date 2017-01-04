@@ -4,6 +4,8 @@
 let EventEmitter = require('eventemitter3');
 let userModel = require('../DB/user');
 let Promise = require('bluebird');
+let userCache = require('./cache');
+let _ = require('lodash');
 class UserManager extends EventEmitter {
     constructor() {
         super();
@@ -27,6 +29,7 @@ class UserManager extends EventEmitter {
             creditCooldown: new Date(),
             reps: []
         });
+        userCache.set(user.id, user);
         User.save((err) => {
             if (err) return cb(err);
             cb(null, User);
@@ -34,9 +37,14 @@ class UserManager extends EventEmitter {
     }
 
     loadUser(user, cb) {
+        let User = userCache.get(user.id);
+        if (User) {
+            return cb(null, User);
+        }
         userModel.findOne({id: user.id}, (err, User) => {
             if (err) return cb(err);
             if (User) {
+                userCache.set(user.id, User);
                 cb(null, User);
             } else {
                 this.createUser(user, cb);
@@ -47,6 +55,8 @@ class UserManager extends EventEmitter {
     love(target, rep, cb) {
         this.loadUser(target, (err, user) => {
             if (err) return cb(err);
+            user.rep += rep;
+            userCache.set(user.id, user);
             return user.updateRep(rep, cb);
         });
     }
@@ -71,6 +81,8 @@ class UserManager extends EventEmitter {
             }
         }
         reps.push(Date.now() + 1000 * 60 * 60 * 24);
+        user.reps = reps;
+        userCache.set(user.id, user);
         userModel.update({id: user.id}, {$set: {reps: reps}}, (err) => {
             if (err) return cb(err);
             cb(null, reps);
@@ -107,6 +119,8 @@ class UserManager extends EventEmitter {
 
     addServerData(user, data) {
         return new Promise((resolve, reject) => {
+            user.servers.push(data);
+            userCache.set(user.id, user);
             userModel.update({id: user.id}, {$addToSet: {servers: data}}).then(resolve).catch(reject);
         });
     }
@@ -143,6 +157,11 @@ class UserManager extends EventEmitter {
 
     updateServerData(user, data) {
         return new Promise((reject, resolve) => {
+            let i = _.findIndex(user.servers, (s) => {
+                return s.id === data.id
+            });
+            user.servers[i] = data;
+            userCache.set(user.id, user);
             userModel.update({id: user.id, 'servers.serverId': data.serverId}, {
                 $set: {
                     'servers.$.cooldown': data.cooldown,
