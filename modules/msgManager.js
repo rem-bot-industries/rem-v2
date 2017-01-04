@@ -14,6 +14,8 @@ let StatManager = require('./statManager');
 let async = require('async');
 let StatsD = require('node-dogstatsd').StatsD;
 let dogstatsd = new StatsD();
+let beta = require('../config/main.json').beta;
+let stat = beta ? 'rem-beta' : 'rem-live';
 class MessageManager extends EventEmitter {
     constructor(l, v) {
         super();
@@ -74,13 +76,14 @@ class MessageManager extends EventEmitter {
                         let cmd = msg.content.substr(Guild.prefix.length).split(' ')[0];
                         let command = this.commands[cmd];
                         if (command !== undefined) {
-                            dogstatsd.increment('musicbot.commands');
+                            dogstatsd.increment(`${stat}.commands`);
                             msg.lang = [Guild.lng, 'en'];
                             msg.lngs = this.lngs;
                             msg.prefix = Guild.prefix;
                             let node = `${command.cat}.${command.cmd}`;
                             this.p.checkPermission(msg, node, (err) => {
                                 if (err) {
+                                    dogstatsd.increment(`${stat}.failed-commands`);
                                     this.s.logCmdStat(msg, cmd, false, 'permission');
                                     return msg.channel.createMessage(this.t('generic.no-permission', {
                                         lngs: msg.lang,
@@ -93,6 +96,7 @@ class MessageManager extends EventEmitter {
                                         this.s.logCmdStat(msg, cmd, true);
                                         command.run(msg);
                                     } else {
+                                        dogstatsd.increment(`${stat}.failed-commands`);
                                         this.s.logCmdStat(msg, cmd, false, 'need-guild');
                                         return msg.channel.createMessage(this.t('generic.no-pm', {lngs: msg.lang}))
                                     }
@@ -109,11 +113,13 @@ class MessageManager extends EventEmitter {
                     }
                 } else {
                     if (msg.guild && (msg.content.startsWith(rem.user.mention) || msg.content.startsWith(`<@!${rem.user.id}>`))) {
+                        dogstatsd.increment(`${stat}.commands`);
                         if (msg.content === `${rem.user.mention} prefix` || msg.content === `<@!${rem.user.id}> prefix`) {
                             return msg.channel.createMessage(`\`${msg.db.prefix}\``);
                         }
                         this.p.checkPermission(msg, 'fun.cleverbot', (err) => {
                             if (err) {
+                                dogstatsd.increment(`${stat}.failed-commands`);
                                 this.s.logCmdStat(msg, 'cleverbot', false, 'permission');
                                 return msg.channel.createMessage(this.t('generic.no-permission', {
                                     lngs: msg.lang,
