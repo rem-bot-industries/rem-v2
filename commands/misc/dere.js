@@ -40,9 +40,9 @@ class Dere extends Command {
                 msg.channel.createMessage(this.t('dere.no-dere', {lngs: msg.lang}) + table);
             }
         } else {
-            let random = Math.floor(Math.random() * (this.deres.length - 1));
+            let random = Math.floor(Math.random() * this.deres.length);
             try {
-                msg.channel.createMessage('```' + this.t(`dere.${this.deres[random - 1]}`, {lngs: msg.lang}) + '```');
+                msg.channel.createMessage('```' + this.t(`dere.${this.deres[random]}`, {lngs: msg.lang}) + '```');
             } catch (e) {
                 msg.channel.createMessage('```' + this.t(`dere.${this.deres[0]}`, {lngs: msg.lang}) + '```');
             }

@@ -127,7 +127,7 @@ class AddPermission extends Command {
         } else {
             let regex = new RegExp(`${args.c}.*`, 'gi');
             let channels = msg.guild.channels.filter(c => {
-                return regex.test(c.name)
+                return regex.test(c.name) && c.type === 0
             });
             if (channels.length > 1) {
                 let collector = new Selector(msg, channels, this.t, (err, number) => {
