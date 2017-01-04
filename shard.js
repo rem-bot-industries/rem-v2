@@ -20,6 +20,7 @@ mongoose.Promise = Promise;
 mongoose.connect(url, (err) => {
     if (err) return winston.error('Failed to connect to the database!');
 });
+let stat = config.beta ? 'rem-beta' : 'rem-live';
 let blocked = require('blocked');
 let client = new raven.Client(config.sentry_token);
 if (!config.beta) {
@@ -73,9 +74,7 @@ class Shard extends EventEmitter {
             this.clientReady()
         });
         bot.on('messageCreate', (msg) => {
-            if (!config.beta) {
-                dogstatsd.increment('musicbot.messages');
-            }
+            dogstatsd.increment(`${stat}.messages`);
             msg.CON = this.CON;
             this.message(msg)
         });

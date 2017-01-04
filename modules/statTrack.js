@@ -6,6 +6,7 @@ const config = require('../config/main.json');
 let EventEmitter = require('eventemitter3');
 let StatsD = require('hot-shots');
 let dogstatsd = new StatsD();
+let stat = config.beta ? 'rem-beta' : 'rem-live';
 /**
  * The stattrack engine
  * @extends EventEmitter
@@ -28,8 +29,8 @@ class StatTrack extends EventEmitter {
      * Updates the stats on carbonitex and bots.discord.pw
      */
     update(guilds, users) {
-        dogstatsd.gauge('musicbot.guilds', guilds);
-        dogstatsd.gauge('musicbot.users', users);
+        dogstatsd.gauge(`${stat}.guilds`, guilds);
+        dogstatsd.gauge(`${stat}.users`, users);
         let requestOptions = {
             headers: {
                 Authorization: config.discord_bots_token

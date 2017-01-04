@@ -13,10 +13,15 @@ class Bug extends Command {
     }
 
     run(msg) {
-        msg.author.getDMChannel().then(channel => {
-            channel.createMessage(`https://discord.gg/yuTxmYn`);
-        }).catch(e => console.error);
-        msg.channel.createMessage(`:ok_hand: `);
+        if (msg.channel.type !== 1) {
+            msg.author.getDMChannel().then(channel => {
+                channel.createMessage(`https://discord.gg/yuTxmYn`);
+            }).catch(e => console.error);
+            msg.channel.createMessage(`:ok_hand: `);
+        } else {
+            msg.channel.createMessage(`https://discord.gg/yuTxmYn`);
+        }
+
     }
 }
 module.exports = Bug;
