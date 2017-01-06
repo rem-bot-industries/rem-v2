@@ -9,6 +9,8 @@ let SongImporter = require('./../resolver/songResolver');
 let queueModel = require('../../DB/queue');
 // let Selector = require('./selector');
 let async = require("async");
+let PlaylistResolver = require('../resolver/playlistResolver');
+let shortid = require("shortid");
 class VoiceManager extends Manager {
     constructor() {
         super();
@@ -23,9 +25,10 @@ class VoiceManager extends Manager {
                 if (msg.member.voiceState.channelID) {
                     rem.joinVoiceChannel(msg.member.voiceState.channelID).then((connection) => {
                         if (typeof (this.players[msg.guild.id]) === 'undefined') {
-                            this.createPlayer(msg, connection, ytdl);
+                            this.createPlayer(msg, connection, ytdl).then(player => {
+                                cb(null, connection);
+                            }).catch(err => cb(err));
                         }
-                        cb(null, connection);
                     }).catch(err => {
                         console.log(err);
                         return cb('joinVoice.error');
@@ -44,9 +47,9 @@ class VoiceManager extends Manager {
         if (msg.guild) {
             let conn = rem.voiceConnections.get(msg.guild.id);
             if (conn) {
+                this.players[msg.guild.id].setQueueSongs([]);
+                this.players[msg.guild.id].endSong();
                 rem.voiceConnections.leave(msg.guild.id);
-                this.players[msg.guild.id] = null;
-                delete this.players[msg.guild.id];
                 cb();
             } else {
                 cb('generic.no-voice');
@@ -76,6 +79,22 @@ class VoiceManager extends Manager {
         }
     }
 
+    addPlaylistToQueue(msg) {
+        this.join(msg, (err, conn) => {
+            if (err) return this.emit(`${msg.id}_error`, err);
+            let id = msg.content.split(' ').splice(1);
+            let pl = new PlaylistResolver(id);
+            pl.loadPlaylist(id, (err, playlist) => {
+                if (err) return this.emit(`${msg.id}_error`, err);
+                this.players[msg.guild.id].addToQueue(playlist.songs[0]);
+                for (let i = 1; i < playlist.songs.length; i++) {
+                    this.players[msg.guild.id].pushQueue(playlist.songs[i]);
+                }
+                this.emit(`${msg.id}_pl_added`, playlist);
+            });
+        });
+    }
+
     addToQueue(msg, immediate) {
         this.join(msg, (err, conn) => {
             if (err) return this.emit('error', err);
@@ -95,6 +114,7 @@ class VoiceManager extends Manager {
                 importer.removeAllListeners();
                 this.emit(`${msg.id}_added`, Song);
                 if (typeof (this.players[msg.guild.id]) !== 'undefined') {
+                    this.players[msg.guild.id].updateConnection(conn);
                     this.players[msg.guild.id].addToQueue(Song, immediate);
                 } else {
                     this.createPlayer(msg, conn, ytdl).then(player => {
@@ -161,30 +181,6 @@ class VoiceManager extends Manager {
         }
     }
 
-    addToQueueBatch(msg, songs) {
-        this.join(msg, (err, conn) => {
-            if (err) return this.emit('error', err);
-            console.log('BATCH ' + songs.length);
-            async.eachSeries(songs, (song, cb) => {
-                if (typeof (this.players[msg.guild.id]) !== 'undefined') {
-                    this.players[msg.guild.id].addToQueue(song, false);
-                    setTimeout(() => {
-                        cb();
-                    }, 100);
-                } else {
-                    this.createPlayer(msg, conn, ytdl).then(player => {
-                        player.addToQueue(song, false);
-                        setTimeout(() => {
-                            cb();
-                        }, 100);
-                    }).catch(err => cb);
-                }
-            }, (err) => {
-                if (err) return winston.error(err);
-            });
-        });
-    }
-
     createPlayer(msg, conn, ytdl) {
         return new Promise((resolve, reject) => {
             this.loadQueue(msg.guild.id, (err, queue) => {
@@ -192,10 +188,13 @@ class VoiceManager extends Manager {
                     winston.error(err);
                     reject(err);
                 } else {
-                    this.players[msg.guild.id] = new Player(msg, conn, ytdl, queue);
-                    this.players[msg.guild.id].on('sync', (queue) => {
-                        this.syncQueue(queue)
-                    });
+                    if (!this.players[msg.guild.id]) {
+                        this.players[msg.guild.id] = new Player(msg, conn, ytdl, queue);
+                        this.players[msg.guild.id].on('sync', (queue) => {
+                            this.syncQueue(queue)
+                        });
+                    }
+                    this.players[msg.guild.id].updateConnection(conn);
                     resolve(this.players[msg.guild.id]);
                 }
             });

@@ -27,7 +27,7 @@ class AddToQueue extends Command {
     run(msg) {
         this.v.once(`${msg.id}_error`, (err) => {
             this.clearListeners();
-            console.log(err);
+            console.error(err);
             msg.channel.createMessage(this.t('generic.error', {lngs: msg.lang}));
         });
         this.v.once(`${msg.id}_info`, (info, url) => {

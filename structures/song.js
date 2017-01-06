@@ -1,6 +1,7 @@
 /**
  * Created by julia on 06.01.2017.
  */
+let shortid = require("shortid");
 const types = require('./constants').SONG_TYPES;
 class Song {
     constructor({id, type, title, url, needsResolve, local, duration, streamUrl, needsYtdl}) {
@@ -14,21 +15,7 @@ class Song {
         this.isResolved = !this.needsResolve;
         this.streamUrl = streamUrl;
         this.title = title ? title : 'unresolved';
-    }
-
-    resolve() {
-        //TODO NOT USED AT THE MOMENT!
-        let that = this;
-        return new Promise(function (resolve, reject) {
-            switch (that.type) {
-                case types.youtube:
-                    return;
-                case types.soundcloud:
-                    return;
-                case types.osu:
-                    return;
-            }
-        });
+        this.qid = shortid.generate();
     }
 }
 module.exports = Song;

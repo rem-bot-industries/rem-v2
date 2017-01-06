@@ -83,7 +83,8 @@ class SongImporter extends EventEmitter {
     }
 
     youtube(url) {
-        let importer = new yt(url, this.ytdl);
+        let importer = new yt();
+        importer.loadSong(url);
         importer.once('done', (song) => {
             this.emit('done', song);
             importer.removeAllListeners();
@@ -95,8 +96,10 @@ class SongImporter extends EventEmitter {
     }
 
     playlist(id) {
-        // let importer = new pl(id, this.ytdl);
+        let importer = new pl(id);
+        importer.loadPlaylist(id, (err, songs) => {
 
+        });
     }
 
     soundcloud(url) {

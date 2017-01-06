@@ -8,17 +8,15 @@
  */
 let BasicImporter = require('../../structures/basicImporter');
 const types = require('../../structures/constants').SONG_TYPES;
-const Song = require('../../structures/song');
+let Song = require('../../structures/song');
+let ytdl = require('ytdl-core');
 class YoutubeImporter extends BasicImporter {
-    constructor(url, ytdl) {
+    constructor() {
         super();
-        this.url = url;
-        this.dl = ytdl;
-        this.loadSong();
     }
 
-    loadSong() {
-        this.dl.getInfo(this.url, (err, info) => {
+    loadSong(url) {
+        ytdl.getInfo(url, (err, info) => {
             if (err) {
                 this.emit('error', err);
             } else {
@@ -37,6 +35,32 @@ class YoutubeImporter extends BasicImporter {
                 });
                 this.emit('done', song);
             }
+        });
+    }
+
+    resolveSong(song) {
+        let that = this;
+        return new Promise(function (resolve, reject) {
+            ytdl.getInfo(song.url, (err, info) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    info.loaderUrl = `https://www.youtube.com/watch?v=${info.video_id}`;
+                    let directUrl = that.filterStreams(info.formats);
+                    let song = new Song({
+                        id: info.video_id,
+                        title: info.title,
+                        duration: that.convertDuration(info),
+                        type: types.youtube,
+                        url: info.loaderUrl,
+                        streamUrl: directUrl,
+                        needsYtdl: !directUrl,
+                        isResolved: true,
+                        local: false
+                    });
+                    resolve(song);
+                }
+            });
         });
     }
 
