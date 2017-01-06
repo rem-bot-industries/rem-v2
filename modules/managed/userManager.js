@@ -60,11 +60,10 @@ class UserManager extends Manager {
             user.rep += rep;
             userCache.set(user.id, user);
             this.sendCacheUpdate(user);
-            try {
-                user.updateRep(rep, cb);
-            } catch (e) {
-                return cb(e);
-            }
+            userModel.update({id: user.id}, {$set: {rep: user.rep}}, (err) => {
+                if (err) return cb(err);
+                cb();
+            });
         });
     }
 

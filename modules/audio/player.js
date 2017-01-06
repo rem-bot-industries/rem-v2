@@ -240,6 +240,8 @@ class Player extends EventEmitter {
                 }
                 return song;
             }
+        } else {
+            this.connection.stopPlaying();
         }
     }
 
