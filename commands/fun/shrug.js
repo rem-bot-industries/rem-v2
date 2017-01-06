@@ -3,7 +3,7 @@
  */
 let Command = require('../../structures/command');
 class Shrug extends Command {
-    constructor(t) {
+    constructor({t}) {
         super();
         this.cmd = "shrug";
         this.cat = "fun";

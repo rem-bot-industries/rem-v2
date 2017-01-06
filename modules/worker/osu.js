@@ -29,7 +29,6 @@ function downloadOsuMap(url) {
         let mapType = JSON.parse('{"' + map.replace(setRegex, '$2') + '": ' + map.replace(setRegex, '$3') + '}');
         osuApi.getBeatmaps(mapType).then(beatmaps => {
             if (beatmaps.length > 0) {
-                let setId = beatmaps[0].beatmapSetId;
                 let beatmap = beatmaps[0];
                 request.post({
                     url: "https://osu.ppy.sh/forum/ucp.php?mode=login",
@@ -40,8 +39,8 @@ function downloadOsuMap(url) {
                     }
                 }, (err, res, body) => {
                     if (err) reject(err);
-                    let url = 'http://osu.ppy.sh/d/' + setId;
-                    let stream = fs.createWriteStream(`temp/${setId}.zip`);
+                    let url = 'http://osu.ppy.sh/d/' + beatmap.beatmapSetId;
+                    let stream = fs.createWriteStream(`temp/${beatmap.beatmapSetId}.zip`);
                     request.get(url, (err, res, body) => {
                         if (err) {
                             reject('Internal Error!');
@@ -52,7 +51,7 @@ function downloadOsuMap(url) {
                         }
                     }).pipe(stream).on('finish', () => {
                         stream.end();
-                        beatmap.path = `temp/${setId}.zip`;
+                        beatmap.path = `temp/${beatmap.beatmapSetId}.zip`;
                         beatmap.link = map;
                         resolve(beatmap);
                     });
@@ -70,8 +69,7 @@ function unpackOsuMap(map) {
                 let fileName = entry.path;
                 let type = entry.type; // 'Directory' or 'File'
                 if (audioReg.test(fileName) && type === 'File') {
-                    map.fileId = shortid.generate();
-                    map.path = `audio/osu/${map.fileId}.mp3`;
+                    map.path = `audio/${map.beatmapSetId}.mp3`;
                     try {
                         entry.pipe(fs.createWriteStream(map.path));
                     } catch (e) {

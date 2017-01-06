@@ -6,7 +6,7 @@ let minimist = require('minimist');
 let winston = require('winston');
 let async = require('async');
 class RemoveMessages extends Command {
-    constructor(t) {
+    constructor({t}) {
         super();
         this.cmd = "rm";
         this.cat = "moderation";

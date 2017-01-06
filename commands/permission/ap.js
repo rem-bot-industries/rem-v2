@@ -2,19 +2,18 @@
  * Created by julia on 07.11.2016.
  */
 let Command = require('../../structures/command');
-let PermManager = require('../../modules/permissionManager');
 let minimist = require('minimist');
 let discordReg = /<?(#|@|@&)[0-9]+>/g;
-let Selector = require('../../modules/selector');
+let Selector = require('../../structures/selector');
 class AddPermission extends Command {
-    constructor(t) {
+    constructor({t, mod}) {
         super();
         this.cmd = "ap";
         this.cat = "permission";
         this.needGuild = true;
         this.t = t;
         this.accessLevel = 0;
-        this.p = new PermManager();
+        this.p = mod.getMod('pm');
     }
 
     run(msg) {

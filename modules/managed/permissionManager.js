@@ -1,10 +1,11 @@
 /**
  * Created by julia on 13.11.2016.
  */
-let permModel = require('../DB/permission');
+let Manager = require('../../structures/manager');
+let permModel = require('../../DB/permission');
 let winston = require('winston');
 let async = require("async");
-let config = require('../config/main.json');
+let config = require('../../config/main.json');
 let util = require("util");
 let _ = require('lodash');
 /**
@@ -365,4 +366,4 @@ class PermissionManager {
     }
 
 }
-module.exports = PermissionManager;
+module.exports = {class: PermissionManager, deps: [], async: false, shortcode: 'pm'};

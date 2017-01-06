@@ -3,11 +3,14 @@
  */
 let EventEmitter = require('eventemitter3');
 let shortid = require('shortid');
-let YoutubeReg = /(?:http?s?:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=)?([a-zA-Z0-9_-]+)(&.*|)/;
 let winston = require('winston');
 let request = require("request");
 let path = require("path");
 let fs = require("fs");
+let SongTypes = require('../../structures/constants').SONG_TYPES;
+let mergeJSON = require("merge-json");
+let YtResolver = require('../resolver/youtubeResolver');
+let ytr = new YtResolver();
 /**
  * The audio player
  * @extends EventEmitter
@@ -39,75 +42,55 @@ class Player extends EventEmitter {
 
     /**
      * Plays a Song
-     * @param {Object} Song - the song to play
+     * @param {Song} Song - the song to play
      */
     play(Song) {
         if (this.connection && this.connection.ready) {
             let stream;
-            let opus = false;
-            if (YoutubeReg.test(Song.url)) {
-                this.ytdl.getInfo(Song.url, (err, info) => {
-                    if (err) {
-                        winston.error(err);
-                        this.emit('error');
-                        return this.nextSong(Song);
-                    }
-                    // console.log('got info!');
-                    let url = this.filterStreams(info.formats);
-                    // console.log(url);
-                    if (url) {
-                        // console.log(url);
-                        console.log('Streaming opus');
-                        try {
-                            stream = request(url);
-                        } catch (e) {
-                            winston.error(e);
-                        }
-                        stream.on('error', (err) => {
-                            winston.error(err);
-                        });
-                        opus = true;
-                    } else {
-                        let options = {
-                            filter: (format) => format.container === 'mp4' && format.audioEncoding || format.container === 'webm' && format.audioEncoding,
-                            quality: ['250', '249', '251', '140', '141', '139', 'lowest'],
-                            audioonly: true
-                        };
-                        console.log('Streaming ytdl');
-                        try {
-                            stream = this.ytdl(Song.url, options)
-                        } catch (e) {
-                            winston.error(e);
-                        }
-                        stream.on('error', (err) => {
-                            winston.error(err);
-                        });
-                    }
-                    let options = {};
-                    if (opus) {
-                        options.format = 'webm';
-                        options.frameDuration = 20;
-                    }
-                    this.connection.play(stream, options);
-                });
-            } else {
-                if (Song.type === "osuV2") {
+            let options = {};
+            if (Song.type === SongTypes.youtube) {
+                if (!Song.needsYtdl) {
                     try {
-                        stream = fs.createReadStream(Song.path);
+                        stream = request(Song.streamUrl);
                     } catch (e) {
-                        this.emit('error', e);
+                        winston.error(e);
                     }
                     stream.on('error', (err) => {
                         winston.error(err);
                     });
+                    options.format = 'webm';
+                    options.frameDuration = 20;
                 } else {
-                    stream = request(Song.url);
+                    let options = {
+                        filter: (format) => format.container === 'mp4' && format.audioEncoding || format.container === 'webm' && format.audioEncoding,
+                        quality: ['250', '249', '251', '140', '141', '139', 'lowest'],
+                        audioonly: true
+                    };
+                    try {
+                        stream = this.ytdl(Song.url, options)
+                    } catch (e) {
+                        winston.error(e);
+                    }
                     stream.on('error', (err) => {
                         winston.error(err);
                     });
                 }
-                this.connection.play(stream);
+            } else if (Song.type === SongTypes.soundcloud) {
+                stream = request(Song.streamUrl);
+                stream.on('error', (err) => {
+                    winston.error(err);
+                });
+            } else if (Song.type === SongTypes.osu) {
+                try {
+                    stream = fs.createReadStream(Song.url);
+                } catch (e) {
+                    this.emit('error', e);
+                }
+                stream.on('error', (err) => {
+                    winston.error(err);
+                });
             }
+            this.connection.play(stream, options);
             // winston.info(path.resolve(Song.path));
             // updatePlays(Song.id).then(() => {
             //
@@ -132,7 +115,9 @@ class Player extends EventEmitter {
             this.connection.on("error", (err) => {
                 winston.info(`Error: ${err}`);
             });
-        } else {
+        }
+
+        else {
             setTimeout(() => {
                 this.play(Song);
             }, 1000);
@@ -170,7 +155,6 @@ class Player extends EventEmitter {
      */
     addToQueue(Song, immediate) {
         this.toggleRepeatSingle(true);
-        Song.qid = shortid.generate();
         if (immediate) {
             this.queue.songs.unshift(Song);
             this.endSong();
@@ -208,8 +192,20 @@ class Player extends EventEmitter {
                         this.queue.songs.push(Song);
                     }
                     if (this.queue.songs[0]) {
-                        this.endSong();
-                        this.play(this.queue.songs[0]);
+                        if (this.queue.songs[0].needsResolve) {
+                            let song = this.queue.songs[0];
+                            ytr.resolveSong(song).then(resolvedSong => {
+                                this.queue.songs[0] = mergeJSON.merge(song, resolvedSong);
+                                this.endSong();
+                                this.play(this.queue.songs[0]);
+                            }).catch(err => {
+                                winston.error(err);
+                                this.nextSong(song);
+                            });
+                        } else {
+                            this.endSong();
+                            this.play(this.queue.songs[0]);
+                        }
                     } else {
                         this.endSong();
                     }
@@ -225,8 +221,20 @@ class Player extends EventEmitter {
                     this.queue.songs.push(song);
                 }
                 if (this.queue.songs[0]) {
-                    this.endSong();
-                    this.play(this.queue.songs[0]);
+                    if (this.queue.songs[0].needsResolve) {
+                        let song = this.queue.songs[0];
+                        ytr.resolveSong(song).then(resolvedSong => {
+                            this.queue.songs[0] = mergeJSON.merge(song, resolvedSong);
+                            this.endSong();
+                            this.play(this.queue.songs[0]);
+                        }).catch(err => {
+                            winston.error(err);
+                            this.nextSong(song);
+                        });
+                    } else {
+                        this.endSong();
+                        this.play(this.queue.songs[0]);
+                    }
                 } else {
                     this.endSong();
                 }
@@ -258,6 +266,10 @@ class Player extends EventEmitter {
         this.queue = queue;
     }
 
+    setQueueSongs(songs) {
+        this.queue.songs = songs;
+    }
+
     announce(Song) {
         if (this.channel !== '') {
             this.emit('announce', Song, this.channel);
@@ -271,14 +283,6 @@ class Player extends EventEmitter {
         } else {
             this.channel = id;
             return true;
-        }
-    }
-
-    setVolume(vol) {
-        try {
-            this.connection.setVolume(vol);
-        } catch (e) {
-            this.emit('error', e);
         }
     }
 
@@ -299,10 +303,6 @@ class Player extends EventEmitter {
         }
     }
 
-    updatePlays(Song) {
-
-    }
-
     startQueue(msg) {
 
     }
@@ -315,15 +315,20 @@ class Player extends EventEmitter {
 
     }
 
-    filterStreams(formats) {
-        for (let i = 0; i < formats.length; i++) {
-            // console.log(formats[i].itag);
-            if (formats[i].itag === '250' || formats[i].itag === '251' || formats[i].itag === '249') {
-                // console.log(formats[i]);
-                return formats[i].url;
-            }
-        }
-        return null;
+    removeFromQueue(index) {
+
+    }
+
+    moveInQueue(oldIndex, newIndex) {
+
+    }
+
+    updateConnection(conn) {
+        this.connection = conn;
+    }
+
+    pushQueue(Song) {
+        this.queue.songs.push(Song);
     }
 
     /**

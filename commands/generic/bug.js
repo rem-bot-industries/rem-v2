@@ -3,7 +3,7 @@
  */
 let Command = require('../../structures/command');
 class Bug extends Command {
-    constructor(t) {
+    constructor({t}) {
         super();
         this.cmd = "bug";
         this.cat = "generic";

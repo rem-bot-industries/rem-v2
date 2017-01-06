@@ -124,7 +124,14 @@
     "nyan": "Nya :3",
     "uwu": "uwu",
     "dere": "search for a dere definition or get a random one",
-    "love": "Gives the mentioned user a love point, add - to reduce the lovepoints of the user by 1"
+    "love": "Gives the mentioned user a love point, add - to reduce the lovepoints of the user by 1",
+    "apq": "adds a playlist to the queue, only supports youtube-playlists and only needs the id. NOT THE LINK.",
+    "ap": "The add permission command, an extensive explanation can be found on the support discord (!w.bug to get the invite)",
+    "gp": "The get permission command, an extensive explanation can be found on the support discord (!w.bug to get the invite)",
+    "rp": "The remove permission command, an extensive explanation can be found on the support discord (!w.bug to get the invite)",
+    "cry": "Feeling sad ? This is the right cmd for you.",
+    "ibsafe": "Searches on ibsear.ch (only sfw pics)",
+    "iblewd": "Searches on ibsearch.xxx (same as ibsafe but with nsfw pics too)"
   },
   "version": "Currently I am running on version {{version}}",
   "add": "Use this link to add me to your Server: {{- link}}",

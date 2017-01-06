@@ -3,7 +3,7 @@
  */
 let Command = require('../../structures/command');
 let winston = require('winston');
-let Selector = require('../../modules/selector');
+let Selector = require('../../structures/selector');
 /**
  * The play command
  * plays a song duh.
@@ -16,7 +16,7 @@ class Play extends Command {
      * @param {Function} t - the translation module
      * @param {Object} v - the voice manager
      */
-    constructor(t, v) {
+    constructor({t, v}) {
         super();
         this.cmd = "play";
         this.cat = "music";
@@ -56,8 +56,9 @@ class Play extends Command {
         });
         this.v.play(msg);
         setTimeout(() => {
-            this.v.removeListener('info');
-        }, 2000);
+            this.v.removeListener(`${msg.id}_info`);
+            this.v.removeListener(`${msg.id}_search-result`);
+        }, 3000);
     }
 
     clearListeners() {

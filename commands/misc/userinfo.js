@@ -3,17 +3,16 @@
  */
 let Command = require('../../structures/command');
 let moment = require('moment');
-let UserManager = require('../../modules/userManager');
 let winston = require('winston');
 class UserInfo extends Command {
-    constructor(t) {
+    constructor({t, mod}) {
         super();
         this.cmd = "uinfo";
         this.cat = "misc";
         this.needGuild = false;
         this.t = t;
         this.accessLevel = 0;
-        this.u = new UserManager();
+        this.u = mod.getMod('um');
     }
 
     run(msg) {
@@ -31,7 +30,7 @@ class UserInfo extends Command {
     }
 
     buildReply(msg, user, member) {
-        let avatar = user.avatarURL ? (user.avatar.startsWith('a_') ? `​https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.gif` : user.avatarURL) : user.defaultAvatarURL;
+        let avatar = user.avatar ? (user.avatar.startsWith('a_') ? `​https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.gif` : user.avatarURL) : user.defaultAvatarURL;
         avatar = avatar.replace(/[^a-zA-Z0-9_\-./:]/, "");
         this.u.loadUser(user, (err, dbUser) => {
             if (err) return winston.error(err);

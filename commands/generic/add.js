@@ -4,7 +4,7 @@
 let Command = require('../../structures/command');
 let winston = require('winston');
 class Add extends Command {
-    constructor(t) {
+    constructor({t}) {
         super();
         this.cmd = "add";
         this.cat = "generic";

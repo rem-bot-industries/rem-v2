@@ -6,7 +6,7 @@ let winston = require('winston');
 let request = require('request');
 let key = require('../../config/main.json').lbsearch_sfw_key;
 class Ibsafe extends Command {
-    constructor(t) {
+    constructor({t}) {
         super();
         this.cmd = "ibsafe";
         this.cat = "misc";

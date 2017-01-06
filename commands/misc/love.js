@@ -2,17 +2,16 @@
  * Created by julia on 06.12.2016.
  */
 let Command = require('../../structures/command');
-let UserManager = require('../../modules/userManager');
 let winston = require('winston');
 let moment = require('moment');
 class Love extends Command {
-    constructor(t) {
+    constructor({t, mod}) {
         super();
         this.cmd = "love";
         this.cat = "misc";
         this.needGuild = false;
         this.t = t;
-        this.u = new UserManager();
+        this.u = mod.getMod('um');
         this.accessLevel = 0;
     }
 

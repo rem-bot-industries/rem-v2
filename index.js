@@ -36,6 +36,7 @@ if (cluster.isMaster) {
     hub.on('_user_update', (sid, users) => {
         shards[sid].users = users;
     });
+
     tracker.on('error', (err) => {
 
     });

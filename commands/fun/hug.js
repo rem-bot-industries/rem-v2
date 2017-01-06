@@ -3,7 +3,7 @@
  */
 let RRACommand = require('../../structures/rraCommand');
 class HugImage extends RRACommand {
-    constructor(t) {
+    constructor({t}) {
         super();
         this.cmd = "hug";
         this.cat = "fun";

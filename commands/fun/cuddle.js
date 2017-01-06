@@ -4,7 +4,7 @@
 
 let RRACommand = require('../../structures/rraCommand');
 class CuddleImage extends RRACommand {
-    constructor(t) {
+    constructor({t}) {
         super();
         this.cmd = "cuddle";
         this.cat = "fun";

@@ -3,17 +3,16 @@
  */
 let Command = require('../../structures/command');
 let moment = require('moment');
-let GuildManager = require('../../modules/guildManager');
 let winston = require('winston');
 class ServerInfo extends Command {
-    constructor(t) {
+    constructor({t, mod}) {
         super();
         this.cmd = "sinfo";
         this.cat = "misc";
         this.needGuild = true;
         this.t = t;
         this.accessLevel = 0;
-        this.g = new GuildManager();
+        this.g = mod.getMod('gm');
     }
 
     run(msg) {

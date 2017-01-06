@@ -3,7 +3,7 @@
  */
 let Command = require('../../structures/command');
 class Ping extends Command {
-    constructor(t) {
+    constructor({t}) {
         super();
         this.cmd = "ping";
         this.cat = "generic";

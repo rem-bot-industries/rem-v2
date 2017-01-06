@@ -1,14 +1,16 @@
 /**
  * Created by julia on 10.11.2016.
  */
-let EventEmitter = require('eventemitter3');
-let userModel = require('../DB/user');
-let Promise = require('bluebird');
-let userCache = require('./cache');
+let Manager = require('../../structures/manager');
+let userModel = require('../../DB/user');
+let userCache = require('./../../structures/cache');
 let _ = require('lodash');
-class UserManager extends EventEmitter {
+class UserManager extends Manager {
     constructor() {
         super();
+        this.version = '1.0.0';
+        this.name = 'Usermanager';
+        this.shortcode = 'um';
     }
 
     createUser(user, cb) {
@@ -29,7 +31,6 @@ class UserManager extends EventEmitter {
             creditCooldown: new Date(),
             reps: []
         });
-        userCache.set(user.id, user);
         User.save((err) => {
             if (err) return cb(err);
             cb(null, User);
@@ -45,6 +46,7 @@ class UserManager extends EventEmitter {
             if (err) return cb(err);
             if (User) {
                 userCache.set(user.id, User);
+                this.sendCacheUpdate(User);
                 cb(null, User);
             } else {
                 this.createUser(user, cb);
@@ -57,12 +59,17 @@ class UserManager extends EventEmitter {
             if (err) return cb(err);
             user.rep += rep;
             userCache.set(user.id, user);
-            return user.updateRep(rep, cb);
+            this.sendCacheUpdate(user);
+            try {
+                user.updateRep(rep, cb);
+            } catch (e) {
+                return cb(e);
+            }
         });
     }
 
     checkLoveCD(user) {
-        if (user.reps.length === 0 || user.reps.length === 1) {
+        if (!user.reps || user.reps.length === 0 || user.reps.length === 1) {
             return true;
         }
         for (let i = 0; i < user.reps.length; i++) {
@@ -83,6 +90,7 @@ class UserManager extends EventEmitter {
         reps.push(Date.now() + 1000 * 60 * 60 * 24);
         user.reps = reps;
         userCache.set(user.id, user);
+        this.sendCacheUpdate(user);
         userModel.update({id: user.id}, {$set: {reps: reps}}, (err) => {
             if (err) return cb(err);
             cb(null, reps);
@@ -121,6 +129,7 @@ class UserManager extends EventEmitter {
         return new Promise((resolve, reject) => {
             user.servers.push(data);
             userCache.set(user.id, user);
+            this.sendCacheUpdate(user);
             userModel.update({id: user.id}, {$addToSet: {servers: data}}).then(resolve).catch(reject);
         });
     }
@@ -162,6 +171,7 @@ class UserManager extends EventEmitter {
             });
             user.servers[i] = data;
             userCache.set(user.id, user);
+            this.sendCacheUpdate(user);
             userModel.update({id: user.id, 'servers.serverId': data.serverId}, {
                 $set: {
                     'servers.$.cooldown': data.cooldown,
@@ -172,5 +182,14 @@ class UserManager extends EventEmitter {
         });
     }
 
+    sendCacheUpdate(data) {
+        this.emit('_cache_update', {type: 'user', data});
+    }
+
+    updateCache(data) {
+        if (userCache.get(data.id)) {
+            userCache.set(data.id, data);
+        }
+    }
 }
-module.exports = UserManager;
+module.exports = {class: UserManager, deps: [], async: false, shortcode: 'um'};

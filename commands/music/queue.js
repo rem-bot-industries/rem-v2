@@ -15,7 +15,7 @@ class Queue extends Command {
      * @param {Function} t - the translation module
      * @param {Object} v - the voice manager
      */
-    constructor(t, v) {
+    constructor({t, v}) {
         super();
         this.cmd = "queue";
         this.cat = "music";

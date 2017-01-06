@@ -3,7 +3,7 @@
  */
 let Command = require('../../structures/command');
 class FlipCoin extends Command {
-    constructor(t) {
+    constructor({t}) {
         super();
         this.cmd = "coin";
         this.cat = "fun";

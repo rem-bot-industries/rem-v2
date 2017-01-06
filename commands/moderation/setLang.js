@@ -2,16 +2,16 @@
  * Created by julia on 07.11.2016.
  */
 let Command = require('../../structures/command');
-let GuildManager = require('../../modules/guildManager');
+let GuildManager = require('../../modules/managed/guildManager');
 class SetLanguage extends Command {
-    constructor(t) {
+    constructor({t, mod}) {
         super();
         this.cmd = "setLang";
         this.cat = "moderation";
         this.needGuild = true;
         this.t = t;
         this.accessLevel = 0;
-        this.g = new GuildManager();
+        this.g = mod.getMod('gm');
     }
 
     run(msg) {

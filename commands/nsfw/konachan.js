@@ -5,7 +5,7 @@ let Command = require('../../structures/command');
 let winston = require('winston');
 let request = require('request');
 class Konachan extends Command {
-    constructor(t) {
+    constructor({t}) {
         super();
         this.cmd = "kona";
         this.cat = "nsfw";

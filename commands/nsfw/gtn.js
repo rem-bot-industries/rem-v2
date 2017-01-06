@@ -6,7 +6,7 @@ let path = require("path");
 let request = require("request");
 let winston = require('winston');
 class GtnImage extends Command {
-    constructor(t) {
+    constructor({t}) {
         super();
         this.cmd = "gtn";
         this.cat = "nsfw";
