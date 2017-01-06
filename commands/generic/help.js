@@ -2,10 +2,9 @@
  * Created by julia on 07.11.2016.
  */
 let Command = require('../../structures/command');
-let PermManager = require('../../modules/permissionManager');
 let winston = require('winston');
 class Help extends Command {
-    constructor(t) {
+    constructor({t, mod}) {
         super();
         this.cmd = "help";
         this.cat = "generic";
@@ -13,7 +12,7 @@ class Help extends Command {
         this.t = t;
         this.accessLevel = 0;
         this.msg = null;
-        this.p = new PermManager();
+        this.p = mod.getMod('pm');
     }
 
     run(msg) {

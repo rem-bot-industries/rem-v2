@@ -3,7 +3,7 @@
  */
 let Command = require('../../structures/command');
 class Randon extends Command {
-    constructor(t) {
+    constructor({t}) {
         super();
         this.cmd = "randon";
         this.cat = "eastereggs";

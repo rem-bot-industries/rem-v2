@@ -1,11 +1,12 @@
 /**
  * Created by julia on 01.12.2016.
  */
-let statModel = require('../DB/stat');
+let Manager = require('../../structures/manager');
+let statModel = require('../../DB/stat');
 let winston = require('winston');
-class StatisticManager {
+class StatisticManager extends Manager {
     constructor() {
-
+        super();
     }
 
     logCmdStat(msg, cmd, allowed, reason) {
@@ -24,4 +25,4 @@ class StatisticManager {
         });
     }
 }
-module.exports = StatisticManager;
+module.exports = {class: StatisticManager, deps: [], async: false, shortcode: 'stm'};

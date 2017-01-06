@@ -1,15 +1,15 @@
 /**
  * Created by julia on 07.11.2016.
  */
-let Player = require('./player');
+let Manager = require('../../structures/manager');
+let Player = require('./../audio/player');
 let ytdl = require('ytdl-core');
 let winston = require('winston');
-let EventEmitter = require('eventemitter3');
-let SongImporter = require('./songImporter');
-let queueModel = require('../DB/queue');
+let SongImporter = require('./../resolver/songResolver');
+let queueModel = require('../../DB/queue');
 // let Selector = require('./selector');
 let async = require("async");
-class VoiceManager extends EventEmitter {
+class VoiceManager extends Manager {
     constructor() {
         super();
         this.setMaxListeners(200);
@@ -161,16 +161,6 @@ class VoiceManager extends EventEmitter {
         }
     }
 
-    setVolume(msg, vol) {
-        try {
-            this.players[msg.guild.id].setVolume(vol);
-            this.emit('success');
-        } catch (e) {
-            console.log(e);
-            this.emit('error');
-        }
-    }
-
     addToQueueBatch(msg, songs) {
         this.join(msg, (err, conn) => {
             if (err) return this.emit('error', err);
@@ -246,4 +236,4 @@ class VoiceManager extends EventEmitter {
         Queue.save(cb);
     }
 }
-module.exports = VoiceManager;
+module.exports = {class: VoiceManager, deps: [], async: false, shortcode: 'vm'};

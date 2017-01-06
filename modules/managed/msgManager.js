@@ -1,56 +1,69 @@
 /**
  * Created by julia on 07.11.2016.
  */
+let Manager = require('../../structures/manager');
 let EventEmitter = require('eventemitter3');
 const winston = require('winston');
 const recursive = require('recursive-readdir');
 let path = require("path");
-let GuildManager = require('./guildManager');
-let UserManager = require('./userManager');
 let PermManager = require('./permissionManager');
 let ReactionManager = require('./reactionManager');
-let CleverBotManager = require('./cleverbot');
+let CleverBotManager = require('./cleverbotManager');
 let StatManager = require('./statManager');
 let async = require('async');
-let StatsD = require('node-dogstatsd').StatsD;
+let StatsD = require('hot-shots');
 let dogstatsd = new StatsD();
-let beta = require('../config/main.json').beta;
+let beta = require('../../config/main.json').beta;
 let stat = beta ? 'rem-beta' : 'rem-live';
-class MessageManager extends EventEmitter {
-    constructor(l, v) {
+class MessageManager extends Manager {
+    constructor({cm, lm, gm, vm, um, pm, rm, stm, mod}, ...args) {
         super();
         this.setMaxListeners(20);
-        this.l = l;
-        this.v = v;
-        this.l.on('ready', (t) => {
-            this.load(t, this.v);
-            this.lngs = this.l.list;
-        });
-        this.t = null;
-        this.g = new GuildManager();
-        this.p = new PermManager();
-        this.c = new CleverBotManager();
-        this.s = new StatManager();
-        this.u = new UserManager();
-        this.r = new ReactionManager();
+        this.l = lm;
+        this.v = vm;
+        this.lngs = lm.list;
+        this.t = lm.getT();
+        this.g = gm;
+        this.p = pm;
+        this.c = cm;
+        this.s = stm;
+        this.u = um;
+        this.r = rm;
+        this.mod = mod;
         this.commands = {};
         this.ready = false;
     }
 
-    load(t, v) {
-        this.t = t;
-        recursive(path.join(__dirname, '../commands'), (err, files) => {
-            let commands = {};
-            for (let file of files) {
-                if (file.endsWith('.js')) {
-                    let command = require(file);
-                    let cmd = new command(t, v);
-                    commands[cmd.cmd] = cmd;
+    init() {
+        let that = this;
+        return new Promise(function (resolve, reject) {
+            that.load(that.mod).then(() => {
+                resolve();
+            });
+        });
+    }
+
+    load(mod) {
+        let that = this;
+        return new Promise(function (resolve, reject) {
+            recursive(path.join(__dirname, '../../commands'), (err, files) => {
+                if (err) {
+                    console.error(err);
+                    return reject(err);
                 }
-            }
-            this.commands = commands;
-            this.emit('ready', commands);
-            this.ready = true;
+                let commands = {};
+                for (let file of files) {
+                    if (file.endsWith('.js')) {
+                        let command = require(file);
+                        let cmd = new command({t: that.t, v: that.v, mod});
+                        commands[cmd.cmd] = cmd;
+                    }
+                }
+                that.commands = commands;
+                that.emit('ready', commands);
+                that.ready = true;
+                resolve();
+            });
         });
     }
 
@@ -179,4 +192,9 @@ class MessageManager extends EventEmitter {
         this.u.loadUser(msg.author, cb);
     }
 }
-module.exports = MessageManager;
+module.exports = {
+    class: MessageManager,
+    deps: ['lm', 'vm', 'gm', 'um', 'pm', 'rm', 'cm', 'stm'],
+    async: true,
+    shortcode: 'mm'
+};

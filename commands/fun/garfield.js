@@ -5,7 +5,7 @@ let Command = require('../../structures/command');
 let winston = require('winston');
 let moment = require('moment');
 class Garfield extends Command {
-    constructor(t) {
+    constructor({t}) {
         super();
         this.cmd = "garfield";
         this.cat = "fun";

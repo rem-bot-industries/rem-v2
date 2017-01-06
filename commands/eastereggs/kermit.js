@@ -3,7 +3,7 @@
  */
 let RRACommand = require('../../structures/rraCommand');
 class KermitImage extends RRACommand {
-    constructor(t) {
+    constructor({t}) {
         super();
         this.cmd = "kermit";
         this.cat = "eastereggs";

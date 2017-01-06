@@ -5,7 +5,7 @@ let Command = require('../../structures/command');
 let winston = require('winston');
 let request = require('request');
 class E621 extends Command {
-    constructor(t) {
+    constructor({t}) {
         super();
         this.cmd = "e621";
         this.cat = "nsfw";

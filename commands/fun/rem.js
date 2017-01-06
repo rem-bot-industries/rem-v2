@@ -3,7 +3,7 @@
  */
 let RRACommand = require('../../structures/rraCommand');
 class RemImage extends RRACommand {
-    constructor(t) {
+    constructor({t}) {
         super();
         this.cmd = "rem";
         this.cat = "fun";

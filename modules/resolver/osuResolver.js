@@ -6,8 +6,7 @@
  * @extends EventEmitter
  *
  */
-let Promise = require('bluebird');
-let BasicImporter = require('../structures/basicImporter');
+let BasicImporter = require('../../structures/basicImporter');
 let winston = require('winston');
 let fs = require("fs");
 let path = require("path");

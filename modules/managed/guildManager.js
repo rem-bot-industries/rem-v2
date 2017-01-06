@@ -1,10 +1,10 @@
 /**
  * Created by julia on 10.11.2016.
  */
-let EventEmitter = require('eventemitter3');
-let guildModel = require('../DB/guild');
-let guildCache = require('./cache');
-class GuildManager extends EventEmitter {
+let Manager = require('../../structures/manager');
+let guildModel = require('../../DB/guild');
+let guildCache = require('./../../structures/cache');
+class GuildManager extends Manager {
     constructor() {
         super();
     }
@@ -21,7 +21,6 @@ class GuildManager extends EventEmitter {
             prefix: "!w.",
             lng: "en"
         });
-        guildCache.set(id, guild);
         guild.save((err) => {
             if (err) return cb(err);
             cb(null, guild);
@@ -37,6 +36,7 @@ class GuildManager extends EventEmitter {
             if (err) return cb(err);
             if (Guild) {
                 guildCache.set(Guild.id, Guild);
+                this.sendCacheUpdate(Guild);
                 cb(null, Guild);
             } else {
                 this.createGuild(id, cb);
@@ -48,6 +48,7 @@ class GuildManager extends EventEmitter {
         let Guild = guildCache.get(id);
         Guild.lng = lng;
         guildCache.set(id, Guild);
+        this.sendCacheUpdate(Guild);
         guildModel.update({id: id}, {$set: {lng: lng}}, cb);
     }
 
@@ -55,9 +56,20 @@ class GuildManager extends EventEmitter {
         let Guild = guildCache.get(id);
         Guild.prefix = prefix;
         guildCache.set(id, Guild);
+        this.sendCacheUpdate(Guild);
         guildModel.update({id: id}, {$set: {prefix: prefix}}, cb);
+    }
+
+    updateCache(data) {
+        if (guildCache.get(data.id)) {
+            guildCache.set(data.id, data);
+        }
+    }
+
+    sendCacheUpdate(data) {
+        this.emit('_cache_update', {type: 'guild', data});
     }
 
 
 }
-module.exports = GuildManager;
+module.exports = {class: GuildManager, deps: [], async: false, shortcode: 'gm'};

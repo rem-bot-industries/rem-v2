@@ -2,19 +2,18 @@
  * Created by julia on 07.11.2016.
  */
 let Command = require('../../structures/command');
-let PermManager = require('../../modules/permissionManager');
 let minimist = require('minimist');
 let AsciiTable = require('ascii-table');
 let async = require('async');
 class GetPermission extends Command {
-    constructor(t) {
+    constructor({t, mod}) {
         super();
         this.cmd = "rp";
         this.cat = "permission";
         this.needGuild = true;
         this.t = t;
         this.accessLevel = 0;
-        this.p = new PermManager();
+        this.p = mod.getMod('pm');
     }
 
     run(msg) {
@@ -50,7 +49,7 @@ class GetPermission extends Command {
                 if (Perm.type === type) {
                     if (type === 'channel') {
                         let channel = rem.getChannel(Perm.id);
-                        table.addRow(added + 1, Perm.id, channel ? channel.name : 'deleted', Perm.type, Perm.cat, Perm.perm, Perm.use);
+                        table.addRow(added.length + 1, Perm.id, channel ? channel.name : 'deleted', Perm.type, Perm.cat, Perm.perm, Perm.use);
                     } else {
                         table.addRow(added.length + 1, Perm.id, '-', Perm.type, Perm.cat, Perm.perm, Perm.use);
                     }

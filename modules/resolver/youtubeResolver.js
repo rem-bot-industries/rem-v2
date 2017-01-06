@@ -1,0 +1,54 @@
+/**
+ * Created by julia on 08.11.2016.
+ */
+/**
+ * The youtube importer
+ * @extends EventEmitter
+ *
+ */
+let BasicImporter = require('../../structures/basicImporter');
+const types = require('../../structures/constants').SONG_TYPES;
+const Song = require('../../structures/song');
+class YoutubeImporter extends BasicImporter {
+    constructor(url, ytdl) {
+        super();
+        this.url = url;
+        this.dl = ytdl;
+        this.loadSong();
+    }
+
+    loadSong() {
+        this.dl.getInfo(this.url, (err, info) => {
+            if (err) {
+                this.emit('error', err);
+            } else {
+                info.loaderUrl = `https://www.youtube.com/watch?v=${info.id}`;
+                let directUrl = this.filterStreams(info.formats);
+                let song = new Song({
+                    id: info.video_id,
+                    title: info.title,
+                    duration: this.convertDuration(info),
+                    type: types.youtube,
+                    url: info.loaderUrl,
+                    streamUrl: directUrl,
+                    needsYtdl: !directUrl,
+                    isResolved: true,
+                    local: false
+                });
+                this.emit('done', song);
+            }
+        });
+    }
+
+    filterStreams(formats) {
+        for (let i = 0; i < formats.length; i++) {
+            // console.log(formats[i].itag);
+            if (formats[i].itag === '250' || formats[i].itag === '251' || formats[i].itag === '249') {
+                // console.log(formats[i]);
+                return formats[i].url;
+            }
+        }
+        return null;
+    }
+}
+module.exports = YoutubeImporter;

@@ -3,7 +3,7 @@
  */
 let Command = require('../../structures/command');
 class Git extends Command {
-    constructor(t) {
+    constructor({t}) {
         super();
         this.cmd = "git";
         this.cat = "misc";

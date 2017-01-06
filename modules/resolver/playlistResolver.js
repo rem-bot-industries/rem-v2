@@ -1,10 +1,10 @@
 /**
  * Created by julia on 08.11.2016.
  */
-let BasicImporter = require('../structures/basicImporter');
+let BasicImporter = require('../../structures/basicImporter');
 let winston = require('winston');
 let path = require("path");
-let playlistModel = require('../DB/playlist');
+let playlistModel = require('../../DB/playlist');
 let child_process = require("child_process");
 let shortid = require('shortid');
 let ytdl = require('ytdl-core');

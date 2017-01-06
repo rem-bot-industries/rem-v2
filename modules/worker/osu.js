@@ -70,8 +70,7 @@ function unpackOsuMap(map) {
                 let fileName = entry.path;
                 let type = entry.type; // 'Directory' or 'File'
                 if (audioReg.test(fileName) && type === 'File') {
-                    map.fileId = shortid.generate();
-                    map.path = `audio/osu/${map.fileId}.mp3`;
+                    map.path = `audio/osu/${map.setId}.mp3`;
                     try {
                         entry.pipe(fs.createWriteStream(map.path));
                     } catch (e) {

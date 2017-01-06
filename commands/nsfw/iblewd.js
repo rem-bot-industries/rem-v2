@@ -6,7 +6,7 @@ let winston = require('winston');
 let request = require('request');
 let key = require('../../config/main.json').lbsearch_nsfw_key;
 class Iblewd extends Command {
-    constructor(t) {
+    constructor({t}) {
         super();
         this.cmd = "iblewd";
         this.cat = "nsfw";

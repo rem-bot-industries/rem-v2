@@ -1,15 +1,24 @@
 /**
  * Created by julia on 27.11.2016.
  */
+let Manager = require('../../structures/manager');
 let clever = require("cleverbot-node");
 let re = /<@[0-9].*>/g;
-class CleverBotManager {
+class CleverBotManager extends Manager {
     constructor() {
+        super();
         this.cleverbots = {};
-        clever.prepare(() => {
-            this.setReady()
-        });
         this.ready = false;
+    }
+
+    init() {
+        let that = this;
+        return new Promise(function (resolve, reject) {
+            clever.prepare(() => {
+                that.ready = true;
+                resolve();
+            });
+        });
     }
 
     talk(msg) {
@@ -26,10 +35,6 @@ class CleverBotManager {
             }
         }
     }
-
-    setReady() {
-        this.ready = true;
-    }
 }
 class CleverBot {
     constructor() {
@@ -43,4 +48,4 @@ class CleverBot {
         });
     }
 }
-module.exports = CleverBotManager;
+module.exports = {class: CleverBotManager, deps: [], async: true, shortcode: 'cm'};

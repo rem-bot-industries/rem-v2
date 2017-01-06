@@ -5,7 +5,7 @@ let Command = require('../../structures/command');
 let winston = require('winston');
 let request = require('request');
 class Yandere extends Command {
-    constructor(t) {
+    constructor({t}) {
         super();
         this.cmd = "yandere";
         this.cat = "nsfw";

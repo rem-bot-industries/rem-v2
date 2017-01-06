@@ -4,7 +4,7 @@
 
 let RRACommand = require('../../structures/rraCommand');
 class NyanImage extends RRACommand {
-    constructor(t) {
+    constructor({t}) {
         super();
         this.cmd = "nyan";
         this.cat = "fun";
