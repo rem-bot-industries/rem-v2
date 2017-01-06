@@ -54,7 +54,6 @@ class Player extends EventEmitter {
                         stream = request(Song.streamUrl);
                     } catch (e) {
                         winston.error(e);
-                        return this.nextSong(Song);
                     }
                     stream.on('error', (err) => {
                         winston.error(err);
@@ -71,7 +70,6 @@ class Player extends EventEmitter {
                         stream = this.ytdl(Song.url, options)
                     } catch (e) {
                         winston.error(e);
-                        return this.nextSong(Song);
                     }
                     stream.on('error', (err) => {
                         winston.error(err);
@@ -87,7 +85,6 @@ class Player extends EventEmitter {
                     stream = fs.createReadStream(Song.url);
                 } catch (e) {
                     this.emit('error', e);
-                    return this.nextSong(Song);
                 }
                 stream.on('error', (err) => {
                     winston.error(err);
@@ -117,7 +114,7 @@ class Player extends EventEmitter {
             // });
             this.connection.on("error", (err) => {
                 winston.info(`Error: ${err}`);
-                return this.nextSong(Song);
+                this.nextSong(Song);
             });
         }
 
