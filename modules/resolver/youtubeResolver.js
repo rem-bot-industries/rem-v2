@@ -22,7 +22,7 @@ class YoutubeImporter extends BasicImporter {
             if (err) {
                 this.emit('error', err);
             } else {
-                info.loaderUrl = `https://www.youtube.com/watch?v=${info.id}`;
+                info.loaderUrl = `https://www.youtube.com/watch?v=${info.video_id}`;
                 let directUrl = this.filterStreams(info.formats);
                 let song = new Song({
                     id: info.video_id,

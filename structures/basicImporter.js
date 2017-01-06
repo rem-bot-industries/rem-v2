@@ -39,7 +39,6 @@ class BasicImporter extends EventEmitter {
                     }
                 }
             }
-            winston.info(durationConv);
             return durationConv;
         } else if (typeof (info.length_seconds) !== 'undefined') {
             let d = Number(info.length_seconds);
