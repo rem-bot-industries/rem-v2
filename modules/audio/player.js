@@ -11,6 +11,10 @@ let SongTypes = require('../../structures/constants').SONG_TYPES;
 let mergeJSON = require("merge-json");
 let YtResolver = require('../resolver/youtubeResolver');
 let ytr = new YtResolver();
+let beta = require('../../config/main.json').beta;
+let StatsD = require('hot-shots');
+let dogstatsd = new StatsD();
+let stat = beta ? 'rem-beta' : 'rem-live';
 /**
  * The audio player
  * @extends EventEmitter
@@ -48,8 +52,11 @@ class Player extends EventEmitter {
         if (this.connection && this.connection.ready) {
             let stream;
             let options = {};
+            dogstatsd.increment(`${stat}.music.play`);
             if (Song.type === SongTypes.youtube) {
+                dogstatsd.increment(`${stat}.music.youtube`);
                 if (!Song.needsYtdl) {
+                    dogstatsd.increment(`${stat}.music.youtube.opus`);
                     try {
                         stream = request(Song.streamUrl);
                     } catch (e) {
@@ -61,6 +68,7 @@ class Player extends EventEmitter {
                     options.format = 'webm';
                     options.frameDuration = 20;
                 } else {
+                    dogstatsd.increment(`${stat}.music.youtube.nonopus`);
                     let options = {
                         filter: (format) => format.container === 'mp4' && format.audioEncoding || format.container === 'webm' && format.audioEncoding,
                         quality: ['250', '249', '251', '140', '141', '139', 'lowest'],
@@ -76,11 +84,13 @@ class Player extends EventEmitter {
                     });
                 }
             } else if (Song.type === SongTypes.soundcloud) {
+                dogstatsd.increment(`${stat}.music.soundcloud`);
                 stream = request(Song.streamUrl);
                 stream.on('error', (err) => {
                     winston.error(err);
                 });
             } else if (Song.type === SongTypes.osu) {
+                dogstatsd.increment(`${stat}.music.osu`);
                 try {
                     stream = fs.createReadStream(Song.url);
                 } catch (e) {
