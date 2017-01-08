@@ -2,14 +2,9 @@
  * Created by julia on 07.11.2016.
  */
 let Manager = require('../../structures/manager');
-let EventEmitter = require('eventemitter3');
 const winston = require('winston');
 const recursive = require('recursive-readdir');
 let path = require("path");
-let PermManager = require('./permissionManager');
-let ReactionManager = require('./reactionManager');
-let CleverBotManager = require('./cleverbotManager');
-let StatManager = require('./statManager');
 let async = require('async');
 let StatsD = require('hot-shots');
 let dogstatsd = new StatsD();
