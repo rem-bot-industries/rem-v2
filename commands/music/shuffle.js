@@ -3,11 +3,11 @@
  */
 let Command = require('../../structures/command');
 /**
- * The join command
+ * The shuffle command, it shuffles the queue
  * @extends Command
  *
  */
-class Join extends Command {
+class Shuffle extends Command {
     /**
      * Create the command
      * @param {Function} t - the translation module
@@ -15,7 +15,7 @@ class Join extends Command {
      */
     constructor({t, v}) {
         super();
-        this.cmd = "voice";
+        this.cmd = "shuffle";
         this.cat = "music";
         this.needGuild = true;
         this.t = t;
@@ -24,10 +24,12 @@ class Join extends Command {
     }
 
     run(msg) {
-        this.v.join(msg, (err) => {
-            if (err) return msg.channel.createMessage(`${msg.author.mention},${this.t(err, {lngs: msg.lang})}`);
-            msg.channel.createMessage(`${msg.author.mention}, ${this.t('joinVoice.join', {lngs: msg.lang})}`);
+        this.v.shuffle(msg).then(res => {
+            msg.channel.createMessage(this.t(res.t, {lngs: msg.lang}));
+        }).catch(err => {
+            console.log(err);
+            msg.channel.createMessage(this.t(err.t, {lngs: msg.lang}));
         });
     }
 }
-module.exports = Join;
+module.exports = Shuffle;

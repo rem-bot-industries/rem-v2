@@ -3,11 +3,11 @@
  */
 let Command = require('../../structures/command');
 /**
- * The force skip command
+ * The QueueMove command, moves songs to different positions
  * @extends Command
  *
  */
-class ForceSkip extends Command {
+class QueueRemove extends Command {
     /**
      * Create the command
      * @param {Function} t - the translation module
@@ -15,7 +15,7 @@ class ForceSkip extends Command {
      */
     constructor({t, v}) {
         super();
-        this.cmd = "fskip";
+        this.cmd = "qr";
         this.cat = "music";
         this.needGuild = true;
         this.t = t;
@@ -26,19 +26,14 @@ class ForceSkip extends Command {
     run(msg) {
         let args = msg.content.split(' ').splice(1);
         if (args[0]) {
-            this.v.forceSkip(msg, args[0]).then(res => {
-                msg.channel.createMessage(this.t(res.t, {lngs: msg.lang, title: res.title, amount: res.amount}));
+            this.v.queueRemove(msg, args[0]).then(res => {
+                msg.channel.createMessage(this.t(res.t, {lngs: msg.lang, number: res.number, title: res.title}));
             }).catch(err => {
-                console.log(err);
                 msg.channel.createMessage(this.t(err.t ? err.t : 'generic.error', {lngs: msg.lang}));
             });
         } else {
-            this.v.forceSkip(msg).then(res => {
-                msg.channel.createMessage(this.t(res.t, {lngs: msg.lang, title: res.title}));
-            }).catch(err => {
-                msg.channel.createMessage(this.t(err.t, {lngs: msg.lang}));
-            });
+            msg.channel.createMessage(this.t('qra.no-number', {lngs: msg.lang}));
         }
     }
 }
-module.exports = ForceSkip;
+module.exports = QueueRemove;

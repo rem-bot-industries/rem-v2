@@ -30,14 +30,6 @@ class ForceSkip extends Command {
         if (typeof(this.inprogress[msg.channel.id]) !== 'undefined') {
             return msg.channel.createMessage(this.t('vskip.in-prog', {lngs: msg.lang, prefix: msg.prefix}));
         }
-        this.v.once(`${msg.id}_error`, (err) => {
-            this.v.removeAllListeners();
-            msg.channel.createMessage(this.t(err, {lngs: msg.lang}));
-        });
-        this.v.once(`${msg.id}_skipped`, (song) => {
-            this.v.removeAllListeners();
-            msg.channel.createMessage(this.t('skip.success', {lngs: msg.lang, title: song.title}));
-        });
         if (msg.member.voiceState.channelID && rem.voiceConnections.get(msg.guild.id) && msg.member.voiceState.channelID === rem.voiceConnections.get(msg.guild.id).channelID) {
             let channelID = msg.member.voiceState.channelID;
             let channel = msg.guild.channels.find((c) => c.id === channelID);
@@ -48,11 +40,18 @@ class ForceSkip extends Command {
                 this.startVoteskip(msg, channel);
             } else {
                 console.log('Force!');
-                this.v.forceSkip(msg);
+                this.skip(msg);
             }
         }
     }
 
+    skip(msg) {
+        this.v.forceSkip(msg).then(res => {
+            msg.channel.createMessage(this.t(res.t, {lngs: msg.lang, title: res.title}));
+        }).catch(err => {
+            msg.channel.createMessage(this.t(err, {lngs: msg.lang}));
+        });
+    }
     startVoteskip(msg, channel) {
         this.inprogress[msg.channel.id] = {inprogress: true, id: msg.channel.id};
         let size = channel.voiceMembers.size - 1;
@@ -87,7 +86,7 @@ class ForceSkip extends Command {
                             collector.stop();
                             voteMsg.delete();
                             delete this.inprogress[msg.channel.id];
-                            this.v.forceSkip(msg);
+                            this.skip(msg);
                         } else {
                             voteMsg.edit(this.t('vskip.vote', {
                                 lngs: this.msg.lang,

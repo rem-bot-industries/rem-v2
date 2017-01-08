@@ -11,6 +11,7 @@ let queueModel = require('../../DB/queue');
 let async = require("async");
 let PlaylistResolver = require('../resolver/playlistResolver');
 let shortid = require("shortid");
+let shuffle = require('knuth-shuffle').knuthShuffle;
 class VoiceManager extends Manager {
     constructor() {
         super();
@@ -68,6 +69,33 @@ class VoiceManager extends Manager {
         } catch (e) {
             this.emit(`${msg.id}_error`);
         }
+    }
+
+    shuffle(msg) {
+        let vm = this;
+        return new Promise(function (resolve, reject) {
+            let conn = rem.voiceConnections.get(msg.guild.id);
+            if (!conn) {
+                reject({err: 'Rem is not connected to a voice channel.', t: 'generic.no-voice'});
+            }
+            if (vm.players[msg.guild.id]) {
+                let queue = vm.players[msg.guild.id].getQueue();
+                if (queue.songs.length < 3) {
+                    reject({
+                        err: 'There are not enough songs in the queue to shuffle it.',
+                        t: 'shuffle.not-enough-shuffle'
+                    })
+                }
+                let currentSong = queue.songs.shift();
+                let shuffledQueue = shuffle(queue.songs.splice(0));
+                shuffledQueue.unshift(currentSong);
+                vm.players[msg.guild.id].setQueueSongs(shuffledQueue);
+                resolve({t: 'shuffle.success'});
+            } else {
+                reject({err: 'There is no player object atm.', t: 'generic.no-voice'});
+            }
+        })
+
     }
 
     resume(msg) {
@@ -151,14 +179,134 @@ class VoiceManager extends Manager {
         }
     }
 
-    forceSkip(msg) {
-        if (typeof (this.players[msg.guild.id]) !== 'undefined') {
-            this.players[msg.guild.id].toggleRepeatSingle(true);
-            let song = this.players[msg.guild.id].nextSong();
-            if (song) {
-                this.emit(`${msg.id}_skipped`, song);
+    forceSkip(msg, howMany) {
+        let vm = this;
+        return new Promise(function (resolve, reject) {
+            if (typeof (vm.players[msg.guild.id]) !== 'undefined') {
+                vm.players[msg.guild.id].toggleRepeatSingle(true);
+                if (howMany) {
+                    let queue = vm.players[msg.guild.id].getQueue(msg);
+                    if (howMany === 'all') {
+                        let current = queue.songs.shift();
+                        queue.songs = [current];
+                        vm.players[msg.guild.id].setQueueSongs(queue.songs);
+                        vm.players[msg.guild.id].nextSong();
+                        resolve({t: 'skip.all'});
+                    } else if (typeof(howMany) === 'number' || howMany <= queue.songs.length) {
+                        let songsToSkip = 0;
+                        try {
+                            songsToSkip = parseInt(howMany);
+                        } catch (e) {
+                            reject({err: e, t: 'generic.nan'});
+                        }
+                        if (isNaN(songsToSkip) || songsToSkip <= 0) {
+                            reject({t: 'generic.nan'});
+                        }
+                        let current = queue.songs.shift();
+                        for (let i = 0; i < songsToSkip; i++) {
+                            queue.songs.unshift();
+                        }
+                        queue.songs.unshift(current);
+                        vm.players[msg.guild.id].setQueueSongs(queue.songs);
+                        let song = vm.players[msg.guild.id].nextSong();
+                        resolve({t: 'skip.some', amount: songsToSkip});
+                    }
+                }
+                let song = vm.players[msg.guild.id].nextSong();
+                if (song) {
+                    resolve({title: song.title, t: 'skip.success'});
+                }
+            } else {
+                reject({t: 'generic.no-song-in-queue'});
             }
-        }
+        });
+    }
+
+    queueRemove(msg, args) {
+        let vm = this;
+        return new Promise(function (resolve, reject) {
+            if (typeof (vm.players[msg.guild.id]) !== 'undefined') {
+                vm.players[msg.guild.id].toggleRepeatSingle(true);
+                let queue = vm.players[msg.guild.id].getQueue(msg);
+                if (args === 'all') {
+                    let current = queue.songs.shift();
+                    let length = queue.songs.length;
+                    queue.songs = [current];
+                    vm.players[msg.guild.id].setQueueSongs(queue.songs);
+                    resolve({t: 'qra.success', number: length});
+                } else {
+                    let range = args.split('-');
+                    let range2 = args.split(',');
+                    if (range.length > 1) {
+                        let start = 0;
+                        let end = 0;
+                        try {
+                            start = parseInt(range[0]);
+                            end = parseInt(range[1]);
+                        } catch (e) {
+                            reject({err: e, t: 'generic.nan'});
+                        }
+                        if (start >= 1 && start <= queue.songs.length && end >= 2 && end <= queue.songs.length) {
+                            let counter = start > end ? end : start;
+                            let secondCounter = start > end ? start : end;
+                            for (let i = counter - 1; i < secondCounter; i++) {
+                                queue.songs.splice(counter - 1, 1);
+                            }
+                            vm.players[msg.guild.id].setQueueSongs(queue.songs);
+                            resolve({t: 'qra.success', number: secondCounter - counter});
+                        } else {
+                            console.log(start);
+                            console.log(end);
+                            console.log(queue.songs.length);
+                        }
+                    } else if (range2.length > 1) {
+                        let ids = [];
+                        for (let i = 0; i < range2.length; i++) {
+                            let id = 0;
+                            try {
+                                id = parseInt(range2[i])
+                            } catch (e) {
+                                reject({err: e, t: 'generic.nan'});
+                            }
+                            if (id <= queue.songs.length && id >= 1) {
+                                ids.push(id);
+                            } else {
+                                reject({err: e, t: 'generic.nan'});
+                            }
+                        }
+                        ids.sort((a, b) => {
+                            return b - a
+                        });
+                        for (let i = 0; i < ids.length; i++) {
+                            queue.songs.splice(ids[i] - 1, 1);
+                        }
+                        resolve({t: 'qra.success', number: ids.length});
+                    } else {
+                        let songIndex = 0;
+                        try {
+                            songIndex = parseInt(args);
+                        } catch (e) {
+                            reject({err: e, t: 'generic.nan'});
+                        }
+                        console.log(songIndex);
+                        console.log(queue.songs.length);
+
+                        if (isNaN(songIndex) || songIndex <= 1 || songIndex > queue.songs.length) {
+                            console.log(songIndex);
+                            reject({t: 'generic.nan'});
+                        }
+                        let songToSkip = queue.songs[songIndex - 1];
+                        if (songIndex > -1) {
+                            queue.songs.splice(songIndex - 1, 1);
+                        }
+                        vm.players[msg.guild.id].setQueueSongs(queue.songs);
+                        resolve({t: 'qra.removed', title: songToSkip.title});
+                    }
+                }
+            } else {
+                reject({t: 'generic.no-song-in-queue'});
+            }
+        });
     }
 
     repeat(msg) {

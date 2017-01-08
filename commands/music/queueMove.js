@@ -3,11 +3,11 @@
  */
 let Command = require('../../structures/command');
 /**
- * The join command
+ * The QueueMove command, moves songs to different positions
  * @extends Command
  *
  */
-class Join extends Command {
+class QueueMove extends Command {
     /**
      * Create the command
      * @param {Function} t - the translation module
@@ -15,19 +15,17 @@ class Join extends Command {
      */
     constructor({t, v}) {
         super();
-        this.cmd = "voice";
+        this.cmd = "qm";
         this.cat = "music";
         this.needGuild = true;
         this.t = t;
         this.v = v;
         this.accessLevel = 0;
+        this.hidden = true;
     }
 
     run(msg) {
-        this.v.join(msg, (err) => {
-            if (err) return msg.channel.createMessage(`${msg.author.mention},${this.t(err, {lngs: msg.lang})}`);
-            msg.channel.createMessage(`${msg.author.mention}, ${this.t('joinVoice.join', {lngs: msg.lang})}`);
-        });
+
     }
 }
-module.exports = Join;
+module.exports = QueueMove;
