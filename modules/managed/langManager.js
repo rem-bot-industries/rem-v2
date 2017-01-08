@@ -58,6 +58,7 @@ class LangManager extends Manager {
 
     getDirs(rootDir, cb) {
         let langPath = path.join(__dirname, `../../${rootDir}`);
+        console.log(langPath);
         fs.readdir(langPath, function (err, files) {
             if (err) {
                 winston.error(err);
