@@ -266,7 +266,7 @@ class Player extends EventEmitter {
 
     /**
      * Get the current queue of the player
-     * @returns {{repeat: boolean, repeatId: string, voteskips: Array, songs: Array, time: string}|*}
+     * @returns {{repeat: boolean, repeatId: string, voteskips: Array, songs: Array, time: string}}
      */
     getQueue() {
         if (this.connection.current) {
@@ -321,10 +321,6 @@ class Player extends EventEmitter {
     }
 
     syncQueue() {
-
-    }
-
-    randomizeQueue() {
 
     }
 
