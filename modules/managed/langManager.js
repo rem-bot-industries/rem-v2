@@ -58,14 +58,14 @@ class LangManager extends Manager {
 
     getDirs(rootDir, cb) {
         let langPath = path.join(__dirname, `../../${rootDir}`);
-        console.log(langPath);
+        // console.log(langPath);
         fs.readdir(langPath, function (err, files) {
             if (err) {
                 winston.error(err);
                 return cb(err);
             }
             let dirs = [];
-            console.log(files);
+            // console.log(files);
             for (let index = 0; index < files.length; ++index) {
                 let file = files[index];
                 if (file[0] !== '.') {
