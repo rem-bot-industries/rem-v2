@@ -6,9 +6,9 @@
         "nan": ":no_entry_sign: Peu importe ce que tu viens d'envoyer, s'il te plaît utilise un nombre entier. :) ",
         "no-song-in-queue": ":no_entry_sign: Il n'y a pas de chansons dans la file d'attente, ajoutes en peut-être une :musical_note: ?",
         "no-song-playing": ":musical_note: Il n'y a aucune chanson de jouée pour le moment!",
-        "no-permission": ":no_entry_sign: Tu n'as pas la permissions d'utiliser cette commande, s'il te plaît ajoute un rôle Discord nommé WolkeBot à toi-même pour l'utiliser.",
+        "no-permission": ":no_entry_sign: Tu n'as pas la permissions d'utiliser cette commande, s'il te plaît ajoute la permission `{{- node}}` à toi-même pour l'utiliser.",
         "no-voice": ":no_entry_sign: Je ne suis connectée à aucun salon vocal sur ce serveur!",
-        "level-update": ":tada: Tu viens d'atteindre le **Niveau {{level}}** sur **{{server}}**",
+        "level-update": ":tada: Tu viens d'atteindre le **Niveau {{level}}** sur **{{- server}}**",
         "empty-search": ":no_entry_sign: Tu n'as pas entré de terme de recherche!",
         "negative": ":no_entry_sign: S'il te plaît n'utilise pas de nombre négatif!",
         "cancel": "annuler",
@@ -126,7 +126,16 @@
         "nyan": "Nya :3",
         "uwu": "uwu",
         "dere": "cherche pour une définition de \"dere\" ou obtiens en une aléatoirement",
-        "love": "Donne à l'utilisateur mentionné un point d'amour, ajoute \"-\" pour réduire les points d'amour de l'utilisateur de 1"
+        "love": "Donne à l'utilisateur mentionné un point d'amour, ajoute \"-\" pour réduire les points d'amour de l'utilisateur de 1",
+        "sinfo": "Te donne des informations à propos du serveur actuel",
+        "uinfo": "Te donne des informations à propos de toi/de l'utilisateur mentionné",
+        "apq": "",
+        "ap": "",
+        "gp": "",
+        "rp": "",
+        "cry": "",
+        "ibsafe": "",
+        "iblewd": ""
     },
     "version": "Actuellement je suis en version {{version}}",
     "add": "Utilise ce lien pour m'ajouter à ton serveur: {{- link}}",
@@ -201,7 +210,7 @@
         "one-song": "Utilise{{- prefix}}fskip pour passer la chanson actuelle!"
     },
     "cookie": {
-        "give": "a donné **1** cookie à l'utilisateur **{{-user}}**",
+        "give": "a donné **1** cookie à l'utilisateur **{{- user}}**",
         "new-server": "Réessaye s'il te plaît.",
         "arere": "Arere... quelque-chose s'est mal passé...",
         "perms": "Tu as besoin d'un rôle discord appelé WolkeBot pour donner des cookies!",
@@ -326,7 +335,7 @@
         "dup": "Tu as déjà voté!",
         "success-add": "Votre vote à été ajouté, pourcentage de vote à **{{current}}%/{{needed}}%**",
         "success-skip": "Vote pour passer la chanson: **{{- title}}**",
-        "vote": "Tape {{- prefix}}yes pour voter pour passer la chanson en cours. Actuellement le pourcentage de vote est à {{--perct}}%{{- needed}}\nUtilisateurs ayant voté:\n```{{- table}}```",
+        "vote": "Tape {{- prefix}}yes pour voter pour passer la chanson en cours. Actuellement le pourcentage de vote est à {{- perct}}%{{- needed}}\nUtilisateurs ayant voté:\n```{{- table}}```",
         "in-prog": "Il y a déjà un vote pour passer en cours, utilise {{- prefix}}yes pour passer la chanson actuelle."
     },
     "rm": {
