@@ -1,353 +1,438 @@
 {
-  "generic": {
-    "error": "Ett fel uppstod!",
-    "no-pm": ":no_entry: Det här kommandot fungerar inte i privata kanaler!",
-    "whole-num": "Var snäll och skriv ett heltal!",
-    "nan": "Vad du än skriver nu så var snäll och skriv ett heltal. :)",
-    "no-song-in-queue": "Det finns ingen låt i kön, du kanske vill lägga till en :musical_note: ?",
-    "no-song-playing": "Ingen låt spelas för tillfället!",
-    "no-permission": "Du har inte tillåtelse att utföra det här kommandot, du behöver rollen WolkeBot för att kunna använda det.",
-    "no-voice": "Jag är inte ansluten till någon röstkanal på denna server!",
-    "level-update": ":tada: Du nådde precis **Level  {{level}}** på **{{server}}**",
-    "empty-search": "Du angav ingen sökterm!",
-    "negative": "Var snäll och ange inte ett negativt nummer!",
-    "cancel": "c:avbryta",
-    "version": "version",
-    "author": "skribent",
-    "lib": "använt bibliotek",
-    "more": "{{number}} mer."
-  },
-  "help": {
-    "intro": "Låt oss ha kul tillsammans på Discord! (/^▽^)/ Kommandon du kan utföra:",
-    "intro_2": "Hej! Jag heter",
-    "support": "[SUPPORT]",
-    "bug": "Få en länk till supporten på discord",
-    "help": "Hjälp-kommandot",
-    "add": "Få en länk så att du kan lägga till mig på din server",
-    "music": "[MUSIK]",
-    "voice": "Jag går med i den röstkanal du för tillfället är i (Vanliga musik-kommandon utför detta automatiskt dock.)",
-    "silent": "Jag lämnar den röstkanal jag för tillfället är i. (Kräver WolkeBot rollen.)",
-    "play": "Spelar en låt/Youtube-video med en maxlängd på: 1H30M (Kräver WolkeBot rollen.)",
-    "pause": "Pausar den nuvarande låten. (Kräver WolkeBot rollen.)",
-    "resume": "Återupptar den pausade låten. (Kräver WolkeBot rollen.)",
-    "volume": "Sätter volymen på botten, värden mellan 1-200. (Kräver WolkeBot rollen.)",
-    "forever": "För tillfället inte i bruk.",
-    "search": "Söker i bottens database och visar de 5 bästa resultaten.",
-    "skip": "Hoppar över den nuvarande låten. (Kräver WolkeBot rollen.)",
-    "voteskip": "Startar en röstning på att hoppa över den nuvarande låten, mer än 50% utav kanalen måste rösta för att låten ska hoppas över.",
-    "qa": "Lägger till en Låt/Youtube-video till kön, maxlängd: 1H30M",
-    "qra": "Tar antingen bort alla låtar utom den som spelas för tillfället eller en viss mängd låtar. (Kräver WolkeBot rollen.)",
-    "queue": "Visar kön med låtar!",
-    "np": "Visar låten som spelas för tillfället.",
-    "rq": "Lägger till en slumpmässig låt till kön.",
-    "stream": "Streamar vald internet-radio, du kan söka efter radior eller lägga till de direkt genom att lägga till -u url till kommandot.",
-    "youtube": "[Youtube]",
-    "yts": "Söker på Youtube och returnerar det första resultatet.",
-    "ytq": "Söker på Youtube och lägger till det första resultatet i kön.",
-    "mod": "Moderation av servern",
-    "mod-info": "Alla dessa kommandon kräver att användaren har rollen WolkeBot",
-    "info": "Ger dig information om den server du befinner dig i.",
-    "ban": "Bannar en användare och tar bort hans meddelande-historik från 7 dagar tillbaks.",
-    "kick": "Kickar en användare",
-    "rm": "Tar bort de senaste 10 meddelandena, du kan ändra 10 till ett värde mellan 1-100.",
-    "noLevelServer": "Avaktiverar level-systemet för hela servern, använd kommandot igen för att aktivera det igen.",
-    "noPmServer": "Avaktiverar PM-notifikationer för hela servern, använd kommandot igen för att aktivera det igen.",
-    "noChServer": "Disables the pm notifications for the entire server and enables channel notifications instead, use the command again to revert it",
-    "setLewd": "Lägger till den aktuella kanalen till NSFW-listan.",
-    "remLewd": "Tar bort den aktuella kanalen från NSFW-listan.",
-    "setPrefix": "Sätter prefixet på botten, inga mellanslag/@-nämningar är tillåtna!",
-    "other": "[Andra Saker]",
-    "r34": "Söker på Rule34 efter taggar och returnerar 1 bild. (Kan bara användas med WolkeBot-rollen eller om Kanalen är NSFW.",
-    "kona": "Söker på Konachan efter taggar och returnerar 1 bild. (Kan bara användas med WolkeBot-rollen eller om Kanalen är NSFW.)",
-    "e621": "Söker på E621 efter taggar och returnerar 1 bild. (Kan bara användas med WolkeBot-rollen eller om Kanalen är NSFW.)",
-    "yandere": "Söker på Yande.re efter taggar och returnerar 1 bild. (Kan bara användas med WolkeBot-rollen eller om Kanalen är NSFW.)",
-    "level": "Din Level och mängden XP som krävs för att levla upp!",
-    "rank": "Topplistan för servern.",
-    "noLevel": "Avaktiverar level-systemet bara för dig, använd kommandot igen för att återaktivera.",
-    "noPm": "Avaktiverar notifikationer på privata meddelanden bara för dig. Använd kommandot igen för att aktivera det igen.",
-    "pp": "Kalkylerar PP för en beatmap med valfri träffsäkerhet och mods.",
-    "cookie": "Ger en kaka till den @-nämnda användaren eller visar dina kakor om ingen nämns. (Du kan bara ge kakor med WolkeBot-rollen)",
-    "eatCookie": "Äter en kaka.",
-    "git": "Ger dig github-länken för bottens kod.",
-    "roll": "Rullar ett nummer mellan noll och ett angivet nummer, if there is no number it will be out of 10",
-    "8ball": "Ger dig den magiska 8-kulans åsikt.",
-    "garfield": "Ger dig en slumpmässig Garfield comic.",
-    "cat": "Skickar dig en slumpmässig kattbild.",
-    "hug": "Ger dig en Anime-kram gif.",
-    "slap": "Ger dig en Anime-slap gif.",
-    "setLang": "Sätter språket, ( För tillfället så finns de (Tyska), en (Engelska), se (Svenska) och ru (Ryska) tillgängliga.)",
-    "report": "Om du inte vill gå med i support-servern, så kan du använda report-kommandot för att ge stöd till Utvecklaren Wolke, men använd det sparsamt.",
-    "feedback": "För att ge feedback så får du gärna använda servern för support på discord ^^",
-    "talk": "Om du vill prata med mig så du @nämna mig med ett meddelande :D",
-    "helpReply": "OK, jag skickade dig en lista med kommandon över PM.",
-    "moderation": "[MODERERING]",
-    "misc": "[ÖVRIGT]",
-    "stats": "[STATISTIK]",
-    "user": "[ANVÄNDARE]",
-    "admin": "[ADMIN]",
-    "nsfw": "[NSFW]",
-    "eastereggs": "[PÅSKÄGG]",
-    "proxer": "[PROXER]",
-    "no-cat": "[OKATEGORISERAT]",
-    "ping": "Ger dig pingen till botten, var uppmärksam på att det inte är röstlatensen.",
-    "lewd": "Så snuskigt uwu",
-    "rem": "Ger dig en slumpmässig bild på rem",
-    "wip": "[ARBETE UNDER VÄG]",
-    "gr": "Sätter en hälsning med set GreetingMessage,{{user}} kommer att ersättas med den användaren som precis gick med och {{guild}} ersätts med servern.\nHälsningen kommer att vara specifikt för den kanalen som kommandot skrevs i.\nExempel: Välkommen {{user}} till {{guild}}!",
-    "fw": "Sätter ett farväl-meddelande med setfarewellmessage,{{user}} ersätts med användaren som precis gick med och {{guild}} ersätts med namnet på servern.\nFarvälet tillämpas bara till den kanalen som kommandot utfördes på.",
-    "s": "Serverkommandot, sätter saker som hälsningar och adjön.",
-    "shrug": "¯\\_( ͡° ͜ʖ ͡°)_/¯",
-    "flip": "(╯°□°）╯︵ ┻━┻ ",
-    "eggplant": "bara en äggplanta",
-    "gtn": "Ger dig en slumpmässigt vald Green Tea Neko serie, kan dock enbart användas med WolkeBot-rollen eller i en förinställd NSFW-kanal.",
-    "cuddle": "Ger dig en anime-mys gif.",
-    "trig": "TRIGGRAD",
-    "bot": "Ger dig information om den tillfälliga upptiden för rem, antalet röstanslutningar, användartal och servertal.",
-    "top": "Visar topp-10 servrar (Sorterat efter användare) som denna instans av rem är ansluten till.",
-    "about": "Visar grundinformation om mig, som exempelvis vem som skapade mig och vad jag använder.",
-    "lenny": "( ͡° ͜ʖ ͡°)",
-    "lmg": "Låt mig googla det åt dig",
-    "fskip": "Hoppar över den nuvarande låten (Kan bara användas med WolkeBot-rollen)",
-    "leave": "Jag lämnar den Röst-kanalen jag för tillfället är ansluten till. (Kan bara användas med WolkeBot-rollen)",
-    "say": "Får Rem att säga någonting",
-    "ar": "Lägger till en roll till dig eller en användare",
-    "cr": "Skapa en roll eller lägg till en roll på botten. -d -> default, -l 2 -> ger rollen till användaren när den når nivå 2, -s -> gör rollen själv-givande, exempel -> cr -l 20 rolename, lägger till en roll en användare får vid nivå 20 med namnet rolename",
-    "lr": "Ger en lista på alla roller anslutna till Rem för tillfället.",
-    "rr": "Tar bort en roll från dig själv, en annan användaren eller servern.",
-    "roles": "[ROLLER]"
-  },
-  "version": "För tillfället så kör jag version {{version}}",
-  "add": "Använd denna länk för att lägga till mig på din server: {{- link}}",
-  "bug": "Gå med i vår support-discord: {{- link}} för att rapportera ett problem.",
-  "level": {
-    "result": "Du är **Level {{level}}** XP: **{{current}}XP**/**{{needed}}XP** Total XP:**{{total}}**",
-    "disabled": "XP-Systemet är avaktiverat på denna server!"
-  },
-  "joinVoice": {
-    "join": "Ok, går med i din röstkanal nu!",
-    "error": "Ett fel uppstod när jag skulle gå med i din röstkanal!",
-    "permission": "Ingen tillåtelse! Du behöver WolkeBot-rollen för att utföra kommandot.",
-    "no-voice": "Du är inte i någon röstkanal på denna server!",
-    "already-voice": "Jag är redan i en röstkanal, flytta på mig för att ändra det!"
-  },
-  "nsfw-images": {
-    "nothing-found": "Ingen bild hittas med taggarna: `{{tags}}`",
-    "no-nsfw-channel": "Var snäll och lägg till en NSFW-kanal med !w.setLewd (Du måste vara i kanalen) för att kunna använda NSFW-kommandon."
-  },
-  "8ball": {
-    "answers": [
-      "Nej.",
-      "Ja.",
-      "Kanske.",
-      "Jag tror inte det.",
-      "Definitivt nej.",
-      "Bara gör det.",
-      "Det är en utmärkt idé.",
-      "Är du säker på det ?"
-    ],
-    "no-message": "Du skrev ingen fråga."
-  },
-  "ban": {
-    "success": "Bannade användaren: {{user}}",
-    "privilege": "Min roll har inte tillåtelserna att banna: {{user}} !",
-    "err": "Ett fel uppstod när jag skulle banna: {{user}} !",
-    "perms": "Du kan inte banna Ägaren eller någon med WolkeBot-rollen.",
-    "self": "Du kan inte banna mig med mina egna kommandon.",
-    "no-mention": "Var snäll och @-nämn den som skall bannas."
-  },
-  "kick": {
-    "success": "Kickade användaren: {{user}}",
-    "privilege": "Min roll har inte tillåtelserna att kicka {{user}} !",
-    "err": "Ett fel uppstod när jag skulle kicka: {{user}} !",
-    "perms": "Du kan inte kicka Ägaren eller någon med WolkeBot-rollen.",
-    "self": "Du kan inte kicka mig med mina egna kommandon.",
-    "no-mention": "Var snäll och @-nämn den som skall kickas."
-  },
-  "roll": {
-    "whole-number": "Var snäll och lägg till ett heltal!",
-    "negative": "Jag kan inte rulla tärningen med {{number}}",
-    "success": "Tärningen rullade {{first}} av {{second}}"
-  },
-  "qa": {
-    "nothing-found": "Ingen låt hittades med söktermen `{{search}}` ",
-    "empty-search": "Du angav ingen sökterm!",
-    "started-download": "Påbörjade nedladdning utav `{{- url}}` ",
-    "success": "Köade **{{- song}}**"
-  },
-  "rq": {
-    "db-error": "Ett databasfel uppstod!",
-    "success-multiple": "Lade till följande låtar:\n```{{- table}}```",
-    "too-big": "Lade till {{number}} låtar.",
-    "no-songs-added": "Jag kunde inte lägga till några låtar eftersom att de redan är i kön, försök igen!",
-    "too-much": "Du kan inte lägga till mer än {{number}} låtar samtidigt!"
-  },
-  "qra": {
-    "to-small": "Du kan inte ta bort {{number}} låtar!",
-    "success": "Tog bort följande låtar:\n {{- table}}",
-    "too-big": "Tog bort {{number}} låtar",
-    "one-song": "Använd {{- prefix}}fskip för att hoppa över den nuvarande låten!"
-  },
-  "cookie": {
-    "give": "Gav användaren **{{- user}}** **1** kaka!",
-    "new-server": "Försök igen är du snäll.",
-    "arere": "Arere... något gick snett...",
-    "perms": "Du behöver en Discord-roll som heter WolkeBot för att ge kakor!",
-    "one-user": "Var snäll och nämn enbart **1 Användare**, inte mer, inte mindre!",
-    "count": "Du har **{{number}} Kakor** just nu."
-  },
-  "eastereggs": {
-    "jay": "Jay älskar dig~ :heart: ",
-    "magic": "xX_Cats_Xx var här -10.10.2016"
-  },
-  "set-lang": {
-    "no-lang": "Du specifierade inte ett språk! För tillfället så finns de (Tyska), en (Engelska), se (Svenska) och ru (Ryska) tillgängliga.,",
-    "success": "Okej, jag satte precis språket för denna server till: {{- language}}.",
-    "unsupported": "Det här språket är inte implementerat än, men du kan hjälpa till med det genom att lägga till en pull-request med din översättning på github. För tillfället så finns de (Tyska), en (Engelska), se (Svenska) och ru (Ryska) tillgängliga."
-  },
-  "np": {
-    "song-duration": "Just nu spelas:` {{- title}} {{current}}/{{duration}} {{repeat}} `",
-    "song": "Just nu spelas: `{{-title}} {{repeat}}`",
-    "repeat-on": "repetera:på"
-  },
-  "queue": {
-    "queued": "Köade:"
-  },
-  "rem-lewd": {
-    "no-nsfw": "Det finns inga NSFW-kanaler än.",
-    "success": "Tog utan problem bort {{- channel}} från NSFW-kanalerna!"
-  },
-  "no-level-server": {
-    "success-disable": "Okej jag avaktiverade level-systemet för denna server, skriv kommandot igen för att aktivera det.",
-    "success-enable": "Okej jag aktiverade level-systemet för denna server, skriv kommandot igen för att avaktivera det."
-  },
-  "no-pm-server": {
-    "success-disable": "Okej jag avaktiverade pm notifikationer för denna server, skriv kommandot igen för att aktivera det.",
-    "success-enable": "Okej jag aktiverade pm notifikationer för denna server, skriv kommandot igen för att avaktivera det."
-  },
-  "no-channel-server": {
-    "success-disable": "Okej, jag avaktiverade pm-notifikationer för denna server och aktiverade kanal-notifikationer, skriv detta kommando igen för att återgå.",
-    "success-enable": "Okej, jag aktiverade pm-notifikationer för denna server och avaktiverade kanal-notifikationer, skriv detta kommando igen för att återgå."
-  },
-  "no-level": {
-    "success-disable": "Okej jag avaktiverade level-systemet på dig, skriv kommandot igen för att aktivera.",
-    "success-enable": "Okej jag aktiverade level-systemet på dig, skriv kommandot igen för att avaktivera."
-  },
-  "no-pm": {
-    "success-disable": "Okej jag avaktiverade pm-notifikationer på dig, skriv kommandot igen för att aktivera.",
-    "success-enable": "Okej jag aktiverade pm-notifikationer på dig, skriv kommandot igen för att avaktivera."
-  },
-  "eat-cookie": {
-    "success": "Du åt {{number}} kakor!",
-    "failure": "Du har inga kakor att äta."
-  },
-  "bot-info": {
-    "uptime": "Upptid",
-    "users": "Användare",
-    "channels": "Kanaler",
-    "guilds": "Guild",
-    "avg-channels": "Genomsnitt i kanaler per Guild.",
-    "avg-users": "Genomsnitt i Användare per Guild.",
-    "voice": "Röstanslutningar",
-    "shard": "instans",
-    "guilds-s": "Servrar anslutna till denna instans av Rem",
-    "channels-s": "Kanaler på denna instans av Rem",
-    "users-s": "Användare på denna instans av Rem"
-  },
-  "rank": "Du kan hitta topplistan för servern här: {{- link}}",
-  "pp": {
-    "err": {
-      "api-body": "Kunde inte tyda api-responsen!",
-      "osu-api": "Osu!-apit verkar ha ett smärre problem.",
-      "no-link": "Det här är ingen giltig osu länk!",
-      "unvalid-link": "Du angav ingen länk till någon osu!-map!"
+    "generic": {
+        "error": "Ett fel uppstod!",
+        "no-pm": ":no_entry: Det här kommandot fungerar inte i privata kanaler!",
+        "whole-num": "Var snäll och skriv ett heltal!",
+        "nan": "Vad du än skriver nu så var snäll och skriv ett heltal. :)",
+        "no-song-in-queue": "Det finns ingen låt i kön, du kanske vill lägga till en :musical_note: ?",
+        "no-song-playing": "Ingen låt spelas för tillfället!",
+        "no-permission": "Du har inte tillåtelse att utföra det här kommandot, du behöver rollen WolkeBot för att kunna använda det.",
+        "no-voice": "Jag är inte ansluten till någon röstkanal på denna server!",
+        "level-update": ":tada: Du nådde precis **Level  {{level}}** på **{{server}}**",
+        "empty-search": "Du angav ingen sökterm!",
+        "negative": "Var snäll och ange inte ett negativt nummer!",
+        "cancel": "c:avbryta",
+        "version": "version",
+        "author": "skribent",
+        "lib": "använt bibliotek",
+        "more": "{{number}} mer.",
+        "abort": ":x: avbruten",
+        "cat-nope": ":no_entry_sign: Denna kategori existerar inte!",
+        "mention": "Snälla nämn en användare."
     },
-    "success": "PP för mappen `{{- artist}} - {{- title}} [{{- version}}] med träfsäkerheten {{- accuracy}}%` `{{- pp}}PP` `{{- mods}}`"
-  },
-  "server-info": {
-    "id": "ID",
-    "name": "Namn",
-    "member": "Medlemmar",
-    "text": "Textkanaler",
-    "voice": "Röstkanaler",
-    "roles": "Roller",
-    "creation": "Skapades",
-    "region": "Region",
-    "owner": "Ägare"
-  },
-  "leave": "Ok, jag lämnade röstkanalen.",
-  "play": {
-    "no-result": "Ingen låt hittades!",
-    "playing": ":musical_note: Spelas nu: **{{- song}}**"
-  },
-  "prefix": {
-    "success": "Ok, jag satte prefixet till {{- prefix}}",
-    "no-prefix": "Var snäll och lägg till ett Prefix!"
-  },
-  "voice": {
-    "in-queue": "**{{- song}}** är redan i kön.",
-    "error-volume": "Ett fel uppstod när volymen skulle sättas!",
-    "success-volume": "Satte volymen till {{- volume}}",
-    "no-volume": "Ingen volym är satt!",
-    "repeat-start": "Påbörjade repetering av **{{- song}}**",
-    "already-playing": "Den här låten spelas redan!",
-    "blocked": "Den här videon är inte tillgänglig för nedladdning. Den kanske är för lång, blockerad eller borttagen?",
-    "dl-start": ":hourglass: laddar låten!",
-    "use-proxy": "Försöker att ladda ner via proxy, detta kan ta lite tid."
-  },
-  "yts": {
-    "success": "Hittade följande låt: {{- link}}"
-  },
-  "skip": {
-    "success": ":track_next: Hoppade över låt: {{- title}}",
-    "stop": ":stop_button: Stoppade nuvarande låt."
-  },
-  "vskip": {
-    "user-no-voice": "Du kan inte rösta på att hoppa över låten, eftersom att du inte är i samma röstkanal!",
-    "same-voice": "Du är inte i samma röstkanal som jag!",
-    "dup": "Du har redan röstat!",
-    "success-add": "Lade till din röst, rösterna är för tillfället **{{current}}%/{{needed}}%**",
-    "success-skip": "Hoppade över låten genom röstning: **{{- title}}**"
-  },
-  "rm": {
-    "less-2": "Du kan inte ta bort mindre än 2 meddelanden!",
-    "over-100": "Du kan inte ta bort mer än 100 meddelanden i taget!",
-    "success": "Tog utan problem bort {{number}} meddelanden.",
-    "error": "Ett fel uppstod när meddelanden skulle tas bort!"
-  },
-  "search": {
-    "success": "Fann följande låtar:"
-  },
-  "set-lewd": {
-    "success": "La till {{- channel}} till NSFW-kanalerna!"
-  },
-  "report": "Ok, jag skickade din rapport till Wolke, var snäll och använd detta sparsamt eller så kan du riskera att bli bannad från botten.",
-  "greeting": {
-    "no-greeting": "Du lade inte till vilken hälsning jag skulle använda!",
-    "no-add": "Du kan antingen sätta eller återställa hälsningen."
-  },
-  "farewell": {
-    "no-farewell": "Du lade inte till vad för farväl jag skulle använda!",
-    "no-add": "Du kan antingen sätta eller återställa ett farväl."
-  },
-  "add-role": {
-    "ok": "Ok, jag gav {{- user}} rollen {{- role}}"
-  },
-  "create-role": {
-    "missing": "Rollnamnet du specifierade finns inte på servern.",
-    "new": "Ska jag skapa rollen åt dig?",
-    "no-args": "Du lade inte till några argument till kommandot",
-    "ok": "Okej, jag skapade rollen {{- role}}",
-    "exists": "Rollen {{- role}} existerar redan i databasen."
-  },
-  "remove-role": {
-    "ok": "Okej jag tog bort rollen {{- role}} från {{- user}}!"
-  },
-  "list-roles": {
-    "nr": "nr.",
-    "id": "id",
-    "name": "namn",
-    "self": "själv tillgivande",
-    "lvl": "Tillgänglig vid nivå",
-    "default": "standard"
-  }
+    "help": {
+        "intro": "Låt oss ha kul tillsammans på Discord! (/^▽^)/ Kommandon du kan utföra:",
+        "intro_2": "Hej! Jag heter",
+        "support": "[SUPPORT]",
+        "bug": "Få en länk till supporten på discord",
+        "help": "Hjälp-kommandot",
+        "add": "Få en länk så att du kan lägga till mig på din server",
+        "music": "[MUSIK]",
+        "voice": "Jag går med i den röstkanal du för tillfället är i (Vanliga musik-kommandon utför detta automatiskt dock.)",
+        "silent": "Jag lämnar den röstkanal jag för tillfället är i. (Kräver WolkeBot rollen.)",
+        "play": "Spelar en låt/Youtube-video med en maxlängd på: 1H30M (Kräver WolkeBot rollen.)",
+        "pause": "Pausar den nuvarande låten. (Kräver WolkeBot rollen.)",
+        "resume": "Återupptar den pausade låten. (Kräver WolkeBot rollen.)",
+        "volume": "Sätter volymen på botten, värden mellan 1-200. (Kräver WolkeBot rollen.)",
+        "forever": "För tillfället inte i bruk.",
+        "search": "Söker i bottens database och visar de 5 bästa resultaten.",
+        "skip": "Hoppar över den nuvarande låten. (Kräver WolkeBot rollen.)",
+        "voteskip": "Startar en röstning på att hoppa över den nuvarande låten, mer än 50% utav kanalen måste rösta för att låten ska hoppas över.",
+        "qa": "Lägger till en Låt/Youtube-video till kön, maxlängd: 1H30M",
+        "qra": "Tar antingen bort alla låtar utom den som spelas för tillfället eller en viss mängd låtar. (Kräver WolkeBot rollen.)",
+        "queue": "Visar kön med låtar!",
+        "np": "Visar låten som spelas för tillfället.",
+        "rq": "Lägger till en slumpmässig låt till kön.",
+        "stream": "Streamar vald internet-radio, du kan söka efter radior eller lägga till de direkt genom att lägga till -u url till kommandot.",
+        "youtube": "[Youtube]",
+        "yts": "Söker på Youtube och returnerar det första resultatet.",
+        "ytq": "Söker på Youtube och lägger till det första resultatet i kön.",
+        "mod": "Moderation av servern",
+        "mod-info": "Alla dessa kommandon kräver att användaren har rollen WolkeBot",
+        "info": "Ger dig information om den server du befinner dig i.",
+        "ban": "Bannar en användare och tar bort hans meddelande-historik från 7 dagar tillbaks.",
+        "kick": "Kickar en användare",
+        "rm": "Tar bort de senaste 10 meddelandena, du kan ändra 10 till ett värde mellan 1-100.",
+        "noLevelServer": "Avaktiverar level-systemet för hela servern, använd kommandot igen för att aktivera det igen.",
+        "noPmServer": "Avaktiverar PM-notifikationer för hela servern, använd kommandot igen för att aktivera det igen.",
+        "noChServer": "Disables the pm notifications for the entire server and enables channel notifications instead, use the command again to revert it",
+        "setLewd": "Lägger till den aktuella kanalen till NSFW-listan.",
+        "remLewd": "Tar bort den aktuella kanalen från NSFW-listan.",
+        "setPrefix": "Sätter prefixet på botten, inga mellanslag/@-nämningar är tillåtna!",
+        "other": "[Andra Saker]",
+        "r34": "Söker på Rule34 efter taggar och returnerar 1 bild. (Kan bara användas med WolkeBot-rollen eller om Kanalen är NSFW.",
+        "kona": "Söker på Konachan efter taggar och returnerar 1 bild. (Kan bara användas med WolkeBot-rollen eller om Kanalen är NSFW.)",
+        "e621": "Söker på E621 efter taggar och returnerar 1 bild. (Kan bara användas med WolkeBot-rollen eller om Kanalen är NSFW.)",
+        "yandere": "Söker på Yande.re efter taggar och returnerar 1 bild. (Kan bara användas med WolkeBot-rollen eller om Kanalen är NSFW.)",
+        "level": "Din Level och mängden XP som krävs för att levla upp!",
+        "rank": "Topplistan för servern.",
+        "noLevel": "Avaktiverar level-systemet bara för dig, använd kommandot igen för att återaktivera.",
+        "noPm": "Avaktiverar notifikationer på privata meddelanden bara för dig. Använd kommandot igen för att aktivera det igen.",
+        "pp": "Kalkylerar PP för en beatmap med valfri träffsäkerhet och mods.",
+        "cookie": "Ger en kaka till den @-nämnda användaren eller visar dina kakor om ingen nämns. (Du kan bara ge kakor med WolkeBot-rollen)",
+        "eatCookie": "Äter en kaka.",
+        "git": "Ger dig github-länken för bottens kod.",
+        "roll": "Rullar ett nummer mellan noll och ett angivet nummer, if there is no number it will be out of 10",
+        "8ball": "Ger dig den magiska 8-kulans åsikt.",
+        "garfield": "Ger dig en slumpmässig Garfield comic.",
+        "cat": "Skickar dig en slumpmässig kattbild.",
+        "hug": "Ger dig en Anime-kram gif.",
+        "slap": "Ger dig en Anime-slap gif.",
+        "setLang": "Sätter språket, ( För tillfället så finns de (Tyska), en (Engelska), se (Svenska) och ru (Ryska) tillgängliga.)",
+        "report": "Om du inte vill gå med i support-servern, så kan du använda report-kommandot för att ge stöd till Utvecklaren Wolke, men använd det sparsamt.",
+        "feedback": "För att ge feedback så får du gärna använda servern för support på discord ^^",
+        "talk": "Om du vill prata med mig så du @nämna mig med ett meddelande :D",
+        "helpReply": "OK, jag skickade dig en lista med kommandon över PM.",
+        "moderation": "[MODERERING]",
+        "misc": "[ÖVRIGT]",
+        "stats": "[STATISTIK]",
+        "user": "[ANVÄNDARE]",
+        "admin": "[ADMIN]",
+        "nsfw": "[NSFW]",
+        "eastereggs": "[PÅSKÄGG]",
+        "proxer": "[PROXER]",
+        "no-cat": "[OKATEGORISERAT]",
+        "ping": "Ger dig pingen till botten, var uppmärksam på att det inte är röstlatensen.",
+        "lewd": "Så snuskigt uwu",
+        "rem": "Ger dig en slumpmässig bild på rem",
+        "wip": "[ARBETE UNDER VÄG]",
+        "gr": "Sätter en hälsning med set GreetingMessage,{{user}} kommer att ersättas med den användaren som precis gick med och {{guild}} ersätts med servern.\nHälsningen kommer att vara specifikt för den kanalen som kommandot skrevs i.\nExempel: Välkommen {{user}} till {{guild}}!",
+        "fw": "Sätter ett farväl-meddelande med setfarewellmessage,{{user}} ersätts med användaren som precis gick med och {{guild}} ersätts med namnet på servern.\nFarvälet tillämpas bara till den kanalen som kommandot utfördes på.",
+        "s": "Serverkommandot, sätter saker som hälsningar och adjön.",
+        "shrug": "¯\\_( ͡° ͜ʖ ͡°)_/¯",
+        "flip": "(╯°□°）╯︵ ┻━┻ ",
+        "eggplant": "bara en äggplanta",
+        "gtn": "Ger dig en slumpmässigt vald Green Tea Neko serie, kan dock enbart användas med WolkeBot-rollen eller i en förinställd NSFW-kanal.",
+        "cuddle": "Ger dig en anime-mys gif.",
+        "trig": "TRIGGRAD",
+        "bot": "Ger dig information om den tillfälliga upptiden för rem, antalet röstanslutningar, användartal och servertal.",
+        "top": "Visar topp-10 servrar (Sorterat efter användare) som denna instans av rem är ansluten till.",
+        "about": "Visar grundinformation om mig, som exempelvis vem som skapade mig och vad jag använder.",
+        "lenny": "( ͡° ͜ʖ ͡°)",
+        "lmg": "Låt mig googla det åt dig",
+        "fskip": "Hoppar över den nuvarande låten (Kan bara användas med WolkeBot-rollen)",
+        "leave": "Jag lämnar den Röst-kanalen jag för tillfället är ansluten till. (Kan bara användas med WolkeBot-rollen)",
+        "say": "Får Rem att säga någonting",
+        "ar": "Lägger till en roll till dig eller en användare",
+        "cr": "Skapa en roll eller lägg till en roll på botten. -d -> default, -l 2 -> ger rollen till användaren när den når nivå 2, -s -> gör rollen själv-givande, exempel -> cr -l 20 rolename, lägger till en roll en användare får vid nivå 20 med namnet rolename",
+        "lr": "Ger en lista på alla roller anslutna till Rem för tillfället.",
+        "rr": "Tar bort en roll från dig själv, en annan användaren eller servern.",
+        "roles": "[ROLLER]",
+        "repeat": "Spelar en låt/låtkön repeterande tills nya låtar läggs till.",
+        "sayd": "Får Rem att säga något och ta bort ditt kommando.",
+        "generic": "[ALLMÄNT]",
+        "fun": "[ROLIGT]",
+        "coin": "kastar ett mynt åt dig.",
+        "nyan": "Nya :3",
+        "uwu": "uwu",
+        "dere": "sök efter en definition på dere, alternativt få en slumpmässig",
+        "love": "Ger den nämnda användaren en kärlekspoäng, lägg till - för att reducera kärlekspoängen på användaren med 1",
+        "sinfo": "ger dig information om den nuvarande servern",
+        "uinfo": "ger dig information om dig/den nämnda användaren",
+        "apq": "",
+        "ap": "",
+        "gp": "",
+        "rp": "",
+        "cry": "",
+        "ibsafe": "",
+        "iblewd": ""
+    },
+    "version": "För tillfället så kör jag version {{version}}",
+    "add": "Använd denna länk för att lägga till mig på din server: {{- link}}",
+    "bug": "Gå med i vår support-discord: {{- link}} för att rapportera ett problem.",
+    "level": {
+        "result": "Du är **Level {{level}}** XP: **{{current}}XP**/**{{needed}}XP** Total XP:**{{total}}**",
+        "disabled": "XP-Systemet är avaktiverat på denna server!"
+    },
+    "joinVoice": {
+        "join": "Ok, går med i din röstkanal nu!",
+        "error": "Ett fel uppstod när jag skulle gå med i din röstkanal!",
+        "permission": "Ingen tillåtelse! Du behöver WolkeBot-rollen för att utföra kommandot.",
+        "no-voice": "Du är inte i någon röstkanal på denna server!",
+        "already-voice": "Jag är redan i en röstkanal, flytta på mig för att ändra det!"
+    },
+    "nsfw-images": {
+        "nothing-found": "Ingen bild hittas med taggarna: `{{tags}}`",
+        "no-nsfw-channel": "Var snäll och lägg till en NSFW-kanal med !w.setLewd (Du måste vara i kanalen) för att kunna använda NSFW-kommandon.",
+        "error-body": "Det uppstod ett fel med api responsen. Var snäll och försök igen, och om problem fortfarande uppstår, kontakta Wolke#6746."
+    },
+    "8ball": {
+        "answers": [
+            "Nej.",
+            "Ja.",
+            "Kanske.",
+            "Jag tror inte det.",
+            "Definitivt nej.",
+            "Bara gör det.",
+            "Det är en utmärkt idé.",
+            "Är du säker på det ?"
+        ],
+        "no-message": "Du skrev ingen fråga."
+    },
+    "ban": {
+        "success": "Bannade användaren: {{user}}",
+        "privilege": "Min roll har inte tillåtelserna att banna: {{user}} !",
+        "err": "Ett fel uppstod när jag skulle banna: {{user}} !",
+        "perms": "Du kan inte banna Ägaren eller någon med WolkeBot-rollen.",
+        "self": "Du kan inte banna mig med mina egna kommandon.",
+        "no-mention": "Var snäll och @-nämn den som skall bannas."
+    },
+    "kick": {
+        "success": "Kickade användaren: {{user}}",
+        "privilege": "Min roll har inte tillåtelserna att kicka {{user}} !",
+        "err": "Ett fel uppstod när jag skulle kicka: {{user}} !",
+        "perms": "Du kan inte kicka Ägaren eller någon med WolkeBot-rollen.",
+        "self": "Du kan inte kicka mig med mina egna kommandon.",
+        "no-mention": "Var snäll och @-nämn den som skall kickas."
+    },
+    "roll": {
+        "whole-number": "Var snäll och lägg till ett heltal!",
+        "negative": "Jag kan inte rulla tärningen med {{number}}",
+        "success": "Tärningen rullade {{first}} av {{second}}"
+    },
+    "qa": {
+        "nothing-found": "Ingen låt hittades med söktermen `{{search}}` ",
+        "empty-search": "Du angav ingen sökterm!",
+        "started-download": "Påbörjade nedladdning utav `{{- url}}` ",
+        "success": "Köade **{{- song}}**"
+    },
+    "rq": {
+        "db-error": "Ett databasfel uppstod!",
+        "success-multiple": "Lade till följande låtar:\n```{{- table}}```",
+        "too-big": "Lade till {{number}} låtar.",
+        "no-songs-added": "Jag kunde inte lägga till några låtar eftersom att de redan är i kön, försök igen!",
+        "too-much": "Du kan inte lägga till mer än {{number}} låtar samtidigt!"
+    },
+    "qra": {
+        "to-small": "Du kan inte ta bort {{number}} låtar!",
+        "success": "Tog bort följande låtar:\n {{- table}}",
+        "too-big": "Tog bort {{number}} låtar",
+        "one-song": "Använd {{- prefix}}fskip för att hoppa över den nuvarande låten!"
+    },
+    "cookie": {
+        "give": "Gav användaren **{{- user}}** **1** kaka!",
+        "new-server": "Försök igen är du snäll.",
+        "arere": "Arere... något gick snett...",
+        "perms": "Du behöver en Discord-roll som heter WolkeBot för att ge kakor!",
+        "one-user": "Var snäll och nämn enbart **1 Användare**, inte mer, inte mindre!",
+        "count": "Du har **{{number}} Kakor** just nu."
+    },
+    "eastereggs": {
+        "jay": "Jay älskar dig~ :heart: ",
+        "magic": "xX_Cats_Xx var här -10.10.2016"
+    },
+    "set-lang": {
+        "no-lang": "Du specifierade inte ett språk! För tillfället så finns de (Tyska), en (Engelska), se (Svenska) och ru (Ryska) tillgängliga.,",
+        "success": "Okej, jag satte precis språket för denna server till: {{- language}}.",
+        "unsupported": "Det här språket är inte implementerat än, men du kan hjälpa till med det genom att lägga till en pull-request med din översättning på github. För tillfället så finns de (Tyska), en (Engelska), se (Svenska) och ru (Ryska) tillgängliga."
+    },
+    "np": {
+        "song-duration": "Just nu spelas:` {{- title}} {{current}}/{{duration}} {{repeat}} `",
+        "song": "Just nu spelas: `{{-title}} {{repeat}}`",
+        "repeat-on": "repetera:på",
+        "repeat-single": "repeterar: en låt",
+        "repeat-queue": "repeterar: kön",
+        "emoji-repeat-single": ":repeat_one: ",
+        "emoji-repeat-queue": ":repeat:",
+        "emoji-repeat-off": ":heavy_check_mark:"
+    },
+    "queue": {
+        "queued": "Köade:"
+    },
+    "rem-lewd": {
+        "no-nsfw": "Det finns inga NSFW-kanaler än.",
+        "success": "Tog utan problem bort {{- channel}} från NSFW-kanalerna!"
+    },
+    "no-level-server": {
+        "success-disable": "Okej jag avaktiverade level-systemet för denna server, skriv kommandot igen för att aktivera det.",
+        "success-enable": "Okej jag aktiverade level-systemet för denna server, skriv kommandot igen för att avaktivera det."
+    },
+    "no-pm-server": {
+        "success-disable": "Okej jag avaktiverade pm notifikationer för denna server, skriv kommandot igen för att aktivera det.",
+        "success-enable": "Okej jag aktiverade pm notifikationer för denna server, skriv kommandot igen för att avaktivera det."
+    },
+    "no-channel-server": {
+        "success-disable": "Okej, jag avaktiverade pm-notifikationer för denna server och aktiverade kanal-notifikationer, skriv detta kommando igen för att återgå.",
+        "success-enable": "Okej, jag aktiverade pm-notifikationer för denna server och avaktiverade kanal-notifikationer, skriv detta kommando igen för att återgå."
+    },
+    "no-level": {
+        "success-disable": "Okej jag avaktiverade level-systemet på dig, skriv kommandot igen för att aktivera.",
+        "success-enable": "Okej jag aktiverade level-systemet på dig, skriv kommandot igen för att avaktivera."
+    },
+    "no-pm": {
+        "success-disable": "Okej jag avaktiverade pm-notifikationer på dig, skriv kommandot igen för att aktivera.",
+        "success-enable": "Okej jag aktiverade pm-notifikationer på dig, skriv kommandot igen för att avaktivera."
+    },
+    "eat-cookie": {
+        "success": "Du åt {{number}} kakor!",
+        "failure": "Du har inga kakor att äta."
+    },
+    "bot-info": {
+        "uptime": "Upptid",
+        "users": "Användare",
+        "channels": "Kanaler",
+        "guilds": "Guild",
+        "avg-channels": "Genomsnitt i kanaler per Guild.",
+        "avg-users": "Genomsnitt i Användare per Guild.",
+        "voice": "Röstanslutningar",
+        "shard": "instans",
+        "guilds-s": "Servrar anslutna till denna instans av Rem",
+        "channels-s": "Kanaler på denna instans av Rem",
+        "users-s": "Användare på denna instans av Rem"
+    },
+    "rank": "Du kan hitta topplistan för servern här: {{- link}}",
+    "pp": {
+        "err": {
+            "api-body": "Kunde inte tyda api-responsen!",
+            "osu-api": "Osu!-apit verkar ha ett smärre problem.",
+            "no-link": "Det här är ingen giltig osu länk!",
+            "unvalid-link": "Du angav ingen länk till någon osu!-map!"
+        },
+        "success": "PP för mappen `{{- artist}} - {{- title}} [{{- version}}] med träfsäkerheten {{- accuracy}}%` `{{- pp}}PP` `{{- mods}}`"
+    },
+    "server-info": {
+        "id": "ID",
+        "name": "Namn",
+        "member": "Medlemmar",
+        "text": "Textkanaler",
+        "voice": "Röstkanaler",
+        "roles": "Roller",
+        "creation": "Skapades",
+        "region": "Region",
+        "owner": "Ägare"
+    },
+    "leave": "Ok, jag lämnade röstkanalen.",
+    "play": {
+        "no-result": "Ingen låt hittades!",
+        "playing": ":musical_note: Spelas nu: **{{- song}}**"
+    },
+    "prefix": {
+        "success": "Ok, jag satte prefixet till {{- prefix}}",
+        "no-prefix": "Var snäll och lägg till ett Prefix!"
+    },
+    "voice": {
+        "in-queue": "**{{- song}}** är redan i kön.",
+        "error-volume": "Ett fel uppstod när volymen skulle sättas!",
+        "success-volume": "Satte volymen till {{- volume}}",
+        "no-volume": "Ingen volym är satt!",
+        "repeat-start": "Påbörjade repetering av **{{- song}}**",
+        "already-playing": "Den här låten spelas redan!",
+        "blocked": "Den här videon är inte tillgänglig för nedladdning. Den kanske är för lång, blockerad eller borttagen?",
+        "dl-start": ":hourglass: laddar låten!",
+        "use-proxy": "Försöker att ladda ner via proxy, detta kan ta lite tid.",
+        "too-much": "Du kan inte sätta volymen över 200!"
+    },
+    "yts": {
+        "success": "Hittade följande låt: {{- link}}"
+    },
+    "skip": {
+        "success": ":track_next: Hoppade över låt: {{- title}}",
+        "stop": ":stop_button: Stoppade nuvarande låt."
+    },
+    "vskip": {
+        "user-no-voice": "Du kan inte rösta på att hoppa över låten, eftersom att du inte är i samma röstkanal!",
+        "same-voice": "Du är inte i samma röstkanal som jag!",
+        "dup": "Du har redan röstat!",
+        "success-add": "Lade till din röst, rösterna är för tillfället **{{current}}%/{{needed}}%**",
+        "success-skip": "Hoppade över låten genom röstning: **{{- title}}**",
+        "vote": "Skriv {{- prefix}}yes för att hoppa över den nuvarande låten. För tillfället har {{- perct}}%/{{- needed}} röstat ja.\nAnvändare som röstat:\n```{{- table}}```",
+        "in-prog": "Det finns redan en voteskip pågående, använde {{- prefix}} för att hoppa över den nuvarande låten."
+    },
+    "rm": {
+        "less-2": "Du kan inte ta bort mindre än 2 meddelanden!",
+        "over-100": "Du kan inte ta bort mer än 100 meddelanden i taget!",
+        "success": "Tog utan problem bort {{number}} meddelanden.",
+        "error": "Ett fel uppstod när meddelanden skulle tas bort!",
+        "over-limit": "Du kan inte ta bort färre än 2 eller mer än 100 meddelanden!",
+        "no-limit": "Du specifierade inte hur många meddelanden jag skulle ta bort.",
+        "nothing-found": "Jag kunde inte hitta ett meddelande som matchade filtret."
+    },
+    "search": {
+        "success": "Fann följande låtar:"
+    },
+    "set-lewd": {
+        "success": "La till {{- channel}} till NSFW-kanalerna!"
+    },
+    "report": "Ok, jag skickade din rapport till Wolke, var snäll och använd detta sparsamt eller så kan du riskera att bli bannad från botten.",
+    "greeting": {
+        "no-greeting": "Du lade inte till vilken hälsning jag skulle använda!",
+        "no-add": "Du kan antingen sätta eller återställa hälsningen."
+    },
+    "farewell": {
+        "no-farewell": "Du lade inte till vad för farväl jag skulle använda!",
+        "no-add": "Du kan antingen sätta eller återställa ett farväl."
+    },
+    "add-role": {
+        "ok": "Ok, jag gav {{- user}} rollen {{- role}}"
+    },
+    "create-role": {
+        "missing": "Rollnamnet du specifierade finns inte på servern.",
+        "new": "Ska jag skapa rollen åt dig?",
+        "no-args": "Du lade inte till några argument till kommandot",
+        "ok": "Okej, jag skapade rollen {{- role}}",
+        "exists": "Rollen {{- role}} existerar redan i databasen."
+    },
+    "remove-role": {
+        "ok": "Okej jag tog bort rollen {{- role}} från {{- user}}!"
+    },
+    "list-roles": {
+        "nr": "nr.",
+        "id": "id",
+        "name": "namn",
+        "self": "själv tillgivande",
+        "lvl": "Tillgänglig vid nivå",
+        "default": "standard"
+    },
+    "user-info": {
+        "id": "$t(server-info.id)",
+        "name": "\n $t(server-info.name) ",
+        "discriminator": "diskriminator",
+        "nick": "Smeknamn",
+        "join": "Gick med",
+        "created": "Skapade",
+        "playing": "Spelar",
+        "info": "Användarinformation",
+        "bot": "Bott",
+        "status": "Status",
+        "role": "Roller"
+    },
+    "flip": {
+        "head": "Myntet kastades och det blev krona {{- url}}",
+        "tail": "Myntet kastades och det blev klave {{- url}}"
+    },
+    "gp": {
+        "no-cat": "Jag kunde inte hitta några tillåtelser med kategorin {{- cat}}",
+        "no-perms": "Du lade inte till några tillåtelser än.",
+        "table": {
+            "id": "$t(server-info.id)",
+            "name": "Namn",
+            "type": "Typ",
+            "cat": "Kategori",
+            "perm": "Tillåtelse",
+            "use": "Använd"
+        }
+    },
+    "rp": {
+        "success": "Jag tog utan problem bort tillåtelsen `{{- node}}` från **{{- type}}** `{{- id}}`"
+    },
+    "love": {
+        "success": "Du gav precis **{{- target}}** **{{- rep}}** :heart: kärlekspoäng. Kvarvarande användningar **{{uses}}**.",
+        "error-cd": "Du kan enbart ge **2** :heart: kärlekspoäng per dag, använd {{- time}} nästa gång.",
+        "next": "Sedan använder du {{- time}}",
+        "self": ":broken_heart: Du kan inte ge kärlekspoäng till dig själv!"
+    },
+    "dere": {
+        "no-dere": "Den dere-typen du sökte efter existerar inte. Här är en lista över möjliga deres:",
+        "dandere": "Danderen (だんデレ) är en sorts person som oftast är tysta och för sig själva.\nDet kan bero på blyghet eller att de bara är den tysta sorten.\nNär de är ensamma med den person som de dras till så blir de oftast mer älskande och öppna.\nDetta ord är en förkortning of Danmari (だんまり) vilket betyder tyst, och Deredere (デレデレ) vilket betyder gullande.",
+        "deredere": "",
+        "himedere": "",
+        "kamidere": "",
+        "kuudere": "",
+        "mayadere": "",
+        "oujidere": "",
+        "tsundere": "",
+        "undere": "",
+        "yandere": "",
+        "yangire": ""
+    }
 }
