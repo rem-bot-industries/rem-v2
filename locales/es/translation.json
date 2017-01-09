@@ -16,7 +16,7 @@
         "author": "Autor",
         "lib": "Librería utilizada",
         "more": "{{number}} más",
-        "abort": ":x: cancelado",
+        "abort": ":x: Cancelado",
         "cat-nope": ":no_entry_sign: ¡Esa categoría no existe!",
         "mention": "Por favor menciona a un usuario."
     },
@@ -38,7 +38,7 @@
         "search": "Busca una canción en la base de datos del bot y muestra los 5 mejores resultados.",
         "skip": "Inicia una votación para saltar la canción actual, una vez que hayan votado el 50% de las personas del canal, ésta será saltada",
         "voteskip": "Se empieza una votación para cambiar la canción actual, si el 50% de los miembros de la sala votan se cambiará la canción.",
-        "qa": "Añades una canción/video de Youtube a la cola de hasta 1H30M",
+        "qa": "Añades una canción de Youtube/Soundcloud/Osu a la cola de hasta 1H30M",
         "qra": "Elimina todas las canciones excepto la que se está reproduciendo en estos momentos, también puedes borrar un determinado número de canciones.",
         "queue": "Muestra la cola actual.",
         "np": "Muestra la canción que se reproduce en estos momentos",
@@ -125,7 +125,7 @@
         "coin": "gira una moneda por ti",
         "nyan": "Nya :3",
         "uwu": "uwu",
-        "dere": "busca por definiciones dere u obtén una aleatoria",
+        "dere": "Busca una definición dere o muestra una aleatoria.",
         "love": "Dale al usuario mencionado un punto de amor, añade - para quitar un punto de amor.",
         "sinfo": "Proporciona información sobre el servidor actual.",
         "uinfo": "Proporciona información sobre ti o el usuario mencionado",
@@ -135,7 +135,10 @@
         "rp": "El comando para remover permisos, puedes encontrar una extensa guía sobre  su uso en el Discord de soporte (usa !w.bug para recibir la invitación)",
         "cry": "¿Te sientes triste?, este comando es perfecto para ti",
         "ibsafe": "Buscas en ibsear.ch (solo fotos SFW)",
-        "iblewd": "Buscas en ibsearch.xxx (lo mismo que ibsafe, pero con fotos NSFW)"
+        "iblewd": "Buscas en ibsearch.xxx (lo mismo que ibsafe, pero con fotos NSFW)",
+        "qr": "Puedes eliminar canciones específicas con su songid. Para eliminar un conjunto de canciones utiliza el comando `qr startid-stopid`. \nEste comando eliminará todas las canciones que se incluyan entre startid y stopid. Para eliminar diversos conjuntos puedes separarlos con comas.",
+        "shuffle": "Mezcla la cola de reproducción. Debe haber al menos 3 canciones en la cola para hacer funcionar el comando.",
+        "owo": "Manda un meme aleatorio de \"Qué es esto OwO\" seleccionado cuidadosamente por Wolke"
     },
     "version": "Actualmente me encuentro en la versión {{version}}",
     "add": "Utiliza este enlace para añadirme a tu servidor: {{- link}}",
@@ -205,9 +208,11 @@
     },
     "qra": {
         "to-small": "¡No puedes eliminar {{number}} canción/es!",
-        "success": "Han sido eliminadas las siguientes canciones:\n{{- table}}",
+        "success": "Eliminadas `{{number}}` canciones.",
         "too-big": "Eliminada/s {{number}} canción/es",
-        "one-song": "¡Utiliza {{- prefix}}fskip para omitir la canción actual!"
+        "one-song": "¡Utiliza {{- prefix}}fskip para omitir la canción actual!",
+        "no-number": "¡No has indicado cuantas canciones debo eliminar de la cola!",
+        "removed": "Eliminado `{{- title}}` de la cola de reproducción"
     },
     "cookie": {
         "give": "¡**{{- user}}** Ha obtenido **1** galleta!",
@@ -227,8 +232,8 @@
         "unsupported": "Este idioma no está implementado aún, pero puedes ayudarnos añadiendo una solicitud con tu lenguaje en github. Actualmente hay {{languages}} idiomas disponibles."
     },
     "np": {
-        "song-duration": "Está sonando ahora mismo:` {{- title}} {{current}}/{{duration}} {{repeat}} `",
-        "song": "Está sonando ahora mismo: `{{-title}} {{repeat}}` ",
+        "song-duration": "Está sonando ahora mismo: `{{- title}} {{current}}/{{duration}} {{repeat}}`",
+        "song": "Está sonando ahora mismo: `{{-title}} {{repeat}}`",
         "repeat-on": "repetir:activado",
         "repeat-single": "repetir: single ",
         "repeat-queue": "repetir: cola",
@@ -278,7 +283,9 @@
         "shard": "fragmento",
         "guilds-s": "Servidores en este fragmento",
         "channels-s": "Canales en este fragmento",
-        "users-s": "Usuarios en este fragmento"
+        "users-s": "Usuarios en este fragmento",
+        "made": "",
+        "lib": ""
     },
     "rank": "Puedes encontrar la clasificación de este servidor aquí: {{- link}}",
     "pp": {
@@ -327,7 +334,9 @@
     },
     "skip": {
         "success": ":track_next: La canción {{- title}} fue saltada",
-        "stop": ":stop_button: Se ha detenido la canción"
+        "stop": ":stop_button: Se ha detenido la canción",
+        "all": ":stop_button: Omitidas todas las canciones",
+        "some": ":track_next: Omitidas {{- amount}} canciones"
     },
     "vskip": {
         "user-no-voice": "No puedes votar un cambio de canción si no estás en el mismo canal de voz.",
@@ -413,7 +422,7 @@
         }
     },
     "rp": {
-        "success": "He eliminado exitósamente el permiso `{{- node}}` desde **{{- type}}** `{{- id}}`"
+        "success": "He eliminado satisfactoriamente el permiso `{{- node}}` de tipo **{{- type}}** `{{- id}}`"
     },
     "love": {
         "success": "Le diste a **{{- target}}** **{{- rep}}** :heart: punto/s de amor. Usos restantes: **{{uses}}**.",
@@ -434,5 +443,9 @@
         "undere": "El Undere (ウンデレ) se refiere a un personaje quien dice \"Sí\" a casi todo lo que dice la persona que él/ella ama.\n Ellos asienten lo máximo posible para convertirse en lo más cercano posible con la persona que aman.\nEsta palabra es una abreviación de Un (ウン) forma abreviada utilizada en japonés para decir Sí y Deredere (デレデレ) que significa volverse cariñoso.",
         "yandere": "El Yandere (ヤンデレ) se refiere a un personaje quien empieza siendo bueno y dulce pero finalmente se vuelve oscuro y obsesivo con la persona que ama.\n Ellos se vuelven unos acosadores y usan la violencia, y posiblemente homicidio, con cualquier persona que se acerque a sus intereses en el amor — incluso si ellos son demasiado tímidos para hablar con la persona de la que están enamoradas directamente.\n Esta palabra es una abreviación de Yanderu (やんでる) que significa ser mental o emocionalmente enfermo y Deredere (デレデレ) que significa volverse cariñoso.",
         "yangire": "El Yangire (ヤンギレ) es similar en algunas formas a Yandere. Es un personaje que empieza siendo bueno y dulce pero se vuelve muy agresivo y psicótico.\n Sin embargo, a diferencia de Yandere, Yangire no se vuelve violento por la atracción del personaje.\n En su lugar, pueden molestarse por estar irritados con un persona que no tiene nada que hacer con su interés amoroso.\n Esta palabra es una abreviación de Yanderu (やんでる) que significa ser mental o emocionalmente enfermo y Kire (きれ) que significa cortar."
+    },
+    "shuffle": {
+        "not-enough-shuffle": "Debe haber al menos 3 canciones en la cola de reproducción.",
+        "success": "¡He mezclado las canciones de la cola de reproducción!"
     }
 }
