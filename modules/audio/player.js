@@ -85,10 +85,14 @@ class Player extends EventEmitter {
                 }
             } else if (Song.type === SongTypes.soundcloud) {
                 dogstatsd.increment(`${stat}.music.soundcloud`);
-                stream = request(Song.streamUrl);
-                stream.on('error', (err) => {
-                    winston.error(err);
-                });
+                if (Song.streamUrl) {
+                    stream = request(Song.streamUrl);
+                    stream.on('error', (err) => {
+                        winston.error(err);
+                    });
+                } else {
+                    return this.nextSong();
+                }
             } else if (Song.type === SongTypes.osu) {
                 dogstatsd.increment(`${stat}.music.osu`);
                 try {

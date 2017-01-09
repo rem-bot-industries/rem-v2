@@ -11,7 +11,7 @@ let dogstatsd = new StatsD();
 let beta = require('../../config/main.json').beta;
 let stat = beta ? 'rem-beta' : 'rem-live';
 class MessageManager extends Manager {
-    constructor({cm, lm, gm, vm, um, pm, rm, stm, mod}, ...args) {
+    constructor({cm, lm, gm, vm, um, pm, rm, stm, mod}) {
         super();
         this.setMaxListeners(20);
         this.l = lm;
