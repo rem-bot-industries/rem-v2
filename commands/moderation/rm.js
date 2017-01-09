@@ -19,7 +19,7 @@ class RemoveMessages extends Command {
 
     run(msg) {
         let messageSplit = msg.content.split(' ').splice(1);
-        let args = minimist(messageSplit, {boolean: ['b', 'r', 'c', 'd', 'u'], string: ['i']});
+        let args = minimist(messageSplit, {boolean: ['b', 'r', 'c', 'd', 'u', 'p'], string: ['i']});
         this.msg = msg;
         let limit = 0;
         try {
@@ -102,11 +102,22 @@ class RemoveMessages extends Command {
                 }
             }
             if (!args.c && !args.b && !args.r && !args.u) {
-                filtered.push(msg.id);
-                done = true;
-                async.setImmediate(() => {
-                    return cb();
-                });
+                if (!args.p) {
+                    if (!msg.pinned) {
+                        filtered.push(msg.id);
+                        done = true;
+                        async.setImmediate(() => {
+                            return cb();
+                        });
+                    }
+                } else {
+                    filtered.push(msg.id);
+                    done = true;
+                    async.setImmediate(() => {
+                        return cb();
+                    });
+                }
+
             }
             if (!done) {
                 async.setImmediate(() => {
