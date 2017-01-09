@@ -36,6 +36,26 @@ if (cluster.isMaster) {
     hub.on('_user_update', (sid, users) => {
         shards[sid].users = users;
     });
+    hub.on('request_data', (sid, evId) => {
+        hub.emitRemote('request_data_master', evId);
+        let shardData = {};
+        let responses = 0;
+        let time = setTimeout(() => {
+            returnData({err: 'Timeout!'})
+        }, 2000);
+        hub.on(`resolve_data_master_${evId}`, (data) => {
+            shardData[data.sid] = data;
+            responses++;
+            if (responses === config.shards) {
+                clearTimeout(time);
+                hub.removeListener(`resolve_data_master_${evId}`);
+                returnData(shardData);
+            }
+        });
+        function returnData(data) {
+            hub.emitRemote(`resolved_data_${evId}`, data);
+        }
+    });
 
     tracker.on('error', (err) => {
 

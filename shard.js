@@ -81,7 +81,7 @@ class Shard extends EventEmitter {
             this.guildCreate(Guild)
         });
         bot.on('guildDelete', (Guild) => {
-
+            this.guildDelete(Guild);
         });
         bot.on('voiceChannelJoin', (m, n) => {
             this.voiceUpdate(m, n, false);
@@ -105,7 +105,7 @@ class Shard extends EventEmitter {
     }
 
     clientReady() {
-        this.MOD.init().then(() => {
+        this.MOD.init(this.HUB).then(() => {
             this.ready = true;
             this.MSG = this.MOD.getMod('mm');
             this.GM = this.MOD.getMod('gm');
@@ -118,6 +118,14 @@ class Shard extends EventEmitter {
             });
             this.HUB.on('_cache_update', (data) => {
                 this.updateLocalCache(data);
+            });
+            this.HUB.on('request_data_master', (evId) => {
+                this.HUB.emitRemote(`resolve_data_master_${evId}`, {
+                    sid: this.id,
+                    users: this.bot.guilds.map(g => g.memberCount).reduce((a, b) => a + b),
+                    guilds: this.bot.guilds.size,
+                    channels: this.bot.guilds.map(g => g.channels.size).reduce((a, b) => a + b)
+                });
             });
             this.HUB.emit('_guild_update', this.id, this.bot.guilds.size);
             this.HUB.emit('_user_update', this.id, this.bot.guilds.map(g => g.memberCount).reduce((a, b) => a + b));
