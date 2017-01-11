@@ -59,4 +59,4 @@ If you need help creating tokens and a Youtube api I suggest reading these two t
 * https://github.com/reactiflux/discord-irc/wiki/Creating-a-discord-bot-&-getting-a-token
 * http://docs.thesharks.xyz/install_windows/
 
-uwu
+Hail uwu
