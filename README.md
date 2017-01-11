@@ -1,7 +1,7 @@
 # Rem v2
 >The rewrite of Rem, now even cleaner and soon fully documented.
 
-[![Discord](https://discordapp.com/api/guilds/206530953391243275/embed.png)](https://discord.gg/yuTxmYn) [![Dependencies](https://david-dm.org/DasWolke/rem-v2/status.svg)](https://david-dm.org/DasWolke/rem-v2) [![GitHub stars](https://img.shields.io/github/stars/badges/shields.svg?style=social&label=Star)]()[![GitHub issues](https://img.shields.io/github/issues/badges/shields.svg)]()
+[![Discord](https://discordapp.com/api/guilds/206530953391243275/embed.png)](https://discord.gg/yuTxmYn) [![Dependencies](https://david-dm.org/DasWolke/rem-v2/status.svg)](https://david-dm.org/DasWolke/rem-v2) [![GitHub stars](https://img.shields.io/github/stars/DasWolke/rem-v2.svg?style=social&label=Star)]()[![GitHub issues](https://img.shields.io/github/issues/DasWolke/rem-v2.svg)]()
 ## Requirements:
 * Node and NPM
 * Git
@@ -9,6 +9,7 @@
 * ffmpeg and youtube-dl
 * Buildtools and Python 2.7
 * Basic understanding of node
+
 ## Installation instructions
 1. Install MongoDB with the [guide](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows/).
 2. Install git, Here is the [link](https://git-scm.com/downloads) to get it.
