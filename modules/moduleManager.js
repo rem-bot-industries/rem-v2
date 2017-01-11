@@ -6,6 +6,9 @@ let async = require('async');
 let readDir = require('recursive-readdir');
 let path = require("path");
 let ModPath = path.join(__dirname, './managed');
+/**
+ * This is the ModuleManager Class, it loads all modules within managed/ and instantiates them and their dependencies
+ */
 class ModuleManager {
     constructor() {
         this.mods = {};

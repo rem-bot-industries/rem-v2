@@ -186,13 +186,13 @@ class VoiceManager extends Manager {
                 vm.players[msg.guild.id].toggleRepeatSingle(true);
                 if (howMany) {
                     let queue = vm.players[msg.guild.id].getQueue(msg);
-                    if (howMany === 'all') {
                         let current = queue.songs.shift();
+                    if (howMany === 'all') {
                         queue.songs = [current];
                         vm.players[msg.guild.id].setQueueSongs(queue.songs);
                         vm.players[msg.guild.id].nextSong();
                         resolve({t: 'skip.all'});
-                    } else if (typeof(howMany) === 'number' || howMany <= queue.songs.length) {
+                    } else {
                         let songsToSkip = 0;
                         try {
                             songsToSkip = parseInt(howMany);
@@ -202,24 +202,28 @@ class VoiceManager extends Manager {
                         if (isNaN(songsToSkip) || songsToSkip <= 0) {
                             reject({t: 'generic.nan'});
                         }
-                        let current = queue.songs.shift();
-                        for (let i = 0; i < songsToSkip; i++) {
-                            queue.songs.unshift();
+                        if (songsToSkip > queue.songs.length) {
+                            reject({t: 'generic.nan'});
+                        }
+                        for (let i = 0; i < songsToSkip - 1; i++) {
+                            queue.songs.shift()
                         }
                         queue.songs.unshift(current);
                         vm.players[msg.guild.id].setQueueSongs(queue.songs);
                         let song = vm.players[msg.guild.id].nextSong();
                         resolve({t: 'skip.some', amount: songsToSkip});
                     }
-                }
-                let song = vm.players[msg.guild.id].nextSong();
-                if (song) {
-                    resolve({title: song.title, t: 'skip.success'});
+                } else {
+                    let song = vm.players[msg.guild.id].nextSong();
+                    if (song) {
+                        resolve({title: song.title, t: 'skip.success'});
+                    }
                 }
             } else {
                 reject({t: 'generic.no-song-in-queue'});
             }
-        });
+            }
+        );
     }
 
     queueRemove(msg, args) {
