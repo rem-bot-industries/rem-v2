@@ -1,6 +1,7 @@
 /**
  * Created by julia on 26.06.2016.
  */
+
 let mongoose = require('mongoose');
 let guildSchema = mongoose.Schema({
     id: String,
