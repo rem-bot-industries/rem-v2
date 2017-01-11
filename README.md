@@ -44,6 +44,7 @@
 - Beta should always be set to true.
 - the number of shards defines how many processes the master will spawn.
  Can be set to 1 unless you want to operate this fork on over 2500 servers.
+ 
 ## Example keys.json
 ```json
 {
