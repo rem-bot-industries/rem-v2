@@ -1,3 +1,4 @@
+/**Require the dependencies*/
 const cluster = require('cluster');
 const winston = require('winston');
 const winstonCluster = require('winston-cluster');
@@ -8,9 +9,11 @@ let _ = require('lodash');
 require('longjohn');
 require('winston-daily-rotate-file');
 const util = require("util");
-const numCPUs = require('os').cpus().length;
 let Shard = require('./shard');
 let async = require('async');
+/**
+ * Check if the Cluster process is master
+ */
 if (cluster.isMaster) {
     let tracker = new StatTrack(60);
     let resp = [];
@@ -36,13 +39,25 @@ if (cluster.isMaster) {
     hub.on('_user_update', (sid, users) => {
         shards[sid].users = users;
     });
+    /**
+     * If a shard requests data
+     */
     hub.on('request_data', (sid, evId) => {
+        /**
+         * send a request_data_master event to all shards
+         */
         hub.emitRemote('request_data_master', evId);
         let shardData = {};
         let responses = 0;
+        /**
+         * set up a timeout
+         */
         let time = setTimeout(() => {
             returnData({err: 'Timeout!'})
         }, 2000);
+        /**
+         * Called once a shard received the request and submitted data
+         */
         hub.on(`resolve_data_master_${evId}`, (data) => {
             shardData[data.sid] = data;
             responses++;
@@ -52,6 +67,10 @@ if (cluster.isMaster) {
                 returnData(shardData);
             }
         });
+        /**
+         * Resolves the data request
+         * @param data
+         */
         function returnData(data) {
             hub.emitRemote(`resolved_data_${evId}`, data);
         }
@@ -83,7 +102,10 @@ if (cluster.isMaster) {
     }
     winston.info('Spawned Shards!');
     winstonCluster.bindListeners();
-
+    /**
+     * Restarts a Worker if it died
+     * @param pid Process ID
+     */
     function restartWorker(pid) {
         for (let i = 0; i < workers.length; i++) {
             if (pid === workers[i].pid) {
@@ -96,6 +118,10 @@ if (cluster.isMaster) {
         }
     }
 
+    /**
+     * Spawns a worker and saves it in a list
+     * @param env
+     */
     function spawnWorker(env) {
         shards[env.id] = {guilds: 0, users: 0};
         let worker = cluster.fork(env);

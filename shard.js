@@ -27,7 +27,18 @@ if (!config.beta) {
         process.exit(1);
     });
 }
+/**
+ * The base shard class
+ * @extends EventEmitter
+ */
 class Shard extends EventEmitter {
+    /**
+     * The constructor
+     * @constructor
+     * @param SHARD_ID The shardid of the bot
+     * @param SHARD_COUNT the max shardcount
+     * @param hub the clusterhub instance used to send data back and forth
+     */
     constructor(SHARD_ID, SHARD_COUNT, hub) {
         super();
         this.id = SHARD_ID;
@@ -44,6 +55,10 @@ class Shard extends EventEmitter {
         this.init();
     }
 
+    /**
+     * Setup a listener if the eventloop blocks,
+     * then call the initClient method
+     */
     init() {
         blocked((ms) => {
             console.log('Shard:' + this.id + ' BLOCKED FOR %sms', ms | 0);
@@ -51,8 +66,11 @@ class Shard extends EventEmitter {
         this.initClient();
     }
 
+    /**
+     * Initiates the Client and Eris
+     * In this function Rem sets up listeners for common events, configures eris and starts the lib
+     */
     initClient() {
-        winston.info(typeof(this.count));
         let options = {
             autoreconnect: true,
             compress: true,
@@ -104,6 +122,15 @@ class Shard extends EventEmitter {
         bot.connect();
     }
 
+    /**
+     * Here comes the really interesting stuff.
+     * 1. Rem starts the init function of the Module Loader, which loads all mods inside /managed
+     * 2. Once the modloader is done, rem gets the needed mods and sets them as instancevariables
+     * 3. Then some event listeners are setup, which are later used for cache-syncing
+     * 4. Rem logs that the commands are ready.
+     * 5. Now, Rem sends an initial data update to the main process to update the guild/user counts if necessary.
+     * 6. A Interval gets created to update data every 5 mins
+     */
     clientReady() {
         this.MOD.init(this.HUB).then(() => {
             this.ready = true;
@@ -127,8 +154,6 @@ class Shard extends EventEmitter {
                     channels: this.bot.guilds.map(g => g.channels.size).reduce((a, b) => a + b)
                 });
             });
-            this.HUB.emit('_guild_update', this.id, this.bot.guilds.size);
-            this.HUB.emit('_user_update', this.id, this.bot.guilds.map(g => g.memberCount).reduce((a, b) => a + b));
             winston.info('commands are ready!');
             this.sendStats();
             this.createInterval();
