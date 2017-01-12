@@ -92,6 +92,9 @@ if (cluster.isMaster) {
     });
     process.on('SIGINT', () => {
         winston.error('Received SIGINT');
+        for (let i = 0; i < workers.length; i++) {
+            workers[i].worker.kill('SIGINT');
+        }
         process.exit(0);
     });
     for (let i = 0; i < config.shards; i++) {

@@ -58,10 +58,6 @@ class VoiceManager extends Manager {
         }
     }
 
-    play(msg) {
-        this.addToQueue(msg, true);
-    }
-
     pause(msg) {
         try {
             this.players[msg.guild.id].pause();
@@ -108,49 +104,68 @@ class VoiceManager extends Manager {
     }
 
     addPlaylistToQueue(msg) {
-        this.join(msg, (err, conn) => {
-            if (err) return this.emit(`${msg.id}_error`, err);
-            let id = msg.content.split(' ').splice(1);
-            let pl = new PlaylistResolver(id);
-            pl.loadPlaylist(id, (err, playlist) => {
-                if (err) return this.emit(`${msg.id}_error`, err);
-                this.players[msg.guild.id].addToQueue(playlist.songs[0]);
-                for (let i = 1; i < playlist.songs.length; i++) {
-                    this.players[msg.guild.id].pushQueue(playlist.songs[i]);
+        let that = this;
+        return new Promise(function (resolve, reject) {
+            that.join(msg, (err, conn) => {
+                if (err) {
+                    reject({type: 'error', event: `${msg.id}_error`, err: err});
+                } else {
+                    let id = msg.content.split(' ').splice(1);
+                    let pl = new PlaylistResolver(id);
+                    pl.loadPlaylist(id, (err, playlist) => {
+                        if (err) {
+                            reject({type: 'error', event: `${msg.id}_error`, err: err});
+                        } else {
+                            that.players[msg.guild.id].addToQueue(playlist.songs[0]);
+                            for (let i = 1; i < playlist.songs.length; i++) {
+                                that.players[msg.guild.id].pushQueue(playlist.songs[i]);
+                            }
+                            resolve({type: 'pl_added', event: `${msg.id}_pl_added`, data: playlist});
+                        }
+                    });
                 }
-                this.emit(`${msg.id}_pl_added`, playlist);
             });
+
         });
+
     }
 
     addToQueue(msg, immediate) {
-        this.join(msg, (err, conn) => {
-            if (err) return this.emit('error', err);
-            let importer = new SongImporter(msg, true);
-            importer.once('long', (url) => {
-                this.emit(`${msg.id}_info`, 'qa.started-download', url);
-            });
-            importer.once('search-result', (results) => {
-                importer.removeAllListeners();
-                this.emit(`${msg.id}_search-result`, results);
-            });
-            importer.once('error', (err) => {
-                importer.removeAllListeners();
-                this.emit(`${msg.id}_error`, err);
-            });
-            importer.once('done', (Song) => {
-                importer.removeAllListeners();
-                this.emit(`${msg.id}_added`, Song);
-                if (typeof (this.players[msg.guild.id]) !== 'undefined') {
-                    this.players[msg.guild.id].updateConnection(conn);
-                    this.players[msg.guild.id].addToQueue(Song, immediate);
-                } else {
-                    this.createPlayer(msg, conn, ytdl).then(player => {
-                        this.players[msg.guild.id].addToQueue(Song, immediate);
-                    }).catch(err => winston.error);
-                }
+        let that = this;
+        return new Promise(function (resolve, reject) {
+            that.join(msg, (err, conn) => {
+                if (err) return reject({type: 'error', event: `${msg.id}_error`, err: err});
+                let importer = new SongImporter(msg, true);
+                importer.once('search-result', (results) => {
+                    importer.removeAllListeners();
+                    that.emit(`${msg.id}_search-result`, results);
+                    resolve({type: 'search_result', event: `${msg.id}_search-result`, data: results})
+                });
+                importer.once('error', (err) => {
+                    importer.removeAllListeners();
+                    reject({type: 'error', event: `${msg.id}_error`, err: err});
+                });
+                importer.once('done', (Song) => {
+                    importer.removeAllListeners();
+                    that.emit(`${msg.id}_added`, Song);
+                    if (typeof (that.players[msg.guild.id]) !== 'undefined') {
+                        that.players[msg.guild.id].updateConnection(conn);
+                        that.players[msg.guild.id].addToQueue(Song, immediate);
+                        console.log('uwu');
+                        resolve({type: 'added', event: `${msg.id}_added`, data: Song});
+                    } else {
+                        that.createPlayer(msg, conn, ytdl).then(player => {
+                            that.players[msg.guild.id].addToQueue(Song, immediate);
+                            resolve({type: 'added', event: `${msg.id}_added`, data: Song});
+                        }).catch(err => {
+                            winston.error(err);
+                            reject({type: 'error', event: `${msg.id}_error`, err: err});
+                        });
+                    }
+                });
             });
         });
+
     }
 
     getQueue(msg) {
@@ -352,10 +367,6 @@ class VoiceManager extends Manager {
             });
 
         });
-
-    }
-
-    shuffleQueue() {
 
     }
 

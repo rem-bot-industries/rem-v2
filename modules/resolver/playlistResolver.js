@@ -28,7 +28,7 @@ class PlaylistImporter extends BasicImporter {
             if (!body || !body.video) {
                 return cb(`This id (${id}) seems bad.`);
             }
-            let playlist = {title: body.title, author: body.author};
+            let playlist = {title: body.title, author: body.author, songs: []};
             let songs = [];
             for (let i = 0; i < body.video.length; i++) {
                 let video = body.video[i];
@@ -47,8 +47,10 @@ class PlaylistImporter extends BasicImporter {
             ytr.resolveSong(songs[0]).then(resolvedSong => {
                 songs[0] = resolvedSong;
                 playlist.songs = songs;
-                cb(null, playlist);
-            }).catch(err => cb(err));
+                return cb(null, playlist);
+            }).catch(err => {
+                return cb(err);
+            });
 
         });
     }
