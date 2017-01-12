@@ -21,7 +21,7 @@ mongoose.connect(url, (err) => {
 let stat = config.beta ? 'rem-beta' : 'rem-live';
 let blocked = require('blocked');
 let version = require('./package.json').version;
-let Raven = new raven.Client();
+let Raven = require('raven');
 if (!config.no_error_tracking) {
     Raven.config(config.sentry_token, {
         release: version,
