@@ -20,9 +20,9 @@ mongoose.connect(url, (err) => {
 });
 let stat = config.beta ? 'rem-beta' : 'rem-live';
 let blocked = require('blocked');
-let client = new raven.Client(config.sentry_token);
+let Raven = new raven.Client();
 if (!config.beta) {
-    client.patchGlobal(() => {
+    Raven.config(config.sentry_token, {captureUnhandledRejections: true}).install(() => {
         winston.error('Oh no I died!');
         process.exit(1);
     });
@@ -132,7 +132,7 @@ class Shard extends EventEmitter {
      * 6. A Interval gets created to update data every 5 mins
      */
     clientReady() {
-        this.MOD.init(this.HUB).then(() => {
+        this.MOD.init(this.HUB, Raven).then(() => {
             this.ready = true;
             this.MSG = this.MOD.getMod('mm');
             this.GM = this.MOD.getMod('gm');
@@ -182,7 +182,10 @@ class Shard extends EventEmitter {
     guildCreate(Guild) {
         this.sendStats();
         guildModel.findOne({id: Guild.id}, (err, guild) => {
-            if (err) return winston.error(err);
+            if (err) {
+                Raven.captureError(err);
+                return winston.error(err);
+            }
             if (guild) {
 
             } else {

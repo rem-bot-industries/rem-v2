@@ -13,6 +13,7 @@ class Help extends Command {
         this.accessLevel = 0;
         this.msg = null;
         this.p = mod.getMod('pm');
+        this.r = mod.getMod('raven');
     }
 
     run(msg) {
@@ -49,6 +50,9 @@ class Help extends Command {
     catReply(channel, reply) {
         channel.createMessage(reply).then(msg => {
 
+        }).then(err => {
+            this.r.captureError(err);
+            winston.error(err);
         });
     }
 

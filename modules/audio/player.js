@@ -103,6 +103,8 @@ class Player extends EventEmitter {
                 stream.on('error', (err) => {
                     winston.error(err);
                 });
+            } else {
+
             }
             this.connection.play(stream, options);
             // winston.info(path.resolve(Song.path));

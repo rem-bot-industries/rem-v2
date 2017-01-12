@@ -2,17 +2,26 @@
  * Created by julia on 17.12.2016.
  */
 let Manager = require('../../structures/manager');
-let Setting = require('../../DB/setting');
+let settingsModel = require('../../DB/setting');
+let settingCache = require('../../structures/cache');
 class SettingsManager extends Manager {
     constructor() {
         super();
     }
 
-    getSettings(id) {
-
+    loadSettings(id, type) {
+        return new Promise(function () {
+            return settingsModel.find({id, type});
+        });
     }
 
-    getSetting(id, node) {
+    getSetting(id, type, key) {
+        return new Promise(function () {
+            return settingsModel.find({id, type, key});
+        });
+    }
+
+    get(key, id) {
 
     }
 
