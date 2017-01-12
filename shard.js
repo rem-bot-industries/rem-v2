@@ -20,9 +20,14 @@ mongoose.connect(url, (err) => {
 });
 let stat = config.beta ? 'rem-beta' : 'rem-live';
 let blocked = require('blocked');
+let version = require('./package.json').version;
 let Raven = new raven.Client();
-if (!config.beta) {
-    Raven.config(config.sentry_token, {captureUnhandledRejections: true}).install(() => {
+if (!config.no_error_tracking) {
+    Raven.config(config.sentry_token, {
+        captureUnhandledRejections: true,
+        release: version,
+        environment: config.environment
+    }).install(() => {
         winston.error('Oh no I died!');
         process.exit(1);
     });

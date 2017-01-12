@@ -1,11 +1,14 @@
 {
   "name": "rem-v2",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "docs": "jsdoc -c .jsdoc.json -r index.js"
+    "docs": "jsdoc -c .jsdoc.json -r index.js",
+    "patch": "npm --no-git-tag-version version patch",
+    "minor": "npm --no-git-tag-version version minor",
+    "major": "npm --no-git-tag-version version major"
   },
   "author": "wolke",
   "license": "ISC",

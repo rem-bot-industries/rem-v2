@@ -41,7 +41,10 @@ class Help extends Command {
         if (msg.channel.type !== 1) {
             msg.author.getDMChannel().then(channel => {
                 this.catReply(channel, reply);
-            }).catch(e => winston.error);
+            }).catch(e => {
+                this.r.captureException(e, {userid: msg.author.id, reply});
+                winston.error(e)
+            });
         } else {
             this.catReply(msg.channel, reply);
         }
@@ -50,8 +53,8 @@ class Help extends Command {
     catReply(channel, reply) {
         channel.createMessage(reply).then(msg => {
 
-        }).then(err => {
-            this.r.captureError(err);
+        }).catch(err => {
+            this.r.captureException(err, {channel: channel.id, reply});
             winston.error(err);
         });
     }
