@@ -38,7 +38,7 @@
         "search": "Sucht nach einem Lied in der internen Datenbank ",
         "skip": "Startet eine Abstimmung zur Überspringen des Liedes. Abgestimmt wird über den Chat und ab 50% wird übersprungen.",
         "voteskip": "Started eine Abstimmung zum Überspringen des Liedes",
-        "qa": "Fügt einen YT-Link/SC-Link/osu-link zur Warteschlange hinzu, maximale Länge: 1H30M",
+        "qa": "Fügt einen YT-Link/SC-Link/osu-link zur Warteschlange hinzu. Oder suche nach Musik.",
         "qra": "Entfernt entweder alle Lieder aus der Warteschlange oder die angegebene Zahl von Liedern ",
         "queue": "Zeigt die Warteschlange",
         "np": "Zeigt den aktuellen Song",
@@ -52,7 +52,7 @@
         "info": "Gibt dir informationen über den aktuellen Server",
         "ban": "Bannt den erwähnten Nutzer und löscht alle Nachrichten von ihm aus den letzten 7 Tagen aus.",
         "kick": "Kickt den erwähnten Nutzer",
-        "rm": "Löscht bis zu 100 Nachrichten. Du kannst auch nach Bots, Benutzern oder Befehlen/Antworten filtern.",
+        "rm": "Löscht bis zu 100 Nachrichten. Du kannst auch nach Bots, Benutzern oder Befehlen/Antworten filtern. Filters: -b -> bots| -r -> Nachrichten von Rem| -u @user -> Nachrichten des erwähnten Nutzers| -c -> Nachrichten, welche mit Rems prefix beginnen.",
         "noLevelServer": "Schaltet das Level System für den gesamten Server aus, wenn der Befehl erneut ausgeführt wird, ist es wieder aktiviert.",
         "noPmServer": "Deaktiviert PM-Benachrichtigungen für den gesamten Server, wenn der Befehl erneut ausgeführt wird, sind sie wieder aktiviert.",
         "noChServer": "Deaktiviert PM-Benachrichtigungen für den gesamten Server und aktiviert Channel Benachrichtigungen, wenn der Befehl erneut ausgeführt wird, ist es wieder umgekehrt.",
@@ -110,7 +110,7 @@
         "about": "Zeigt dir grundlegende Informationen über mich, wie die Bibliotheken und wer mich erschaffen hat",
         "lenny": "( ͡° ͜ʖ ͡°)",
         "lmg": "Lass mich das für dich googlen",
-        "fskip": "Überspringt den aktuellen Song (nur benutzbar mit der WolkeBot Rolle)",
+        "fskip": "Überspringt den aktuellen Song, mehrere songs oder alle.",
         "leave": "Ich verlasse den Voicechannel mit dem ich gerade verbunden bin.",
         "say": "Bring Rem dazu etwas zu sagen.",
         "ar": "Füge dir oder einem Benutzer eine Rolle hinzu",
@@ -125,17 +125,20 @@
         "coin": "Wirft eine Münze für dich.",
         "nyan": "Nya :3",
         "uwu": "uwu",
-        "dere": "Suche nach eine dere Definition oder bekomme eine zufällige",
+        "dere": "Suche nach eine dere Definition oder bekomme eine zufällige.",
         "love": "Gibt dem benannten Benutzer einen Liebespunkt, durch hinzufügen von - sinkt der Liebesscore um des Users um eins.",
         "sinfo": "gibt dir Informationen über den aktuellen server.",
         "uinfo": "gibt dir Informationen über dich selber/den erwähnten Nutzer",
-        "apq": "",
-        "ap": "",
-        "gp": "",
-        "rp": "",
-        "cry": "",
-        "ibsafe": "",
-        "iblewd": ""
+        "apq": "Fügt eine Playlist zu der Warteschlange hinzu. Bitte beachte, dass du die PlaylistID benötigst, NICHT den Playlist link.",
+        "ap": "Der Erlaubnis hinzufügen Befehl, eine genaue Beschreibung kannst du auf dem Hilfe Server finden (!w.bug um den Link zu bekommen)",
+        "gp": "Der Erlaubnis bekommen Befehl, eine genaue Beschreibung kannst du auf dem Hilfe Server finden (!w.bug um den Link zu bekommen) \n",
+        "rp": "Der Erlaubnis entfernen Befehl, eine genaue Beschreibung kannst du auf dem Hilfe Server finden (!w.bug um den Link zu bekommen) \n",
+        "cry": "Fühlst du dich traurig ? Das ist der richtige Befehl für dich.",
+        "ibsafe": "Sucht auf ibsear.ch (nur SFW Bilder)",
+        "iblewd": "Sucht auf ibsearch.xxx ( auch NSFW Bilder)\n",
+        "qr": "Du kannst ein Lied aus der Liste entfernen mit der Song ID oder mehrere Lieder mit ` qr start ID - Stop ID` , das würde alle Lieder zwischen der Start ID und der Stop ID Entfernen.\nDu kannst auch spezifische Lieder entfernen mit der Song IDs getrennt von Kommas.",
+        "shuffle": "Spielt Lieder aus der Wiedergabeliste züfallig ab (geht erst am 3 Liedern)",
+        "owo": "Schickt ein zufälliges \"OwO What's this\" meme.\nAusgesucht von Wolke"
     },
     "version": "Momentan verwende ich Version{{version}}",
     "add": "Benutze diesen Link um mich auf deinem Server hinzuzufügen: {{- link}}",
@@ -205,9 +208,11 @@
     },
     "qra": {
         "to-small": "Du kannst nicht {{number}} Lieder aus der Warteschlange entfernen!",
-        "success": "Ich habe die folgenden Lieder aus der Warteschlange entfernt:\n {{- table}}",
+        "success": "Ok, ich habe `{{number}}` Lieder entfernt.",
         "too-big": "Ich habe {{number}} Lieder entfernt.",
-        "one-song": "Benutze {{- prefix}}fskip um den aktuellen Song zu überspringen"
+        "one-song": "Benutze {{- prefix}}fskip um den aktuellen Song zu überspringen",
+        "no-number": "Du hast nicht gesagt wieviele Lieder ich entfernen soll.",
+        "removed": "Ich habe `{{- title}}` von der Liste entfernt."
     },
     "cookie": {
         "give": "**{{- user}}** hat **1** Keks bekommen!",
@@ -278,7 +283,9 @@
         "shard": "shard",
         "guilds-s": "Guilds auf diesem Shard.",
         "channels-s": "Channels auf diesem Shard",
-        "users-s": "Nutzer auf diesem Shard"
+        "users-s": "Nutzer auf diesem Shard",
+        "made": "Programmiert von:",
+        "lib": "Bibliothek"
     },
     "rank": "Du kannst die Rangliste für deinen Server hier finden: {{- link}}",
     "pp": {
@@ -327,7 +334,9 @@
     },
     "skip": {
         "success": ":track_next: {{- title}} wurde übersprungen!",
-        "stop": ":stop_button: Lied wurde gestoppt."
+        "stop": ":stop_button: Lied wurde gestoppt.",
+        "all": ":stop_button: Alle Lieder übersprungen",
+        "some": ":track_next: {{- amount}} Lieder übersprungen"
     },
     "vskip": {
         "user-no-voice": "Du kannst nicht voteskippen wenn du nicht im selben Voicechannel bist wie ich!",
@@ -424,8 +433,8 @@
     "dere": {
         "no-dere": "Der Dere Typ nachdem du gesucht hast, existiert nicht. Hier ist eine Liste mit möglichen Deres:",
         "dandere": "Der Dandere(だんデレ) Typ bezieht sich auf einen Charakter der oft ruhig und allein ist. \nDieses Verhalten entsteht meistens durch Schüchternheit oder weil der Charakter ein ruhiger Typ ist.\nSobald der Charakter allerdings alleine mit der Person ist, welche er liebt, kommt er in der Regel aus seinerSchale und wird liebevoller.\nDieses Wort ist eine Abkürzung von Danmari (だ ん ま り), was ruhig bedeutet und Deredere (デ レ デ レ), was \"verrückt werden vor Liebe bedeutet\".",
-        "deredere": "",
-        "himedere": "",
+        "deredere": "Der Deredere (デレデレ) Typ beschreibt einen Charakter welcher von Grund auf sehr freudig, glüklich, Energie geladen und freundlich ist.  Es ist egal was diesen Charakteren passiert, sie wechseln schnell wieder zu ihrer freudigen einstellung zurück. Dies ist möglicherweise der einzige Charaktertyp der zu dem Wortstamm Deredere keinen Vorsatz hat. ",
+        "himedere": "Der Charaktertyp Himedere (ひめデレ) beschreibt Charaktere, welche es bevorzugen von ihrem Partner wie eine Prinzessinen behandelt zu werden. Auch wenn sie nicht wirklich von Adel sind. Das Wort Himedere setzt sich zusammen aus Hime (ひめ) welches Prinzessin bedeutet und Deredere (デレデレ).",
         "kamidere": "",
         "kuudere": "",
         "mayadere": "",
@@ -434,5 +443,9 @@
         "undere": "",
         "yandere": "",
         "yangire": ""
+    },
+    "shuffle": {
+        "not-enough-shuffle": "Es müssen mindestens 3 Lieder in der Wiedergabeliste sein.",
+        "success": "Wiedergabeliste gemischt."
     }
 }
