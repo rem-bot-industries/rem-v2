@@ -36,13 +36,14 @@
   "osu_token":"The token for the osu api",
   "osu_path":"./audio",
   "osu_username":"The username that should be used when downloading osu songs",
-  "osu_password":"the password of the osu account",
+  "no_error_tracking":true,
   "shards":1,
   "lbsearch_sfw_key":"the key to use for the ibsear.ch lookup",
   "lbsearch_nsfw_key":"the key to use for the ibsearch.xxx lookup"
 }
 ```
 - Beta should always be set to true.
+- no_error_tracking disabled sentry, the bugtracker of rem, leave this set to true.
 - the number of shards defines how many processes the master will spawn.
  Can be set to 1 unless you want to operate this fork on over 2500 servers.
  

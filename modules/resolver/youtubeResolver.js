@@ -16,26 +16,30 @@ class YoutubeImporter extends BasicImporter {
     }
 
     loadSong(url) {
-        ytdl.getInfo(url, (err, info) => {
-            if (err) {
-                this.emit('error', err);
-            } else {
-                info.loaderUrl = `https://www.youtube.com/watch?v=${info.video_id}`;
-                let directUrl = this.filterStreams(info.formats);
-                let song = new Song({
-                    id: info.video_id,
-                    title: info.title,
-                    duration: this.convertDuration(info),
-                    type: types.youtube,
-                    url: info.loaderUrl,
-                    streamUrl: directUrl,
-                    needsYtdl: !directUrl,
-                    isResolved: true,
-                    local: false
-                });
-                this.emit('done', song);
-            }
-        });
+        try {
+            ytdl.getInfo(url, (err, info) => {
+                if (err) {
+                    this.emit('error', err);
+                } else {
+                    info.loaderUrl = `https://www.youtube.com/watch?v=${info.video_id}`;
+                    let directUrl = this.filterStreams(info.formats);
+                    let song = new Song({
+                        id: info.video_id,
+                        title: info.title,
+                        duration: this.convertDuration(info),
+                        type: types.youtube,
+                        url: info.loaderUrl,
+                        streamUrl: directUrl,
+                        needsYtdl: !directUrl,
+                        isResolved: true,
+                        local: false
+                    });
+                    this.emit('done', song);
+                }
+            });
+        } catch (e) {
+            this.emit('error', e);
+        }
     }
 
     resolveSong(song) {

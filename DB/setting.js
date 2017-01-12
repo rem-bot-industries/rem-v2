@@ -4,10 +4,9 @@
 let mongoose = require('mongoose');
 let settingsSchema = mongoose.Schema({
     id: String,
-    dId: String,
-    dType: String,
-    dataType: String,
     type: String,
+    dataType: String,
+    key: String,
     value: String
 });
 let settingModel = mongoose.model('Settings', settingsSchema);

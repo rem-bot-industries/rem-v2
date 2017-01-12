@@ -13,6 +13,7 @@ class Help extends Command {
         this.accessLevel = 0;
         this.msg = null;
         this.p = mod.getMod('pm');
+        this.r = mod.getMod('raven');
     }
 
     run(msg) {
@@ -40,7 +41,10 @@ class Help extends Command {
         if (msg.channel.type !== 1) {
             msg.author.getDMChannel().then(channel => {
                 this.catReply(channel, reply);
-            }).catch(e => winston.error);
+            }).catch(e => {
+                this.r.captureException(e, {userid: msg.author.id, reply});
+                winston.error(e)
+            });
         } else {
             this.catReply(msg.channel, reply);
         }
@@ -49,6 +53,9 @@ class Help extends Command {
     catReply(channel, reply) {
         channel.createMessage(reply).then(msg => {
 
+        }).catch(err => {
+            this.r.captureException(err, {channel: channel.id, reply});
+            winston.error(err);
         });
     }
 

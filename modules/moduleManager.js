@@ -15,8 +15,9 @@ class ModuleManager {
         this.rawMods = {};
     }
 
-    init(hub) {
+    init(hub, Raven) {
         this.mods['hub'] = hub;
+        this.mods['raven'] = Raven
         let that = this;
         return new Promise(function (resolve, reject) {
             readDir(ModPath, (err, files) => {
