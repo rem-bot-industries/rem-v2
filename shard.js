@@ -24,7 +24,6 @@ let version = require('./package.json').version;
 let Raven = new raven.Client();
 if (!config.no_error_tracking) {
     Raven.config(config.sentry_token, {
-        captureUnhandledRejections: true,
         release: version,
         environment: config.environment
     }).install(() => {
