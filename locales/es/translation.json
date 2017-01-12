@@ -4,14 +4,14 @@
         "no-pm": ":no_entry: ¡Este comando no funciona en canales privados!",
         "whole-num": "¡Por favor añade un número entero!",
         "nan": ":no_entry_sign: Lo que sea que hayas enviado, por favor reemplazalo por un número entero. :)",
-        "no-song-in-queue": "No hay canciones en la cola, quizás deberías añadir una :musical_note:.",
+        "no-song-in-queue": ":no_entry_sign: No hay canciones en la cola, quizás deberías añadir una :musical_note:.",
         "no-song-playing": "No hay canciones reproduciéndose en este momento.",
         "no-permission": ":no_entry_sign: No tienes permisos para usar este comando, por favor añade el permiso `{{- node}}` y asócialo a tu usuario.",
-        "no-voice": "¡No estoy conectada en ningún canal de voz de este servidor!",
-        "level-update": "¡Felicidades! :tada: Acabas de subir al **Nivel {{level}}** en **{{server}}**",
+        "no-voice": ":no_entry_sign: ¡No estoy conectada en ningún canal de voz de este servidor!",
+        "level-update": "¡Felicidades! :tada: Acabas de subir a **Nivel {{level}}** en **{{- server}}**",
         "empty-search": "¡No has introducido un término de búsqueda!",
         "negative": "¡Por favor no uses un número negativo!",
-        "cancel": "cancelar",
+        "cancel": "Cancelar",
         "version": "Versión",
         "author": "Autor",
         "lib": "Librería utilizada",
@@ -38,7 +38,7 @@
         "search": "Busca una canción en la base de datos del bot y muestra los 5 mejores resultados.",
         "skip": "Inicia una votación para saltar la canción actual, una vez que hayan votado el 50% de las personas del canal, ésta será saltada",
         "voteskip": "Se empieza una votación para cambiar la canción actual, si el 50% de los miembros de la sala votan se cambiará la canción.",
-        "qa": "Añades una canción de Youtube/Soundcloud/Osu a la cola de hasta 1H30M",
+        "qa": "Añades una canción de Youtube/Soundcloud/Osu a la cola.",
         "qra": "Elimina todas las canciones excepto la que se está reproduciendo en estos momentos, también puedes borrar un determinado número de canciones.",
         "queue": "Muestra la cola actual.",
         "np": "Muestra la canción que se reproduce en estos momentos",
@@ -52,7 +52,7 @@
         "info": "Ofrece información sobre el servidor actual",
         "ban": "Banea un usuario y elimina los mensajes enviados por él en los últimos 7 días",
         "kick": "Expulsar a un usuario.",
-        "rm": "Elimina los últimos 10 mensajes, puedes cambiar el valor por uno entre 1 y 100.",
+        "rm": "Eliminas mensajes, puedes filtrar estos según su emisor en bots, usuarios o comandos/respuestas de Rem o simplemente eliminar hasta 100 mensajes. Filtros: -b > bots | -r > mensajes de Rem | -u @usuario > mensajes de un usuario específico | -c > mensajes que inician con el prefijo de Rem.",
         "noLevelServer": "Deshabilita el sistema de niveles en el servidor, utiliza el comando nuevamente para rehabilitarlo.",
         "noPmServer": "Deshabilita las notificaciones de mensajes privados en el servidor, utiliza el comando nuevamente para rehabilitarlo.",
         "noChServer": "Deshabilita las notificaciones de mensajes privados en el servidor y habilita las notificaciones en los canales, utiliza el comando nuevamente para revertir la acción.",
@@ -110,7 +110,7 @@
         "about": "Muestra la información básica sobre mi, como la librería que utilizo y quien me creó.",
         "lenny": "( ͡° ͜ʖ ͡°)",
         "lmg": "Buscaré algo en Google por ti",
-        "fskip": "Cambias la canción actual",
+        "fskip": "Salta la canción actual/un número de canciones/todas las canciones.",
         "leave": "Me salgo del canal de voz donde me encuentro actualmente.",
         "say": "Haz que Rem diga algo",
         "ar": "Añade un rol para ti o para un usuario",
@@ -136,7 +136,7 @@
         "cry": "¿Te sientes triste?, este comando es perfecto para ti",
         "ibsafe": "Buscas en ibsear.ch (solo fotos SFW)",
         "iblewd": "Buscas en ibsearch.xxx (lo mismo que ibsafe, pero con fotos NSFW)",
-        "qr": "Puedes eliminar canciones específicas con su songid. Para eliminar un conjunto de canciones utiliza el comando `qr startid-stopid`. \nEste comando eliminará todas las canciones que se incluyan entre startid y stopid. Para eliminar diversos conjuntos puedes separarlos con comas.",
+        "qr": "Puedes eliminar una canción específica con la id de la canción, o un número de ellas con `qr IDinicial-IDfinal`, donde la ID inicial es el inicio de un número de canciones que desees eliminar y ID final sea el final de esa lista. También puedes eliminar varias canciones, sin eliminarlas todas, escribiendo sus ID y finalmente separándolas con comas.",
         "shuffle": "Mezcla la cola de reproducción. Debe haber al menos 3 canciones en la cola para hacer funcionar el comando.",
         "owo": "Manda un meme aleatorio de \"Qué es esto OwO\" seleccionado cuidadosamente por Wolke"
     },
@@ -148,7 +148,7 @@
         "disabled": "¡El sistema de experiencia esta deshabilitado en este servidor!"
     },
     "joinVoice": {
-        "join": "Ok, entraré al canal de voz.",
+        "join": "Vale, he entrado al canal de voz.",
         "error": "¡Ha ocurrido un error al intentar ingresar al canal de voz!",
         "permission": "¡No tienes permisos!, necesitas poseer el rol WolkeBot para usar este comando.",
         "no-voice": "¡No te encuentras en ningún canal de voz!",
@@ -208,11 +208,11 @@
     },
     "qra": {
         "to-small": "¡No puedes eliminar {{number}} canción/es!",
-        "success": "Eliminadas `{{number}}` canciones.",
+        "success": "`{{number}}` canciones han sido eliminadas.",
         "too-big": "Eliminada/s {{number}} canción/es",
         "one-song": "¡Utiliza {{- prefix}}fskip para omitir la canción actual!",
         "no-number": "¡No has indicado cuantas canciones debo eliminar de la cola!",
-        "removed": "Eliminado `{{- title}}` de la cola de reproducción"
+        "removed": "`{{- title}}` fue eliminada de la cola de reproducción."
     },
     "cookie": {
         "give": "¡**{{- user}}** Ha obtenido **1** galleta!",
@@ -228,7 +228,7 @@
     },
     "set-lang": {
         "no-lang": "¡No has especificado un idioma!, actualmente hay {{languages}} idiomas disponibles.",
-        "success": "Ok, se ha establecido el idioma del servidor a {{- language}}.",
+        "success": "Vale, he establecido el idioma del servidor a {{- language}}.",
         "unsupported": "Este idioma no está implementado aún, pero puedes ayudarnos añadiendo una solicitud con tu lenguaje en github. Actualmente hay {{languages}} idiomas disponibles."
     },
     "np": {
@@ -284,8 +284,8 @@
         "guilds-s": "Servidores en este fragmento",
         "channels-s": "Canales en este fragmento",
         "users-s": "Usuarios en este fragmento",
-        "made": "",
-        "lib": ""
+        "made": "Hecho por:",
+        "lib": "Libreria"
     },
     "rank": "Puedes encontrar la clasificación de este servidor aquí: {{- link}}",
     "pp": {
@@ -308,13 +308,13 @@
         "region": "Región",
         "owner": "Propietario"
     },
-    "leave": "Ok, abandonaré el canal de voz.",
+    "leave": "Vale, he abandonado el canal de voz.",
     "play": {
         "no-result": "Ninguna canción fue encontrada.",
         "playing": ":musical_note: Actualmente se está reproduciendo **{{- song}}** "
     },
     "prefix": {
-        "success": "Ok, he establecido el prefijo a {{- prefix}}, utiliza `{{- prefix}}ping` para comprobarlo.",
+        "success": "Vale, he establecido el prefijo a {{- prefix}}, utiliza `{{- prefix}}ping` para comprobarlo.",
         "no-prefix": "¡Por favor añade un prefijo!"
     },
     "voice": {
@@ -335,8 +335,8 @@
     "skip": {
         "success": ":track_next: La canción {{- title}} fue saltada",
         "stop": ":stop_button: Se ha detenido la canción",
-        "all": ":stop_button: Omitidas todas las canciones",
-        "some": ":track_next: Omitidas {{- amount}} canciones"
+        "all": ":stop_button: Todas las canciones fueron omitidas.",
+        "some": ":track_next: {{- amount}} canciones han sido omitidas."
     },
     "vskip": {
         "user-no-voice": "No puedes votar un cambio de canción si no estás en el mismo canal de voz.",
@@ -344,7 +344,7 @@
         "dup": "¡Hey!, solo un voto por persona.",
         "success-add": "Tu voto fue añadido, el porcentaje de votos actual es de **{{current}}%/{{needed}}%**",
         "success-skip": "La canción: **{{- title}}** fue cambiada por votación.",
-        "vote": "Escribe {{- prefix}}yes para votar un cambio en la canción actual. El porcentaje del voto actual es de {{- perct}}%/{{- needed}}\nLos siguientes usuarios ya han votado:\n ```{{- table}}```",
+        "vote": "Escribe {{- prefix}}yes para votar en el cambio de la canción actual. El porcentaje del voto actual es de {{- perct}}%/{{- needed}}\nLos siguientes usuarios ya han votado:\n ```{{- table}}```",
         "in-prog": "Ya hay una votación en progreso, usa {{- prefix}}yes para cambiar la canción actual."
     },
     "rm": {
@@ -362,7 +362,7 @@
     "set-lewd": {
         "success": "Se ha añadido el canal {{- channel}} a la lista de canales NSFW (+18)"
     },
-    "report": "¡Ok!, he enviado el informe a Wolke. Por favor no abuses de esta función, podrías recibir sanciones que terminen en no poder usar al bot.",
+    "report": "¡Ok!, he enviado el informe a Wolke. Por favor no abuses de esta función o podrías recibir sanciones que no te permitan usar al bot.",
     "greeting": {
         "no-greeting": "¡No has introducido el saludo que debo usar!",
         "no-add": "Puedes establecer o restablecer el mensaje de bienvenida."
@@ -395,7 +395,7 @@
     "user-info": {
         "id": "$t(server-info.id)",
         "name": "$t(server-info.name)",
-        "discriminator": "discriminador",
+        "discriminator": "Discriminador",
         "nick": "Nombre de usuario",
         "join": "Se unió",
         "created": "Creado",
@@ -446,6 +446,6 @@
     },
     "shuffle": {
         "not-enough-shuffle": "Debe haber al menos 3 canciones en la cola de reproducción.",
-        "success": "¡He mezclado las canciones de la cola de reproducción!"
+        "success": "¡Canciones de la cola mezcladas!"
     }
 }
