@@ -40,12 +40,12 @@ class AddToQueue extends Command {
         }).catch(err => {
             console.error(err);
             if (track_error) {
-                this.r.captureException(err, {
-                    msgId: msg.id,
-                    userId: msg.author.id,
-                    guildId: msg.guild.id,
-                    msg: msg.content
-                });
+                // this.r.captureException(JSON.stringify(err), {
+                //     msgId: msg.id,
+                //     userId: msg.author.id,
+                //     guildId: msg.guild.id,
+                //     msg: msg.content
+                // });
             }
             msg.channel.createMessage(this.t('generic.error', {lngs: msg.lang}));
         });
