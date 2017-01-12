@@ -174,8 +174,11 @@ class Player extends EventEmitter {
         this.toggleRepeatSingle(true);
         if (immediate) {
             this.queue.songs.unshift(Song);
-            this.endSong();
+            if (this.started) {
+                this.endSong();
+            }
             this.play(Song);
+            this.started = true;
         } else {
             this.queue.songs.push(Song);
         }
@@ -258,7 +261,7 @@ class Player extends EventEmitter {
                 return song;
             }
         } else {
-            this.connection.stopPlaying();
+            this.endSong();
         }
     }
 

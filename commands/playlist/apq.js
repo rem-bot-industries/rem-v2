@@ -2,6 +2,7 @@
  * Created by julia on 07.11.2016.
  */
 let Command = require('../../structures/command');
+let track_error = !require('../../config/main.json').no_error_tracking;
 /**
  * The addToQueueCommand
  * @extends Command
@@ -24,20 +25,22 @@ class AddPlaylistToQueue extends Command {
     }
 
     run(msg) {
-        this.v.once(`${msg.id}_error`, (err) => {
-            this.clearListeners();
+        this.v.addPlaylistToQueue(msg).then(result => {
+            let Playlist = result.data;
+            msg.channel.createMessage(`Added Playlist \`${Playlist.title}\` from the channel \`${Playlist.author}\` with \`${Playlist.songs.length}\` songs to the queue!`)
+        }).catch(err => {
+            if (track_error) {
+                this.r.captureException(err, {
+                    msgId: msg.id,
+                    userId: msg.author.id,
+                    guildId: msg.guild.id,
+                    msg: msg.content,
+                    playlistId: msg
+                });
+            }
             console.error(err);
             msg.channel.createMessage(this.t('generic.error', {lngs: msg.lang}));
         });
-        this.v.once(`${msg.id}_pl_added`, (Playlist) => {
-            this.clearListeners();
-            msg.channel.createMessage(`Added Playlist \`${Playlist.title}\` from the channel \`${Playlist.author}\` with \`${Playlist.songs.length}\` songs to the queue!`);
-        });
-        this.v.addPlaylistToQueue(msg, false);
-    }
-
-    clearListeners() {
-        this.v.removeAllListeners();
     }
 }
 module.exports = AddPlaylistToQueue;
