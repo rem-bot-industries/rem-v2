@@ -23,7 +23,7 @@
 10. Create the following directories within the root: `temp`,`audio`,`config`
 11. Create 2 files within the config directory: `config.json` and `keys.json`. An Example can be found down below.
 
-## Example config.json
+## Example main.json
 ```json
 {
   "owner":"The owner name",
