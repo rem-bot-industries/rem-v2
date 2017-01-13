@@ -21,7 +21,7 @@
 8. Clone the source of v2 from git
 9. Go into the just created directory and open a cmd and execute `npm install`
 10. Create the following directories within the root: `temp`,`audio`,`config`
-11. Create 2 files within the config directory: `config.json` and `keys.json`. An Example can be found down below.
+11. Create 2 files within the config directory: `main.json` and `keys.json`. An Example can be found down below.
 
 ## Example main.json
 ```json
