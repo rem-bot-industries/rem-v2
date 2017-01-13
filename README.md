@@ -21,9 +21,9 @@
 8. Clone the source of v2 from git
 9. Go into the just created directory and open a cmd and execute `npm install`
 10. Create the following directories within the root: `temp`,`audio`,`config`
-11. Create 2 files within the config directory: `config.json` and `keys.json`. An Example can be found down below.
+11. Create 2 files within the config directory: `main.json` and `keys.json`. An Example can be found down below.
 
-## Example config.json
+## Example main.json
 ```json
 {
   "owner":"The owner name",
@@ -36,6 +36,7 @@
   "osu_token":"The token for the osu api",
   "osu_path":"./audio",
   "osu_username":"The username that should be used when downloading osu songs",
+  "osu_password":"the password of the osu account",
   "no_error_tracking":true,
   "shards":1,
   "lbsearch_sfw_key":"the key to use for the ibsear.ch lookup",
