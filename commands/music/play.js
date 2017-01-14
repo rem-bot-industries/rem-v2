@@ -43,6 +43,9 @@ class Play extends Command {
         }).catch(err => {
             console.error(err);
             if (track_error) {
+                if (typeof(err) === 'object') {
+                    err = err.err;
+                }
                 this.r.captureException(err, {
                     extra: {
                         userId: msg.author.id,

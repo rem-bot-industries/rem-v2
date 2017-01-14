@@ -48,11 +48,11 @@ if (cluster.isMaster) {
     /**
      * If a shard requests data
      */
-    hub.on('request_data', (sid, evId) => {
+    hub.on('request_data', (event) => {
         /**
          * send a request_data_master event to all shards
          */
-        hub.emitRemote('request_data_master', evId);
+        hub.emitRemote('request_data_master', event);
         let shardData = {};
         let responses = 0;
         /**
@@ -64,12 +64,12 @@ if (cluster.isMaster) {
         /**
          * Called once a shard received the request and submitted data
          */
-        hub.on(`resolve_data_master_${evId}`, (data) => {
+        hub.on(`resolve_data_master_${event.id}`, (data) => {
             shardData[data.sid] = data;
             responses++;
             if (responses === config.shards) {
                 clearTimeout(time);
-                hub.removeListener(`resolve_data_master_${evId}`);
+                hub.removeListener(`resolve_data_master_${event.id}`);
                 returnData(shardData);
             }
         });
@@ -78,7 +78,7 @@ if (cluster.isMaster) {
          * @param data
          */
         function returnData(data) {
-            hub.emitRemote(`resolved_data_${evId}`, data);
+            hub.emitRemote(`resolved_data_${event.id}`, data);
         }
     });
 
