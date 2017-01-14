@@ -31,11 +31,11 @@ class AddPlaylistToQueue extends Command {
         }).catch(err => {
             if (track_error) {
                 this.r.captureException(err, {
-                    msgId: msg.id,
                     extra: {
                         userId: msg.author.id,
                         guildId: msg.guild.id,
-                        msg: msg.content
+                        msg: msg.content,
+                        msgId: msg.id
                     }
                 });
             }
