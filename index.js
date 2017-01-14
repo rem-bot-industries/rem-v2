@@ -39,6 +39,12 @@ if (cluster.isMaster) {
     hub.on('_user_update', (sid, users) => {
         shards[sid].users = users;
     });
+    hub.on('shard_restart_request', (data) => {
+        let Shard = findWorkerByShardId(data.sid, workers);
+        if (Shard) {
+            Shard.worker.kill('SIGINT');
+        }
+    });
     /**
      * If a shard requests data
      */
@@ -142,6 +148,14 @@ if (cluster.isMaster) {
     let client = new Shard(process.env.id, process.env.count, hub);
     winston.info(`Worker started ${process.env.id}/${process.env.count}`);
 
+}
+function findWorkerByShardId(id, workers) {
+    for (let i = 0; i < workers.length; i++) {
+        if (workers[i].shard_id === id) {
+            return workers[i];
+        }
+    }
+    return null;
 }
 process.on('unhandledRejection', (reason, promise) => {
     if (typeof reason === 'undefined') return;

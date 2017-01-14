@@ -14,6 +14,7 @@ class AddToQueue extends Command {
      * Create the command
      * @param {Function} t - the translation module
      * @param {Object} v - the voice manager
+     * @param mod
      */
     constructor({t, v, mod}) {
         super();
@@ -40,12 +41,14 @@ class AddToQueue extends Command {
         }).catch(err => {
             console.error(err);
             if (track_error) {
-                // this.r.captureException(JSON.stringify(err), {
-                //     msgId: msg.id,
-                //     userId: msg.author.id,
-                //     guildId: msg.guild.id,
-                //     msg: msg.content
-                // });
+                this.r.captureException(err, {
+                    msgId: msg.id,
+                    extra: {
+                        userId: msg.author.id,
+                        guildId: msg.guild.id,
+                        msg: msg.content
+                    }
+                });
             }
             msg.channel.createMessage(this.t('generic.error', {lngs: msg.lang}));
         });
