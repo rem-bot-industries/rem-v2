@@ -30,13 +30,14 @@ class AddPlaylistToQueue extends Command {
             msg.channel.createMessage(`Added Playlist \`${Playlist.title}\` from the channel \`${Playlist.author}\` with \`${Playlist.songs.length}\` songs to the queue!`)
         }).catch(err => {
             if (track_error) {
-                // this.r.captureException(err, {
-                //     msgId: msg.id,
-                //     userId: msg.author.id,
-                //     guildId: msg.guild.id,
-                //     msg: msg.content,
-                //     playlistId: msg
-                // });
+                this.r.captureException(err, {
+                    msgId: msg.id,
+                    extra: {
+                        userId: msg.author.id,
+                        guildId: msg.guild.id,
+                        msg: msg.content
+                    }
+                });
             }
             console.error(err);
             msg.channel.createMessage(this.t('generic.error', {lngs: msg.lang}));

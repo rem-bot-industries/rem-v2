@@ -29,11 +29,16 @@ class Help extends Command {
         if (msgSplit.length > 0) {
             return this.exactHelp(msg, msgSplit, categoriesData);
         }
+        categoriesData.categories_name.push({name: `Support`, value: `https://discord.gg/vX96Zz8`});
         categoriesData.categories_name.push({name: `Donate`, value: `https://www.patreon.com/rem_bot`});
+        categoriesData.categories_name.push({
+            name: `How to`,
+            value: `"Type !w.help name to get the commands of a category. Example: \`!w.help music\` gives you the help for the music commands.`
+        });
         let reply = {
             embed: {
                 author: {name: "Command categories"},
-                footer: {text: "Type !w.help number to get the commands of a category"},
+                footer: {text: "Type !w.help name to get the commands of a category."},
                 fields: categoriesData.categories_name,
                 color: 0x00ADFF
             }
@@ -42,7 +47,7 @@ class Help extends Command {
             msg.author.getDMChannel().then(channel => {
                 this.catReply(channel, reply);
             }).catch(e => {
-                this.r.captureException(e, {userid: msg.author.id, reply});
+                this.r.captureException(e, {extra: {userid: msg.author.id, reply}});
                 winston.error(e)
             });
         } else {
@@ -54,7 +59,7 @@ class Help extends Command {
         channel.createMessage(reply).then(msg => {
 
         }).catch(err => {
-            this.r.captureException(err, {channel: channel.id, reply});
+            this.r.captureException(err, {extra: {channel: channel.id, reply}});
             winston.error(err);
         });
     }
@@ -127,6 +132,10 @@ class Help extends Command {
                 })}`
             });
         }
+        fields.push({
+            name: `Support`,
+            value: `https://discord.gg/vX96Zz8`
+        });
         fields.push({
             name: `Donate`,
             value: `https://www.patreon.com/rem_bot`
