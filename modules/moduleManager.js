@@ -25,13 +25,14 @@ class ModuleManager {
                 // winston.info(files);
                 for (let file of files) {
                     try {
+
                         let mod = require(file);
                         that.loadRawMod(mod);
                     } catch (e) {
                         console.error(`Error while requiring mod ${file}`);
                         console.error(e);
                         console.error(e.stack);
-                        return winston.error(e);
+                        reject(e);
                     }
                 }
                 async.eachSeries(that.rawMods, (mod, cb) => {

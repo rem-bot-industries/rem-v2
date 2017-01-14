@@ -19,7 +19,8 @@ let userSchema = mongoose.Schema({
     credits: {type: Number, default: 0},
     rep: {type: Number, default: 0},
     creditCooldown: {type: Date, default: new Date(0)},
-    reps: []
+    reps: [],
+    accesslevel: {type: Number, default: 0}
 
 });
 // userSchema.methods.updateXP = function updateXP(id,xp,cb) {

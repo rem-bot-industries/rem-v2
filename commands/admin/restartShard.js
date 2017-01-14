@@ -16,7 +16,7 @@ class RestartShard extends Command {
 
     run(msg) {
         if (msg.author.id === adminId) {
-            let id = msg.content.split(' ').splice(1);
+            let id = msg.content.split(' ').splice(1)[0];
             if (id) {
                 let shardId = 0;
                 try {

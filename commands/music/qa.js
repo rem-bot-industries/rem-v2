@@ -41,12 +41,15 @@ class AddToQueue extends Command {
         }).catch(err => {
             console.error(err);
             if (track_error) {
+                if (typeof(err) === 'object') {
+                    err = err.err;
+                }
                 this.r.captureException(err, {
-                    msgId: msg.id,
                     extra: {
                         userId: msg.author.id,
                         guildId: msg.guild.id,
-                        msg: msg.content
+                        msg: msg.content,
+                        msgId: msg.id
                     }
                 });
             }

@@ -22,6 +22,7 @@ let stat = config.beta ? 'rem-beta' : 'rem-live';
 let blocked = require('blocked');
 let version = require('./package.json').version;
 let Raven = require('raven');
+let CircularJSON = require('circular-json');
 if (!config.no_error_tracking) {
     Raven.config(config.sentry_token, {
         release: version,
@@ -150,13 +151,8 @@ class Shard extends EventEmitter {
             this.HUB.on('_cache_update', (data) => {
                 this.updateLocalCache(data);
             });
-            this.HUB.on('request_data_master', (evId) => {
-                this.HUB.emitRemote(`resolve_data_master_${evId}`, {
-                    sid: this.id,
-                    users: this.bot.guilds.map(g => g.memberCount).reduce((a, b) => a + b),
-                    guilds: this.bot.guilds.size,
-                    channels: this.bot.guilds.map(g => g.channels.size).reduce((a, b) => a + b)
-                });
+            this.HUB.on('request_data_master', (event) => {
+                this.hubAction(event);
             });
             winston.info('commands are ready!');
             this.sendStats();
@@ -284,6 +280,72 @@ class Shard extends EventEmitter {
         this.HUB.emitRemote('_cache_update', {shard: this.id, type, data});
     }
 
+    hubAction(event) {
+        switch (event.action) {
+            case "bot_info": {
+                let data = {
+                    users: this.bot.guilds.map(g => g.memberCount).reduce((a, b) => a + b),
+                    guilds: this.bot.guilds.size,
+                    channels: this.bot.guilds.map(g => g.channels.size).reduce((a, b) => a + b)
+                };
+                this.resolveAction(event, data);
+                return;
+            }
+            case "user_info_id": {
+                let user = this.bot.users.find(u => u.id === event.user_id);
+                if (user) {
+                    user.found = true;
+                    this.resolveAction(event, user);
+                } else {
+                    this.resolveAction(event, {found: false})
+                }
+                return;
+            }
+            case "guild_info_id": {
+                let guild = this.bot.guilds.find(g => g.id === event.guild_id);
+                if (guild) {
+                    guild.found = true;
+                    this.resolveAction(event, this.simplifyGuildData(guild));
+                } else {
+                    this.resolveAction(event, {found: false})
+                }
+                return;
+            }
+            case "shard_info": {
+                this.resolveAction(event, {uwu: "uwu"});
+                return;
+            }
+        }
+    }
+
+    simplifyGuildData(guild) {
+        let owner = guild.members.find(m => m.id === guild.ownerID).user;
+        return {
+            id: guild.id,
+            name: guild.name,
+            region: guild.region,
+            ownerID: guild.ownerID,
+            iconURL: guild.iconURL,
+            found: true,
+            memberCount: guild.memberCount,
+            sid: guild.shard.id,
+            joinedAt: guild.joinedAt,
+            createdAt: guild.createdAt,
+            owner: owner
+        };
+    }
+
+    resolveAction(event, data) {
+        try {
+            this.HUB.emitRemote(`resolve_data_master_${event.id}`, {
+                sid: this.id,
+                responseDate: Date.now(),
+                data: data
+            });
+        } catch (e) {
+            console.log(e);
+        }
+    }
 
 }
 module.exports = Shard;

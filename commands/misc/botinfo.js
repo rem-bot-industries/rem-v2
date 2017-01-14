@@ -31,7 +31,7 @@ class BotInfo extends Command {
     fetchData(msg) {
         let that = this;
         return new Promise(function (resolve, reject) {
-            that.hub.emitRemote('request_data', rem.options.firstShardID, msg.id);
+            that.hub.emitRemote('request_data', {sid: rem.options.firstShardID, id: msg.id, action: 'bot_info'});
             that.hub.on(`resolved_data_${msg.id}`, (data) => {
                 if (data.err) reject(data.err);
                 resolve(data);
@@ -41,13 +41,11 @@ class BotInfo extends Command {
     }
 
     buildReply(msg, user, data) {
-        let avatar = user.avatar ? (user.avatar.startsWith('a_') ? `​https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.gif` : user.avatarURL) : user.defaultAvatarURL;
-        avatar = avatar.replace(/[^a-zA-Z0-9_\-./:]/, "");
         let reply = {
             embed: {
                 author: {
                     name: `${user.username}`,
-                    icon_url: avatar
+                    icon_url: user.avatarURL
                 },
                 fields: this.buildBotInfo(msg, data),
                 color: 0x00ADFF
@@ -67,9 +65,9 @@ class BotInfo extends Command {
         let shard_guilds = rem.guilds.size;
         let shard_channels = rem.guilds.map(g => g.channels.size).reduce((a, b) => a + b);
         _.forIn(data, (value, key) => {
-            guilds += value.guilds;
-            users += value.users;
-            channels += value.channels;
+            guilds += value.data.guilds;
+            users += value.data.users;
+            channels += value.data.channels;
         });
         fields.push({
             name: this.t('bot-info.uptime', {lngs: msg.lang}),

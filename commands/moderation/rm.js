@@ -137,7 +137,7 @@ class RemoveMessages extends Command {
         rem.getMessages(msg.channel.id, limit, msg.id).then(msgs => {
             cb(null, msgs);
         }).catch(err => {
-            winston.error(err);
+            console.error(err);
             cb('rm.error');
         });
     }
@@ -146,7 +146,7 @@ class RemoveMessages extends Command {
         rem.deleteMessages(this.msg.channel.id, msgs).then(() => {
             cb();
         }).catch(err => {
-            winston.error(err);
+            console.error(err);
             cb('rm.error');
         });
     }

@@ -30,12 +30,15 @@ class AddPlaylistToQueue extends Command {
             msg.channel.createMessage(`Added Playlist \`${Playlist.title}\` from the channel \`${Playlist.author}\` with \`${Playlist.songs.length}\` songs to the queue!`)
         }).catch(err => {
             if (track_error) {
+                if (typeof(err) === 'object') {
+                    err = err.err;
+                }
                 this.r.captureException(err, {
-                    msgId: msg.id,
                     extra: {
                         userId: msg.author.id,
                         guildId: msg.guild.id,
-                        msg: msg.content
+                        msg: msg.content,
+                        msgId: msg.id
                     }
                 });
             }
