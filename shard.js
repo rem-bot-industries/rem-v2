@@ -228,7 +228,7 @@ class Shard extends EventEmitter {
     }
 
     debug(info) {
-        console.debug(info);
+        console.log(info);
     }
 
     warn(info) {
