@@ -72,9 +72,10 @@ class SongImporter extends EventEmitter {
                 winston.info('Switching Keys!');
                 km.nextKey();
                 opts.key = km.getKey();
-                return this.search(search);
-            }
-            if (results.length > 0) {
+                setTimeout(() => {
+                    this.search(search);
+                }, 50);
+            } else if (results.length > 0) {
                 this.emit('search-result', results);
             } else {
                 this.emit('error', 'generic.error');
