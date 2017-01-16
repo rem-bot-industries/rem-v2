@@ -38,7 +38,7 @@
         "search": "Cherche pour une chanson dans la base de données du Bot et affiche les 5 meilleurs résultats",
         "skip": "Commence un vote pour passer la chanson actuelle, plus de 50% du salon dois voter, après quoi elle est passée.",
         "voteskip": "Commence un vote pour passer la chanson actuelle, plus de 50% du salon dois voter, après quoi elle est passée.",
-        "qa": "Ajoute une Chanson/Vidéo Youtube ayant une longueur maximale de 1H30M",
+        "qa": "Ajoute à la file d'attente une chanson depuis YouTube/SoundCloud/Osu/une recherche",
         "qra": "retire soit toutes les chansons mise à part celle en cours d'écoute soit un certain nombre de chansons (requière le rôle WolkeBot)",
         "queue": "Affiche la file d'attente actuelle",
         "np": "Affiche la chanson actuellement jouée",
@@ -52,7 +52,7 @@
         "info": "te donnes quelques informations à propos du serveur actuel",
         "ban": "Bannit un utilisateur et supprime 7 jours de ses messages",
         "kick": "Exclut un utilisateur",
-        "rm": "supprime des messages, tu peux filtrer pour des bots, des utilisateurs, des commandes/réponses de Rem ou juste supprimer jusqu'à 100 messages",
+        "rm": "supprime des messages, tu peux filtrer pour des bots, des utilisateurs, des commandes/réponses de Rem ou juste supprimer jusqu'à 100 messages.\nFiltres: -b -> bots| -r -> messages de Rem| -u @utilisateurs -> messages d'un utilisateur spécifique| -c -> messages commençant par le préfixe de Rem",
         "noLevelServer": "Désactive le système de niveaux sur l'entièreté du serveur, réutilise cette commande pour le réactivé",
         "noPmServer": "Désactive les notifications par mp pour l'entièreté du serveur, réutilise cette commande pour les réactivé",
         "noChServer": "Désactive les notifications par mp pour l'entièreté du serveur et activer la notifications par salons à la place, réutilise cette commande pour réinversé",
@@ -110,7 +110,7 @@
         "about": "Te montre des informations basiques à propos de moi, comme la bibliothèque et qui est la personne qui m'a faite.",
         "lenny": "( ͡° ͜ʖ ͡°)",
         "lmg": "Laisse moi googler ça pour toi",
-        "fskip": "Passe la chanson actuelle",
+        "fskip": "Passe la chanson actuelle/un nombre de chansons/ toutes les chansons",
         "leave": "Je quitte le salon vocal auquel je suis actuellement connecté.",
         "say": "Faite que Rem dit quelque chose",
         "ar": "Ajoute un rôle à toi-même ou à un utilisateur",
@@ -125,17 +125,20 @@
         "coin": "joue à pile ou face pour toi",
         "nyan": "Nya :3",
         "uwu": "uwu",
-        "dere": "cherche pour une définition de \"dere\" ou obtiens en une aléatoirement",
+        "dere": "Recherche pour une définition de \"dere\" ou obtiens en une aléatoirement",
         "love": "Donne à l'utilisateur mentionné un point d'amour, ajoute \"-\" pour réduire les points d'amour de l'utilisateur de 1",
         "sinfo": "Te donne des informations à propos du serveur actuel",
         "uinfo": "Te donne des informations à propos de toi/de l'utilisateur mentionné",
-        "apq": "",
-        "ap": "",
-        "gp": "",
-        "rp": "",
-        "cry": "",
-        "ibsafe": "",
-        "iblewd": ""
+        "apq": "Ajoute une playlist à la file d'attente, ne supporte uniquement les playlists YouTube et ne requiert que l'id. Pas le lien.",
+        "ap": "La commande d'ajout de permission, une explication détaillée peut être trouvée sur le Discord du support (!w.bug pour recevoir l'invitation)",
+        "gp": "La commande d'obtention de permission, une explication détaillée peut être trouvée sur le Discord du support (!w.bug pour recevoir l'invitation)",
+        "rp": "La commande de suppression de permission, une explication détaillée peut être trouvée sur le Discord du support (!w.bug pour recevoir l'invitation)",
+        "cry": "Tu te sens triste ? C'est exactement la commande qu'il te faut.",
+        "ibsafe": "Recherche sur ibsear.ch (uniquement des images sfw)",
+        "iblewd": "Recherche sur ibsearch.xxx (même chose que ibsafe mais avec également des images nsfw)",
+        "qr": "Tu peux supprimer une seule chanson avec l'id de la chanson, ou plusieurs avec `qr 'id initiale'-'id finale', cela va retirer toutes les chansons commençant à l''id initiale' et finissant à l''id finale', ou supprimer de multiples id en les séparant par une virgule.",
+        "shuffle": "Mélange la file d'attente. A noter qu'il faut au moins 3 chansons dans la file d'attente pour que la commande fonctionne.",
+        "owo": "T'envoie au hasard un même \"OwO Qu'est-ce que c'est', qui sont spécialement choisis par Wolke"
     },
     "version": "Actuellement je suis en version {{version}}",
     "add": "Utilise ce lien pour m'ajouter à ton serveur: {{- link}}",
@@ -205,9 +208,11 @@
     },
     "qra": {
         "to-small": "Tu ne pas supprimer {{numbers}} chansons!",
-        "success": "Les chansons suivantes ont été supprimé:\n{{- table}}",
+        "success": "`{{number}}` chansons supprimées",
         "too-big": "{{number}} chansons supprimées",
-        "one-song": "Utilise{{- prefix}}fskip pour passer la chanson actuelle!"
+        "one-song": "Utilise{{- prefix}}fskip pour passer la chanson actuelle!",
+        "no-number": "Tu n'as pas précisé le nombre de chansons je devais retirer de la file d'attente !",
+        "removed": "`{{- title}}` retirée(s) de la file d'attente."
     },
     "cookie": {
         "give": "a donné **1** cookie à l'utilisateur **{{- user}}**",
@@ -278,7 +283,9 @@
         "shard": "shard",
         "guilds-s": "Guildes sur cette instance (shard)",
         "channels-s": "Salons sur cette instance (shard)",
-        "users-s": "Utilisateurs sur cette instance (shard)"
+        "users-s": "Utilisateurs sur cette instance (shard)",
+        "made": "Fait par:",
+        "lib": "Bibliothèque"
     },
     "rank": "Tu peux trouver le classement de ce serveur ici: {{- link}}",
     "pp": {
@@ -327,7 +334,9 @@
     },
     "skip": {
         "success": ":track_next: La chanson {{- title}} est ignorée",
-        "stop": ":stop_button: Chanson actuelle arrêtée"
+        "stop": ":stop_button: Chanson actuelle arrêtée",
+        "all": ":stop_button: Toutes les chansons sont ignorées.",
+        "some": ":track_next: {{- amount}} chanson(s) ignorée(s)"
     },
     "vskip": {
         "user-no-voice": "Tu ne peux pas voter pour passer, si tu n'es pas dans le même salon vocal!",
@@ -434,5 +443,9 @@
         "undere": "Le type Undere (ウンデレ) réfère au personnage qui dit \"oui\" à à peu près tout pour la personne qu'il aime.\nIls sont d'accord autant que possible pour être le plus proche qu'ils peuvent de la personne qu'ils aime.\nCe mot est une abréviation de Un (ウン) qui est un moyen rapide pour les japonais de dire Oui et Deredere (デレデレ) qui veut dire follement amoureux.",
         "yandere": "Le type Yandere (ヤンデレ) réfère au personnage qui commence gentil et tendre mais qui devient parfois sombre et obsédé pour la personne qu'il aime.\nIls deviennent des stalkers et utilisent la violence sur, et arrive parfois à tuer, toute personne s'approchant trop près de son/sa bien aimé(e) — même s'ils sont trop timides pour simplement parler avec la personne pour qui ils ont le béguin.\nLe mot est une abréviation de Yanderu (やんでる) qui veut dire mentalement ou émotionnellement malade et Deredere (デレデレ) qui veut dire follement amoureux.",
         "yangire": "Le type Yangire (ヤンギレ) est dans un certain sens similaire à Yandere.\nC'est un personnage qui peut commencer en étant sympas et tendre mais devient très agressif  et psychotique.\nCependant, contrairement aux Yandere, les Yangire ne deviennent pas violent dû à leur attraction au personnage.\nAu lieu, ils peuvent partir simplement parce que ils sont irrités avec un personnage qui n'a rien à faire avec son/sa bien aimé(e).\nCe mot est une abréviation de Yanderu (やんでる) qui veut dire mentalement ou émotionnellement malade et Kire (きれ) qui veut dire couper ou basculer."
+    },
+    "shuffle": {
+        "not-enough-shuffle": "Il doit avoir au moins 3 chansons dans la file d'attente.",
+        "success": "Mélange la file d'attente !"
     }
 }
