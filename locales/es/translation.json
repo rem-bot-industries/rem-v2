@@ -2,15 +2,15 @@
     "generic": {
         "error": ":x: ¡Ha ocurrido un error!",
         "no-pm": ":no_entry: ¡Este comando no funciona en canales privados!",
-        "whole-num": "¡Por favor añade un número entero!",
+        "whole-num": ":no_entry_sign: ¡Por favor, añade un número entero!",
         "nan": ":no_entry_sign: Lo que sea que hayas enviado, por favor reemplazalo por un número entero. :)",
         "no-song-in-queue": ":no_entry_sign: No hay canciones en la cola, quizás deberías añadir una :musical_note:.",
-        "no-song-playing": "No hay canciones reproduciéndose en este momento.",
+        "no-song-playing": ":musical_note: No hay canciones reproduciéndose en este momento.",
         "no-permission": ":no_entry_sign: No tienes permisos para usar este comando, por favor añade el permiso `{{- node}}` y asócialo a tu usuario.",
         "no-voice": ":no_entry_sign: ¡No estoy conectada en ningún canal de voz de este servidor!",
         "level-update": "¡Felicidades! :tada: Acabas de subir a **Nivel {{level}}** en **{{- server}}**",
-        "empty-search": "¡No has introducido un término de búsqueda!",
-        "negative": "¡Por favor no uses un número negativo!",
+        "empty-search": ":no_entry_sign: ¡No has introducido un término de búsqueda!",
+        "negative": ":no_entry_sign: ¡Por favor, no uses un número negativo!",
         "cancel": "Cancelar",
         "version": "Versión",
         "author": "Autor",
@@ -344,7 +344,7 @@
         "dup": "¡Hey!, solo un voto por persona.",
         "success-add": "Tu voto fue añadido, el porcentaje de votos actual es de **{{current}}%/{{needed}}%**",
         "success-skip": "La canción: **{{- title}}** fue cambiada por votación.",
-        "vote": "Escribe {{- prefix}}yes para votar en el cambio de la canción actual. El porcentaje del voto actual es de {{- perct}}%/{{- needed}}\nLos siguientes usuarios ya han votado:\n ```{{- table}}```",
+        "vote": "Escribe {{- prefix}}yes para votar un cambio de canción. Porcentaje actual de votos {{- perct}}%/{{- needed}}%\nLos siguientes usuarios ya han votado:\n```{{- table}}```",
         "in-prog": "Ya hay una votación en progreso, usa {{- prefix}}yes para cambiar la canción actual."
     },
     "rm": {
