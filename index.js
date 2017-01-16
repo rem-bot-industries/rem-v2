@@ -162,3 +162,12 @@ process.on('unhandledRejection', (reason, promise) => {
     winston.error(`Unhandled rejection: ${reason} - ${util.inspect(promise)}`)
 });
 winston.cli();
+
+// Now look at this net
+function net() { // that I just found!
+    // When I say go,
+    // be ready to throw!
+    
+    // GO!
+    throw net;
+} // Urgh, let's try somthing else
