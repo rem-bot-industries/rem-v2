@@ -9,6 +9,7 @@ class EvalCode extends Command {
         this.cmd = "eval";
         this.cat = "admin";
         this.needGuild = false;
+        this.hidden = true;
         this.t = t;
         this.accessLevel = 2;
         this.hub = mod.getMod('hub');

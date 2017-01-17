@@ -10,7 +10,7 @@ class StatisticManager extends Manager {
     }
 
     logCmdStat(msg, cmd, allowed, reason) {
-        let id = msg.guild ? msg.guild.id : undefined;
+        let id = msg.channel.guild ? msg.channel.guild.id : undefined;
         let stat = new statModel({
             id: msg.id,
             userId: msg.author.id,

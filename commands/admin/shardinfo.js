@@ -5,13 +5,13 @@ let Command = require('../../structures/command');
 let moment = require('moment');
 let winston = require('winston');
 let _ = require("lodash");
-let adminId = require('../../config/main.json').owner_id;
 class GuildFinder extends Command {
     constructor({t, mod}) {
         super();
         this.cmd = "shardinfo";
         this.cat = "admin";
         this.needGuild = false;
+        this.hidden = true;
         this.t = t;
         this.accessLevel = 2;
         this.hub = mod.getMod('hub');

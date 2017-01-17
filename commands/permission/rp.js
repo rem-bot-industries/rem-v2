@@ -92,7 +92,7 @@ class GetPermission extends Command {
             }
             if (number > 0 && number - 1 < added.length) {
                 let perm = added[number - 1];
-                this.p.removePermission(msg.guild.id, perm, (err) => {
+                this.p.removePermission(msg.channel.guild.id, perm, (err) => {
                     if (err) return msg.channel.createMessage(this.t(err, {lngs: msg.lang}));
                     msg.channel.createMessage(this.t('rp.success', {
                         lngs: msg.lang,

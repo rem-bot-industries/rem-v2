@@ -20,7 +20,7 @@ class Help extends Command {
         let msgSplit = msg.content.split(' ').splice(1);
         let categoriesData = this.buildHelp(msg);
         this.msg = msg;
-        if (msg.guild) {
+        if (msg.channel.guild) {
             msg.channel.createMessage(`${msg.author.mention}, ${this.t('help.helpReply', {
                 lngs: msg.lang,
                 pre: msg.prefix

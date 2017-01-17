@@ -100,7 +100,7 @@ class MessageManager extends Manager {
                                 }
                                 console.log(cmd);
                                 if (command.needGuild) {
-                                    if (msg.guild) {
+                                    if (msg.channel.guild) {
                                         this.s.logCmdStat(msg, cmd, true);
                                         command.run(msg);
                                     } else {
@@ -120,7 +120,7 @@ class MessageManager extends Manager {
                         winston.error(err.stack);
                     }
                 } else {
-                    if (msg.guild && (msg.content.startsWith(rem.user.mention) || msg.content.startsWith(`<@!${rem.user.id}>`))) {
+                    if (msg.channel.guild && (msg.content.startsWith(rem.user.mention) || msg.content.startsWith(`<@!${rem.user.id}>`))) {
                         dogstatsd.increment(`${stat}.commands`);
                         if (msg.content === `${rem.user.mention} prefix` || msg.content === `<@!${rem.user.id}> prefix`) {
                             return msg.channel.createMessage(`\`${msg.db.prefix}\``);
@@ -137,7 +137,7 @@ class MessageManager extends Manager {
                             this.s.logCmdStat(msg, 'cleverbot', true);
                             this.c.talk(msg);
                         });
-                    } else if (msg.guild) {
+                    } else if (msg.channel.guild) {
                         // this.r.filterReaction(msg);
                         // this.u.increaseExperience(msg).then(() => {
                         //
@@ -163,8 +163,8 @@ class MessageManager extends Manager {
     }
 
     loadGuild(msg, cb) {
-        if (msg.guild) {
-            this.g.loadGuild(msg.guild.id, (err, Guild) => {
+        if (msg.channel.guild) {
+            this.g.loadGuild(msg.channel.guild.id, (err, Guild) => {
                 if (err) return cb(err);
                 if (typeof (Guild) === 'undefined') {
                     Guild = {};

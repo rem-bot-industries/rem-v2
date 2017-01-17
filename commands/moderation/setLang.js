@@ -18,7 +18,7 @@ class SetLanguage extends Command {
         let msgSplit = msg.content.split(' ');
         if (typeof (msgSplit[1]) !== 'undefined') {
             if (this.checkLang(msgSplit[1], msg.lngs)) {
-                this.g.changeLanguage(msg.guild.id, msgSplit[1], (err) => {
+                this.g.changeLanguage(msg.channel.guild.id, msgSplit[1], (err) => {
                     if (err) return msg.channel.createMessage(this.t('generic.error', {lngs: msg.lang}));
                     msg.channel.createMessage(this.t('set-lang.success', {lng: msgSplit[1], language: msgSplit[1]}));
                 });

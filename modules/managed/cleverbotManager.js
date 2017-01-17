@@ -23,13 +23,13 @@ class CleverBotManager extends Manager {
 
     talk(msg) {
         if (this.ready) {
-            if (this.cleverbots[msg.guild.id]) {
-                this.cleverbots[msg.guild.id].talk(msg, (reply) => {
+            if (this.cleverbots[msg.channel.guild.id]) {
+                this.cleverbots[msg.channel.guild.id].talk(msg, (reply) => {
                     msg.channel.createMessage(':pencil: ' + reply);
                 });
             } else {
-                this.cleverbots[msg.guild.id] = new CleverBot();
-                this.cleverbots[msg.guild.id].talk(msg, (reply) => {
+                this.cleverbots[msg.channel.guild.id] = new CleverBot();
+                this.cleverbots[msg.channel.guild.id].talk(msg, (reply) => {
                     msg.channel.createMessage(':pencil: ' + reply);
                 });
             }

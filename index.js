@@ -15,8 +15,7 @@ let async = require('async');
  * Check if the Cluster process is master
  */
 if (cluster.isMaster) {
-    let tracker = new StatTrack(60);
-    let resp = [];
+    const tracker = new StatTrack(60);
     let workers = [];
     let shards = {};
     winston.remove(winston.transports.Console);

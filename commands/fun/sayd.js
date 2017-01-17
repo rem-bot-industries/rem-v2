@@ -33,7 +33,7 @@ class SayDelete extends Command {
             channelId: msg.channel.id,
             content: msg.trueContent,
             time: Date.now(),
-            guildId: msg.guild.id,
+            guildId: msg.channel.guild.id,
             name: msg.author.username + '#' + msg.author.discriminator
         });
         message.save((err) => {

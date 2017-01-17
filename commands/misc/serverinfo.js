@@ -20,13 +20,13 @@ class ServerInfo extends Command {
     }
 
     buildReply(msg) {
-        let avatar = msg.guild.iconURL;
-        this.g.loadGuild(msg.guild.id, (err, dbGuild) => {
+        let avatar = msg.channel.guild.iconURL;
+        this.g.loadGuild(msg.channel.guild.id, (err, dbGuild) => {
             if (err) return winston.error(err);
             let reply = {
                 embed: {
                     author: {
-                        name: msg.guild.name,
+                        name: msg.channel.guild.name,
                         icon_url: avatar
                     },
                     fields: this.buildGuildInfo(msg, dbGuild),
@@ -40,9 +40,9 @@ class ServerInfo extends Command {
 
     buildGuildInfo(msg, dbGuild) {
         let fields = [];
-        let guild = msg.guild;
+        let guild = msg.channel.guild;
         let voice = guild.channels.filter(c => c.type === 2);
-        let owner = msg.guild.members.find(m => m.id === guild.ownerID);
+        let owner = msg.channel.guild.members.find(m => m.id === guild.ownerID);
         fields.push({name: this.t('server-info.id', {lngs: msg.lang}), value: guild.id, inline: true});
         fields.push({name: this.t('server-info.name', {lngs: msg.lang}), value: guild.name, inline: true});
         fields.push({

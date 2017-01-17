@@ -36,14 +36,14 @@ class AddPermission extends Command {
 
     addPermission(msg, perm) {
         // console.log(perm);
-        this.p.addPermission(msg.guild.id, perm, (err) => {
+        this.p.addPermission(msg.channel.guild.id, perm, (err) => {
             if (err) return msg.channel.createMessage(this.t('generic.error', {lngs: msg.lang}));
             msg.channel.createMessage(`Ok, the ${perm.type} now has the permission \`${perm.cat}.${perm.perm}\` set to ${perm.use}`);
         })
     }
 
     guild(msg, args) {
-        let perm = this.p.createPermission(args.node, "guild", msg.guild.id, args.allow);
+        let perm = this.p.createPermission(args.node, "guild", msg.channel.guild.id, args.allow);
         this.addPermission(msg, perm);
     }
 
@@ -59,7 +59,7 @@ class AddPermission extends Command {
             }
         } else {
             let regex = new RegExp(`${args.u}.*`, 'gi');
-            let users = msg.guild.members.filter(u => {
+            let users = msg.channel.guild.members.filter(u => {
                 return regex.test(u.user.username)
             });
             if (users.length > 1) {
@@ -93,7 +93,7 @@ class AddPermission extends Command {
             }
         } else {
             let regex = new RegExp(`${args.r}.*`, 'gi');
-            let roles = msg.guild.roles.filter(r => regex.test(r.name));
+            let roles = msg.channel.guild.roles.filter(r => regex.test(r.name));
             if (roles.length > 1) {
                 let collector = new Selector(msg, roles, this.t, (err, number) => {
                     if (err) return msg.channel.createMessage(this.t(err, {lngs: msg.lang}));
@@ -125,7 +125,7 @@ class AddPermission extends Command {
             }
         } else {
             let regex = new RegExp(`${args.c}.*`, 'gi');
-            let channels = msg.guild.channels.filter(c => {
+            let channels = msg.channel.guild.channels.filter(c => {
                 return regex.test(c.name) && c.type === 0
             });
             if (channels.length > 1) {

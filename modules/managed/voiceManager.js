@@ -20,12 +20,12 @@ class VoiceManager extends Manager {
     }
 
     join(msg, cb) {
-        if (msg.guild) {
-            let conn = rem.voiceConnections.get(msg.guild.id);
+        if (msg.channel.guild) {
+            let conn = rem.voiceConnections.get(msg.channel.guild.id);
             if (!conn) {
                 if (msg.member.voiceState.channelID) {
                     rem.joinVoiceChannel(msg.member.voiceState.channelID).then((connection) => {
-                        if (typeof (this.players[msg.guild.id]) === 'undefined') {
+                        if (typeof (this.players[msg.channel.guild.id]) === 'undefined') {
                             this.createPlayer(msg, connection, ytdl).then(player => {
                                 cb(null, connection);
                             }).catch(err => cb(err));
@@ -45,12 +45,12 @@ class VoiceManager extends Manager {
     }
 
     leave(msg, cb) {
-        if (msg.guild) {
-            let conn = rem.voiceConnections.get(msg.guild.id);
+        if (msg.channel.guild) {
+            let conn = rem.voiceConnections.get(msg.channel.guild.id);
             if (conn) {
-                this.players[msg.guild.id].setQueueSongs([]);
-                this.players[msg.guild.id].endSong();
-                rem.voiceConnections.leave(msg.guild.id);
+                this.players[msg.channel.guild.id].setQueueSongs([]);
+                this.players[msg.channel.guild.id].endSong();
+                rem.voiceConnections.leave(msg.channel.guild.id);
                 cb();
             } else {
                 cb('generic.no-voice');
@@ -60,7 +60,7 @@ class VoiceManager extends Manager {
 
     pause(msg) {
         try {
-            this.players[msg.guild.id].pause();
+            this.players[msg.channel.guild.id].pause();
             this.emit(`${msg.id}_success`);
         } catch (e) {
             this.emit(`${msg.id}_error`);
@@ -70,12 +70,12 @@ class VoiceManager extends Manager {
     shuffle(msg) {
         let vm = this;
         return new Promise(function (resolve, reject) {
-            let conn = rem.voiceConnections.get(msg.guild.id);
+            let conn = rem.voiceConnections.get(msg.channel.guild.id);
             if (!conn) {
                 reject({err: 'Rem is not connected to a voice channel.', t: 'generic.no-voice'});
             }
-            if (vm.players[msg.guild.id]) {
-                let queue = vm.players[msg.guild.id].getQueue();
+            if (vm.players[msg.channel.guild.id]) {
+                let queue = vm.players[msg.channel.guild.id].getQueue();
                 if (queue.songs.length < 3) {
                     reject({
                         err: 'There are not enough songs in the queue to shuffle it.',
@@ -85,7 +85,7 @@ class VoiceManager extends Manager {
                 let currentSong = queue.songs.shift();
                 let shuffledQueue = shuffle(queue.songs.splice(0));
                 shuffledQueue.unshift(currentSong);
-                vm.players[msg.guild.id].setQueueSongs(shuffledQueue);
+                vm.players[msg.channel.guild.id].setQueueSongs(shuffledQueue);
                 resolve({t: 'shuffle.success'});
             } else {
                 reject({err: 'There is no player object atm.', t: 'generic.no-voice'});
@@ -96,7 +96,7 @@ class VoiceManager extends Manager {
 
     resume(msg) {
         try {
-            this.players[msg.guild.id].resume();
+            this.players[msg.channel.guild.id].resume();
             this.emit(`${msg.id}_success`);
         } catch (e) {
             this.emit(`${msg.id}_error`);
@@ -116,9 +116,9 @@ class VoiceManager extends Manager {
                         if (err) {
                             reject({type: 'error', event: `${msg.id}_error`, err: err});
                         } else {
-                            that.players[msg.guild.id].addToQueue(playlist.songs[0]);
+                            that.players[msg.channel.guild.id].addToQueue(playlist.songs[0]);
                             for (let i = 1; i < playlist.songs.length; i++) {
-                                that.players[msg.guild.id].pushQueue(playlist.songs[i]);
+                                that.players[msg.channel.guild.id].pushQueue(playlist.songs[i]);
                             }
                             resolve({type: 'pl_added', event: `${msg.id}_pl_added`, data: playlist});
                         }
@@ -148,14 +148,14 @@ class VoiceManager extends Manager {
                 importer.once('done', (Song) => {
                     importer.removeAllListeners();
                     that.emit(`${msg.id}_added`, Song);
-                    if (typeof (that.players[msg.guild.id]) !== 'undefined') {
-                        that.players[msg.guild.id].updateConnection(conn);
-                        that.players[msg.guild.id].addToQueue(Song, immediate);
+                    if (typeof (that.players[msg.channel.guild.id]) !== 'undefined') {
+                        that.players[msg.channel.guild.id].updateConnection(conn);
+                        that.players[msg.channel.guild.id].addToQueue(Song, immediate);
                         console.log('uwu');
                         resolve({type: 'added', event: `${msg.id}_added`, data: Song});
                     } else {
                         that.createPlayer(msg, conn, ytdl).then(player => {
-                            that.players[msg.guild.id].addToQueue(Song, immediate);
+                            that.players[msg.channel.guild.id].addToQueue(Song, immediate);
                             resolve({type: 'added', event: `${msg.id}_added`, data: Song});
                         }).catch(err => {
                             winston.error(err);
@@ -169,8 +169,8 @@ class VoiceManager extends Manager {
     }
 
     getQueue(msg) {
-        if (typeof (this.players[msg.guild.id]) !== 'undefined') {
-            let queue = this.players[msg.guild.id].getQueue();
+        if (typeof (this.players[msg.channel.guild.id]) !== 'undefined') {
+            let queue = this.players[msg.channel.guild.id].getQueue();
             if (queue.songs.length > 0) {
                 this.emit(`${msg.id}_queue`, queue);
             } else {
@@ -182,8 +182,8 @@ class VoiceManager extends Manager {
     }
 
     getCurrentSong(msg) {
-        if (typeof (this.players[msg.guild.id]) !== 'undefined') {
-            let queue = this.players[msg.guild.id].getQueue();
+        if (typeof (this.players[msg.channel.guild.id]) !== 'undefined') {
+            let queue = this.players[msg.channel.guild.id].getQueue();
             if (queue.songs.length > 0) {
                 this.emit(`${msg.id}_queue`, queue);
             } else {
@@ -197,15 +197,15 @@ class VoiceManager extends Manager {
     forceSkip(msg, howMany) {
         let vm = this;
         return new Promise(function (resolve, reject) {
-            if (typeof (vm.players[msg.guild.id]) !== 'undefined') {
-                vm.players[msg.guild.id].toggleRepeatSingle(true);
+            if (typeof (vm.players[msg.channel.guild.id]) !== 'undefined') {
+                vm.players[msg.channel.guild.id].toggleRepeatSingle(true);
                 if (howMany) {
-                    let queue = vm.players[msg.guild.id].getQueue(msg);
+                    let queue = vm.players[msg.channel.guild.id].getQueue(msg);
                         let current = queue.songs.shift();
                     if (howMany === 'all') {
                         queue.songs = [current];
-                        vm.players[msg.guild.id].setQueueSongs(queue.songs);
-                        vm.players[msg.guild.id].nextSong();
+                        vm.players[msg.channel.guild.id].setQueueSongs(queue.songs);
+                        vm.players[msg.channel.guild.id].nextSong();
                         resolve({t: 'skip.all'});
                     } else {
                         let songsToSkip = 0;
@@ -224,12 +224,12 @@ class VoiceManager extends Manager {
                             queue.songs.shift()
                         }
                         queue.songs.unshift(current);
-                        vm.players[msg.guild.id].setQueueSongs(queue.songs);
-                        let song = vm.players[msg.guild.id].nextSong();
+                        vm.players[msg.channel.guild.id].setQueueSongs(queue.songs);
+                        let song = vm.players[msg.channel.guild.id].nextSong();
                         resolve({t: 'skip.some', amount: songsToSkip});
                     }
                 } else {
-                    let song = vm.players[msg.guild.id].nextSong();
+                    let song = vm.players[msg.channel.guild.id].nextSong();
                     if (song) {
                         resolve({title: song.title, t: 'skip.success'});
                     }
@@ -244,14 +244,14 @@ class VoiceManager extends Manager {
     queueRemove(msg, args) {
         let vm = this;
         return new Promise(function (resolve, reject) {
-            if (typeof (vm.players[msg.guild.id]) !== 'undefined') {
-                vm.players[msg.guild.id].toggleRepeatSingle(true);
-                let queue = vm.players[msg.guild.id].getQueue(msg);
+            if (typeof (vm.players[msg.channel.guild.id]) !== 'undefined') {
+                vm.players[msg.channel.guild.id].toggleRepeatSingle(true);
+                let queue = vm.players[msg.channel.guild.id].getQueue(msg);
                 if (args === 'all') {
                     let current = queue.songs.shift();
                     let length = queue.songs.length;
                     queue.songs = [current];
-                    vm.players[msg.guild.id].setQueueSongs(queue.songs);
+                    vm.players[msg.channel.guild.id].setQueueSongs(queue.songs);
                     resolve({t: 'qra.success', number: length});
                 } else {
                     let range = args.split('-');
@@ -271,7 +271,7 @@ class VoiceManager extends Manager {
                             for (let i = counter - 1; i < secondCounter; i++) {
                                 queue.songs.splice(counter - 1, 1);
                             }
-                            vm.players[msg.guild.id].setQueueSongs(queue.songs);
+                            vm.players[msg.channel.guild.id].setQueueSongs(queue.songs);
                             resolve({t: 'qra.success', number: secondCounter - counter});
                         } else {
                             console.log(start);
@@ -318,7 +318,7 @@ class VoiceManager extends Manager {
                         if (songIndex > -1) {
                             queue.songs.splice(songIndex - 1, 1);
                         }
-                        vm.players[msg.guild.id].setQueueSongs(queue.songs);
+                        vm.players[msg.channel.guild.id].setQueueSongs(queue.songs);
                         resolve({t: 'qra.removed', title: songToSkip.title});
                     }
                 }
@@ -329,17 +329,17 @@ class VoiceManager extends Manager {
     }
 
     repeat(msg) {
-        if (typeof (this.players[msg.guild.id]) !== 'undefined') {
-            return this.players[msg.guild.id].toggleRepeatSingle();
+        if (typeof (this.players[msg.channel.guild.id]) !== 'undefined') {
+            return this.players[msg.channel.guild.id].toggleRepeatSingle();
         } else {
             return 'off';
         }
     }
 
     bind(msg, cb) {
-        if (typeof (this.players[msg.guild.id]) !== 'undefined') {
-            let res = this.players[msg.guild.id].bind(msg.channel.id);
-            this.players[msg.guild.id].on('announce', (song, channel) => {
+        if (typeof (this.players[msg.channel.guild.id]) !== 'undefined') {
+            let res = this.players[msg.channel.guild.id].bind(msg.channel.id);
+            this.players[msg.channel.guild.id].on('announce', (song, channel) => {
                 rem.createMessage(channel, `:arrow_forward: **${song.title}** \<${song.url}\>`)
             });
             cb(res);
@@ -350,19 +350,19 @@ class VoiceManager extends Manager {
 
     createPlayer(msg, conn, ytdl) {
         return new Promise((resolve, reject) => {
-            this.loadQueue(msg.guild.id, (err, queue) => {
+            this.loadQueue(msg.channel.guild.id, (err, queue) => {
                 if (err) {
                     winston.error(err);
                     reject(err);
                 } else {
-                    if (!this.players[msg.guild.id]) {
-                        this.players[msg.guild.id] = new Player(msg, conn, ytdl, queue);
-                        this.players[msg.guild.id].on('sync', (queue) => {
+                    if (!this.players[msg.channel.guild.id]) {
+                        this.players[msg.channel.guild.id] = new Player(msg, conn, ytdl, queue);
+                        this.players[msg.channel.guild.id].on('sync', (queue) => {
                             this.syncQueue(queue)
                         });
                     }
-                    this.players[msg.guild.id].updateConnection(conn);
-                    resolve(this.players[msg.guild.id]);
+                    this.players[msg.channel.guild.id].updateConnection(conn);
+                    resolve(this.players[msg.channel.guild.id]);
                 }
             });
 

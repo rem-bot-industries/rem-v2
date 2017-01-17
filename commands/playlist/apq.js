@@ -36,7 +36,7 @@ class AddPlaylistToQueue extends Command {
                 this.r.captureException(err, {
                     extra: {
                         userId: msg.author.id,
-                        guildId: msg.guild.id,
+                        guildId: msg.channel.guild.id,
                         msg: msg.content,
                         msgId: msg.id
                     }

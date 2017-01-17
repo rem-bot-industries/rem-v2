@@ -55,7 +55,7 @@ class GetPermission extends Command {
                         table.addRow(added + 1, Perms[i].id, user ? `${user.username}#${user.discriminator}` : 'deleted', Perms[i].type, Perms[i].cat, Perms[i].perm, Perms[i].use);
                         added += 1;
                     } else if (Perms[i].type === 'role') {
-                        let role = msg.guild.roles.find(r => r.id === Perms[i].id);
+                        let role = msg.channel.guild.roles.find(r => r.id === Perms[i].id);
                         table.addRow(added + 1, Perms[i].id, role ? role.name : 'deleted', Perms[i].type, Perms[i].cat, Perms[i].perm, Perms[i].use);
                         added += 1;
                     } else {

@@ -322,9 +322,6 @@
     "dl-start": ":hourglass: loading song!",
     "use-proxy": "Trying to download over the proxy, this could take a bit."
   },
-  "yts": {
-    "success": "Found the following song: {{- link}}"
-  },
   "skip": {
     "success": ":track_next: Skipped song {{- title}}",
     "stop": ":stop_button: Stopped current song",
@@ -404,9 +401,13 @@
   },
   "love": {
     "success": "You just gave **{{- target}}** **{{- rep}}** :heart: Love Point. Remaining uses **{{uses}}**.",
+    "success-remove": "You just removed **{{- rep}}**:heart: Love Point from **{{- target}}** Remaining uses **{{uses}}**.",
     "error-cd": "You can only give **2** :heart: Love Points per Day, next use {{- time}}.",
     "next": " Next use {{- time}}",
     "self": ":broken_heart: You can not give Love Points to yourself."
+  },
+  "reset-perms": {
+    "nothing-found": "You did not set any Permissions yet."
   },
   "dere": {
     "no-dere": "The dere type you searched for does not exist. Here is a list of possible deres:\n",

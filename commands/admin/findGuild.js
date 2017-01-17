@@ -11,6 +11,7 @@ class GuildFinder extends Command {
         super();
         this.cmd = "findGuild";
         this.cat = "admin";
+        this.hidden = true;
         this.needGuild = false;
         this.t = t;
         this.accessLevel = 2;
