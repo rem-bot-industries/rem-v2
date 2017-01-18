@@ -392,6 +392,12 @@
     "no-args": "Type a cmd without a prefix after this to get it's permission node, category node and category"
   },
   "ap": {
+    "type": {
+      "user": "user",
+      "guild": "guild",
+      "role": "role",
+      "channel": "channel"
+    },
     "success": "Ok, I just added the permission `{{- node}}` `{{- allowed}}` to the `{{- type}}` `{{- name}}`",
     "wrong-node": "The permission node `{{- node}}` will not work, as it is not a valid permission node. To get the permission node for a command type `{{- prefix}}getNode command`",
     "target-not-found": "I could not find the target {{- target}} for this command",

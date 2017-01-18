@@ -39,13 +39,41 @@ class AddPermission extends Command {
         this.p.addPermission(msg.channel.guild.id, perm, (err) => {
             if (err) return msg.channel.createMessage(this.t('generic.error', {lngs: msg.lang}));
             let type = this.t(`ap.type.${perm.type}`);
-            let name;
-            msg.channel.createMessage(`Ok, the ${type} now has the permission \`${perm.cat}.${perm.perm}\` set to ${perm.use}`);
+            let name = 'UNRESOLVED';
+            switch (perm.type) {
+                case 'guild': {
+                    name = msg.channel.guild.name;
+                    break;
+                }
+                case 'channel': {
+                    let channel = msg.channel.guild.channels.find(c => c.id === perm.id);
+                    if (channel) {
+                        name = channel.name;
+                    }
+                    break;
+                }
+                case 'user': {
+                    let member = msg.channel.guild.members.find(u => u.id === perm.id);
+                    if (member) {
+                        let user = member.user;
+                        name = `${user.username}#${user.discriminator}`;
+                    }
+                    break;
+                }
+                case 'role': {
+                    let role = msg.channel.guild.roles.find(r => r.id === perm.id);
+                    if (role) {
+                        name = role.name;
+                    }
+                    break;
+                }
+            }
             msg.channel.createMessage(this.t('ap.success', {
                 lngs: msg.lang,
                 node: `${perm.cat}.${perm.perm}`,
                 allowed: perm.use,
                 type,
+                name
             }))
         })
     }
@@ -159,7 +187,6 @@ class AddPermission extends Command {
         let node;
         if (args._.length > 0) {
             let nodeSplit = args._[0].split('.');
-            console.log(nodeSplit);
             if (nodeSplit.length === 2) {
                 if (nodeSplit[0] === '*') {
                     node = '*.*';
