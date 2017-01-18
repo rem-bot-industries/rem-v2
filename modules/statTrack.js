@@ -1,5 +1,5 @@
 /***
- * Created by julia on 01.11.2016.
+ * Created by Julian/Wolke on 01.11.2016.
  */
 let request = require('request');
 const config = require('../config/main.json');

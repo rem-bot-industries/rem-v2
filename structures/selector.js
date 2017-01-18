@@ -1,5 +1,5 @@
 /**
- * Created by julian on 19.11.2016.
+ * Created by Julian/Wolken on 19.11.2016.
  */
 // let MessageCollector = require('discord.js').MessageCollector;
 let AsciiTable = require('ascii-table');

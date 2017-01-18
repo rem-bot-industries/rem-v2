@@ -1,5 +1,5 @@
 /**
- * Created by julia on 06.01.2017.
+ * Created by Julian/Wolke on 06.01.2017.
  */
 let shortid = require("shortid");
 const types = require('./constants').SONG_TYPES;

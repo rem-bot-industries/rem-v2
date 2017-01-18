@@ -1,5 +1,5 @@
 /**
- * Created by julia on 06.12.2016.
+ * Created by Julian/Wolke on 06.12.2016.
  */
 let Command = require('../../structures/command');
 let winston = require('winston');

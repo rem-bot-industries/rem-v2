@@ -1,5 +1,5 @@
 /**
- * Created by julia on 07.11.2016.
+ * Created by Julian/Wolke on 07.11.2016.
  */
 let Command = require('../../structures/command');
 let minimist = require('minimist');
@@ -19,7 +19,7 @@ class AddPermission extends Command {
     run(msg) {
         let messageSplit = msg.content.split(' ').splice(1);
         let args = minimist(messageSplit);
-        this.parseArgs(args, (err, args) => {
+        this.parseArgs(args, msg, (err, args) => {
             if (err) return msg.channel.createMessage(err);
             if (args.r) {
                 return this.role(msg, args);
@@ -38,7 +38,15 @@ class AddPermission extends Command {
         // console.log(perm);
         this.p.addPermission(msg.channel.guild.id, perm, (err) => {
             if (err) return msg.channel.createMessage(this.t('generic.error', {lngs: msg.lang}));
-            msg.channel.createMessage(`Ok, the ${perm.type} now has the permission \`${perm.cat}.${perm.perm}\` set to ${perm.use}`);
+            let type = this.t(`ap.type.${perm.type}`);
+            let name;
+            msg.channel.createMessage(`Ok, the ${type} now has the permission \`${perm.cat}.${perm.perm}\` set to ${perm.use}`);
+            msg.channel.createMessage(this.t('ap.success', {
+                lngs: msg.lang,
+                node: `${perm.cat}.${perm.perm}`,
+                allowed: perm.use,
+                type,
+            }))
         })
     }
 
@@ -55,7 +63,7 @@ class AddPermission extends Command {
                 let perm = this.p.createPermission(args.node, "user", user.id, args.allow);
                 this.addPermission(msg, perm);
             } else {
-                msg.channel.createMessage('NOPE user');
+                return msg.channel.createMessage(this.t('ap.target-not-found', {lngs: msg.lang, target: args.u}));
             }
         } else {
             let regex = new RegExp(`${args.u}.*`, 'gi');
@@ -75,7 +83,7 @@ class AddPermission extends Command {
                     let perm = this.p.createPermission(args.node, "user", user.id, args.allow);
                     this.addPermission(msg, perm);
                 } else {
-                    return msg.channel.createMessage(`No user with name ${args.u} found!`);
+                    return msg.channel.createMessage(this.t('ap.target-not-found', {lngs: msg.lang, target: args.u}));
                 }
             }
         }
@@ -87,9 +95,9 @@ class AddPermission extends Command {
             role = msg.roleMentions[0];
             if (role) {
                 let perm = this.p.createPermission(args.node, "role", role, args.allow);
-                // msg.channel.createMessage('```json\n' + JSON.stringify(perm) + '```');
+                this.addPermission(msg, perm);
             } else {
-                msg.channel.createMessage('NOPE Role');
+                return msg.channel.createMessage(this.t('ap.target-not-found', {lngs: msg.lang, target: args.r}));
             }
         } else {
             let regex = new RegExp(`${args.r}.*`, 'gi');
@@ -107,7 +115,7 @@ class AddPermission extends Command {
                     let perm = this.p.createPermission(args.node, "role", role.id, args.allow);
                     this.addPermission(msg, perm);
                 } else {
-                    return msg.channel.createMessage(`No role with name ${args.r} found!`);
+                    return msg.channel.createMessage(this.t('ap.target-not-found', {lngs: msg.lang, target: args.r}));
                 }
             }
         }
@@ -121,7 +129,7 @@ class AddPermission extends Command {
                 let perm = this.p.createPermission(args.node, "channel", channel, args.allow);
                 this.addPermission(msg, perm);
             } else {
-                msg.channel.createMessage('NOPE channel');
+                return msg.channel.createMessage(this.t('ap.target-not-found', {lngs: msg.lang, target: args.c}));
             }
         } else {
             let regex = new RegExp(`${args.c}.*`, 'gi');
@@ -141,13 +149,13 @@ class AddPermission extends Command {
                     let perm = this.p.createPermission(args.node, "channel", channel.id, args.allow);
                     this.addPermission(msg, perm);
                 } else {
-                    return msg.channel.createMessage(`No channel with name ${args.c} found!`);
+                    return msg.channel.createMessage(this.t('ap.target-not-found', {lngs: msg.lang, target: args.c}));
                 }
             }
         }
     }
 
-    parseArgs(args, cb) {
+    parseArgs(args, msg, cb) {
         let node;
         if (args._.length > 0) {
             let nodeSplit = args._[0].split('.');
@@ -157,15 +165,28 @@ class AddPermission extends Command {
                     node = '*.*';
                 } else {
                     node = nodeSplit.join('.');
+                    if (nodeSplit[1] !== '*') {
+                        let cmd = msg.cmds[nodeSplit[1]];
+                        if (cmd || nodeSplit[1] === 'cleverbot') {
+                            if ((nodeSplit[0] === cmd.cat && nodeSplit[1] === cmd.cmd) || node === 'fun.cleverbot') {
+
+                            } else {
+                                return cb(this.t('ap.wrong-node', {lngs: msg.lang, prefix: msg.prefix, node}))
+                            }
+                        } else {
+                            return cb(this.t('ap.wrong-node', {lngs: msg.lang, prefix: msg.prefix, node}))
+                        }
+                    }
                 }
             } else if (nodeSplit.length === 1) {
                 if (nodeSplit[0] === '*') {
                     node = '*.*';
                 } else {
-                    return cb(`RIP \`\`\`${JSON.stringify(nodeSplit)}\`\`\``)
+                    node = nodeSplit.join('.');
+                    return cb(this.t('ap.wrong-node', {lngs: msg.lang, prefix: msg.prefix, node}))
                 }
             } else {
-                return cb('Node Split is too long or not defined!');
+                return cb(this.t('ap.wrong-node', {lngs: msg.lang, prefix: msg.prefix, node: '-'}))
             }
             args.node = node;
             if (args._.length > 1) {
@@ -174,10 +195,10 @@ class AddPermission extends Command {
                     cb(null, args);
                 }
             } else {
-                return cb(`That will not work\`\`\`${JSON.stringify(args)}\`\`\``);
+                return cb(this.t('ap.no-allowance-set', {lngs: msg.lang}))
             }
         } else {
-            return cb(`That will not work\`\`\`${JSON.stringify(args)}\`\`\``);
+            return cb(this.t('ap.missing-args', {lngs: msg.lang, prefix: msg.prefix, node: '-'}))
         }
     }
 }

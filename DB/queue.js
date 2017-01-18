@@ -1,5 +1,5 @@
 /**
- * Created by julia on 10.07.2016.
+ * Created by Julian/Wolke on 10.07.2016.
  */
 let mongoose = require('mongoose');
 let queueSchema = mongoose.Schema({

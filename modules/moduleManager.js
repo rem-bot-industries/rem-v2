@@ -1,5 +1,5 @@
 /**
- * Created by julia on 04.01.2017.
+ * Created by Julian/Wolke on 04.01.2017.
  */
 let winston = require('winston');
 let async = require('async');

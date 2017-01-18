@@ -1,5 +1,5 @@
 /**
- * Created by julia on 27.11.2016.
+ * Created by Julian/Wolke on 27.11.2016.
  */
 let Manager = require('../../structures/manager');
 let clever = require("cleverbot-node");

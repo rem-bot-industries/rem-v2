@@ -1,5 +1,5 @@
 /**
- * Created by julia on 01.12.2016.
+ * Created by Julian/Wolke on 01.12.2016.
  */
 let Manager = require('../../structures/manager');
 let statModel = require('../../DB/stat');

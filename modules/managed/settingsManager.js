@@ -1,5 +1,5 @@
 /**
- * Created by julia on 17.12.2016.
+ * Created by Julian/Wolke on 17.12.2016.
  */
 let Manager = require('../../structures/manager');
 let settingsModel = require('../../DB/setting');

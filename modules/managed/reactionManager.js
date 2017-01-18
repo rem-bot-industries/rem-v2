@@ -1,5 +1,5 @@
 /**
- * Created by julia on 17.12.2016.
+ * Created by Julian/Wolke on 17.12.2016.
  */
 let Reaction = require('../../DB/reaction');
 let Manager = require('../../structures/manager');

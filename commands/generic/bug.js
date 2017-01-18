@@ -1,5 +1,5 @@
 /**
- * Created by julia on 07.11.2016.
+ * Created by Julian/Wolke on 07.11.2016.
  */
 let Command = require('../../structures/command');
 class Bug extends Command {

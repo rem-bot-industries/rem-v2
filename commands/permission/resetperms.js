@@ -1,5 +1,5 @@
 /**
- * Created by julia on 18.01.2017.
+ * Created by Julian/Wolke on 18.01.2017.
  */
 let Command = require('../../structures/command');
 class ResetPermissions extends Command {

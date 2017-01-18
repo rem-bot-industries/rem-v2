@@ -1,5 +1,5 @@
 /**
- * Created by julia on 10.11.2016.
+ * Created by Julian/Wolke on 10.11.2016.
  */
 let Manager = require('../../structures/manager');
 let guildModel = require('../../DB/guild');
