@@ -7,18 +7,24 @@ let guildSettingCache = require('../../structures/cache');
 let channelSettingCache = require('../../structures/cache');
 let userSettingCache = require('../../structures/cache');
 let validKeys = {
-    guild: {}, user: {}, channel: {}
+    guild: {
+        "language": {type: "String", args: 1, t: ''}
+    }, user: {
+        "language": {type: "String", args: 1}
+    }, channel: {
+        "language": {type: "String", args: 1}
+    }
 };
 class SettingsManager extends Manager {
-    constructor({mod}) {
+    constructor() {
         super();
     }
 
     updateCache(data) {
         switch (data.type) {
             case "guild": {
-                if (channelSettingCache.get(data.id)) {
-                    channelSettingCache.set(data.id, data);
+                if (guildSettingCache.get(data.id)) {
+                    guildSettingCache.set(data.id, data);
                 }
                 return;
             }
@@ -29,8 +35,8 @@ class SettingsManager extends Manager {
                 return;
             }
             case "user": {
-                if (channelSettingCache.get(data.id)) {
-                    channelSettingCache.set(data.id, data);
+                if (userSettingCache.get(data.id)) {
+                    userSettingCache.set(data.id, data);
                 }
                 return;
             }

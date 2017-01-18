@@ -19,7 +19,12 @@
     "more": "{{number}} more",
     "cat-nope": ":no_entry_sign: This category does not exist!",
     "mention": "Please mention a user.",
-    "cancelled-command": "Cancelled the command."
+    "cancelled-command": "Cancelled the command.",
+    "donate": "Donate",
+    "support": "Support",
+    "invite": "Invite",
+    "language-name-en": "English",
+    "native-name": "English"
   },
   "help": {
     "intro": "lets have fun together here on Discord (/^▽^)/ select a command category by responding with {{pre}}help number of command to know more:",
@@ -380,6 +385,16 @@
   "flip": {
     "head": "The coin flipped to head {{- url}}",
     "tail": "The coin flipped to tail {{- url}}"
+  },
+  "get-node": {
+    "success": "Permission node: `{{- node}}` Category node:`{{- category}}.*` Category:`{{- category}}`",
+    "not-found": "This command does not exist.",
+    "no-args": "Type a cmd without a prefix after this to get it's permission node, category node and category"
+  },
+  "ap": {
+    "success": "Ok, I just added the permission `{{- node}}` `{{- allowed}}` to the `{{- type}}` `{{- name}}`",
+    "wrong-node": "The permission node {{- node}} will not work, as it is not a valid permission node. To get the permission node for a command type `{{- prefix}}getNode command`",
+    "target-not-found": "I could not find the target {{- target}} for this command"
   },
   "gp": {
     "no-cat": "I could not find any permissions with the category {{- cat}}",

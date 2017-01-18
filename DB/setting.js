@@ -5,7 +5,6 @@ let mongoose = require('mongoose');
 let settingsSchema = mongoose.Schema({
     id: String,
     type: String,
-    dataType: String,
     key: String,
     value: String
 });
