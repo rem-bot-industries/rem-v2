@@ -3,10 +3,38 @@
  */
 let Manager = require('../../structures/manager');
 let settingsModel = require('../../DB/setting');
-let settingCache = require('../../structures/cache');
+let guildSettingCache = require('../../structures/cache');
+let channelSettingCache = require('../../structures/cache');
+let userSettingCache = require('../../structures/cache');
+let validKeys = {
+    guild: {}, user: {}, channel: {}
+};
 class SettingsManager extends Manager {
-    constructor() {
+    constructor({mod}) {
         super();
+    }
+
+    updateCache(data) {
+        switch (data.type) {
+            case "guild": {
+                if (channelSettingCache.get(data.id)) {
+                    channelSettingCache.set(data.id, data);
+                }
+                return;
+            }
+            case "channel": {
+                if (channelSettingCache.get(data.id)) {
+                    channelSettingCache.set(data.id, data);
+                }
+                return;
+            }
+            case "user": {
+                if (channelSettingCache.get(data.id)) {
+                    channelSettingCache.set(data.id, data);
+                }
+                return;
+            }
+        }
     }
 
     loadSettings(id, type) {
@@ -25,8 +53,22 @@ class SettingsManager extends Manager {
 
     }
 
-    setSetting() {
+    set(key, id) {
 
+    }
+
+    findKey(key) {
+        if (validKeys[key]) {
+
+        }
+    }
+
+    getValidKeys() {
+        return validKeys;
+    }
+
+    emitCacheUpdate(data) {
+        this.emit('_cache_update', {data, type: 'setting'});
     }
 
 }
