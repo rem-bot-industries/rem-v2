@@ -1,5 +1,5 @@
 /**
- * Created by julia on 26.06.2016.
+ * Created by Julian/Wolke on 26.06.2016.
  */
 let mongoose = require('mongoose');
 let playlistSchema = mongoose.Schema({

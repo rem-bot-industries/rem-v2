@@ -1,5 +1,5 @@
 /**
- * Created by julia on 07.11.2016.
+ * Created by Julian/Wolke on 07.11.2016.
  */
 let Command = require('../../structures/command');
 let AsciiTable = require('ascii-table');
@@ -30,9 +30,9 @@ class ForceSkip extends Command {
         if (typeof(this.inprogress[msg.channel.id]) !== 'undefined') {
             return msg.channel.createMessage(this.t('vskip.in-prog', {lngs: msg.lang, prefix: msg.prefix}));
         }
-        if (msg.member.voiceState.channelID && rem.voiceConnections.get(msg.guild.id) && msg.member.voiceState.channelID === rem.voiceConnections.get(msg.guild.id).channelID) {
+        if (msg.member.voiceState.channelID && rem.voiceConnections.get(msg.channel.guild.id) && msg.member.voiceState.channelID === rem.voiceConnections.get(msg.channel.guild.id).channelID) {
             let channelID = msg.member.voiceState.channelID;
-            let channel = msg.guild.channels.find((c) => c.id === channelID);
+            let channel = msg.channel.guild.channels.find((c) => c.id === channelID);
             // console.log(channel.voiceMembers);
             console.log(channel.voiceMembers.size);
             if (channel.voiceMembers.size > 2) {

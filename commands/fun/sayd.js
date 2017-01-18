@@ -1,5 +1,5 @@
 /**
- * Created by julia on 07.11.2016.
+ * Created by Julian/Wolke on 07.11.2016.
  */
 let Command = require('../../structures/command');
 let msgModel = require('../../DB/message');
@@ -33,7 +33,7 @@ class SayDelete extends Command {
             channelId: msg.channel.id,
             content: msg.trueContent,
             time: Date.now(),
-            guildId: msg.guild.id,
+            guildId: msg.channel.guild.id,
             name: msg.author.username + '#' + msg.author.discriminator
         });
         message.save((err) => {

@@ -1,5 +1,5 @@
 /**
- * Created by julia on 15.11.2016.
+ * Created by Julian/Wolke on 15.11.2016.
  */
 let RRACommand = require('../../structures/rraCommand');
 class HugImage extends RRACommand {

@@ -1,5 +1,5 @@
 /**
- * Created by julia on 17.12.2016.
+ * Created by Julian/Wolke on 17.12.2016.
  */
 let Reaction = require('../../DB/reaction');
 let Manager = require('../../structures/manager');
@@ -44,7 +44,7 @@ class ReactionManager extends Manager {
 
     filterReaction(msg) {
         for (let i = 0; i < reactions.length; i++) {
-            if (reactions[i].guildId === msg.guild.id) {
+            if (reactions[i].guildId === msg.channel.guild.id) {
                 if (reactions[i].type === 'exact') {
                     if (msg.content === reactions[i].trigger) {
                         msg.channel.createMessage(this.replaceVars(msg, reactions[i].response));
@@ -60,7 +60,7 @@ class ReactionManager extends Manager {
     }
 
     replaceVars(msg, reaction) {
-        return reaction.replace('%USER%', msg.author.username).replace('%GUILD%', msg.guild.name);
+        return reaction.replace('%USER%', msg.author.username).replace('%GUILD%', msg.channel.guild.name);
     }
 }
 module.exports = {class: ReactionManager, deps: [], async: false, shortcode: 'rm'};

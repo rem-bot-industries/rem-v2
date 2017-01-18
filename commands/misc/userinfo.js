@@ -1,5 +1,5 @@
 /**
- * Created by julia on 07.11.2016.
+ * Created by Julian/Wolke on 07.11.2016.
  */
 let Command = require('../../structures/command');
 let moment = require('moment');
@@ -20,11 +20,11 @@ class UserInfo extends Command {
         let member;
         if (msg.mentions.length > 0) {
             user = msg.mentions[0];
-            member = msg.guild ? msg.guild.members.find(u => u.id === user.id) : null;
+            member = msg.channel.guild ? msg.channel.guild.members.find(u => u.id === user.id) : null;
             this.buildReply(msg, user, member);
         } else {
             user = msg.author;
-            member = msg.guild ? msg.member : null;
+            member = msg.channel.guild ? msg.member : null;
             this.buildReply(msg, user, member);
         }
     }

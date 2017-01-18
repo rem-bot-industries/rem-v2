@@ -1,5 +1,5 @@
 /**
- * Created by julia on 11.12.2016.
+ * Created by Julian/Wolke on 11.12.2016.
  */
 let winston = require('winston');
 class msgSender {

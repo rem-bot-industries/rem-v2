@@ -1,5 +1,5 @@
 /**
- * Created by julia on 10.11.2016.
+ * Created by Julian/Wolke on 10.11.2016.
  */
 let Manager = require('../../structures/manager');
 let userModel = require('../../DB/user');
@@ -108,7 +108,7 @@ class UserManager extends Manager {
 
     increaseExperience(msg) {
         return new Promise((resolve, reject) => {
-            this.getServerData(msg.dbUser, msg.guild.id).then(data => {
+            this.getServerData(msg.dbUser, msg.channel.guild.id).then(data => {
                 if (data.cooldown < Date.now()) {
                     data.id = data.id ? data.id : data.serverId;
                     data.xp += this.calcXp(msg);

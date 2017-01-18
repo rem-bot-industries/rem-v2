@@ -1,5 +1,5 @@
 /**
- * Created by julia on 03.01.2017.
+ * Created by Julian/Wolke on 03.01.2017.
  */
 class Cache extends Map {
     constructor() {

@@ -1,5 +1,5 @@
 /**
- * Created by julia on 01.12.2016.
+ * Created by Julian/Wolke on 01.12.2016.
  */
 let Manager = require('../../structures/manager');
 let statModel = require('../../DB/stat');
@@ -10,7 +10,7 @@ class StatisticManager extends Manager {
     }
 
     logCmdStat(msg, cmd, allowed, reason) {
-        let id = msg.guild ? msg.guild.id : undefined;
+        let id = msg.channel.guild ? msg.channel.guild.id : undefined;
         let stat = new statModel({
             id: msg.id,
             userId: msg.author.id,

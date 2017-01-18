@@ -1,5 +1,5 @@
 /**
- * Created by julia on 13.01.2017.
+ * Created by Julian/Wolke on 13.01.2017.
  */
 let Command = require('../../structures/command');
 let adminId = require('../../config/main.json').owner_id;

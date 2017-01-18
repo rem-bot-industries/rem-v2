@@ -1,5 +1,5 @@
 /**
- * Created by julia on 07.11.2016.
+ * Created by Julian/Wolke on 07.11.2016.
  */
 let Command = require('../../structures/command');
 let moment = require('moment');
@@ -11,6 +11,7 @@ class GuildFinder extends Command {
         super();
         this.cmd = "findGuild";
         this.cat = "admin";
+        this.hidden = true;
         this.needGuild = false;
         this.t = t;
         this.accessLevel = 2;

@@ -1,5 +1,5 @@
 /**
- * Created by julia on 07.11.2016.
+ * Created by Julian/Wolke on 07.11.2016.
  */
 let Command = require('../../structures/command');
 let adminId = require('../../config/main.json').owner_id;
@@ -9,6 +9,7 @@ class EvalCode extends Command {
         this.cmd = "eval";
         this.cat = "admin";
         this.needGuild = false;
+        this.hidden = true;
         this.t = t;
         this.accessLevel = 2;
         this.hub = mod.getMod('hub');

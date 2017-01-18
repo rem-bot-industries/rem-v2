@@ -18,7 +18,13 @@
     "lib": "library used",
     "more": "{{number}} more",
     "cat-nope": ":no_entry_sign: This category does not exist!",
-    "mention": "Please mention a user."
+    "mention": "Please mention a user.",
+    "cancelled-command": "Cancelled the command.",
+    "donate": "Donate",
+    "support": "Support",
+    "invite": "Invite",
+    "language-name-en": "English",
+    "native-name": "English"
   },
   "help": {
     "intro": "lets have fun together here on Discord (/^▽^)/ select a command category by responding with {{pre}}help number of command to know more:",
@@ -57,10 +63,10 @@
     "noChServer": "Disables the pm notifications for the entire server and enables channel notifications instead, use the command again to revert it",
     "setPrefix": "Sets the prefix of the bot, no spaces/mentions allowed!",
     "other": "[Other Stuff]",
-    "kona": "Searches Konachan for tags and gives back 1 Image, only usable with WolkeBot Role or a configured NSFW Channel.",
-    "e621": "Searches E621 for tags and gives back 1 Image, only usable with WolkeBot Role or a configured NSFW Channel.",
-    "yandere": "Searches Yande.re for tags and gives back 1 Image, only usable with WolkeBot Role or a configured NSFW Channel.",
-    "gtn": "Gives you a random green tea neko comic, only usable with WolkeBot Role or a configured NSFW Channel.",
+    "kona": "Searches Konachan for tags and gives back 1 Image, only usable with a configured NSFW Channel or Admin.",
+    "e621": "Searches E621 for tags and gives back 1 Image, only usable with a configured NSFW Channel or Admin.",
+    "yandere": "Searches Yande.re for tags and gives back 1 Image, only usable with a configured NSFW Channel or Admin.",
+    "gtn": "Gives you a random green tea neko comic, only usable with a configured NSFW Channel or Admin.",
     "level": "Your Level and XP needed for next Level",
     "rank": "Leaderboard for this Server",
     "noLevel": "disables the level system for you. Use again to enable it again for you.",
@@ -68,7 +74,7 @@
     "pp": "Calculates PP for the beatmap with optional accuracy and mods",
     "cookie": "Gives a cookie to the mentioned user or shows your cookies if no one is mentioned.",
     "eatCookie": "Eats a Cookie.",
-    "git": "Gives you the github link of the bot",
+    "git": "Gives you the github link of Rem",
     "roll": "Rolls a number between zero and number, if there is no number it will be out of 10",
     "8ball": "Gives you the Opinion of the magic 8ball to a question",
     "garfield": "Gives you a random garfield command",
@@ -128,13 +134,12 @@
   },
   "joinVoice": {
     "join": "Ok, joining your voice channel now",
-    "error": "An error has occured while trying to join your voicechannel!",
-    "permission": "No permission! You need to give yourself the WolkeBot role to use this.",
+    "error": "An error occured while trying to join your voicechannel!",
     "no-voice": "You are not in a voice channel!",
     "already-voice": "I am already in a voice channel, move me to change it!"
   },
   "shuffle": {
-    "not-enough-shuffle": "There have to be at least 3 songs in the queue.",
+    "not-enough-shuffle": "There have to be at least 3 songs in the queue for me to shuffle them.",
     "success": "Shuffled the queue!"
   },
   "nsfw-images": {
@@ -217,9 +222,9 @@
     "song": "Currently playing: `{{-title}} {{repeat}}`",
     "repeat-single": "repeat: single",
     "repeat-queue": "repeat: queue",
-    "emoji-repeat-single": ":repeat_one: ",
-    "emoji-repeat-queue": ":repeat: ",
-    "emoji-repeat-off": ":heavy_check_mark: "
+    "emoji-repeat-single": ":repeat_one: Repeat: current song",
+    "emoji-repeat-queue": ":repeat: Repeat: queue",
+    "emoji-repeat-off": ":heavy_check_mark: Repeat: off"
   },
   "queue": {
     "queued": "Queued:"
@@ -314,16 +319,10 @@
     "in-queue": "**{{- song}}** is already in the queue.",
     "error-volume": "Error while setting volume!",
     "success-volume": "Set volume to {{- volume}}",
-    "too-much": "You can not set the volume higher than 200!",
-    "no-volume": "No volume set!",
-    "repeat-start": "Started repeat for **{{- song}}**",
     "already-playing": "This Song is already playing!",
     "blocked": "This Video is not available to download. Maybe it is too long or blocked/removed",
     "dl-start": ":hourglass: loading song!",
     "use-proxy": "Trying to download over the proxy, this could take a bit."
-  },
-  "yts": {
-    "success": "Found the following song: {{- link}}"
   },
   "skip": {
     "success": ":track_next: Skipped song {{- title}}",
@@ -387,6 +386,24 @@
     "head": "The coin flipped to head {{- url}}",
     "tail": "The coin flipped to tail {{- url}}"
   },
+  "get-node": {
+    "success": "Permission node: `{{- node}}` Category node:`{{- category}}.*` Category:`{{- category}}`",
+    "not-found": "This command does not exist.",
+    "no-args": "Type a cmd without a prefix after this to get it's permission node, category node and category"
+  },
+  "ap": {
+    "type": {
+      "user": "user",
+      "guild": "guild",
+      "role": "role",
+      "channel": "channel"
+    },
+    "success": "Ok, I just added the permission `{{- node}}` `{{- allowed}}` to the `{{- type}}` `{{- name}}`",
+    "wrong-node": "The permission node `{{- node}}` will not work, as it is not a valid permission node. To get the permission node for a command type `{{- prefix}}getNode command`",
+    "target-not-found": "I could not find the target {{- target}} for this command",
+    "no-allowance-set": "You did not tell me if the perm should be allowed or not, add `true` or `false` depending on your choice",
+    "missing-args": "The correct syntax for this cmd is `{{-prefix}}ap <node> [-u|-r|-c] [target] <allowed>`\n Example:\n```{{-prefix}}ap playlist.* true -> allows all commands of the category playlist in the server\n{{-prefix}}ap music.fskip -u @user true -> allows the mentioned user to use {{- prefix}}fskip```"
+  },
   "gp": {
     "no-cat": "I could not find any permissions with the category {{- cat}}",
     "no-perms": "You did not add any permissions yet.",
@@ -404,9 +421,15 @@
   },
   "love": {
     "success": "You just gave **{{- target}}** **{{- rep}}** :heart: Love Point. Remaining uses **{{uses}}**.",
+    "success-remove": "You just removed **{{- rep}}**:heart: Love Point from **{{- target}}** Remaining uses **{{uses}}**.",
     "error-cd": "You can only give **2** :heart: Love Points per Day, next use {{- time}}.",
     "next": " Next use {{- time}}",
     "self": ":broken_heart: You can not give Love Points to yourself."
+  },
+  "reset-perms": {
+    "nothing-found": "You did not set any Permissions yet.",
+    "confirmation": "Are you sure you want to reset the Permissions ? Type `yes` to reset them and `no` to cancel this command.",
+    "success": "I just reset all permissions you set."
   },
   "dere": {
     "no-dere": "The dere type you searched for does not exist. Here is a list of possible deres:\n",

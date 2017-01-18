@@ -1,5 +1,5 @@
 /**
- * Created by julia on 13.11.2016.
+ * Created by Julian/Wolke on 13.11.2016.
  */
 let mongoose = require('mongoose');
 let permissionSchema = mongoose.Schema({

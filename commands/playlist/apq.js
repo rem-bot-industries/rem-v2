@@ -1,5 +1,5 @@
 /**
- * Created by julia on 07.11.2016.
+ * Created by Julian/Wolke on 07.11.2016.
  */
 let Command = require('../../structures/command');
 let track_error = !require('../../config/main.json').no_error_tracking;
@@ -36,7 +36,7 @@ class AddPlaylistToQueue extends Command {
                 this.r.captureException(err, {
                     extra: {
                         userId: msg.author.id,
-                        guildId: msg.guild.id,
+                        guildId: msg.channel.guild.id,
                         msg: msg.content,
                         msgId: msg.id
                     }

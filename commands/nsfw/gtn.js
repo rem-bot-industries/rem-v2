@@ -1,5 +1,5 @@
 /**
- * Created by julia on 15.11.2016.
+ * Created by Julian/Wolke on 15.11.2016.
  */
 let Command = require('../../structures/command');
 let path = require("path");

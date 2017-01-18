@@ -1,5 +1,5 @@
 /**
- * Created by julia on 01.11.2016.
+ * Created by Julian/Wolke on 01.11.2016.
  */
 global.Promise = require('bluebird');
 const Eris = require("eris");
@@ -142,11 +142,15 @@ class Shard extends EventEmitter {
             this.MSG = this.MOD.getMod('mm');
             this.GM = this.MOD.getMod('gm');
             this.UM = this.MOD.getMod('um');
+            this.SM = this.MOD.getMod('sm');
             this.UM.on('_cache_update', (data) => {
                 this.emitCacheUpdate(data);
             });
             this.GM.on('_cache_update', (data) => {
                 this.emitCacheUpdate(data);
+            });
+            this.SM.on('_cache_update', (data) => {
+                this.updateLocalCache(data)
             });
             this.HUB.on('_cache_update', (data) => {
                 this.updateLocalCache(data);
@@ -270,6 +274,9 @@ class Shard extends EventEmitter {
                 return;
             case 'guild':
                 this.MOD.getMod('gm').updateCache(data);
+                return;
+            case 'setting':
+                this.MOD.getMod('sm').updateCache(data);
                 return;
             default:
                 return;

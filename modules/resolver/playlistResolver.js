@@ -1,5 +1,5 @@
 /**
- * Created by julia on 08.11.2016.
+ * Created by Julian/Wolke on 08.11.2016.
  */
 let BasicImporter = require('../../structures/basicImporter');
 let winston = require('winston');

@@ -1,5 +1,5 @@
 /**
- * Created by julia on 23.07.2016.
+ * Created by Julian/Wolke on 23.07.2016.
  */
 let mongoose = require('mongoose');
 let statSchema = mongoose.Schema({

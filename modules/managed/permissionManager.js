@@ -1,5 +1,5 @@
 /**
- * Created by julia on 13.11.2016.
+ * Created by Julian/Wolke on 13.11.2016.
  */
 let Manager = require('../../structures/manager');
 let permModel = require('../../DB/permission');
@@ -31,12 +31,12 @@ class PermissionManager {
      */
     checkPermission(msg, node, cb) {
         this.msg = msg;
-        this.guild = msg.guild;
+        this.guild = msg.channel.guild;
         this.node = node;
         let nodeSplit = node.split('.');
         this.cat = nodeSplit[0];
         this.cmd = nodeSplit[1];
-        if (msg.guild) {
+        if (msg.channel.guild) {
             if (this.checkDiscordRoles(msg)) {
                 return cb();
             }
@@ -55,7 +55,7 @@ class PermissionManager {
      * @param cb - the callback
      */
     loadPermission(msg, cb) {
-        permModel.findOne({id: msg.guild.id}, (err, Perms) => {
+        permModel.findOne({id: msg.channel.guild.id}, (err, Perms) => {
             if (err) return cb(err);
             if (Perms) {
                 this.buildPermTree(Perms.permissions, cb);
@@ -239,7 +239,7 @@ class PermissionManager {
         if (this.checkRoleExistName(msg, 'WolkeBot')) {
             return true;
         }
-        if (msg.author.id === msg.guild.ownerID) {
+        if (msg.author.id === msg.channel.guild.ownerID) {
             return true;
         }
         return (this.checkRolePerm(msg, 'administrator'));
@@ -260,6 +260,7 @@ class PermissionManager {
                 if (Perms.permissions.length > 0) {
                     if (this.checkExist(perm, Perms.permissions)) {
                         //TODO ask the user if he wants to overwrite the permission
+                        console.log('overwrite uwu');
                     } else {
                         permModel.update({id: id}, {$push: {permissions: perm}}, cb);
                     }
@@ -276,7 +277,7 @@ class PermissionManager {
         permModel.findOne({id: id}, (err, Perms) => {
             if (err) {
                 winston.error(err);
-                return cb('generic.error');
+                return cb({t: 'generic.error', err});
             }
             if (Perms) {
                 if (Perms.permissions.length > 0) {
@@ -284,14 +285,24 @@ class PermissionManager {
                     // console.log(perms);
                     permModel.update({id: id}, {$set: {permissions: perms}}, cb);
                 } else {
-                    return cb('no-perms');
+                    return cb({t: 'no-perms', err: 'No permissions found'});
                 }
             } else {
-                return cb('no-perms');
+                return cb({t: 'no-perms', err: 'No permissions found'});
             }
         });
     }
 
+    resetDbPerm(id, cb) {
+        permModel.findOne({id}, (err, Perms) => {
+            if (err) return cb(err);
+            if (Perms) {
+                permModel.remove({id}, cb);
+            } else {
+                return cb({err: 'No permissions found', t: 'reset-perms.nothing-found'})
+            }
+        })
+    }
     createDbPerm(id, perm, cb) {
         let perms = new permModel({
             id: id,
@@ -310,7 +321,7 @@ class PermissionManager {
     }
 
     getPermDB(msg, cb) {
-        permModel.findOne({id: msg.guild.id}, (err, Perms) => {
+        permModel.findOne({id: msg.channel.guild.id}, (err, Perms) => {
             if (err) return cb(err);
             if (Perms && Perms.permissions.length > 0) {
                 cb(null, Perms.permissions);
@@ -352,7 +363,7 @@ class PermissionManager {
 
     loadUserRoles(msg) {
         let member = msg.member;
-        let guild = msg.guild;
+        let guild = msg.channel.guild;
         let roles = [];
         member.roles.forEach((mRole) => {
             let role = guild.roles.find((r) => {

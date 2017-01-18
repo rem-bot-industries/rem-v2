@@ -1,5 +1,5 @@
 /**
- * Created by julia on 07.11.2016.
+ * Created by Julian/Wolke on 07.11.2016.
  */
 let Command = require('../../structures/command');
 let GuildManager = require('../../modules/managed/guildManager');
@@ -17,7 +17,7 @@ class SetPrefix extends Command {
     run(msg) {
         let msgSplit = msg.content.split(' ');
         if (typeof (msgSplit[1]) !== 'undefined' && msg.mentions.length === 0) {
-            this.g.changePrefix(msg.guild.id, msgSplit[1], (err) => {
+            this.g.changePrefix(msg.channel.guild.id, msgSplit[1], (err) => {
                 if (err) return msg.channel.createMessage(this.t('generic.error', {lngs: msg.lang}));
                 msg.channel.createMessage(`${msg.author.mention}, ${this.t('prefix.success', {
                     lngs: msg.lang,
