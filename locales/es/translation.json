@@ -146,7 +146,8 @@
         "shuffle": "Mezcla la cola de reproducción. Debe haber al menos 3 canciones en la cola para hacer funcionar el comando.",
         "owo": "Manda un meme aleatorio de \"¿Qué es esto? OwO\" seleccionado cuidadosamente por Wolke.",
         "getNode": "Te doy el nodo del permiso, la categoría del nodo y la categoría de un comando.",
-        "resetPerms": "Restablece todos los permisos establecidos hasta ahora, usa esto con cuidado."
+        "resetPerms": "Restablece todos los permisos establecidos hasta ahora, usa esto con cuidado.",
+        "pat": "Acaricia a alguien que ha sido un/a buen/a chico/chica/helicoptero"
     },
     "version": "Actualmente me encuentro en la versión {{version}}",
     "add": "Utiliza este enlace para añadirme a tu servidor: {{- link}}",
