@@ -39,6 +39,7 @@ class CleverBotManager extends Manager {
 class CleverBot {
     constructor() {
         this.clever = new clever();
+        clever.configure({botapi: "https://github.com/DasWolke/rem-v2|wolke@ram.moe"});
     }
 
     talk(msg, cb) {
