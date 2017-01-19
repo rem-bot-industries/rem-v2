@@ -2,7 +2,7 @@
  * Created by Julian/Wolke on 15.11.2016.
  */
 let RRACommand = require('../../structures/rraCommand');
-class RemImage extends RRACommand {
+class Pat extends RRACommand {
     constructor({t}) {
         super();
         this.cmd = "pat";
@@ -12,4 +12,4 @@ class RemImage extends RRACommand {
         this.accessLevel = 0;
     }
 }
-module.exports = RemImage;
+module.exports = Pat;

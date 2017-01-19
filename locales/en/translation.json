@@ -125,7 +125,8 @@
     "ibsafe": "Searches on ibsear.ch (only sfw pics)",
     "iblewd": "Searches on ibsearch.xxx (same as ibsafe but with nsfw pics too)",
     "getNode": "Gives you the permission node, category node and category of a command",
-    "resetPerms": "Resets all permissions set until now, use with caution"
+    "resetPerms": "Resets all permissions set until now, use with caution",
+    "pat": "Pat someone who has been a good boy/girl/helicopter"
   },
   "version": "Currently I am running on version {{version}}",
   "add": "Use this link to add me to your Server: {{- link}}",
