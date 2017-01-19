@@ -18,30 +18,36 @@
         "more": "{{number}} más",
         "abort": ":x: Cancelado",
         "cat-nope": ":no_entry_sign: ¡Esa categoría no existe!",
-        "mention": "Por favor menciona a un usuario."
+        "mention": "Por favor menciona a un usuario.",
+        "cancelled-command": "Comando cancelado.",
+        "donate": "Donar",
+        "support": "Soporte",
+        "invite": "Invitar",
+        "language-name-en": "Spanish",
+        "native-name": "Español"
     },
     "help": {
         "intro": "¡Vamos a pasarlo bien en Discord (/^▽^)/!, selecciona una categoría del listado respondiendo con {{pre}}help y el número de la categoría que quieras seleccionar, con el fin de conocer más acerca de los comandos:",
         "intro_2": "Hola soy",
         "support": "[SOPORTE]",
         "bug": "Obtén un enlace de ayuda del servidor de soporte en Discord",
-        "help": "El comando de ayuda",
-        "add": "Obtén un enlace para añadirme a tu servidor",
+        "help": "El comando de ayuda.",
+        "add": "Obtén un enlace para añadirme a tu servidor.",
         "music": "[MÚSICA]",
         "voice": "Con éste comando me uno al canal de voz donde estés conectado, otros comandos de música también hacen que me una al canal.",
         "silent": "Con este comando abandono el canal donde esté conectada, solo puede ser utilizado por usuarios que posean \"WolkeBot\".",
         "play": "Reproduces algo de Youtube/SoundCloud/Osu o alguna busqueda",
-        "pause": "Pausas la canción actual",
-        "resume": "Reanudas la canción actual",
+        "pause": "Pausas la canción actual.",
+        "resume": "Reanudas la canción actual.",
         "volume": "Modificas el volumen del bot, establece un valor entre 1 y 200, solo puede ser utilizado por usuarios que posean \"WolkeBot\".",
         "forever": "Reproduce una única canción en un bucle hasta que sea agregada otra canción a la cola, solo puede ser utilizado por usuarios que posean \"WolkeBot\".",
         "search": "Busca una canción en la base de datos del bot y muestra los 5 mejores resultados.",
-        "skip": "Inicia una votación para saltar la canción actual, una vez que hayan votado el 50% de las personas del canal, ésta será saltada",
+        "skip": "Inicia una votación para saltar la canción actual, una vez que hayan votado el 50% de las personas del canal, ésta será saltada.",
         "voteskip": "Se empieza una votación para cambiar la canción actual, si el 50% de los miembros de la sala votan se cambiará la canción.",
         "qa": "Añades una canción de Youtube/Soundcloud/Osu a la cola.",
         "qra": "Elimina todas las canciones excepto la que se está reproduciendo en estos momentos, también puedes borrar un determinado número de canciones.",
         "queue": "Muestra la cola actual.",
-        "np": "Muestra la canción que se reproduce en estos momentos",
+        "np": "Muestra la canción que se está reproduciendo en este momento.",
         "rq": "Añade una o varias canciones aleatorias a la cola",
         "stream": "Reproduce la radio de internet seleccionada, puedes buscar radios o incorporarlas directamente añadiendo al comando -u url",
         "youtube": "[Youtube]",
@@ -61,9 +67,9 @@
         "setPrefix": "Establece el prefijo del bot. ¡Los espacios/menciones no están permitidos!",
         "other": "[Otras Cosas]",
         "r34": "Busca en Rule34 y devuelve 1 imagen, solo se puede utilizar con el rol WolkeBot o en un canal que esté configurado como NSFW",
-        "kona": "Busca en Konachan y devuelve 1 imagen, solo se puede utilizar con el rol WolkeBot o en un canal que esté configurado como NSFW",
-        "e621": "Busca en E621 y devuelve 1 imagen, solo se puede utilizar con el rol WolkeBot o en un canal que esté configurado como NSFW",
-        "yandere": "Busca en Yande.re y devuelve 1 imagen, solo se puede utilizar con el rol WolkeBot o en un canal que esté configurado como NSFW (+18)",
+        "kona": "Busca en Konachan con etiquetas y te devuelve 1 imagen, solo puede ser usado en un canal configurado como NSFW o por un Administrador.",
+        "e621": "Busca en E621 con etiquetas y te devuelve 1 imagen, solo puede ser usado en un canal configurado como NSFW o por un Administrador.",
+        "yandere": "Busca en Yande.re con etiquetas y te devuelve 1 imagen, solo puede ser usado en un canal configurado como NSFW o por un Administrador.",
         "level": "Tu Nivel y Experiencia necesaria para el siguiente nivel.",
         "rank": "Clasificación en este Servidor.",
         "noLevel": "Deshabilita el sistema de niveles para ti. Utiliza el comando nuevamente para rehabilitarlo.",
@@ -71,12 +77,12 @@
         "pp": "Calcula los PP (puntos de rendimiento) del beatmap con exactitud y modificaciones opcionales.",
         "cookie": "Das una galleta al usuario mencionado o muestra tus galletas si nadie es mencionado.",
         "eatCookie": "Comes una galleta.",
-        "git": "Proporciona el enlace del bot en github",
+        "git": "Proporciona el enlace del bot en github.",
         "roll": "Lanza un número entre cero y el número asignado, si no especificas ningún número por defecto será el 10.",
-        "8ball": "Muestra la opinión de la bola 8 mágica respecto a tu pregunta",
-        "garfield": "Muestra un comic de garfield aleatorio",
-        "cat": "Envía una imagen aleatoria de gatos",
-        "hug": "Muestra un gif de un abrazo en un anime",
+        "8ball": "Muestra la opinión de la bola 8 mágica con respecto a tu pregunta.",
+        "garfield": "Muestra un comic de garfield aleatorio.",
+        "cat": "Envía una imagen aleatoria con gatos.",
+        "hug": "Muestra una gif de un abrazo en un anime.",
         "slap": "Muestra un gif de una bofetada en un anime.",
         "setLang": "Seleccionas el idioma, hasta ahora {{languages}} idiomas han sido integrados.",
         "report": "Si eres muy tímido como para pasar por el Discord de soporte, utiliza el comando report para mandar un reporte al Desarrollador Wolke, ¡pero no abuses de él!",
@@ -87,14 +93,14 @@
         "misc": "[MISCELÁNEA]",
         "stats": "[ESTADÍSTICAS]",
         "user": "[USUARIO]",
-        "admin": "[ADMINISTRADOR]",
+        "admin": "[ADMINISTRACIÓN]",
         "nsfw": "[NSFW]",
         "eastereggs": "[HUEVOS DE PASCUA]",
         "proxer": "[PROXER]",
         "no-cat": "[SIN CATEGORÍA]",
         "ping": "Muestra la latencia del bot, esto no aplica al canal de voz.",
         "lewd": "Muy lascivo uwu",
-        "rem": "Muestra una imagen aleatoria de Rem",
+        "rem": "Muestra una imagen aleatoria de Rem.",
         "wip": "[TRABAJO EN PROGRESO]",
         "gr": "Establece un saludo con set greetingMessage, {{user}} será reemplazado con el usuario que acaba de entrar y {{guild}} con el nombre del servidor.\nEl saludo se realiza en el canal donde ejecutaste el comando.",
         "fw": "Establece una despedida con set farewellMessage, {{user}} será reemplazado con el usuario que acaba de salir y {{guild}} con el nombre del servidor.\nLa despedida se realiza en el canal donde ejecutaste el comando.",
@@ -102,11 +108,11 @@
         "shrug": "¯\\_(ツ)_/¯",
         "flip": "(╯°□°）╯︵ ┻━┻",
         "eggplant": "solo una berenjena",
-        "gtn": "Muestra un comic aleatorio de green tea neko, sólo lo pueden utilizar usuarios con rol WolkeBot o en un canal que esté configurado como NSFW (+18)",
+        "gtn": "Muestra un comic aleatorio de green tea neko, solo puede ser usado en un canal configurado como NSFW o por un Administrador.",
         "cuddle": "Muestra un gif de un abrazo en un anime.",
         "trig": "Provocar",
-        "bot": "Da información sobre el tiempo de actividad de Rem, los canales de voz, recuento de usuarios y recuento de servidores.",
-        "top": "Muestra el top 10 de los servidores (según la cantidad de usuarios) en el que está conectado este fragmento.",
+        "bot": "Da información sobre el tiempo de actividad de Rem, los canales de voz, recuento de usuarios y recuento de gremios.",
+        "top": "Muestra el top 10 de los gremios (según la cantidad de usuarios) en el que está conectado este shard.",
         "about": "Muestra la información básica sobre mi, como la librería que utilizo y quien me creó.",
         "lenny": "( ͡° ͜ʖ ͡°)",
         "lmg": "Buscaré algo en Google por ti",
@@ -122,23 +128,25 @@
         "sayd": "Haz que Rem diga algo y elimine tu comando.",
         "generic": "[GENÉRICO]",
         "fun": "[DIVERSIÓN]",
-        "coin": "gira una moneda por ti",
+        "coin": "Lanza una moneda por ti.",
         "nyan": "Nya :3",
         "uwu": "uwu",
         "dere": "Busca una definición dere o muestra una aleatoria.",
         "love": "Dale al usuario mencionado un punto de amor, añade - para quitar un punto de amor.",
         "sinfo": "Proporciona información sobre el servidor actual.",
-        "uinfo": "Proporciona información sobre ti o el usuario mencionado",
+        "uinfo": "Proporciona información sobre ti o el usuario mencionado.",
         "apq": "Añades una lista de reproducción a la cola, solo soporta listas de reproducción de Youtube y solo necesitas la ID, no el enlace.",
         "ap": "El comando para agregar permisos, puedes encontrar una extensa guía sobre su uso en el Discord de soporte (usa !w.bug para recibir la invitación)",
         "gp": "El comando para observar permisos, puedes encontrar una extensa guía sobre su uso en el discord de soporte (usa !w.bug para recibir la invitación)",
         "rp": "El comando para remover permisos, puedes encontrar una extensa guía sobre  su uso en el Discord de soporte (usa !w.bug para recibir la invitación)",
-        "cry": "¿Te sientes triste?, este comando es perfecto para ti",
-        "ibsafe": "Buscas en ibsear.ch (solo fotos SFW)",
+        "cry": "¿Te sientes triste?, este comando es perfecto para ti.",
+        "ibsafe": "Buscas en ibsear.ch (solo fotos SFW).",
         "iblewd": "Buscas en ibsearch.xxx (lo mismo que ibsafe, pero con fotos NSFW)",
         "qr": "Puedes eliminar una canción específica con la id de la canción, o un número de ellas con `qr IDinicial-IDfinal`, donde la ID inicial es el inicio de un número de canciones que desees eliminar y ID final sea el final de esa lista. También puedes eliminar varias canciones, sin eliminarlas todas, escribiendo sus ID y finalmente separándolas con comas.",
         "shuffle": "Mezcla la cola de reproducción. Debe haber al menos 3 canciones en la cola para hacer funcionar el comando.",
-        "owo": "Manda un meme aleatorio de \"Qué es esto OwO\" seleccionado cuidadosamente por Wolke"
+        "owo": "Manda un meme aleatorio de \"¿Qué es esto? OwO\" seleccionado cuidadosamente por Wolke.",
+        "getNode": "Te doy el nodo del permiso, la categoría del nodo y la categoría de un comando.",
+        "resetPerms": "Restablece todos los permisos establecidos hasta ahora, usa esto con cuidado."
     },
     "version": "Actualmente me encuentro en la versión {{version}}",
     "add": "Utiliza este enlace para añadirme a tu servidor: {{- link}}",
@@ -149,7 +157,7 @@
     },
     "joinVoice": {
         "join": "Vale, he entrado al canal de voz.",
-        "error": "¡Ha ocurrido un error al intentar ingresar al canal de voz!",
+        "error": "¡Un error ocurrió al intentar ingresar a tu canal de voz!",
         "permission": "¡No tienes permisos!, necesitas poseer el rol WolkeBot para usar este comando.",
         "no-voice": "¡No te encuentras en ningún canal de voz!",
         "already-voice": "Ya estoy en un canal de voz, ¡muéveme para cambiarme!"
@@ -237,9 +245,9 @@
         "repeat-on": "repetir:activado",
         "repeat-single": "repetir: single ",
         "repeat-queue": "repetir: cola",
-        "emoji-repeat-single": ":repeat_one: ",
-        "emoji-repeat-queue": ":repeat: ",
-        "emoji-repeat-off": ":heavy_check_mark: "
+        "emoji-repeat-single": ":repeat_one: Repetir: canción actual",
+        "emoji-repeat-queue": ":repeat: Repetir: cola",
+        "emoji-repeat-off": ":heavy_check_mark: Repetir: desactivado"
     },
     "queue": {
         "queued": "En cola:"
@@ -273,17 +281,17 @@
         "failure": "No tienes galletas para comer, ve a comprar algunas."
     },
     "bot-info": {
-        "uptime": "Tiempo de actividad.",
-        "users": "Usuarios.",
-        "channels": "Canales.",
-        "guilds": "Gremios.",
+        "uptime": "Tiempo activo",
+        "users": "Usuarios",
+        "channels": "Canales",
+        "guilds": "Gremios",
         "avg-channels": "Promedio de canales por gremio.",
         "avg-users": "Promedio de usuarios por gremio.",
         "voice": "Conexiones de voz",
-        "shard": "fragmento",
-        "guilds-s": "Servidores en este fragmento",
-        "channels-s": "Canales en este fragmento",
-        "users-s": "Usuarios en este fragmento",
+        "shard": "Shard",
+        "guilds-s": "Gremios en este shard",
+        "channels-s": "Canales en este shard",
+        "users-s": "Usuarios en este shard",
         "made": "Hecho por:",
         "lib": "Libreria"
     },
@@ -333,7 +341,7 @@
         "success": "He encontrado la siguiente canción: {{- link}}"
     },
     "skip": {
-        "success": ":track_next: La canción {{- title}} fue saltada",
+        "success": ":track_next: La canción {{- title}} ha sido saltada.",
         "stop": ":stop_button: Se ha detenido la canción",
         "all": ":stop_button: Todas las canciones fueron omitidas.",
         "some": ":track_next: {{- amount}} canciones han sido omitidas."
@@ -406,8 +414,8 @@
         "role": "Roles"
     },
     "flip": {
-        "head": "La moneda giró a cara {{- url}}",
-        "tail": "La moneda giró a cruz {{- url}}"
+        "head": "La moneda cayó cara {{- url}}",
+        "tail": "La moneda cayó cruz {{- url}}"
     },
     "gp": {
         "no-cat": "No pude encontrar ningún permiso con la categoria {{- cat}}",
@@ -428,7 +436,8 @@
         "success": "Le diste a **{{- target}}** **{{- rep}}** :heart: punto/s de amor. Usos restantes: **{{uses}}**.",
         "error-cd": "Solo puedes dar **2** :heart: puntos de amor por día, intenta en {{- time}}.",
         "next": " Siguiente uso: {{- time}}",
-        "self": ":broken_heart: No puedes darte puntos de amor a ti mismo."
+        "self": ":broken_heart: No puedes darte puntos de amor a ti mismo.",
+        "success-remove": "Acabas de quitarle **{{- rep}}**:heart: Punto de Amor a **{{- target}}**. Usos restantes **{{uses}}**."
     },
     "dere": {
         "no-dere": "El tipo de dere que buscaste no existe. Aquí está una lista de posibles deres:\n",
@@ -445,7 +454,30 @@
         "yangire": "El Yangire (ヤンギレ) es similar en algunas formas a Yandere. Es un personaje que empieza siendo bueno y dulce pero se vuelve muy agresivo y psicótico.\n Sin embargo, a diferencia de Yandere, Yangire no se vuelve violento por la atracción del personaje.\n En su lugar, pueden molestarse por estar irritados con un persona que no tiene nada que hacer con su interés amoroso.\n Esta palabra es una abreviación de Yanderu (やんでる) que significa ser mental o emocionalmente enfermo y Kire (きれ) que significa cortar."
     },
     "shuffle": {
-        "not-enough-shuffle": "Debe haber al menos 3 canciones en la cola de reproducción.",
+        "not-enough-shuffle": "Debe haber al menos 3 canciones en la cola de reproducción para poder reorganizarla.",
         "success": "¡Canciones de la cola mezcladas!"
+    },
+    "get-node": {
+        "success": "Nodo del permiso: `{{- node}}` Categoría del nodo: `{{- category}}.*` Categoría: `{{- category}}`",
+        "not-found": "Este comando no existe.",
+        "no-args": "Escribe un comando sin su prefijo para obtener el nodo del permiso, la categoría del nodo y la categoría."
+    },
+    "ap": {
+        "type": {
+            "user": "usuario",
+            "guild": "gremio",
+            "role": "rol",
+            "channel": "canal"
+        },
+        "success": "Ok, acabo de agregar el permiso `{{- node}}` `{{- allowed}}` a `{{- type}}` `{{- name}}`",
+        "wrong-node": "El nodo del permiso `{{- node}}` no funcionará, ya que no este no es válido. Para obtener el permiso del nodo de un comando escribe `{{- prefix}}getNode comando`",
+        "target-not-found": "No he podido encontrar el destino {{-target}} de este comando",
+        "no-allowance-set": "No me has indicado si el permiso se debe permitir o no, escribe `true` para permitirlo o `false` para denegarlo según tu elección.",
+        "missing-args": "La sintaxis correcta para este comando es `{{- prefix}}ap <permiso> [-u|-r|-c] [objetivo] <permitir o no>`\nEjemplo:\n```{{- prefix}}ap playlist.* true -> permite todos los comandos de la categoría playlist en el servidor\n{{- prefix}}ap music.fskip -u @usuario true -> permite al usuario mencionado usar {{- prefix}}fskip```"
+    },
+    "reset-perms": {
+        "nothing-found": "Todavía no has establecido ningún permiso.",
+        "confirmation": "¿Estás seguro de que deseas restablecer los permisos? Escribe `yes` para restablecerlos y `no` para cancelar este comando.",
+        "success": "Acabo de restablecer todos los permisos que se habían establecido."
     }
 }
