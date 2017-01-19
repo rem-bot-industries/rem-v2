@@ -171,7 +171,7 @@ class Player extends EventEmitter {
      * @param immediate - if the song should be played immediately
      */
     addToQueue(Song, immediate) {
-        this.toggleRepeatSingle(true);
+        this.toggleRepeatSingle('off');
         if (immediate) {
             this.queue.songs.unshift(Song);
             if (this.started) {
@@ -308,20 +308,30 @@ class Player extends EventEmitter {
         }
     }
 
-    toggleRepeatSingle(off) {
-        if (off) {
-            this.queue.repeat = 'off';
+    toggleRepeat(toggle) {
+        switch (toggle) {
+            case 'off':
+                this.queue.repeat = toggle;
+                return toggle;
+            case 'single':
+                this.queue.repeat = toggle;
+                return toggle;
+            case 'queue':
+                this.queue.repeat = toggle;
+                return toggle;
+        }
+    }
+
+    toggleRepeatSingle() {
+        if (this.queue.repeat === 'off') {
+            this.queue.repeat = 'single';
+            return 'single';
+        } else if (this.queue.repeat === 'single') {
+            this.queue.repeat = 'queue';
+            return 'queue';
         } else {
-            if (this.queue.repeat === 'off') {
-                this.queue.repeat = 'single';
-                return 'single';
-            } else if (this.queue.repeat === 'single') {
-                this.queue.repeat = 'queue';
-                return 'queue';
-            } else {
-                this.queue.repeat = 'off';
-                return 'off';
-            }
+            this.queue.repeat = 'off';
+            return 'off';
         }
     }
 

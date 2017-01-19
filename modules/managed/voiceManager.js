@@ -198,7 +198,7 @@ class VoiceManager extends Manager {
         let vm = this;
         return new Promise(function (resolve, reject) {
             if (typeof (vm.players[msg.channel.guild.id]) !== 'undefined') {
-                vm.players[msg.channel.guild.id].toggleRepeatSingle(true);
+                vm.players[msg.channel.guild.id].toggleRepeat('off');
                 if (howMany) {
                     let queue = vm.players[msg.channel.guild.id].getQueue(msg);
                         let current = queue.songs.shift();
@@ -245,7 +245,7 @@ class VoiceManager extends Manager {
         let vm = this;
         return new Promise(function (resolve, reject) {
             if (typeof (vm.players[msg.channel.guild.id]) !== 'undefined') {
-                vm.players[msg.channel.guild.id].toggleRepeatSingle(true);
+                vm.players[msg.channel.guild.id].toggleRepeatSingle('off');
                 let queue = vm.players[msg.channel.guild.id].getQueue(msg);
                 if (args === 'all') {
                     let current = queue.songs.shift();
@@ -328,9 +328,13 @@ class VoiceManager extends Manager {
         });
     }
 
-    repeat(msg) {
+    repeat(msg, type) {
         if (typeof (this.players[msg.channel.guild.id]) !== 'undefined') {
-            return this.players[msg.channel.guild.id].toggleRepeatSingle();
+            if (type) {
+                return this.players[msg.channel.guild.id].toggleRepeat(type);
+            } else {
+                return this.players[msg.channel.guild.id].toggleRepeatSingle();
+            }
         } else {
             return 'off';
         }
