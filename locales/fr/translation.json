@@ -146,7 +146,8 @@
         "shuffle": "Mélange la file d'attente. A noter qu'il faut au moins 3 chansons dans la file d'attente pour que la commande fonctionne.",
         "owo": "T'envoie au hasard un même \"OwO Qu'est-ce que c'est', qui sont spécialement choisis par Wolke",
         "getNode": "Te donnes le noeud de permission, le noeud de catégorie et la catégorie d'une commande",
-        "resetPerms": "Réinitialise toutes les permissions définies jusqu'à présent, à utiliser avec prudence"
+        "resetPerms": "Réinitialise toutes les permissions définies jusqu'à présent, à utiliser avec prudence",
+        "pat": "Caresse quelqu'un qui a été un(e) bon(ne) garçon/fille/hélicoptère"
     },
     "version": "Actuellement je suis en version {{version}}",
     "add": "Utilise ce lien pour m'ajouter à ton serveur: {{- link}}",
