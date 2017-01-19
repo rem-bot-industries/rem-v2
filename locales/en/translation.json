@@ -77,7 +77,7 @@
     "git": "Gives you the github link of Rem",
     "roll": "Rolls a number between zero and number, if there is no number it will be out of 10",
     "8ball": "Gives you the Opinion of the magic 8ball to a question",
-    "garfield": "Gives you a random garfield command",
+    "garfield": "Gives you a random garfield comic",
     "cat": "Sends you a random cat image",
     "hug": "Gives you an anime hug gif",
     "slap": "Gives you an anime slap gif",
@@ -123,7 +123,9 @@
     "rp": "The remove permission command, an extensive explanation can be found on the support discord (!w.bug to get the invite)",
     "cry": "Feeling sad ? This is the right cmd for you.",
     "ibsafe": "Searches on ibsear.ch (only sfw pics)",
-    "iblewd": "Searches on ibsearch.xxx (same as ibsafe but with nsfw pics too)"
+    "iblewd": "Searches on ibsearch.xxx (same as ibsafe but with nsfw pics too)",
+    "getNode": "Gives you the permission node, category node and category of a command",
+    "resetPerms": "Resets all permissions set until now, use with caution"
   },
   "version": "Currently I am running on version {{version}}",
   "add": "Use this link to add me to your Server: {{- link}}",

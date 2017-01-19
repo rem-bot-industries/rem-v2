@@ -25,7 +25,27 @@ class Repeat extends Command {
     }
 
     run(msg) {
-        let result = this.v.repeat(msg);
+        let repeat = msg.content.split(' ').splice(1)[0];
+        let result = 'off';
+        if (repeat) {
+            switch (repeat) {
+                case "none": {
+                    result = this.v.repeat(msg, 'off');
+                    break;
+                }
+                case "song": {
+                    result = this.v.repeat(msg, 'single');
+                    break;
+                }
+                case "queue": {
+                    result = this.v.repeat(msg, 'queue');
+                    break;
+                }
+            }
+        } else {
+            result = this.v.repeat(msg);
+        }
+
         msg.channel.createMessage(this.t(`np.emoji-repeat-${result}`, {lngs: msg.lang}));
     }
 }
