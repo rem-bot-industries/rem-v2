@@ -146,7 +146,8 @@
         "shuffle": "Spielt Lieder aus der Wiedergabeliste züfallig ab (geht erst am 3 Liedern)",
         "owo": "Schickt ein zufälliges \"OwO What's this\" meme.\nAusgesucht von Wolke",
         "getNode": "Gibt dir die Berechtigungs ID, Kategorie ID und Kategorie eines Befehls",
-        "resetPerms": "Setzt alle Berechtigungen zurück, nur mit Vorsicht verwenden."
+        "resetPerms": "Setzt alle Berechtigungen zurück, nur mit Vorsicht verwenden.",
+        "pat": "Streichelt jmd. der ein guter Junge/gutes Mädel/guter Helikopter war."
     },
     "version": "Momentan verwende ich Version{{version}}",
     "add": "Benutze diesen Link um mich auf deinem Server hinzuzufügen: {{- link}}",
