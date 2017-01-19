@@ -4,6 +4,7 @@
 let Manager = require('../../structures/manager');
 let clever = require("cleverbot-node");
 let re = /<@[0-9].*>/g;
+let cleverbotKey = require('../../config/main.json').cleverbot_api_key;
 class CleverBotManager extends Manager {
     constructor() {
         super();
@@ -39,7 +40,7 @@ class CleverBotManager extends Manager {
 class CleverBot {
     constructor() {
         this.clever = new clever();
-        clever.configure({botapi: "https://github.com/DasWolke/rem-v2|wolke@ram.moe"});
+        this.clever.configure({botapi: cleverbotKey});
     }
 
     talk(msg, cb) {

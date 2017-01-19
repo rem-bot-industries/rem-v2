@@ -40,7 +40,8 @@
   "no_error_tracking":true,
   "shards":1,
   "lbsearch_sfw_key":"the key to use for the ibsear.ch lookup",
-  "lbsearch_nsfw_key":"the key to use for the ibsearch.xxx lookup"
+  "lbsearch_nsfw_key":"the key to use for the ibsearch.xxx lookup",
+  "cleverbot_api_key":"Contact Info, so that we can use the cleverbot api."
 }
 ```
 - Beta should always be set to true.
