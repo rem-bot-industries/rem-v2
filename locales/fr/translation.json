@@ -18,7 +18,13 @@
         "more": "{{number}} en plus",
         "abort": ":x: annuler",
         "cat-nope": ":no_entre_sign: Cette catégorie n'existe pas !",
-        "mention": "S'il-te-plait mentionne un utilisateur."
+        "mention": "S'il-te-plait mentionne un utilisateur.",
+        "cancelled-command": "Commande annulée.",
+        "donate": "Faire un don",
+        "support": "Support",
+        "invite": "Inviter",
+        "language-name-en": "French",
+        "native-name": "Français"
     },
     "help": {
         "intro": "ayons du plaisir tous ensemble sur Discord (/^▽^)/  sélectionne une catégorie de commandes en répondant avec {{pre}}help \"numéro de la commande\" pour en apprendre plus:",
@@ -138,7 +144,9 @@
         "iblewd": "Recherche sur ibsearch.xxx (même chose que ibsafe mais avec également des images nsfw)",
         "qr": "Tu peux supprimer une seule chanson avec l'id de la chanson, ou plusieurs avec `qr 'id initiale'-'id finale', cela va retirer toutes les chansons commençant à l''id initiale' et finissant à l''id finale', ou supprimer de multiples id en les séparant par une virgule.",
         "shuffle": "Mélange la file d'attente. A noter qu'il faut au moins 3 chansons dans la file d'attente pour que la commande fonctionne.",
-        "owo": "T'envoie au hasard un même \"OwO Qu'est-ce que c'est', qui sont spécialement choisis par Wolke"
+        "owo": "T'envoie au hasard un même \"OwO Qu'est-ce que c'est', qui sont spécialement choisis par Wolke",
+        "getNode": "Te donnes le noeud de permission, le noeud de catégorie et la catégorie d'une commande",
+        "resetPerms": "Réinitialise toutes les permissions définies jusqu'à présent, à utiliser avec prudence"
     },
     "version": "Actuellement je suis en version {{version}}",
     "add": "Utilise ce lien pour m'ajouter à ton serveur: {{- link}}",
@@ -428,7 +436,8 @@
         "success": "Tu viens de donner à **{{- target}}** **{{- rep}}** :heart: Point d'Amour.\nUtilisations restantes **{{uses}}**.",
         "error-cd": "Tu  peux donner uniquement **2** :heart: Point d'Amour par Jour, prochaine utilisation {{- time}}.",
         "next": " Prochaine utilisation {{- time}}",
-        "self": ":broken_heart: Tu ne peux pas te donner de Points d'Amour."
+        "self": ":broken_heart: Tu ne peux pas te donner de Points d'Amour.",
+        "success-remove": "Vous venez de supprimer **{{- rep}}**:heart: Love Point de **{{- target}}** Utilisations restantes **{{uses}}**. "
     },
     "dere": {
         "no-dere": "Le type de \"dere\" que tu recherches n'existe pas. Voici une liste des \"dere\" possibles:",
@@ -447,5 +456,28 @@
     "shuffle": {
         "not-enough-shuffle": "Il doit avoir au moins 3 chansons dans la file d'attente.",
         "success": "Mélange la file d'attente !"
+    },
+    "get-node": {
+        "success": "Noeud de la permission: `{{- node}}` Noeud de la catégorie: `{{- category}}.*` catégorie: `{{- category}}`",
+        "not-found": "La commande n'existe pas.",
+        "no-args": "Tape une commande sans préfixe après celle-ci pour obtenir le noeud de la permission, le noeud de la catégorie et la catégorie"
+    },
+    "ap": {
+        "type": {
+            "user": "utilisateur",
+            "guild": "guilde",
+            "role": "rôle",
+            "channel": "canal"
+        },
+        "success": "Ok, je viens d'ajouter la permission `{{- node}}` `{{- allowed}}` à `{{- type}}` `{{- name}}` ",
+        "wrong-node": "Le noeud de permission `{{- node}}` ne va pas fonctionner puisque ce n'est pas un noeud de permission valide. Pour obtenir le noeud de permission pour une commande tape `{{- prefix}}getNode \"nom de la commande\"`",
+        "target-not-found": "Je n'ai pas pû trouver la cible {{- target}} pour cette commande",
+        "no-allowance-set": "Vous ne m'avez pas dit si la permission devait être permise ou pas, ajoutez `true` ou `false` en fonction de votre choix",
+        "missing-args": "La bonne syntaxe pour cette commande est `{{-prefix}}ap <node> [-u|-r|-c] [target] <allowed>`\n Exemple:\n```{{-prefix}}ap playlist.* true -> autorise toutes les commandes de la catégorie playlist sur le serveur\n{{-prefix}}ap music.fskip -u @user true -> autorise l'utilisateur mentionné d'utiliser {{- prefix}}fskip``` "
+    },
+    "reset-perms": {
+        "nothing-found": "Vous n'avez pas encore paramétré de Permissions.",
+        "confirmation": "Êtes-vous sûr de remettre à zéro les Permissions ? Saisissez `yes` pour les remettre à zéro `no` pour annuler cette commande.",
+        "success": "Je viens de reset toutes les permissions."
     }
 }
