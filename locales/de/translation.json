@@ -18,7 +18,13 @@
         "more": "{{number}} mehr",
         "abort": ":x: abgebrochen",
         "cat-nope": ":no_entry_sing: Diese Katagorie exestiert nicht!",
-        "mention": "Bitte richte dies an einen Benutzer."
+        "mention": "Bitte richte dies an einen Benutzer.",
+        "cancelled-command": "Befehl abgebrochen",
+        "donate": "Spenden",
+        "support": "Support",
+        "invite": "Einladung",
+        "language-name-en": "German",
+        "native-name": "Deutsch"
     },
     "help": {
         "intro": "lass uns zusammen viel Spass haben hier auf Discord (/^▽^)/ Hier ist eine Auflistung meiner Befehlskategorien, wähle eine von ihnen mit {{- pre}}help zahl aus.",
@@ -61,9 +67,9 @@
         "setPrefix": "Ändert das Prefix, keine Erwähnungen oder Leerzeichen erlaubt!",
         "other": "Anderes",
         "r34": "Sucht auf Rule34 nach den angegebenen Tags und gibt 1 Bild zurück, nur nutzbar in einem NSFW-Kanal.",
-        "kona": "Sucht auf Konachan nach den angegebenen Tags und gibt 1 Bild zurück, nur nutzbar in einem NSFW-Kanal.",
-        "e621": "Sucht auf e621 nach den angegebenen Tags und gibt 1 Bild zurück, nur nutzbar in einem NSFW-Kanal.",
-        "yandere": "Sucht auf yande.re nach den angegebenen Tags und gibt 1 Bild zurück, nur nutzbar in einem NSFW-Kanal.",
+        "kona": "Sucht auf Konachan nach den angegebenen Tags und gibt 1 Bild zurück, nur nutzbar in einem NSFW-Kanal oder mit Admin Rechten.",
+        "e621": "Sucht auf e621 nach den angegebenen Tags und gibt 1 Bild zurück, nur nutzbar in einem NSFW-Kanal oder mit Admin Rechten.",
+        "yandere": "Sucht auf yande.re nach den angegebenen Tags und gibt 1 Bild zurück, nur nutzbar in einem NSFW-Kanal oder mit Admin Rechten.",
         "level": "Sendet dir den aktuellen Level/Xp Stand",
         "rank": "Die Rangliste dieses Servers",
         "noLevel": "Deaktiviert das Level System auf diesem Server für dich. Wenn der Befehl erneut ausgeführt wird, ist es wieder aktiviert.",
@@ -71,7 +77,7 @@
         "pp": "berrechnet die PP für die Beatmap mit optionaler Genauigkeit und optionalen Mods",
         "cookie": "Gibt dem erwähnten Nutzer einen Keks oder zeigt deine Anzahl an Keksen, wenn kein Nutzer erwähnt ist.",
         "eatCookie": "Isst einen Keks.",
-        "git": "Sendet dir den Github Link von mir",
+        "git": "Sendet dir den Github Link von Rem",
         "roll": "Würfelt eine zufällige Zahl zwischen 1 und 10 oder der gesendeteten Zahl",
         "8ball": "Der Magische Ball beantwortet dir eine Ja/Nein Frage",
         "garfield": "Sendet dir ein zufälliges Garfield Comic",
@@ -102,7 +108,7 @@
         "shrug": "¯\\_(ツ)_/¯ ",
         "flip": "(╯°□°）╯︵ ┻━┻ ",
         "eggplant": "Einfach nur eine Aubergine",
-        "gtn": "Schickt dir ein zufälliges Green Tea Neko Comic, nur benutzbar mit der WolkeBot Rolle oder mit einem NSFW Kanal",
+        "gtn": "Schickt dir ein zufälliges Green Tea Neko Comic, nur benutzbar mit einem NSFW Kanal oder mit Admin Rechten.",
         "cuddle": "Sendet dir ein Anime Knuddel gif",
         "trig": "TRIGGERED",
         "bot": "Gibt dir Informationen über die aktuelle Laufzeit von Rem, Sprachverbindungen, Benutzeranzahl und Serveranzahl",
@@ -116,7 +122,7 @@
         "ar": "Füge dir oder einem Benutzer eine Rolle hinzu",
         "cr": "Erstelle eine Rolle oder füge eine Rolle dem Bot hinzu , -d -> Standard, -l 2 -> gibt dem Benutzer die Rolle wenn er Level 2 erreicht, -s -> erstellt ein selbstzuschreibbare Rolle, Beispiel -> cr -l 20 rolename, fügt die Rolle namens rolename dem Benutzer hinzu wenn er Level 20 erreicht",
         "lr": "Zeigt alle Rollen die im Moment verbunden sind mit Rem",
-        "rr": "Nimmt eine Rolle von dir selbst, einem anderen Benutzer oder dem Server weg ",
+        "rr": "Nimmt eine Rolle von dir selbst, einem anderen Benutzer oder dem Server weg.",
         "roles": "[ROLLEN]",
         "repeat": "Spielt einen Song/die Warteschlange immer wieder bis ein neues Lied hinzugefügt wird.",
         "sayd": "Lässt rem etwas sagen und löscht deine Eingabe.",
@@ -132,13 +138,15 @@
         "apq": "Fügt eine Playlist zu der Warteschlange hinzu. Bitte beachte, dass du die PlaylistID benötigst, NICHT den Playlist link.",
         "ap": "Der Erlaubnis hinzufügen Befehl, eine genaue Beschreibung kannst du auf dem Hilfe Server finden (!w.bug um den Link zu bekommen)",
         "gp": "Der Erlaubnis bekommen Befehl, eine genaue Beschreibung kannst du auf dem Hilfe Server finden (!w.bug um den Link zu bekommen) \n",
-        "rp": "Der Erlaubnis entfernen Befehl, eine genaue Beschreibung kannst du auf dem Hilfe Server finden (!w.bug um den Link zu bekommen) \n",
+        "rp": "Der Berechtigung entfernen Befehl, eine genaue Beschreibung kannst du auf dem Hilfe Server finden (!w.bug um den Link zu bekommen)",
         "cry": "Fühlst du dich traurig ? Das ist der richtige Befehl für dich.",
         "ibsafe": "Sucht auf ibsear.ch (nur SFW Bilder)",
         "iblewd": "Sucht auf ibsearch.xxx ( auch NSFW Bilder)\n",
         "qr": "Du kannst ein Lied aus der Liste entfernen mit der Song ID oder mehrere Lieder mit ` qr start ID - Stop ID` , das würde alle Lieder zwischen der Start ID und der Stop ID Entfernen.\nDu kannst auch spezifische Lieder entfernen mit der Song IDs getrennt von Kommas.",
         "shuffle": "Spielt Lieder aus der Wiedergabeliste züfallig ab (geht erst am 3 Liedern)",
-        "owo": "Schickt ein zufälliges \"OwO What's this\" meme.\nAusgesucht von Wolke"
+        "owo": "Schickt ein zufälliges \"OwO What's this\" meme.\nAusgesucht von Wolke",
+        "getNode": "Gibt dir die Berechtigungs ID, Kategorie ID und Kategorie eines Befehls",
+        "resetPerms": "Setzt alle Berechtigungen zurück, nur mit Vorsicht verwenden."
     },
     "version": "Momentan verwende ich Version{{version}}",
     "add": "Benutze diesen Link um mich auf deinem Server hinzuzufügen: {{- link}}",
@@ -237,9 +245,9 @@
         "repeat-on": "Wiederholung:Aktiviert",
         "repeat-single": "Wiederholung: Ein Lied",
         "repeat-queue": "Wiederholung: Warteschlange",
-        "emoji-repeat-single": ":repeat_one:",
-        "emoji-repeat-queue": ":repeat:",
-        "emoji-repeat-off": ":heavy_check_mark:"
+        "emoji-repeat-single": ":repeat_one: Wiederholung: Aktueller Song",
+        "emoji-repeat-queue": ":repeat: Wiederholung: Warteschlange",
+        "emoji-repeat-off": ":heavy_check_mark: Wiederholung: deaktiviert"
     },
     "queue": {
         "queued": "In der Warteschlange:"
@@ -428,24 +436,48 @@
         "success": "Du hast gerade **{{- target}}** **{{- rep}}** :heart:  einen Liebespunkt gegeben. Du hast noch **{{uses}}** übrig",
         "error-cd": "Du kannst nur **2** :heart: Liebespunkte pro Tag vergeben, warte {{- time}}",
         "next": "Verfügbar in {{- time}}",
-        "self": ":broken_heart: Du kannst dir selber keine Liebespunkte geben"
+        "self": ":broken_heart: Du kannst dir selber keine Liebespunkte geben",
+        "success-remove": "Du hast gerade **{{- rep}}** :heart: Liebes Punke von **{{- target}}** entfernt. Verbeibende Grebrauche **{{uses}}**."
     },
     "dere": {
         "no-dere": "Der Dere Typ nachdem du gesucht hast, existiert nicht. Hier ist eine Liste mit möglichen Deres:",
-        "dandere": "Der Dandere(だんデレ) Typ bezieht sich auf einen Charakter der oft ruhig und allein ist. \nDieses Verhalten entsteht meistens durch Schüchternheit oder weil der Charakter ein ruhiger Typ ist.\nSobald der Charakter allerdings alleine mit der Person ist, welche er liebt, kommt er in der Regel aus seinerSchale und wird liebevoller.\nDieses Wort ist eine Abkürzung von Danmari (だ ん ま り), was ruhig bedeutet und Deredere (デ レ デ レ), was \"verrückt werden vor Liebe bedeutet\".",
-        "deredere": "Der Deredere (デレデレ) Typ beschreibt einen Charakter welcher von Grund auf sehr freudig, glüklich, Energie geladen und freundlich ist.  Es ist egal was diesen Charakteren passiert, sie wechseln schnell wieder zu ihrer freudigen einstellung zurück. Dies ist möglicherweise der einzige Charaktertyp der zu dem Wortstamm Deredere keinen Vorsatz hat. ",
-        "himedere": "Der Charaktertyp Himedere (ひめデレ) beschreibt Charaktere, welche es bevorzugen von ihrem Partner wie eine Prinzessinen behandelt zu werden. Auch wenn sie nicht wirklich von Adel sind. Das Wort Himedere setzt sich zusammen aus Hime (ひめ) welches Prinzessin bedeutet und Deredere (デレデレ).",
-        "kamidere": "",
-        "kuudere": "",
-        "mayadere": "",
-        "oujidere": "",
-        "tsundere": "",
-        "undere": "",
-        "yandere": "",
-        "yangire": ""
+        "dandere": "Der Dandere(だんデレ) Typ bezieht sich auf einen Charakter der oft ruhig und allein ist. \nDieses Verhalten entsteht meistens durch Schüchternheit oder weil der Charakter ein ruhiger Typ ist.\nSobald der Charakter allerdings alleine mit der Person ist, welche er liebt, kommt er in der Regel aus seinerSchale und wird liebevoller.\nDieses Wort ist eine Abkürzung von Danmari (だ ん ま り), was ruhig bedeutet und Deredere (デ レ デ レ), was \"verrückt werden vor Liebe\" bedeutet.",
+        "deredere": "Der Deredere (デレデレ) Typ beschreibt einen Charakter welcher von Grund auf sehr freudig, glüklich, Energie geladen und freundlich ist.  Es ist egal was diesen Charakteren passiert, sie wechseln schnell wieder zu ihrer freudigen einstellung zurück. Dies ist möglicherweise der einzige Charaktertyp der zu dem Wortstamm Deredere keinen Bezug in der Definition hat.",
+        "himedere": "Der Charaktertyp Himedere (ひめデレ) beschreibt Charaktere, welche es bevorzugen von ihrem Partner wie eine Prinzessin behandelt zu werden. Auch wenn sie nicht wirklich von Adel sind. Das Wort Himedere setzt sich zusammen aus Hime (ひめ) welches Prinzessin bedeutet und Deredere (デ レ デ レ), was \"verrückt werden vor Liebe\" bedeutet.",
+        "kamidere": "Der Kamidere (かみデレ) Typ beschreibt einen Charakter mit einem God Komplex. Er ist sehr arrogant, stolz, hat keine Angst seine Meinung zu sagen und will allen beweisen wie sehr er im Recht ist. Das Wort Kamidere setzt sich aus Kami (かみ) was Gott bedeutet und Deredere (デ レ デ レ), was \"verrückt werden vor Liebe\" bedeutet zusammen.",
+        "kuudere": "Der Kuudere (クーデレ) Typ, machmal auch Coodere oder Kūdere geschrieben, beschreibt einen Charakter der oft kalt,direkt und zynisch ist.\nEr wirkt nach außen eventuell emotionslos, ist aber im inneren sehr fürsorglich, zumindest wenn es um ihre Geliebten geht. Das Wort Kuudere setzt sich aus Cool (クール) und Deredere (デ レ デ レ), was \"verrückt werden vor Liebe\" bedeutet zusammen.",
+        "mayadere": "Der Mayadere (まやデレ) Typ, beschreibt einen Charakter der oft ein gefährlicher Feind ist, aber die Seiten wechselt nachdem er sich in einen anderen Charakter verliebt. Der Charakter kann weiterhin tödlich und unberechenbar für den Protagonisten oder anderen Hauptcharakter sein.",
+        "oujidere": "Der Oujidere (おうじデレ) Typ, beschreibt einen Charakter der sich wünscht von seinem Geliebten wie ein Prinz behandelt zu werden, selbst wenn er eigentlich nicht zum Adel gehört. Das Wort Oujidere setzt sich aus Ouji (おうじ) was Prinz bedeutet und Deredere (デ レ デ レ), was \"verrückt werden vor Liebe\" bedeutet zusammen.",
+        "tsundere": "Der Tsundere (ツンデレ) Typ, ist einer der populärsten, wenn nicht der populärste Charakter Typ welcher in Anime und Manga verwendet wird. Dieser Typ beschreibt einen Charakter welcher seinen Geliebten schlecht behandelt. Manchmal hassen sie den Hauptcharakter vom Start an und beginnen ihn im Laufe der Serie zu lieben und manchmal kennen sie keine andere Art der Reaktion. Hier ist ein Beispiel: Der Hauptcharakter nennt einen Tsundere Charakter süß, als Reaktion darauf wird der Tsundere Charakter verlegen und sauer, könnte den Hauptcharakter eventuell schlagen und dann als dumm bezeichnen (BAKA!).  Das Wort Oujidere setzt sich aus Tsuntsun (ツンツン) was \"in Anwiederung wegschauen\" bedeutet und Deredere (デ レ デ レ), was \"verrückt werden vor Liebe\" bedeutet zusammen.",
+        "undere": "Der Undere (ウンデレ) Typ, beschreibt einen Charakter der zu beinahe allem ja sagt, was ihr Geliebter sagt. Sie stimmen ihrem Geliebten so viel wie möglich zu um ihm näher zu kommen. Das Wort Undere setzt sich aus Un (ウン) was ein kurzes japanisches \"ja\" ist und Deredere (デ レ デ レ), was \"verrückt werden vor Liebe\" bedeutet zusammen.",
+        "yandere": "Der Yandere (ヤンデレ) Typ, beschreibt einen Charakter der zu Beginn nett und süß ist, aber im Laufe der Zeit bessesen mit ihrem Geliebten wird. Der Charakter stalkt den Geliebten und benutzt Gewalt um ihrem Geliebten näher zu kommen, selbst wenn er einfach nur zu schüchtern ist mit dem Geliebten zu reden. Das Wort Yandere setzt sich aus Yanderu (やんでる) was \"körperlich/emotional krank\" bedeutet und Deredere (デ レ デ レ), was \"verrückt werden vor Liebe\" bedeutet zusammen.",
+        "yangire": "Der Yangire (ヤンギレ) Typ ist einigermaßen ähnlich mit dem Yandere Typ. Er beschreibt einen Charakter der zu Beginn nett und süß ist, aber im Laufe der Zeit sehr aggressiv und psychotisch wird. Anders als bei dem Yandere Typ, wird eine Yangire nicht gewalttätig wegen ihrer Liebe. Sie könnten allerdings ausrasten, weil sie bspw. von einem anderen Charakter der nichts mit ihrem Geliebten zu tun hat irritiert sind. Das Wort Yandere setzt sich aus Yanderu (やんでる) was \"körperlich/emotional krank\" bedeutet und Deredere (デ レ デ レ), was \"verrückt werden vor Liebe\" bedeutet zusammen."
     },
     "shuffle": {
-        "not-enough-shuffle": "Es müssen mindestens 3 Lieder in der Wiedergabeliste sein.",
+        "not-enough-shuffle": "Es müssen mindestens 3 Lieder in der Wiedergabeliste sein, damit dieser Befehl funktioniert..",
         "success": "Wiedergabeliste gemischt."
+    },
+    "get-node": {
+        "success": "Berechtigungs ID: `{{- node}}` Kategorien ID: `{{- category}}.*`Kategorie: `{{- category}}`",
+        "not-found": "Dieser Befehl existiert nicht.",
+        "no-args": "Schreibe den Befehl ohne Prefix hiernach um die Berechtigungs ID, Kategorie ID und die Kategorie zu erfahren."
+    },
+    "ap": {
+        "type": {
+            "user": "Nutzer",
+            "guild": "Server",
+            "role": "Role",
+            "channel": "Channel"
+        },
+        "success": "Ok ich habe gerade die Berechtigung `{{- node}}` `{{- allowed}}` zu dem `{{- type}}` `{{- name}}` hinzugefügt.",
+        "wrong-node": "Die Berechtigungs ID `{{- node}}` wird nicht funktionieren, da es keine erlaubte Berechtigungs ID ist. Um die ID für einen Befehl zu bekommen schreibe `{{- prefix}}getNode Befehl`",
+        "target-not-found": "Ich konnte das ziel {{- target}} nicht finden.",
+        "no-allowance-set": "Bitte gib an ob die Berechtigung positiv oder negativ ist, füge `true` (positiv) oder `false` (negativ) an den Befehl an, je nach dem wie du dich entscheidest.",
+        "missing-args": "Der richtige Syntax für diesen Befehl ist `{{-prefix}}ap <Notiz> [-u|-r|-c] [Ziel] <erlaubt>`\nBeispiel:\n```{{-prefix}}ap playlist.* ture  -> erlaubt alle Befehle der Kategorei Playlist auf dme Server.\n{{-prefix}}ap music.fskip -u @Benutzer ture -> erlaubt dem gennanten Benutzer {{- prefix}}fskip zu benutzen```"
+    },
+    "reset-perms": {
+        "nothing-found": "Du hast bisher keine Berechtigungen gesetzt.",
+        "confirmation": "Bist du dir sicher, dass du alle Berechtigungen resetten willst ? Tippe `yes` um sie zu resetten und `no` um diesen Befehl abzubrechen.",
+        "success": "Ich habe gerade alle Berechtigungen resettet."
     }
 }
