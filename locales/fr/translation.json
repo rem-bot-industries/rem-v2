@@ -4,7 +4,7 @@
         "no-pm": ":no_entry: Cette commande ne fonctionne pas dans les salons privés!",
         "whole-num": ":no_entry_sign: S'il te plaît utilise un nombre entier",
         "nan": ":no_entry_sign: Peu importe ce que tu viens d'envoyer, s'il te plaît utilise un nombre entier. :) ",
-        "no-song-in-queue": ":no_entry_sign: Il n'y a pas de chansons dans la file d'attente, ajoutes en peut-être une :musical_note: ?",
+        "no-song-in-queue": ":no_entry_sign: Il n'y a pas de chanson dans la file d'attente, ajoutes-en peut-être une :musical_note: ?",
         "no-song-playing": ":musical_note: Il n'y a aucune chanson de jouée pour le moment!",
         "no-permission": ":no_entry_sign: Tu n'as pas la permissions d'utiliser cette commande, s'il te plaît ajoute la permission `{{- node}}` à toi-même pour l'utiliser.",
         "no-voice": ":no_entry_sign: Je ne suis connectée à aucun salon vocal sur ce serveur!",
@@ -31,7 +31,7 @@
         "intro_2": "Salut je suis",
         "support": "[SUPPORT]",
         "bug": "reçois le lien pour le Discord du Support",
-        "help": "la commande d'aide",
+        "help": "La commande d'aide",
         "add": "Reçois un lien pour m'ajouter sur ton serveur",
         "music": "[MUSIQUE]",
         "voice": "Je rejoins le salon vocal dans lequel tu es actuellement (les commandes normales de musique font que le bot rejoins le salon vocal également)",
@@ -56,7 +56,7 @@
         "mod": "The Mod cp",
         "mod-info": "Toutes ces commandes requièrent que l'utilisateur ait le rôle Discord nommé WolkeBot",
         "info": "te donnes quelques informations à propos du serveur actuel",
-        "ban": "Bannit un utilisateur et supprime 7 jours de ses messages",
+        "ban": "Bannit un utilisateur et supprime ses derniers messages sur les 7 derniers jours",
         "kick": "Exclut un utilisateur",
         "rm": "supprime des messages, tu peux filtrer pour des bots, des utilisateurs, des commandes/réponses de Rem ou juste supprimer jusqu'à 100 messages.\nFiltres: -b -> bots| -r -> messages de Rem| -u @utilisateurs -> messages d'un utilisateur spécifique| -c -> messages commençant par le préfixe de Rem",
         "noLevelServer": "Désactive le système de niveaux sur l'entièreté du serveur, réutilise cette commande pour le réactivé",
@@ -67,9 +67,9 @@
         "setPrefix": "Change le préfixe du bot, ni espaces ni mentions permis!",
         "other": "[Autres]",
         "r34": "Recherche Rule34 pour les tags et renvoie 1 image, uniquement utilisable avec le rôle WolkeBot ou un salon configuré NSFW.",
-        "kona": "Recherche Konachn pour les tags et renvoie 1 image, uniquement utilisable avec le rôle WolkeBot ou un salon configuré NSFW.",
-        "e621": "Recherche E621 pour les tags et renvoie 1 image, uniquement utilisable avec le rôle WolkeBot ou un salon configuré NSFW.",
-        "yandere": "Recherche Yande.re pour les tags et renvoie 1 image, uniquement utilisable avec le rôle WolkeBot ou un salon configuré NSFW.",
+        "kona": "Recherche sur Konachan pour les tags et renvoie 1 image, uniquement utilisable un salon configuré NSFW ou Admin",
+        "e621": "Recherche sur E621 pour les tags et renvoie 1 image, uniquement utilisable avec un salon configuré NSFW ou Admin",
+        "yandere": "Recherche sur Yande.re pour les tags et renvoie 1 image, uniquement utilisable avec un salon configuré NSFW ou Admin.",
         "level": "Ton niveau et l'xp requis pour le prochain niveau",
         "rank": "Classement du serveur",
         "noLevel": "désactive le système de niveaux pour toi. Réutilise pour le réactiver pour toi.",
@@ -77,10 +77,10 @@
         "pp": "Calcule les PP pour la beatmap avec optionnellement la précision et les mods",
         "cookie": "Donne un cookie à l'utilisateur mentionné ou montre tes cookies si personne n'est mentionné. (donner des cookies est uniquement utilisable avec le rôle WolkeBot)",
         "eatCookie": "Mange un cookie.",
-        "git": "Donne le lien pour le github du bot",
+        "git": "Donne le lien pour le github de Rem",
         "roll": "Tire un nombre entre zéro et un nombre, s'il n'y a pas de nombre le tirage sera sur 10",
         "8ball": "Donne l'opinion de la boule8 magique à la question",
-        "garfield": "Donne un Garfield au hasard",
+        "garfield": "Donne une planche de Garfield au hasard",
         "cat": "Envoi une image de chat au hasard",
         "hug": "Donne un gif d'un calin d'anime",
         "slap": "Donne un gif d'une gifle d'anime",
@@ -108,7 +108,7 @@
         "shrug": "¯\\_(ツ)_/¯",
         "flip": "(╯°□°）╯︵ ┻━┻",
         "eggplant": "Juste une aubergine",
-        "gtn": "Te donnes un comic \"Green Tea Neko\" aléatoirement, uniquement utilisable avec le rôle WolkeBot ou un salon configuré NSFW.",
+        "gtn": "Te donnes un comic \"Green Tea Neko\" aléatoirement, uniquement utilisable avec un salon configuré NSFW ou Admin.",
         "cuddle": "Te donnes un câlin d'anime en gif",
         "trig": "TRIGGERED",
         "bot": "Te donnes les informations comme la durée de fonctionnement actuelle de Rem, le nombre de connections vocales, le nombre d'utilisateurs et le nombre de guildes",
@@ -158,7 +158,7 @@
     },
     "joinVoice": {
         "join": "Ok, je rejoins ton salon vocal maintenant",
-        "error": "Une erreur est apparues pendant l'accès au salon vocal!",
+        "error": "Une erreur est survenu pendant la tentative d'accès à votre salon vocal!",
         "permission": "Pas la permission! Tu as besoin de te donner le rôle WolkeBot pour utiliser ceci.",
         "no-voice": "Tu n'es pas dans un salon vocal!",
         "already-voice": "Je suis déjà dans un salon vocal, déplace pour changer cela!"
@@ -246,9 +246,9 @@
         "repeat-on": "Répétition:activée",
         "repeat-single": "Répétition : simple",
         "repeat-queue": "répète: file",
-        "emoji-repeat-single": ":repeat_one: ",
-        "emoji-repeat-queue": ":repeat: ",
-        "emoji-repeat-off": ":heavy_check_mark: "
+        "emoji-repeat-single": ":repeat_one: Répète: la chanson actuelle",
+        "emoji-repeat-queue": ":repeat: Répète: la queue",
+        "emoji-repeat-off": ":heavy_check_mark: Répétition: Désactivé"
     },
     "queue": {
         "queued": "En file d'attente:"
@@ -455,7 +455,7 @@
         "yangire": "Le type Yangire (ヤンギレ) est dans un certain sens similaire à Yandere.\nC'est un personnage qui peut commencer en étant sympas et tendre mais devient très agressif  et psychotique.\nCependant, contrairement aux Yandere, les Yangire ne deviennent pas violent dû à leur attraction au personnage.\nAu lieu, ils peuvent partir simplement parce que ils sont irrités avec un personnage qui n'a rien à faire avec son/sa bien aimé(e).\nCe mot est une abréviation de Yanderu (やんでる) qui veut dire mentalement ou émotionnellement malade et Kire (きれ) qui veut dire couper ou basculer."
     },
     "shuffle": {
-        "not-enough-shuffle": "Il doit avoir au moins 3 chansons dans la file d'attente.",
+        "not-enough-shuffle": "Il doit y avoir au moins 3 chansons dans la file d'attente.",
         "success": "Mélange la file d'attente !"
     },
     "get-node": {
