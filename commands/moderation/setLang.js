@@ -2,7 +2,7 @@
  * Created by Julian/Wolke on 07.11.2016.
  */
 let Command = require('../../structures/command');
-let GuildManager = require('../../modules/managed/guildManager');
+let AsciiTable = require('ascii-table');
 class SetLanguage extends Command {
     constructor({t, mod}) {
         super();
@@ -26,8 +26,13 @@ class SetLanguage extends Command {
                 msg.channel.createMessage(this.t('set-lang.unsupported', {lngs: msg.lang, languages: msg.lngs}));
             }
         } else {
-            msg.channel.createMessage(this.t('set-lang.no-lang', {lngs: msg.lang, languages: msg.lngs}))
+            msg.channel.createMessage(`${this.t('set-lang.available-languages', {lngs: msg.lang})}
+\`\`\`
+${this.buildTable(msg)}
+\`\`\`
+`)
         }
+
     }
 
     checkLang(lang, list) {
@@ -38,6 +43,28 @@ class SetLanguage extends Command {
             }
         }
         return false;
+    }
+
+    buildTable(msg) {
+        let table = new AsciiTable();
+        table.setHeading(
+            this.t('set-lang.shortcode', {lngs: msg.lang}),
+            this.t('set-lang.english-name', {lngs: msg.lang}),
+            this.t('set-lang.native-name', {lngs: msg.lang})
+        );
+        for (let i = 0; i < msg.lngs.length; i++) {
+            let sc = msg.lngs[i];
+            if (sc !== 'dev') {
+                let native_name = this.t('generic.native-name', {lng: msg.lngs[i]});
+                let english_name = this.t('generic.language-name-en', {lng: msg.lngs[i]});
+                if (native_name === 'generic.native-name' || (native_name === this.t('generic.language-name-en', {lng: 'en'}) && sc !== 'en')) {
+                    native_name = 'not defined';
+                    english_name = 'not defined';
+                }
+                table.addRow(sc, english_name, native_name);
+            }
+        }
+        return table.toString();
     }
 }
 module.exports = SetLanguage;

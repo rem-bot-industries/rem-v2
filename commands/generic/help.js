@@ -127,8 +127,7 @@ class Help extends Command {
             fields.push({
                 name: `${this.msg.prefix}${data.commands[i].cmd}`,
                 value: `${this.t(`help.${data.commands[i].cmd}`, {
-                    lngs: this.msg.lang,
-                    languages: this.buildLang(this.msg.lngs)
+                    lngs: this.msg.lang
                 })}`
             });
         }
