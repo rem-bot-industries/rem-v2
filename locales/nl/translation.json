@@ -1,0 +1,484 @@
+{
+    "generic": {
+        "error": ":x: Er is een fout opgetreden!",
+        "no-pm": ":no_entry: Deze command werkt niet in privé kanalen!",
+        "whole-num": ":no_entry_sign: Gebruik alsjeblieft een heel nummer!",
+        "nan": ":no_entry_sign: Wat je net ook stuurde, voeg alsjeblieft een rond getal toe. :)␣",
+        "no-song-in-queue": ":no_entry_sign: Er staat geen nummers in de wachtrij, misschien moet je er één toevoegen :musical_note: ?",
+        "no-song-playing": ":musical_note: Er word op dit moment geen lied afgespeeld!",
+        "no-permission": ":no_entry_sign: Je hebt geen toestemming om deze command te gebruiken, voeg alsjeblieft een Discord rol genaamd WolkeBot toe aan jezelf om het te gebruiken.",
+        "no-voice": ":no_entry_sign: Ik ben niet verbonden met een spraak kanaal op deze server!",
+        "level-update": ":tada: Je hebt zojuist **Level  {{level}}** bereikt op **{{server}}** ",
+        "empty-search": ":no_entry_sign: Je hebt geen zoekterm ingevuld!",
+        "negative": ":no_entry_sign: Gebruik alsjeblieft geen negatief getal!",
+        "cancel": "cancel",
+        "version": "versie",
+        "author": "auteur",
+        "lib": "gebruikte library",
+        "more": "{{number}} meer",
+        "abort": ":x: geannuleerd",
+        "cat-nope": ":no_entry_sign: Deze categorie bestaat niet!",
+        "mention": "Verwijs een lid AUB.",
+        "cancelled-command": "De command is geannuleerd.",
+        "donate": "Doneer.",
+        "support": "Support",
+        "invite": "Inviteer",
+        "language-name-en": "Engels",
+        "native-name": "Engels"
+    },
+    "help": {
+        "intro": "Laten we plezier hebben hier op Discord. (/^▽^)/ selecteer een command categorie door te reageren met {{pre}}help nummer van command om meer te weten te komen:",
+        "intro_2": "Hey ik ben",
+        "support": "[SUPPORT]",
+        "bug": "krijg de link van de support Discord",
+        "help": "de hulp command",
+        "add": "Krijg een link om mij aan je server toe te voegen",
+        "music": "[MUZIEK]",
+        "voice": "Ik kom in de voice channel waar jij op dit moment in zit (Normale muziek commands zorgen ook dat de bot in het spraak kanaal komt)",
+        "silent": "Ik verlaat het spraak kanaal waar ik nu mee verbonden ben. (Alleen te gebruiken met WolkeBot rol)",
+        "play": "Speel iets af van /Youtube/Soundcloud/Osu/zoek",
+        "pause": "Pauzeer het huidige nummer",
+        "resume": "Verder gaan met het afspelen van het gepauzeerde nummer ",
+        "volume": "Veranderd het volume van de bot, waarden tussen 1-200 (Alleen te gebruiken met WolkeBot rol)",
+        "forever": "Speelt een nummer herhaald af tot er nieuwe nummers worden toegevoegd aan de wachtrij, alleen te gebruiken met de WolkeBot rol",
+        "search": "Zoekt naar een lied in de Bot Database en laat de 5 beste resultaten zien",
+        "skip": "Start een stemming om het huidige nummer over te slaan, meer dan 50% van het kanaal moet stemmen, dan word het overgeslagen.",
+        "voteskip": "Start een stemming om het huidige nummer over te slaan, meer dan 50% van het kanaal moet stemmen, dan word het overgeslagen.",
+        "qa": "Voegt een liedje toe aan de wachtrij van Youtube/Soundscloud/Osu/search   maximale lengte: 1U30M",
+        "qra": "Verwijderd alle nummers behalve die nu afgespeeld wordt of een bepaald aantal nummers",
+        "queue": "Laat de huidige wachtrij zien",
+        "np": "Laat zien welk nummer er nu afgespeeld word",
+        "rq": "Voegt een willekeurig nummer/een aantal nummers toe aan de wachtrij",
+        "stream": "Speelt de geselecteerde internet radio af, je kunt zoeken naar radio's of ze direct toevoegen door -u url aan de command toe te voegen",
+        "youtube": "[YOUTUBE]",
+        "yts": "Zoekt op Youtube en geeft je het eerste resultaat",
+        "ytq": "Zoekt op Youtube en voegt het eerste resultaat toe aan de wachtrij",
+        "mod": "De Mod cp",
+        "mod-info": "Deze commands verseisen allemaal dat de gebruiker de Discord rol genaamd WolkeBot heeft",
+        "info": "Geeft je wat informatie over de huidige server",
+        "ban": "Verband de gebruiker en verwijderd 7 dagen van zijn/haar berichten",
+        "kick": "Verwijderd een gebruiker",
+        "rm": "verwijderd berichten, je kunt filteren voor bots, gebruikers, commands/reacties van Rem of gewoon tot 100 berichten deleten\nFilters: -b -> bots| -r -> messages from rem| -u @user -> messages from a certain user| -c -> Bericht dat start met een voorvoegsel van Rem",
+        "noLevelServer": "Schakelt het level systeem uit voor de hele server, gebruik de command opnieuw om het weer in te schakelen",
+        "noPmServer": "Schakelt PM notificaties uit voor de hele server, gebruik de command opnieuw om het weer in te schakelen",
+        "noChServer": "Schakelt de PM notificaties voor de hele server en schakelt kanaal notificaties in, gebruik de command opnieuw om het weer om te draaien",
+        "setLewd": "Voegt het huidige kanaal toe als NSFW kanaal",
+        "remLewd": "Verwijderd het huidige kanaal van de lijst met NSFW kanalen",
+        "setPrefix": "Veranderd het voorvoegsel van de bot, geen spaties/vermeldingen toegestaan!",
+        "other": "[Andere Dingen]",
+        "r34": "Zoekt op Rule34 met de gegeven labels en geeft 1 afbeelding terug, alleen bruikbaar met WolkeBot rol of een aangepast NSFW kanaal.",
+        "kona": "Zoekt op Konachan met de gegeven labels en geeft 1 afbeelding terug, alleen bruikbaar met WolkeBot rol of een aangepast NSFW kanaal.",
+        "e621": "Zoekt op E621 met de gegeven labels en geeft 1 afbeelding terug, alleen bruikbaar met WolkeBot rol of een aangepast NSFW kanaal.",
+        "yandere": "Zoekt op Yande.re met de gegeven labels en geeft 1 afbeelding terug, alleen bruikbaar met WolkeBot rol of een aangepast NSFW kanaal.",
+        "level": "Je Level en de XP die je nodig hebt voor het volgende Level",
+        "rank": "Ranglijst van deze server",
+        "noLevel": "Schakelt het Level systeem voor jou uit. Gebruik dit opnieuw om het weer aan te zetten.",
+        "noPm": "Schakelt PM notificaties voor jou uit. Gebruik opnieuw om het weer in te schakelen.",
+        "pp": "Rekent PP voor de beatmap met optionele accuraatheid en mods uit",
+        "cookie": "Geeft een koekje aan de benoemde gebruiker of laat jouw koekjes zien als je niemand benoemt. (Koekjes geven is alleen mogelijk met WolkeBot rol)",
+        "eatCookie": "Eet een koekje.",
+        "git": "Geeft jou de Github link van Rem",
+        "roll": "Rol een nummer tussen nul en het aangegeven getal, als er geen getal is aangegeven word 10 gebruikt.",
+        "8ball": "Geeft je de mening van de magische 8ball over een vraag",
+        "garfield": "Geeft je een willekeurige Garfield grap",
+        "cat": "Stuurt je een willekeurige plaatje van een kat",
+        "hug": "Geeft je een anime knuffel gif",
+        "slap": "Geeft je een anime klap gif",
+        "setLang": "Veranderd de taal, de talen die op dit moment ondersteund worden zijn {{languages}}",
+        "report": "Als je te verlegen bent om naar de support Discord te komen, gebruik dan report om een verslag te sturen naar de ontwikkelaar Wolke, maar misbruik het niet!",
+        "feedback": "Voor advies alsjeblieft de support Discord gebruiken ^^",
+        "talk": "Als je met me wilt praten @mention me met een bericht :D",
+        "helpReply": "OK, ik heb je een lijst met commands gestuurd via PM.",
+        "moderation": "[MODERATIE]",
+        "misc": "[DIVERS]",
+        "stats": "[STATS]",
+        "user": "[GERUIKER]",
+        "admin": "[ADMIN]",
+        "nsfw": "[NSFW]",
+        "eastereggs": "[PAASEIEREN]",
+        "proxer": "[PROXER]",
+        "no-cat": "[ONGECATEGORISEERD]",
+        "ping": "Geeft je de ping van de bot, realiseer dat dit niet de ping van een spraak channel is.",
+        "lewd": "Zo obsceen uwu",
+        "rem": "Geeft je een willekeurige foto van Rem.",
+        "wip": "[LOPENDE WERKZAAMHEDEN]",
+        "gr": "Zet een groet met set greetingMessage,{{user}} zal worden verplaatst met het lid dat zojuist is aangetreden en {{guild}} met de naam van de server. De groet zal plaatsvinden in de kanaal waar de command is toegepast",
+        "fw": "Zet een afscheidsgroet met set farewellMessage, {{user}} zal worden verplaatst met het lid dat zojuist de server heeft verlaten en {{guild}} met de naam van de server. De groet zal plaatsvinden in de kanaal waar de command is toegepast.",
+        "s": "De server command, zet dingen zoals groeten en afscheidsberichten.",
+        "shrug": "¯\\_(ツ)_/¯",
+        "flip": "(╯°□°）╯︵ ┻━┻",
+        "eggplant": "alleen maar een aubergine",
+        "gtn": "Geeft je een willekeurige Green Tea Neko strip, alleen bruikbaar met de WolkeBot rol of een geconfigureerde NSFW kanaal",
+        "cuddle": "Geeft je een anime knuffel animatie",
+        "trig": "TRIGGERED",
+        "bot": "Geeft je informatie over de uptime van Rem, spraak connecties, aantal gebruikers en aantal guilds",
+        "top": "Geeft the top 10 guilds(gesorteerd op aantal gebruikers) die aangesloten zijn op deze shard",
+        "about": "Geeft je basis informatie over mij, de bibliotheek en wie mij gecreerd heeft.",
+        "lenny": "( ͡° ͜ʖ ͡°) ",
+        "lmg": "Laat mij dat voor je googlen",
+        "fskip": "Slaat de huidige lied/ een aantal liederen/ alle liederen over",
+        "leave": "Ik verlaat de spraak kanaal waaraan ik  aangesloten ben.",
+        "say": "LAat Rem iets zeggen",
+        "ar": "Voeg een rol toe aan jezelf of een gebruiker",
+        "cr": "Creeer een rol of voeg een rol toe aan de bot, -d -> standaard, -l 2 -> geeft de rol aan de gebruiker wanneer hij level 2 berijkt, -s -> maakt de rol zelf toewijsbaar, bijvoorbeeld -> cr -l 20 rol1 creert een rol genaamd rol1 die toegewezen word aan een gebruiker die lvl 20 berijkt",
+        "lr": "Lijst met rollen die aangesloten zijn aan Rem op dit moment",
+        "rr": "Verwijdert een rol van jezelf of een andere lid van de server",
+        "roles": "[ROLLEN]",
+        "repeat": "Herhaalt een lied/de wachtlijst tot er een nieuwe lied wordt toegevoegd aan de wachtlijst.",
+        "sayd": "Laat Rem iets zeggen en verwijdert jouw command.",
+        "generic": "[ALGEMEEN]",
+        "fun": "[PRET]",
+        "coin": "Flip een munt voor je",
+        "nyan": "Nyaa :3",
+        "uwu": "uwu",
+        "dere": "Zoekt de -dere definitie of een willekeurige -dere definitie",
+        "love": "Geeft de vermelde lid een liefdespunt,  voeg - toe om 1 liefdespunt af te trekken.",
+        "sinfo": "geeft je wat info over de huidige server",
+        "uinfo": "geeft je wat info over jezelf/ de aangewezen lid",
+        "apq": "voegt een afspeellijst toe aan de wachtlijst, verwerkt alleen youtube afspeellijsteen en heeft alleen de id nodig. NIET HET ADRES!!",
+        "ap": "De command om permissies toe te voegen, een uitgebreide uitleg kan gevonden worden op de Rem server(!w.bug om een invitatie te krijgen)",
+        "gp": "De command om permissies te bezichtigen, een uitgebreide uitleg kan gevonden worden op de Rem server(!w.bug om een invitatie te krijgen)",
+        "rp": "De command om permissies te verwijderen, een uitgebreide uitleg kan gevonden worden op de Rem server(!w.bug om een invitatie te krijgen)",
+        "cry": "Voel je je verdrietig? Dit is de juiste command voor je.",
+        "ibsafe": "Zoekt op ibsear.ch (alleen sfw pics)",
+        "iblewd": "Zoekt op ibsearch.xxx (hetzelfde als ibsave, maar ook met NSFW fotos)",
+        "qr": "Je kan enkele liederen wehalen met hun liednummer, of verschillende met 'qr startid-stopid', dit zou alle liederen tussen startid-stopid weghalen, of verwijder verschillende liederen door de id's te scheiden met kommas",
+        "shuffle": "Schudt de queue door. Let op dat er ten minste 3 liederen in de wachtlijst moeten zijn om d ecommand te laten werken.",
+        "owo": "Verstuurt willekeurige \"OwO What's this\" memes, uitgekozen door Wolke. ",
+        "getNode": "Geeft jou het knooppunt. categorie knooppunt en de categorie van een opdracht",
+        "resetPerms": "Reset alle toestemmingen die gezet zijn, wees voorzichtig met het gebruiken hiervan.",
+        "pat": "Geef iemand die een goede jongen/meisje/helicopter is een aai over de bol."
+    },
+    "version": "Op het moment run ik op versie {{version}}",
+    "add": "Gebruik deze link om me aan je server toe te voegen: {{- link}}",
+    "bug": "Join de support Discord: {{- link}} om een bug aan te geven.",
+    "level": {
+        "result": "Je bent **level {{level}}**  XP: **{{current}}XP**/**{{needed}}XP** Totale XP:**{{total}}** ",
+        "disabled": "Het XP systeem is uitgeschakeld op deze server!"
+    },
+    "joinVoice": {
+        "join": "Ok, ik kom bij je voice channel.",
+        "error": "Er is een fout opgetreden terwijl ik bij je voice channel probeerde te komen!",
+        "permission": "Geen toestemming! Je moet jezelf de WolkeBot rol geven om dit te gebruiken.",
+        "no-voice": "Je zit niet in een voice channel!",
+        "already-voice": "Ik zit al in een voice channel, verplaats me om dat te veranderen!"
+    },
+    "nsfw-images": {
+        "nothing-found": "Geen plaatjes gevonden met de termen: `{{tags}}`",
+        "no-nsfw-channel": "Voeg alsjeblieft een NSFW channel toe met {{- prefix}}setLewd (in een van de NSFW channels) om NSFW commands te gebruiken",
+        "error-body": "Er is een fout opgetreden bij het interpreteren van de API  reactie. Probeer het AUB opnieuw, als het probleem blijft optreden, contact Wolke#6746"
+    },
+    "8ball": {
+        "answers": [
+            "Nee.",
+            "Ja.",
+            "Misschien.",
+            "Ik denk het niet.",
+            "Zeker weten van niet.",
+            "Doe het gewoon.",
+            "Dat is een geweldig idee.",
+            "Weet je het zeker?"
+        ],
+        "no-message": "Je hebt een vraag niet beantwoord."
+    },
+    "ban": {
+        "success": "Verbannen gebruiker {{user}}",
+        "privilege": "Mijn rol heeft niet de rechten om {{user}} te verbannen!",
+        "err": "Er is een fout opgetreden terwijl ik {{user}} probeerde te verbannen!",
+        "perms": "Je kan de eigenaar en niemand anders verbannen met de WolkeBot rol.",
+        "self": "Je kan me niet verbannen met mijn eigen commando.",
+        "no-mention": "Noem alstublieft de persoon op die je wilt verbannen."
+    },
+    "kick": {
+        "success": "Gebruiker eruit geschopt {{gebruiker}}",
+        "privilege": "Mijn rol heeft niet het recht om mensen eruit the schoppen {{gebruiker}} !",
+        "err": "Er is een error op komen dagen tijdens het proberen van iemand eruit te schoppen {{gebruiker}} !",
+        "perms": "Je kan de eigenaar en niemand anders eruit schoppen met de WolkeBot rol.",
+        "self": "Je kan me er niet uit schoppen met mijn eigen commando.",
+        "no-mention": "Noem alstublieft een gerbuiker op die je eruit wilt schoppen."
+    },
+    "roll": {
+        "whole-number": "Voeg alstublieft een heel getal toe!",
+        "negative": "Ik kan niet rollen met een {{nummer}}",
+        "success": "Rolde een {{eerste}} uit een {{tweede}}"
+    },
+    "qa": {
+        "nothing-found": "Geen lied gevonden met Zoek Term '{{zoek}}'␣",
+        "empty-search": "Je hebt geen zoek term ingevuld!",
+        "started-download": "Download gestart van '{{- url}}'␣",
+        "success": "Ingeplaatst in de lijst."
+    },
+    "rq": {
+        "db-error": "Een data basis error is op komen dagen!",
+        "success-multiple": "De volgende liedjes zijn toegevoegd.\n'''{{- tabel}}'''",
+        "too-big": "Ik heb {{number}} liedjes toegevoegd.",
+        "no-songs-added": "Ik kon geen enkel lied toevoegen omdat ze al in de wachtrij waren, probeer opnieuw.",
+        "too-much": "Je kan niet meer dan {{number}} liederen tegelijk toevoegen!"
+    },
+    "qra": {
+        "to-small": "Je kan de liedjes{{nummer}} niet uit de lijst halen!",
+        "success": "De volgende liedjes zijn uit de wachtlijst gehaald `{{number}` songs.",
+        "too-big": "Dit liedje {{nummer}} is verwijderd",
+        "one-song": "Gebruik {{- voorvoegsel}}fskip om het liedje nu te overslaan.",
+        "no-number": "Je hebt niet gezegt hoeveel liederen ik uit de wachtlijst moet halen!",
+        "removed": "`{{- title}}` Van de wachtlijst verwijdert."
+    },
+    "cookie": {
+        "give": "Gaf gebruiker **{{- gebruiker}}** **11** koekje!",
+        "new-server": "Probeer het opnieuw, alstublieft.",
+        "arere": "Aww.....iets ging verkeerd.",
+        "perms": "Je hebt een discord rol genaamd WolkeBot nodig om koekjes te geven!",
+        "one-user": "Alstublieft, noem **1 User**,niet meer, niet minder!",
+        "count": "Jij hebt **{{nummer}}** koekjes op dit moment."
+    },
+    "eastereggs": {
+        "jay": "Jay houd van je-",
+        "magic": "xX_Cats_Xx was hier-"
+    },
+    "set-lang": {
+        "no-lang": "Je hebt geen specifieke taal uitgekozen! Op dit moment zijn er {{talen}}\nniet om uit te kiezen.",
+        "success": "Oke Ik heb net de taal van de server gezet naar {{-taal}}",
+        "unsupported": "Deze taal is nog niet in het system neergezet, maar jij kunt helpen door het toe te voegen van een aanvragen van een taal op Github.\nOp dit moment zijn er {{talen}} om uit te kiezen."
+    },
+    "np": {
+        "song-duration": "Op dit moment speelt Rem: {{titel}} {{nu}} {{tijd}}{herhaling}}",
+        "song": "Op dit moment spelen we:{{--title}}{{herhaal}}",
+        "repeat-on": "Herhaal:aan",
+        "repeat-single": "Herhaal: lied",
+        "repeat-queue": "Herhaal: wachtlijst",
+        "emoji-repeat-single": ":repeat_one: Repeat: current song",
+        "emoji-repeat-queue": ":repeat:␣ Repeat: queue",
+        "emoji-repeat-off": ":heavy_check_mark:␣ Repeat: off"
+    },
+    "queue": {
+        "queued": "In de wachtlijst:"
+    },
+    "rem-lewd": {
+        "no-nsfw": "Er zijn nog geen NSFW Channels.",
+        "success": "Succesvol  {{- channel}} verwijderd uit NSFW channels!"
+    },
+    "no-level-server": {
+        "success-disable": "Ok ik heb zojuist het level systeem uitgezet voor deze server, gebruik deze command nog een keer om het weer aan te zetten.",
+        "success-enable": "Ok ik heb zojuist het level systeem aangezet voor deze server, gebruik deze command nog een keer om het weer aan te zetten."
+    },
+    "no-pm-server": {
+        "success-disable": "Ok ik heb zojuist pm notificaties voor deze server uitgeschakeld, typ deze command opnieuw om ze in te schakelen.",
+        "success-enable": "Ok ik heb zojuist pm notificaties voor deze server ingeschakeld, typ deze command opnieuw om ze uit te schakelen."
+    },
+    "no-channel-server": {
+        "success-disable": "Ok ik heb zojuist pm notificaties uitgeschakeld voor deze server en channel notificaties ingeschakeld, typ deze command opnieuw om het om omgekeerde te doen.",
+        "success-enable": "Ok ik heb zojuist pm notificaties ingeschakeld voor deze server en channel notificaties uitgeschakeld, typ deze command opnieuw om het omgekeerde te doen."
+    },
+    "no-level": {
+        "success-disable": "Oke, ik heb het level systeem uitgeschakeld voor je, typ dit commando nog een keer in om het weer in te schakelen.",
+        "success-enable": "Oke, ik heb het level systeem ingeschakeld voor je, typ dit commando nog een keer in om het weer uit te schakelen."
+    },
+    "no-pm": {
+        "success-disable": "Oke, ik heb PM notificaties uitgeschakeld voor je, typ dit commando nog een keer in om het weer in te schakelen.",
+        "success-enable": "Oke, ik heb PM notificaties ingeschakeld voor je, typ dit commando nog een keer in om het weer uit te schakelen."
+    },
+    "eat-cookie": {
+        "success": "Je at net {{number}} Koekje(s)!",
+        "failure": "Je hebt geen koekjes om te eten."
+    },
+    "bot-info": {
+        "uptime": "Uptime",
+        "users": "Gebruikers",
+        "channels": "Kanalen",
+        "guilds": "Bonden",
+        "avg-channels": "Gemiddeld aantal kanalen per bond",
+        "avg-users": "Gemiddeld aantal gebruikers per bond",
+        "voice": "Stemverbindingen",
+        "shard": "shard",
+        "guilds-s": "Guilds aangesloten op deze shard",
+        "channels-s": "Kanalen aangesloten op deze shard",
+        "users-s": "GEbruikers op deze shard",
+        "made": "Gemaakt door:",
+        "lib": "Bibliotheek"
+    },
+    "rank": "Je kan het scorebord voor de server hier vinden: {{- link}}",
+    "pp": {
+        "err": {
+            "api-body": "Kon API Response niet ontleden!",
+            "osu-api": "De osu! api lijkt een klein probleem te hebben.",
+            "no-link": "Dit is geen geldige osu link!",
+            "unvalid-link": "Geen map link geleverd."
+        },
+        "success": "PP voor map `{{- artist}} - {{- title}} [{{- version}}] met Account {{- accuracy}}%` `{{- pp}}PP` `{{- mods}}` "
+    },
+    "server-info": {
+        "id": "ID",
+        "name": "Naam",
+        "member": "Leden",
+        "text": "Tekst channels",
+        "voice": "Spraak kanalen",
+        "roles": "Rollen",
+        "creation": "Datum van creatie",
+        "region": "Regio",
+        "owner": "Eigenaar"
+    },
+    "leave": "OK, ik heb de spraak kanaal verlaten.",
+    "play": {
+        "no-result": "Geen lied gevonden!",
+        "playing": ":musical_note: Nu aan het afspelen: **{{- song}}** "
+    },
+    "prefix": {
+        "success": "OK, ik heb het voorvoegsel gezet naar {{- prefix}}, probeer `{{- prefix}}ping` om te controleren.",
+        "no-prefix": "Plaats een voorvoegsel A.U.B."
+    },
+    "voice": {
+        "in-queue": "**{{- song}}** is al in de wachtrij.",
+        "error-volume": "Fout bij het veranderen van de volume!",
+        "success-volume": "Zet volume naar {{- volume}} ",
+        "no-volume": "Geen volume gezet!",
+        "repeat-start": "Begint met her herhalen van **{{- song}}** ",
+        "already-playing": "Dit lied speelt al af!",
+        "blocked": "Deze video is niet beschikbaar om to downloaden. Mischien is het te lang of is het geblockt/weggehaald",
+        "dl-start": ":hourglass: laadt liedje!",
+        "use-proxy": "Proberende over de proxy te downloaden, kan even duren.",
+        "too-much": "Je kan de volume niet hoger dan 200 zetten!"
+    },
+    "yts": {
+        "success": "Heb het volgende liedje gevonden: {{- link}}"
+    },
+    "skip": {
+        "success": ":track_next: Liedje overgeslagen: {{- title}}",
+        "stop": ":stop_button: Huidige liedje gestopt.",
+        "all": ":stop_button: Alle liederen overgeslagen.",
+        "some": ":track_next: {{- amount}} liederen overgeslagen."
+    },
+    "vskip": {
+        "user-no-voice": "Je kan niet stemmen om over te slaan als je niet in dezelfde Voicechannel zit!",
+        "same-voice": "Je zit niet in dezelfde Voicechannel als ik!",
+        "dup": "Je hebt al gestemd!",
+        "success-add": "Stem toegevoegd, stempercentage op **{{current}}%/{{needed}}%",
+        "success-skip": "Liedje weggestemd: **{{- title}}**",
+        "vote": "\nTyp {{- prefix}}yes om het lied over te slaan. huidige kiespercentage op {{- perct}}%/{{- needed}}\nLeden die hebben gekozen:\n ```{{- table}}``` ",
+        "in-prog": "Er is al een verkiezing om het lied over te slaan, gebruik {{- prefix}}yes om het huidig lied over te slaan."
+    },
+    "rm": {
+        "less-2": "Je kan niet minder dan 2 berichten verwijderen!",
+        "over-100": "Je kan niet meer dan 100 berichten in een keer verwijderen!",
+        "success": "Succesvol {{number}} berichten verwijderd.",
+        "error": "Error tijdens het verwijderen van berichten!",
+        "over-limit": "Je kan niet minder dan 2 of meer dan 100 berichten verwijderen!",
+        "no-limit": "Je hebt niet gespecificeerd hoeveel berichten ik moet verwijderen.",
+        "nothing-found": "Ik vondt geen bericht dat overeenkomt met de filter!"
+    },
+    "search": {
+        "success": "Volgende liedjes gevonden:"
+    },
+    "set-lewd": {
+        "success": "Succesvol {{- channel}} toegevoegd aan de NSFW kanalen!"
+    },
+    "report": "Oke, ik heb je melding naar Wolke gestuurd. Gelieve niet te misbruiken, je kunt worden geband van het gebruiken van de bot!",
+    "greeting": {
+        "no-greeting": "Je hebt geen groet geplaatst die ik moet gebruiken!",
+        "no-add": "Je kan of de groet zetten, of de groet terugzetten op de standaard."
+    },
+    "farewell": {
+        "no-farewell": "Je hebt geen afscheidsgroet geplaatst die ik moet gebruiken!",
+        "no-add": "Je kunt de afscheidsbericht of instellen of resetten."
+    },
+    "add-role": {
+        "ok": "Ok, ik heb {{- user}} de rol {{- role}}  gegeven"
+    },
+    "create-role": {
+        "missing": "De rol die je hebt gespecificeert bestaat niet op deze server.",
+        "new": "Zal ik de rol voor je creeren?",
+        "no-args": "Je hebt geen argumenten gezet voor de command.",
+        "ok": "Ok, ik heb de {{- role}} gecreerd.",
+        "exists": "de {{- role}} bestaat al in de database."
+    },
+    "remove-role": {
+        "ok": "Ok, ik heb de {{- role}} rol verwijderd van {{- user}} !"
+    },
+    "list-roles": {
+        "nr": "nr.",
+        "id": "id",
+        "name": "naam",
+        "self": "zelf toewijsbare",
+        "lvl": "Beschikbaar vanaf level",
+        "default": "standaard"
+    },
+    "user-info": {
+        "id": "$t(server-info.id)",
+        "name": "$t(server-info.name)",
+        "discriminator": "discriminator",
+        "nick": "Roepnaam",
+        "join": "Bijgevoegd",
+        "created": "Gecreeerd",
+        "playing": "Speelt",
+        "info": "Gebruikersinfo",
+        "bot": "Bot",
+        "status": "Status",
+        "role": "Rollen"
+    },
+    "flip": {
+        "head": "Er is kop gegooit {{- url}}",
+        "tail": "Er is cent gegooit {{- url}}"
+    },
+    "gp": {
+        "no-cat": "Ik vond geen enkele permissies voor de categorie {{- cat}}",
+        "no-perms": "Je hebt nog geen enkele permissie toegevoegd.",
+        "table": {
+            "id": "$t(server-info.id)",
+            "name": "Naam",
+            "type": "Type",
+            "cat": "Categorie",
+            "perm": "Permissie",
+            "use": "Gebruik"
+        }
+    },
+    "rp": {
+        "success": "Ik heb de permissie `{{- node}}` successvol verwijdert van de **{{- type}}** `{{- id}}` "
+    },
+    "love": {
+        "success": "je hebt **{{- target}}** **{{- rep}}** :heart: liefdespunten gegeven. Resterende toepassingen: **{{uses}}**.",
+        "error-cd": "\nJa kan maar **2** :heart: Liefdespunten per dag geven, volgende gebruik {{- time}}. ",
+        "next": "␣in {{- time}} mag je dit weer doen.",
+        "self": ":broken_heart: Je kan geen liefdespunten aan jezelf geven.",
+        "success-remove": "U heeft net **{{- rep}}:heart: liefedespunt(en) van **{{- target}}** weggehaald Overgebleven punten: **{{uses}}**"
+    },
+    "dere": {
+        "no-dere": "de -dere die je zocht bestaat niet. Hier is een lijst met mogelijke -deres:",
+        "dandere": "de Dandere (だんデレ) type refereert naar personen die meestal stil en terug getrokken zijn.\nHet kan zijn dat ze verlegen zijn of gewoon een rustig type zijn.\nMaar waneer ze alleen zijn met de persoon tot wie ze zich aangetroken voelen, komen ze uit hun schild en zijn ze liefdevoller.\n Dit woord is een afkorting van Danmari (だんまり), wat stil betekent, en Deredere (デレデレ), wat liefdevol betekent.",
+        "deredere": "De Deredere (デレデレ) type refereert naar personen die helemaal vriendelijk, energiek en blij zijn.\n Wat er ook gebeurt, ze worden snel weer hun blije zelf..\n Dit is waarschijnlijk de enige karakter type dat geen afkorting van Deredere (デレデレ) woord is, hoewel de definitie niet simpelweg liefdevol is.",
+        "himedere": "De Himedere (ひめデレ) type refereert naar een persoon die behandelt wil worden als een prinses door de persoon waarvan ze houdt, al is ze geen prinses in werkelijkheid. Dit woord is een afkorting van Hime (ひめ), wat prinses betekent, en Deredere (デレデレ), wat liefdevol betekent.",
+        "kamidere": "De Kamidere (かみデレ) type refereert naar een persoon met een god complex. Kamideres zijn arrogant en trots, en zijn niet bang om hun mening te geven en iedereen te wijzen hoe juist ze zijn.\n Dit woord is een afkorting van  Kami (かみ) , wat god betekent, en Deredere (デレデレ), wat liefdevol betekent.",
+        "kuudere": "De Kuudere (ク ー デ レ), soms geschreven Coodere of Kūdere, het type verwijst naar een personage dat vaak koud, bot, en cynisch is.\n Ze kan heel emotieloos lijken aan de buitenkant, maar van binnen zijn ze erg zorgzaam - tenminste als het gaat om degenen die ze liefhebben.\nDit woord is een afkorting van Cool (ク ー ル) en Deredere (デ レ デ レ), wat smoorverliefd betekent",
+        "mayadere": "De Mayadere (まやデレ) type refereert naar iemand die een gevaarlijke antagonist is, maar van kant verwisselt nadat hij verliefd wordt op iemand.\n Deze persoon zal vaak nog steeds gevaarlijk en onvoorspelbaar zijn voor de protagonist of andere hoofdrollen in de anime of manga.",
+        "oujidere": "De Oujidere (おうじデレ) type refereert naar een persoon die behandelt wil worden als een prins door de persoon waarvan hij houdt, al is hij geen prins in werkelijkheid. Dit woord is een afkorting van  Ouji (おうじ), wat prins betekent, en Deredere (デレデレ), wat liefdevol betekent.",
+        "tsundere": "de The Tsundere (ツンデレ) is waarschijnlijk een van de populairste of simpeler gezegd de meest gebruikte letter karakters in anime en manga. Dit refereert naar iemand die de mensen die hij niet zo aardig vind bedreigt. Soms komt dit doordat ze starten met degene te haten en diegene dit als enige manier heeft om te reageren. Een voorbeeld hiervoor is als de hoofdpersoon de tsundere karakter schattig noemt. De tsundere karakter word boos en zenuwachtig en zal waarschijnlijk fysieke schade aanrichten aan degene van wie ze houden en ze stom noemen. Dit woord is een afkorting van Tsuntsun (ツンツン) wat betekent wegkijken en walgen en Deredere (デレデレ) wat smoorverliefd betekent.",
+        "undere": "De Undere (ウ ン デ レ) karakter verwijst naar een personage die ja zegt tegen vrijwel alles wat degene die ze liefhebben zegt.\n Zij komen overeen zo veel mogelijk zo dicht mogelijk te worden als hun liefde interesse aan kan.\n Dit woord is een afkorting van Un (ウ ン), dat is een korte weg Japanners zeggen ja en Deredere (デ レ デ レ), dat smoorverliefd betekent.",
+        "yandere": "De Yandere (ヤ ン デ レ) karakter verwijst naar een personage dat  aardig en lief begint maar uiteindelijk  donker en obsessief wordt over de degene die ze liefhebben.\n Ze worden stalkers en gebruikers van geweld, en misschien zelfs moord, een persoon die dicht bij hun liefdes-interesse komt. Zelfs als ze te verlegen om gewoon te praten met die persoon hebben ze een oogje op.\n Dit woord is een afkorting van Yanderu (や ん で る), wat  geestelijk of emotioneel ziek betekent en Deredere (デ レ デ レ), dat smoor verliefd betekent.\n",
+        "yangire": "De Yangire (ヤンギレ) karakter lijkt op de Yandere in verschillende redenen. Het is een karakter die misschien lief en zoet start maar heel agressief en psychotisch word. Echter anders dan de Yandere, de Yangire word niet hevig vanwege zijn aandacht naar een persoon.\nIn plaats daarvan ze breken simpelweg omdat ze geïrriteerd worden door een karakter dat niks te maken heeft met zijn liefdes-interesse. Dit woord is een afkorting voor Yanderu (やんでる) wat betekent om mentaal of emotioneel ill en Kire te zijn (きれ) wat betekent om gehakt en gebroken te worden.\n"
+    },
+    "shuffle": {
+        "not-enough-shuffle": "Er moeten ten minste 3 liederen zijn in de wachtlijst om de liederen te schuifelen. ",
+        "success": "Wachtlijst doorgeschud."
+    },
+    "get-node": {
+        "success": "Toestemmings-knoopunt: `{{- node}}` Category node:`{{- category}}.*` Category:`{{-category}}`",
+        "not-found": "Deze command bestaat niet.",
+        "no-args": "Type een opdracht zonder voervoegsel in om zijn toestemmings-knoopunt, categorie knooppunt en zijn categorie."
+    },
+    "ap": {
+        "type": {
+            "user": "gebruiker",
+            "guild": "gilde",
+            "role": "rol",
+            "channel": "kanaal"
+        },
+        "success": "Oke, Ik heb net de toestemming `{{- node}}` `{{- allowed}}` naar `{{type}}` `{{- name}}` toevegoed",
+        "wrong-node": "De toestemmings-knooppunt `{{- node}}` zal niet werken omdat het geen geldige toestemmings-knoopunt is. Om een geldige toestemmings-knoopunt te krijgen type `{{- prefix}}getNodecommand`",
+        "target-not-found": "Ik kon het doelwit niet vinden {{- target}} voor deze opdracht\n",
+        "no-allowance-set": "U heeft mij niet verteld of deze toestemming waar of niet waar is, voeg 'true' of 'false' gebaseerd op uw keuze  ",
+        "missing-args": "De correcte syntaxis for deze opdracht is `{{-prefix}}ap <node> [-u|-r|-c] [target] <allowed>`\nVoorbeeld:\n```{{-prefix}}ap playlist.* true -> Geeft alle opdrachten toestemming in deze categorie-lijst in de server\n{{-prefix}}ap music.fskip -u @user true -> allows the mentioned user to use {{-prefix}}fskip```"
+    },
+    "reset-perms": {
+        "nothing-found": "Je hebt nog geen toestemingen gezet.",
+        "confirmation": "Ben je zeker dat je alla toestemmingen wil resetten? Typ \"yes\" om ze te resetten en \"no\" om de command te annuleren.",
+        "success": "Ik heb alle toestemmingen die je gezet hebt, terug gesteld."
+    }
+}

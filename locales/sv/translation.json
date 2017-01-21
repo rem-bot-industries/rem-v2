@@ -18,7 +18,13 @@
         "more": "{{number}} mer.",
         "abort": ":x: avbruten",
         "cat-nope": ":no_entry_sign: Denna kategori existerar inte!",
-        "mention": "Snälla nämn en användare."
+        "mention": "Snälla nämn en användare.",
+        "cancelled-command": "Cancelled the command.",
+        "donate": "Donate",
+        "support": "Support",
+        "invite": "Invite",
+        "language-name-en": "English",
+        "native-name": "English"
     },
     "help": {
         "intro": "Låt oss ha kul tillsammans på Discord! (/^▽^)/ Kommandon du kan utföra:",
@@ -129,13 +135,19 @@
         "love": "Ger den nämnda användaren en kärlekspoäng, lägg till - för att reducera kärlekspoängen på användaren med 1",
         "sinfo": "ger dig information om den nuvarande servern",
         "uinfo": "ger dig information om dig/den nämnda användaren",
-        "apq": "",
-        "ap": "",
-        "gp": "",
-        "rp": "",
-        "cry": "",
-        "ibsafe": "",
-        "iblewd": ""
+        "apq": "adds a playlist to the queue, only supports youtube-playlists and only needs the id. NOT THE LINK.",
+        "ap": "The add permission command, an extensive explanation can be found on the support discord (!w.bug to get the invite)",
+        "gp": "The get permission command, an extensive explanation can be found on the support discord (!w.bug to get the invite)",
+        "rp": "The remove permission command, an extensive explanation can be found on the support discord (!w.bug to get the invite)",
+        "cry": "Feeling sad ? This is the right cmd for you.",
+        "ibsafe": "Searches on ibsear.ch (only sfw pics)",
+        "iblewd": "Searches on ibsearch.xxx (same as ibsafe but with nsfw pics too)",
+        "qr": "You can remove single songs with their songid, or multiple with `qr startid-stopid`, this would remove all songs starting at the startid and ending at the stopid, or delete multiple ids by seperating them with commas",
+        "shuffle": "Shuffles the queue. Note that at least 3 Songs have to be in the queue for this command to work.",
+        "owo": "Sends you random OwO What's this memes, which are handpicked by Wolke",
+        "getNode": "Gives you the permission node, category node and category of a command",
+        "resetPerms": "Resets all permissions set until now, use with caution",
+        "pat": "Pat someone who has been a good boy/girl/helicopter"
     },
     "version": "För tillfället så kör jag version {{version}}",
     "add": "Använd denna länk för att lägga till mig på din server: {{- link}}",
@@ -207,7 +219,9 @@
         "to-small": "Du kan inte ta bort {{number}} låtar!",
         "success": "Tog bort följande låtar:\n {{- table}}",
         "too-big": "Tog bort {{number}} låtar",
-        "one-song": "Använd {{- prefix}}fskip för att hoppa över den nuvarande låten!"
+        "one-song": "Använd {{- prefix}}fskip för att hoppa över den nuvarande låten!",
+        "no-number": "You did not say how many songs I should remove from the queue!",
+        "removed": "Removed `{{- title}}` from the queue."
     },
     "cookie": {
         "give": "Gav användaren **{{- user}}** **1** kaka!",
@@ -278,7 +292,9 @@
         "shard": "instans",
         "guilds-s": "Servrar anslutna till denna instans av Rem",
         "channels-s": "Kanaler på denna instans av Rem",
-        "users-s": "Användare på denna instans av Rem"
+        "users-s": "Användare på denna instans av Rem",
+        "made": "Made by:",
+        "lib": "Library"
     },
     "rank": "Du kan hitta topplistan för servern här: {{- link}}",
     "pp": {
@@ -327,7 +343,9 @@
     },
     "skip": {
         "success": ":track_next: Hoppade över låt: {{- title}}",
-        "stop": ":stop_button: Stoppade nuvarande låt."
+        "stop": ":stop_button: Stoppade nuvarande låt.",
+        "all": ":stop_button: Skipped all songs.",
+        "some": ":track_next: Skipped {{- amount}} songs"
     },
     "vskip": {
         "user-no-voice": "Du kan inte rösta på att hoppa över låten, eftersom att du inte är i samma röstkanal!",
@@ -419,20 +437,48 @@
         "success": "Du gav precis **{{- target}}** **{{- rep}}** :heart: kärlekspoäng. Kvarvarande användningar **{{uses}}**.",
         "error-cd": "Du kan enbart ge **2** :heart: kärlekspoäng per dag, använd {{- time}} nästa gång.",
         "next": "Sedan använder du {{- time}}",
-        "self": ":broken_heart: Du kan inte ge kärlekspoäng till dig själv!"
+        "self": ":broken_heart: Du kan inte ge kärlekspoäng till dig själv!",
+        "success-remove": "You just removed **{{- rep}}**:heart: Love Point from **{{- target}}** Remaining uses **{{uses}}**."
     },
     "dere": {
         "no-dere": "Den dere-typen du sökte efter existerar inte. Här är en lista över möjliga deres:",
         "dandere": "Danderen (だんデレ) är en sorts person som oftast är tysta och för sig själva.\nDet kan bero på blyghet eller att de bara är den tysta sorten.\nNär de är ensamma med den person som de dras till så blir de oftast mer älskande och öppna.\nDetta ord är en förkortning of Danmari (だんまり) vilket betyder tyst, och Deredere (デレデレ) vilket betyder gullande.",
-        "deredere": "",
-        "himedere": "",
-        "kamidere": "",
-        "kuudere": "",
-        "mayadere": "",
-        "oujidere": "",
-        "tsundere": "",
-        "undere": "",
-        "yandere": "",
-        "yangire": ""
+        "deredere": "The Deredere (デレデレ) type refers to a character who is completely kind, happy, and energetic.\n No matter what may happen, they quickly revert to their cheerful self.\n This may be the only character type that doesn’t have any abbreviation with the base Deredere (デレデレ) word, although the definition isn’t simply lovey dovey like the other types.",
+        "himedere": "The Himedere (ひめデレ) type refers to a character who wishes to be treated like a princess by the person she loves, even if they aren’t royalty in actuality.\nThis word is an abbreviation of Hime (ひめ) which means princess and Deredere (デレデレ) which means lovey dovey.",
+        "kamidere": "The Kamidere (かみデレ) type refers to a character with a god complex.\n They’re highly arrogant and proud, and aren’t afraid to speak their minds and show everyone how right they are.\n This word is an abbreviation of Kami (かみ) which means God and Deredere (デレデレ) which means lovey dovey.",
+        "kuudere": "The Kuudere (クーデレ), sometimes written Coodere or Kūdere, type refers to a character who is often cold, blunt, and cynical.\n They may seem very emotionless on the outside, but on the inside they’re very caring — at least when it comes to the ones they love.\nThis word is an abbreviation of Cool (クール) and Deredere (デレデレ) which means lovey dovey.",
+        "mayadere": "The Mayadere (まやデレ) type refers to a character who is often a dangerous antagonist of a series, but switches sides after falling in love with another character.\n The character may remain deadly and unpredictable for the protagonist or other main character in the Anime or Manga.",
+        "oujidere": "The Oujidere (おうじデレ) type refers to a character who wishes to be treated like a prince by the person he loves, even if they aren’t royalty in actuality.\nThis word is an abbreviation of Ouji (おうじ) which means prince and Deredere (デレデレ) which means lovey dovey.",
+        "tsundere": "The Tsundere (ツンデレ) type is possibly one of the most popular or simply most used character types in anime and manga.\n This type refers to a character who treats the one they love poorly. \nSometimes this is because they started out hating them and eventually loves them as the series goes on, and sometimes it’s because that’s the only way they know how to react.\n An example is if the main character calls a tsundere character cute.\n The tsundere character will get upset and flustered, possibly cause physical harm to the one they love, and then call them stupid.\nThis word is an abbreviation of Tsuntsun (ツンツン) which means to look away in disgust and Deredere (デレデレ) which means lovey dovey.",
+        "undere": "The Undere (ウンデレ) type refers to a character who says yes to pretty much everything the one they love says. \n They agree as much as possible to become as close as they can to their love interest. \n This word is an abbreviation of Un (ウン) which is a short way Japanese people say Yes and Deredere (デレデレ) which means lovey dovey.",
+        "yandere": "The Yandere (ヤンデレ) type refers to a character who starts out nice and sweet but eventually becomes dark and obsessive over the one they love.\n They become stalkers and use violence on, and possibly even murder, any person who gets close to their love interest — even if they’re too shy to simply speak with that person they have a crush on.\n This word is an abbreviation of Yanderu (やんでる) which means to be mentally or emotionally ill and Deredere (デレデレ) which means lovey dovey.",
+        "yangire": "The Yangire (ヤンギレ) type is similar in some ways to Yandere. \n It is a character who may start out nice and sweet but becomes very aggressive and psychotic.\n However, unlike Yandere, Yangire do not become violent because of they attraction to a character. \n Instead, they may snap simply because they’re irritated with a character that has nothing to do with their love interest.\n This word is an abbreviation of Yanderu (やんでる) which means to be mentally or emotionally ill and Kire (きれ) which means to cut or snap."
+    },
+    "shuffle": {
+        "not-enough-shuffle": "There have to be at least 3 songs in the queue for me to shuffle them.",
+        "success": "Shuffled the queue!"
+    },
+    "get-node": {
+        "success": "Permission node: `{{- node}}` Category node:`{{- category}}.*` Category:`{{- category}}`",
+        "not-found": "This command does not exist.",
+        "no-args": "Type a cmd without a prefix after this to get it's permission node, category node and category"
+    },
+    "ap": {
+        "type": {
+            "user": "user",
+            "guild": "guild",
+            "role": "role",
+            "channel": "channel"
+        },
+        "success": "Ok, I just added the permission `{{- node}}` `{{- allowed}}` to the `{{- type}}` `{{- name}}`",
+        "wrong-node": "The permission node `{{- node}}` will not work, as it is not a valid permission node. To get the permission node for a command type `{{- prefix}}getNode command`",
+        "target-not-found": "I could not find the target {{- target}} for this command",
+        "no-allowance-set": "You did not tell me if the perm should be allowed or not, add `true` or `false` depending on your choice",
+        "missing-args": "The correct syntax for this cmd is `{{-prefix}}ap <node> [-u|-r|-c] [target] <allowed>`\n Example:\n```{{-prefix}}ap playlist.* true -> allows all commands of the category playlist in the server\n{{-prefix}}ap music.fskip -u @user true -> allows the mentioned user to use {{- prefix}}fskip```"
+    },
+    "reset-perms": {
+        "nothing-found": "You did not set any Permissions yet.",
+        "confirmation": "Are you sure you want to reset the Permissions ? Type `yes` to reset them and `no` to cancel this command.",
+        "success": "I just reset all permissions you set."
     }
 }
