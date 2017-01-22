@@ -64,8 +64,6 @@ ${this.buildTable(msg)}
                 table.addRow(sc, english_name, native_name);
             }
         }
-        table.addRow('uwu', 'uwu', 'にほんご');
-        console.log(table.toString());
         return table.toString();
     }
 }
