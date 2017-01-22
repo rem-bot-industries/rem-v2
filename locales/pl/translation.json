@@ -12,19 +12,19 @@
         "empty-search": ":no_entry_sign: Nie wpisałeś/aś niczego do wyszukania!",
         "negative": ":no_entry_sign: Proszę nie używaj ujemnych liczb!",
         "cancel": "anuluj",
-        "version": "versja",
+        "version": "wersja",
         "author": "autor",
         "lib": "użyta biblioteka",
         "more": "{{number}} więcej",
         "abort": ":x: anulowano",
         "cat-nope": ":no_entry_sign: Ta kategoria nie istnieje!",
-        "mention": "Wymów uzytkownika",
-        "cancelled-command": "Cancelled the command.",
-        "donate": "Donate",
-        "support": "Support",
-        "invite": "Invite",
-        "language-name-en": "English",
-        "native-name": "English"
+        "mention": "Proszę wspomnij użytkownika.",
+        "cancelled-command": "Anulowano komendę.",
+        "donate": "Dotacje",
+        "support": "Wsparcie",
+        "invite": "Zaproszenie",
+        "language-name-en": "Polish",
+        "native-name": "Polski"
     },
     "help": {
         "intro": "bawmy sie razem tutaj na Discordzie (/^▽^)/ wybierz kategorię komend poprzez odpowiedź {{pre}}help numer kategorii:",
@@ -89,65 +89,65 @@
         "feedback": "Aby przekazać opinię, proszę użyj serwera wsparcia ^^",
         "talk": "Jeżeli chcesz ze mną rozmawiać @wspomnij moje imię z wiadomością :D",
         "helpReply": "OK, Wysłałam Ci listę komend na PW.",
-        "moderation": "[Moderacja]",
-        "misc": "[Różne]",
-        "stats": "[Statystyki]",
-        "user": "[Użytkownik]",
-        "admin": "[Admin]",
+        "moderation": "[MODERACJ]",
+        "misc": "[RÓŻNE]",
+        "stats": "[STATYSTYKI]",
+        "user": "[UŻYTKOWNIK]",
+        "admin": "[ADMIN]",
         "nsfw": "[NSFW]",
-        "eastereggs": "[Pisanki]",
-        "proxer": "[KissAnime]",
-        "no-cat": "[Bez Kategori]",
-        "ping": "Daje ci ping bota, to nie jest ping głosowy",
+        "eastereggs": "[EASTEREGGS]",
+        "proxer": "[PROXER]",
+        "no-cat": "[BEZ KATEGORII]",
+        "ping": "Wyświetla czas reakcji bota (to nie jest czas reakcji głosu).",
         "lewd": "Jakie zboczone uwu",
-        "rem": "Daje ci różne zdjęcie z Rem",
-        "wip": "[Praca Trwa]",
-        "gr": "Ustaw wiadomość powitalną używając set greetingMessage, {{user}} będzie wymienione z użytkownikiem który doszedł i {{guild}} będzie zamienione na nazwe servera. To powitanie będzie pokazywać się na kanale w którym komenda zostałą wykonana.",
-        "fw": "Ustaw wiadomość pożegnalną używając set greetingMessage, {{user}} będzie wymienione z użytkownikiem który doszedł i {{guild}} będzie zamienione na nazwe servera. To powitanie będzie pokazywać się na kanale w którym komenda zostałą wykonana.",
-        "s": "Komenda serverowa ustawia rzeczy jak powitania i pożegnania",
-        "shrug": "¯\\_(ツ)_/¯ ",
-        "flip": "(╯°□°）╯︵ ┻━┻ ",
+        "rem": "Wyświetla losowe zdjęcie Rem",
+        "wip": "[W TRAKCIE PRACY]",
+        "gr": "Ustaw wiadomość powitalną używając set wiadomośćPowitalna, {{user}} będzie zamienione z nazwą użytkownika, który właśnie dołączył, {{guild}} z nazwą serwera.\nTo powitanie będzie wyświetlać się na kanale, w którym komenda została wykonana.",
+        "fw": "Ustaw wiadomość pożegnalną używając set wiadomośćPożegnalna, {{user}} będzie zamienione z nazwą użytkownika, który właśnie dołączył, {{guild}} z nazwą serwera.\nTo pożegnanie będzie wyświetlać się na kanale, w którym komenda została wykonana.",
+        "s": "Komenda serwerowa, ustawia rzeczy takie jak powitania i pożegnania",
+        "shrug": "¯\\_(ツ)_/¯",
+        "flip": "(╯°□°）╯︵ ┻━┻",
         "eggplant": "tylko bakłażan",
-        "gtn": "Daje ci randomowy 'green tea neko' komiks, tylko do użycia z grupą WolkeBot albo w skonfigurowanym kanale NSFW.",
-        "cuddle": "Daje ci anime gif z przytuleniem",
+        "gtn": "Wyświetla losowy komiks GreenTeaNeko, działa tylko ze skonfigurowanym kanałem NSFW lub Adminem.",
+        "cuddle": "Wyświetla anime gif z przytulaniem",
         "trig": "TRIGGERED",
-        "bot": "Daje ci informacje o czasie online Rem, połączeniach głosowych, użytkownikach i wszystkich gildii",
-        "top": "Pokazuje top 10 gildii (użytkowników w gildii) do którego ten odłamek jest połączony",
-        "about": "Pokazuje ci podstawowe informacje o mnie, np. osoba która mnie stworzyła.",
+        "bot": "Wyświetla informacje o czasie online Rem, połączeniach głosowych, liczbie użytkowników i ilości gildii",
+        "top": "Wyświetla top10 gildii (użytkowników w gildii), które są połączone do tego shard'u",
+        "about": "Wyświetla podstawowe informacje o mnie, takie jak biblioteka i kto mnie stworzył.",
         "lenny": "( ͡° ͜ʖ ͡°)",
-        "lmg": "Pozwól mi to wygooglować dla ciebie",
-        "fskip": "Przeskakuje aktualnie graną piosenke (tylko do użycia z grupą WolkeBot)",
-        "leave": "Wyszedłam z kanału głosowego w którym byłam. (tylko do użycia z grupą WolkeBot)",
-        "say": "Zmuś Rem by coś powiedziała",
-        "ar": "Dodaj grupe dla siebie lub uzytkownika",
-        "cr": "Stwórz grupe lub dodaj grube dla bota -d -> standardowa, -l2 -> daje grupe do uzytkownika kiedy dostanie 2 poziom, -s -> ustaw grupe by uzytkownik mógl sam nadac, przyklad -> cr -l 20 nazwagrupy, dodaje grupe i uzytkownik z poziomem 20 dostaje ta grupe",
-        "lr": "Podaje liste grup które sa polaczone z Rem w aktualnym momencie",
-        "rr": "Usuwa grupe od siebie, innego uzytkownika lub servera",
-        "roles": "[GRUPY]",
-        "repeat": "Gra piosenke/kolejke piosenek na powtarzaniu dopóki nowe zostana dodane do kolejki.",
-        "sayd": "Zmus Rem do powiedzenia czegos i usuniecia twojej komedy",
-        "generic": "[RODZAJOWY]",
+        "lmg": "Pozwól mi to wygooglować dla Ciebie",
+        "fskip": "Pomija obecną piosenkę/liczbę piosenek",
+        "leave": "Opuszczam kanał głosowy, w którym obecnie się znajduję.",
+        "say": "Zmuś Rem aby coś powiedziała",
+        "ar": "Dodaj rolę dla siebie lub użytkownika",
+        "cr": "Stwórz rolę lub dodaj ją dla bota -d -> standardowa, -l 2 -> przydziela rolę użytkownikowi po osiągnięciu 2 poziomu, -s -> ustaw rolę jako samo przyznawalną, przykład -> cr -l 20 nazwaRoli, dodaje rolę, którą użytkownik dostaje z poziomem 20",
+        "lr": "Podaje listę ról, które sa połączone z Rem",
+        "rr": "Usuwa rolę Tobie, innemu uzytkownikowi lub z serwera",
+        "roles": "[ROLE]",
+        "repeat": "Odtwarzanie piosenki/kolejki w pętli, dopóki nowe nie zostaną dodane do kolejki.",
+        "sayd": "Zmuś Rem do powiedzenia czegoś i usunięcia Twojej komedy",
+        "generic": "[PODSTAWOWE]",
         "fun": "[ZABAWA]",
-        "coin": "przerzuca monete dla ciebie",
+        "coin": "Rzuca monetą",
         "nyan": "Nya :3",
-        "uwu": "UwU",
-        "dere": "szukaj definicje dere albo dostan randomowa",
-        "love": "Daje wymówionemu uzytkownikowi punkt \"love\", dodaj - by zabieralo punkty",
-        "sinfo": "daje ci troche informacji o aktualnym serverze",
-        "uinfo": "daje ci troche informacji o sobie/wymówionym uzytkowniku",
-        "apq": "adds a playlist to the queue, only supports youtube-playlists and only needs the id. NOT THE LINK.",
-        "ap": "The add permission command, an extensive explanation can be found on the support discord (!w.bug to get the invite)",
-        "gp": "The get permission command, an extensive explanation can be found on the support discord (!w.bug to get the invite)",
-        "rp": "The remove permission command, an extensive explanation can be found on the support discord (!w.bug to get the invite)",
-        "cry": "Smutno? Komenda wraz dla ciebie!",
-        "ibsafe": "Searches on ibsear.ch (only sfw pics)",
-        "iblewd": "Searches on ibsearch.xxx (same as ibsafe but with nsfw pics too)",
-        "qr": "You can remove single songs with their songid, or multiple with `qr startid-stopid`, this would remove all songs starting at the startid and ending at the stopid, or delete multiple ids by seperating them with commas",
-        "shuffle": "Shuffles the queue. Note that at least 3 Songs have to be in the queue for this command to work.",
-        "owo": "Sends you random OwO What's this memes, which are handpicked by Wolke",
-        "getNode": "Gives you the permission node, category node and category of a command",
-        "resetPerms": "Resets all permissions set until now, use with caution",
-        "pat": "Pat someone who has been a good boy/girl/helicopter"
+        "uwu": "uwu",
+        "dere": "Szukaj definicji dere albo wylosuj jedną",
+        "love": "Daje wspomnianemu uzytkownikowi 1 punkt miłości, dodaj - aby go zabrać",
+        "sinfo": "wyświetla informacje o serwerze",
+        "uinfo": "wyświetla informacje o sobie/wspomnianym użytkowników",
+        "apq": "dodaje playlistę do kolejki, wspiera tylko playlisty z youtube i potrzebuje tylko id. NIE CAŁE LINKI.",
+        "ap": "Komenda do dodania uprawnień, dokładne wytłumaczenie znajduje się na serwerze wsparcia (!w.bug aby dostać zaproszenie)",
+        "gp": "Komenda do wyświetlenia uprawnień, dokładne wytłumaczenie znajduje się na serwerze wsparcia (!w.bug aby dostać zaproszenie)",
+        "rp": "Komenda do usunięcia uprawnień, dokładne wytłumaczenie znajduje się na serwerze wsparcia (!w.bug aby dostać zaproszenie)",
+        "cry": "Smutno? Komenda w sam raz dla Ciebie!",
+        "ibsafe": "Przeszukuje ibsear.ch (tylko sfw obrazki)",
+        "iblewd": "Przeszukuje ibsearch.xxx (to samo co ibsafe + obrazki nsfw)",
+        "qr": "Możesz usunąć pojedynczą piosenkę poprzez jej id lub kilka na raz poprzez `qr startid-stopid`, usunie to wszystkie piosenki zaczynając od startid i kończąc na stopid, możesz także usunąć kilka id poprzez rozdzielanie ich przecinkami",
+        "shuffle": "Miesza kolejkę. Zauważ, że w kolejce muszą być co najmniej 3 piosenki, aby to działało.",
+        "owo": "Wysyła losowy meme OwO What's this?, spośród ręcznie wybranych przez Wolke",
+        "getNode": "Wyświetla węzeł uprawnień, węzeł kategorii i kategorię komendy",
+        "resetPerms": "Resetuje wszystkie ustawione uprawnienia do tej pory, używaj rozsądnie",
+        "pat": "Nagradza poklepaniem dobrego chłopca/dziewczynkę/helikopter"
     },
     "version": "Obecnie używam wersji {{version}}",
     "add": "Użyj ten link, aby dodać mnie do Twojego serwera: {{- link}}",
@@ -166,7 +166,7 @@
     "nsfw-images": {
         "nothing-found": "Nie znaleziono obrazków z tagami: `{{tags}}`",
         "no-nsfw-channel": "Proszę ustaw/dodaj kanał NSFW używając komendy {{- prefix}}setLewd (w jednym z kanałów NSFW) aby używać komend NSFW",
-        "error-body": "Byl blad podczas czekania na odpowiedz api. Spróbuj ponownie a jak bedziesz miec ten sam problem to skontaktuj Wolke#6746 "
+        "error-body": "Wystąpił błąd podczas przetwarzania odpowiedzi z api. Proszę spróbuj ponownie, jeżeli błąd nie ustępuje, proszę skontaktuj się z Wolke#6746"
     },
     "8ball": {
         "answers": [
@@ -212,16 +212,16 @@
         "db-error": "Wystąpił błąd bazy danych!",
         "success-multiple": "Dodano następujące piosenki:\n```{{- table}}```",
         "too-big": "Dodano {{number}} piosenek",
-        "no-songs-added": "Nie mogłam dodać żadnych piosenek dlatego że one już są w kolejce, spróbuj ponownie!",
-        "too-much": "Nie możesz dodać więcej niż {{number}} piosenek pojedyńczo!"
+        "no-songs-added": "Nie mogłam dodać żadnych piosenek, ponieważ znajdują się one już w kolejce, spróbuj ponownie!",
+        "too-much": "Nie możesz dodać więcej niż {{number}} piosenek na raz!"
     },
     "qra": {
         "to-small": "Nie możesz usunąć {{number}} piosenek!",
         "success": "Usunięto `{{number}}` piosenek",
         "too-big": "Usunięto {{number}} piosenek",
         "one-song": "Użyj {{- prefix}}fskip aby pominąć obecną piosenkę!",
-        "no-number": "You did not say how many songs I should remove from the queue!",
-        "removed": "Removed `{{- title}}` from the queue."
+        "no-number": "Nie określiłeś ile piosenek mam usunąć z kolejki!",
+        "removed": "Usunięto `{{- title}}` z kolejki."
     },
     "cookie": {
         "give": "Podarowano użytkownikowi **{{- user}}** **1** Ciastko!",
@@ -245,10 +245,10 @@
         "song": "Odtwarzanie: `{{-title}} {{repeat}}` ",
         "repeat-on": "powtarzanie:włączone",
         "repeat-single": "powtórz: pojedyncze",
-        "repeat-queue": "powtórz: kolejke\n",
-        "emoji-repeat-single": ":repeat_one:",
-        "emoji-repeat-queue": ":repeat:",
-        "emoji-repeat-off": ":heavy_check_mark:"
+        "repeat-queue": "powtórz: kolejkę\n",
+        "emoji-repeat-single": ":repeat_one: Powtórz: obecną piosenkę",
+        "emoji-repeat-queue": ":repeat: Powtórz: kolejkę",
+        "emoji-repeat-off": ":heavy_check_mark: Powtórz: wyłączono"
     },
     "queue": {
         "queued": "Kolejka:"
@@ -262,108 +262,108 @@
         "success-enable": "Ok, właśnie włączyłam system poziomów na tym serwerze, wpisz ponownie aby wyłączyć."
     },
     "no-pm-server": {
-        "success-disable": "Właśnie wyłączyłam prywatne wiadomości na tym serverzer, wpisz tą tą komende znowu by to włączyć.",
-        "success-enable": "Właśnie włączyłam prywatne wiadomości na tym serverze, wpisz tą tą komende znowu by to wyłączyć."
+        "success-disable": "Ok, właśnie wyłączyłam prywatne wiadomości na tym serwerze, wpisz ponownie aby włączyć.",
+        "success-enable": "Ok, właśnie włączyłam prywatne wiadomości na tym serwerze, wpisz ponownie aby wyłączyć."
     },
     "no-channel-server": {
-        "success-disable": "Właśnie wyłączyłam prywatne wiadomości na tym serverze i wyłączyłam notyfikacje kanałowe, wpisz tą tą komende znowu by to włączyć.",
-        "success-enable": "Właśnie włączyłam prywatne wiadomości na tym serverze i włączyłam notyfikacje kanałowe, wpisz tą tą komende znowu by to wyłączyć."
+        "success-disable": "Ok, właśnie wyłączyłam prywatne wiadomości na tym serwerze i włączyłam powiadomienia kanałowe, wpisz ponownie aby odwrócić.",
+        "success-enable": "Ok, właśnie wyłączyłam prywatne wiadomości na tym serwerze i włączyłam powiadomienia kanałowe, wpisz ponownie aby odwrócić."
     },
     "no-level": {
-        "success-disable": "Właśnie wyłączyłam system poziomów dla ciebie, wpisz tą tą komende znowu by to włączyć.",
-        "success-enable": "Właśnie włączyłam system poziomów dla ciebie, wpisz tą tą komende znowu by to wyłączyć."
+        "success-disable": "Ok, właśnie wyłączyłam dla Ciebie system poziomów, wpisz ponownie aby włączyć.",
+        "success-enable": "Ok, właśnie włączyłam dla Ciebie system poziomów, wpisz ponownie aby wyłączyć."
     },
     "no-pm": {
-        "success-disable": "Właśnie wyłączyłam notyfikacje prywatnych wiadomości dla ciebie, wpisz tą tą komende znowu by to włączyć.",
-        "success-enable": "Właśnie włączyłam notyfikacje prywatnych wiadomości dla ciebie, wpisz tą tą komende znowu by to wyłączyć."
+        "success-disable": "Ok, właśnie wyłączyłam dla Ciebie prywatne powiadomienia, wpisz ponownie aby włączyć.",
+        "success-enable": "Ok, właśnie włączyłam dla Ciebie prywatne powiadomienia, wpisz ponownie aby wyłączyć."
     },
     "eat-cookie": {
         "success": "Właśnie zjadłeś/aś {{number}} Ciastko/ek!",
-        "failure": "Nie masz żadnych ciastek do zjedzenia."
+        "failure": "Nie masz żadnych ciastek."
     },
     "bot-info": {
         "uptime": "Czas Online",
         "users": "Użytkownicy",
         "channels": "Kanały",
         "guilds": "Gildie",
-        "avg-channels": "Śrd. Kanały na Gildie",
-        "avg-users": "Śrd. Użytkownicy na Gildie",
+        "avg-channels": "Średnio kanałów na gildie",
+        "avg-users": "Średnio użytkowników na gildie",
         "voice": "Połączenia głosowe",
-        "shard": "czerep",
-        "guilds-s": "Gildie na tym fragmencie",
-        "channels-s": "Kanały na tym fragmencie",
-        "users-s": "Użytkownicy na tym fragmencie",
-        "made": "Made by:",
-        "lib": "Library"
+        "shard": "shard",
+        "guilds-s": "Gildie na tym shardzie",
+        "channels-s": "Kanały na tym shardzie",
+        "users-s": "Użytkownicy na tym shardzie",
+        "made": "Stworzono przez:",
+        "lib": "Biblioteka"
     },
     "rank": "Możesz znaleźć ranking tego servera tutaj: {{- link}}",
     "pp": {
         "err": {
-            "api-body": "Nie można przeanalizować odpowiedźi api!",
+            "api-body": "Nie można przeanalizować odpowiedzi api!",
             "osu-api": "Wygląda na to że osu! api ma mały problem.",
             "no-link": "To nie jest porpawny link osu!",
             "unvalid-link": "Brak linku mapy!"
         },
-        "success": "PP do mapy `{{- artist}} - {{- title}} [{{- version}}] z Accuracy {{- accuracy}}%` `{{- pp}}PP` `{{- mods}}`"
+        "success": "PP do mapy `{{- artist}} - {{- title}} [{{- version}}] z dokładnością {{- accuracy}}%` `{{- pp}}PP` `{{- mods}}`"
     },
     "server-info": {
         "id": "Identyfikator",
         "name": "Nazwa",
         "member": "Użytkownicy",
-        "text": "Kanały Pisemne",
+        "text": "Kanały tekstowe",
         "voice": "Kanały Głosowe",
-        "roles": "Grupy",
-        "creation": "Data Stworzenia",
+        "roles": "Role",
+        "creation": "Data utworzenia",
         "region": "Region",
         "owner": "Właściciel"
     },
-    "leave": "Wyszedłam z chatu głosowego.",
+    "leave": "Ok, opuściłam kanał głosowy.",
     "play": {
         "no-result": "Nie znaleziono piosenki!",
-        "playing": ":musical_note: Teraz Grane **{{- song}}**"
+        "playing": ":musical_note: Odtwarzanie **{{- song}}**"
     },
     "prefix": {
-        "success": "Ustawiłam prefix na {{- prefix}}",
-        "no-prefix": "Prosze dodaj prefix!"
+        "success": "Ok, właśnie ustawiłam prefiks na {{- prefix}}, spróbuj `{{- prefix}}ping` aby to sprawdzić",
+        "no-prefix": "Proszę dodaj prefiks!"
     },
     "voice": {
         "in-queue": "**{{- song}}** jest już w kolejce.",
-        "error-volume": "Błąd podczas zmieniana głośności!",
-        "success-volume": "Ustawiono głośnośc do {{- volume}}",
+        "error-volume": "Błąd podczas zmiany głośności!",
+        "success-volume": "Ustawiono głośność na {{- volume}}",
         "no-volume": "Nie ustalono głośności!",
         "repeat-start": "Rozpoczęto powtarzanie piosenki **{{- song}}**",
-        "already-playing": "Ta piosenka już gra!",
-        "blocked": "To video nie jest możliwe do pobrania. Może jest za długie albo zablokowane/usunięte",
-        "dl-start": ":hourglass: Ładuje Piosenkę!",
-        "use-proxy": "Próba pobierania z ominięciem proxy, może chwile zająć.",
-        "too-much": "Nie mozesz ustawic glosnosci ponad 200!"
+        "already-playing": "Ta piosenka jest już odtwarzana!",
+        "blocked": "Nie można pobrać tego wideo. Może jest za długie albo zablokowane/usunięte",
+        "dl-start": ":hourglass: Ładuję piosenkę!",
+        "use-proxy": "Próba pobrania przez proxy, może chwilę zająć.",
+        "too-much": "Nie możesz ustawić głośności powyżej 200!"
     },
     "yts": {
-        "success": "Znaleziono nastempującą piosenkę: {{- link}}"
+        "success": "Znaleziono następującą piosenkę: {{- link}}"
     },
     "skip": {
         "success": ":track_next: Pominięto piosenkę {{- title}}",
         "stop": ":stop_button: Zatrzymano aktualną piosenkę",
-        "all": ":stop_button: Skipped all songs.",
-        "some": ":track_next: Skipped {{- amount}} songs"
+        "all": ":stop_button: Pominięto wszystkie piosenki.",
+        "some": ":track_next: Pominięto {{- amount}} piosenek"
     },
     "vskip": {
         "user-no-voice": "Nie możesz pominąć, jeżeli nie jesteś w tym samym kanale głosowym!",
         "same-voice": "Nie jesteś w tym samym kanale głosowym co ja!",
         "dup": "Już zagłosowałeś!",
-        "success-add": "Dodano twój głos, procent głosów **{{current}}%/{{needed}}%**",
-        "success-skip": "Pominięto Piosenke: **{{- title}}**",
-        "vote": "Napisz {{- prefix}}yes by voteskipowac aktualna piosenke. aktualne wyniki glosowania: {{- perct}}%/{{- needed}}\nCi co glosowali:\n ```{{- table}}```",
-        "in-prog": "Aktualnie jest juz voteskip, uzyj {{- prefix}}yes by pominac aktualna piosenke."
+        "success-add": "Dodano Twój głos, procent głosów **{{current}}%/{{needed}}%**",
+        "success-skip": "Pominięto piosenkę: **{{- title}}**",
+        "vote": "Wpisz {{- prefix}}yes aby głosować za pominięciem obecnej piosenki. Aktualne wyniki głosowania: {{- perct}}%/{{- needed}}\nGłosowali:\n ```{{- table}}```",
+        "in-prog": "Głosowanie za pominięciem jest już w trakcie, użyj {{- prefix}}yes aby pominąć obecną piosenkę."
     },
     "rm": {
         "less-2": "Nie możesz usunąć mniej niż 2 wiadomości!",
         "over-100": "Nie możesz usunąć więcej niż 100 wiadomości!",
-        "success": "Pomyślnie usunięto {{number}} wiadomśości.",
-        "error": "Błąd w trakcie próby usuwania Wiadomości!",
-        "over-limit": "Nie mozesz usunac mniej niz 2 wiadomosci lub wiecej niz 100 wiadomosci pojedynczo!",
-        "no-limit": "Nie podales ilu wiadomosci mam usunac.",
-        "nothing-found": "Nie zlalazlam niczego co podales/as w filtrze!"
+        "success": "Pomyślnie usunięto {{number}} wiadomości.",
+        "error": "Błąd podczas próby usuwania wiadomości!",
+        "over-limit": "Nie możesz usunąć mniej niż 2, ani więcej niż 100 wiadomości na raz!",
+        "no-limit": "Nie podałeś ile wiadomości powinnam usunąć.",
+        "nothing-found": "Nie znalazłam niczego co podałeś/aś w filtrze!"
     },
     "search": {
         "success": "Znaleziono następujące Piosenki:"
@@ -371,114 +371,114 @@
     "set-lewd": {
         "success": "Pomyślnie dodano {{- channel}} do kanałów NSFW!"
     },
-    "report": "Wysłałam twój report do Wolke, prosze nie nadużywaj tego, ponieważ możesz zostać zablokowany od używania bota!",
+    "report": "Wysłałam Twoje zgłoszenie do Wolke, proszę nie nadużywaj tego, ponieważ możesz zostać zablokowany od używania bota!",
     "greeting": {
-        "no-greeting": "Nie dodałeś powitania który powinienam użyć!",
+        "no-greeting": "Nie dodałeś/aś powitania, którego powinnam użyć!",
         "no-add": "Możesz ustawić albo zresetować powitanie."
     },
     "farewell": {
-        "no-farewell": "Nie dodałeś pożegnania który powinienam użyć!",
+        "no-farewell": "Nie dodałeś/aś pożegnania, którego powinnam użyć!",
         "no-add": "Możesz ustawić albo zresetować pożegnanie."
     },
     "add-role": {
-        "ok": "Wlasnie dalam {{- user}} grupe {{- role}} "
+        "ok": "Ok, właśnie przydzieliłam {{- user}} rolę {{- role}} "
     },
     "create-role": {
-        "missing": "Grupa która podales/as nie istnieje na tym serverze!",
-        "new": "Chcesz bym zrobila grupe za Ciebie?",
-        "no-args": "Nie dodales/as zadnych argumentów do komend",
-        "ok": "Stworzylam grupe {{- role}}",
-        "exists": "Grupa {{- role}} juz istnieje w bazie danych"
+        "missing": "Rola, którą podałeś nie istnieje na tym serwerze.",
+        "new": "Chcesz abym stworzyła rolę dla Ciebie?",
+        "no-args": "Nie dodałeś/aś żadnych argumentów do komendy",
+        "ok": "Ok, stworzyłam rolę {{- role}}",
+        "exists": "Rola {{- role}} już istnieje w bazie danych"
     },
     "remove-role": {
-        "ok": "Zdjelam grupe {{- role}} z {{- user}}"
+        "ok": "Ok, właśnie usunęłam rolę {{- role}} z {{- user}} !"
     },
     "list-roles": {
-        "nr": "nr.",
+        "nr": "nr",
         "id": "id",
         "name": "nazwa",
-        "self": "mozna dodac sobie samemu",
-        "lvl": "dostepne od poziomu",
+        "self": "samo przyznawalna",
+        "lvl": "Dostepne od poziomu",
         "default": "standardowe"
     },
     "user-info": {
         "id": "$t(server-info.id)",
         "name": "$t(server-info.name)",
-        "discriminator": "dyskryminator",
+        "discriminator": "wyróżnik",
         "nick": "Nick",
-        "join": "Doszedl",
-        "created": "Stworzono",
-        "playing": "Gra",
-        "info": "Info uzytkownika",
+        "join": "Dołączył",
+        "created": "Utworzono",
+        "playing": "Odtwarzanie",
+        "info": "Info użytkownika",
         "bot": "Bot",
         "status": "Status",
         "role": "Role"
     },
     "flip": {
-        "head": "Moneta wyladowala na orłze {{- url}}",
-        "tail": "Moneta wyladowala na reszce {{- url}}"
+        "head": "Moneta wylądowała na orłże {{- url}}",
+        "tail": "Moneta wylądowała na reszce {{- url}}"
     },
     "gp": {
-        "no-cat": "Nie moglam znalezc uprawnien z kategoria {{- cat}}",
-        "no-perms": "Nie dodales/as jeszcze zadnych uprawnien.",
+        "no-cat": "Nie mogłam znaleźć uprawnień z kategorią {{- cat}}",
+        "no-perms": "Nie dodałeś/aś jeszcze żadnych uprawnień.",
         "table": {
             "id": "$t(server-info.id)",
             "name": "Nazwa",
             "type": "Typ",
             "cat": "Kategoria",
             "perm": "Uprawnienie",
-            "use": "Uzyj"
+            "use": "Zezwolona"
         }
     },
     "rp": {
-        "success": "Pomyslnie usunelam uprawnienie `{{- node}}` z **{{- type}}** `{{- id}}` "
+        "success": "Pomyślnie usunęłam uprawnienia `{{- node}}` z **{{- type}}** `{{- id}}`"
     },
     "love": {
-        "success": "Dales **{{- target}}** **{{- rep}}** :heart: Punkt Love. Pozostale uzycia **{{uses}}**.",
-        "error-cd": "Mozesz maksymalnie dac **2** :heart: Punkty Love na dzien, nastepne uzycie: {{- time}}.",
-        "next": "Nastepne uzycie: {{- time}}",
-        "self": ":broken_heart: Nie mozesz sam sobie tego dawac :C",
-        "success-remove": "You just removed **{{- rep}}**:heart: Love Point from **{{- target}}** Remaining uses **{{uses}}**."
+        "success": "Podarowałeś **{{- target}}** **{{- rep}}** :heart: punkt miłości. Pozostałe użycia **{{uses}}**.",
+        "error-cd": "Możesz podarować tylko **2** :heart: punkty miłości dziennie, następne użycie {{- time}}.",
+        "next": " Następne użycie {{- time}}",
+        "self": ":broken_heart: Nie możesz podarować punktów miłości samemu sobie.",
+        "success-remove": "Właśnie zabrałeś **{{- rep}}**:heart: punkt miłości od **{{- target}}** Pozostałe użycia **{{uses}}**."
     },
     "dere": {
-        "no-dere": "Typ dere który chcesz wyszukac nie istnieje. Lista mozliwych dere:",
-        "dandere": "The Dandere (だんデレ) type refers to a character who is often silent and to themselves.\n It may be due to shyness or just because they’re the quiet type.\n However,when alone with the person they are attracted to, they usually come out of their shell and become more loving.\n This word is an abbreviation of Danmari (だんまり) which means silent and Deredere (デレデレ) which means lovey dovey.",
-        "deredere": "The Deredere (デレデレ) type refers to a character who is completely kind, happy, and energetic.\n No matter what may happen, they quickly revert to their cheerful self.\n This may be the only character type that doesn’t have any abbreviation with the base Deredere (デレデレ) word, although the definition isn’t simply lovey dovey like the other types.",
-        "himedere": "The Himedere (ひめデレ) type refers to a character who wishes to be treated like a princess by the person she loves, even if they aren’t royalty in actuality.\nThis word is an abbreviation of Hime (ひめ) which means princess and Deredere (デレデレ) which means lovey dovey.",
-        "kamidere": "The Kamidere (かみデレ) type refers to a character with a god complex.\n They’re highly arrogant and proud, and aren’t afraid to speak their minds and show everyone how right they are.\n This word is an abbreviation of Kami (かみ) which means God and Deredere (デレデレ) which means lovey dovey.",
-        "kuudere": "The Kuudere (クーデレ), sometimes written Coodere or Kūdere, type refers to a character who is often cold, blunt, and cynical.\n They may seem very emotionless on the outside, but on the inside they’re very caring — at least when it comes to the ones they love.\nThis word is an abbreviation of Cool (クール) and Deredere (デレデレ) which means lovey dovey.",
-        "mayadere": "The Mayadere (まやデレ) type refers to a character who is often a dangerous antagonist of a series, but switches sides after falling in love with another character.\n The character may remain deadly and unpredictable for the protagonist or other main character in the Anime or Manga.",
-        "oujidere": "The Oujidere (おうじデレ) type refers to a character who wishes to be treated like a prince by the person he loves, even if they aren’t royalty in actuality.\nThis word is an abbreviation of Ouji (おうじ) which means prince and Deredere (デレデレ) which means lovey dovey.",
-        "tsundere": "The Tsundere (ツンデレ) type is possibly one of the most popular or simply most used character types in anime and manga.\n This type refers to a character who treats the one they love poorly. \nSometimes this is because they started out hating them and eventually loves them as the series goes on, and sometimes it’s because that’s the only way they know how to react.\n An example is if the main character calls a tsundere character cute.\n The tsundere character will get upset and flustered, possibly cause physical harm to the one they love, and then call them stupid.\nThis word is an abbreviation of Tsuntsun (ツンツン) which means to look away in disgust and Deredere (デレデレ) which means lovey dovey.",
-        "undere": "The Undere (ウンデレ) type refers to a character who says yes to pretty much everything the one they love says. \n They agree as much as possible to become as close as they can to their love interest. \n This word is an abbreviation of Un (ウン) which is a short way Japanese people say Yes and Deredere (デレデレ) which means lovey dovey.",
-        "yandere": "The Yandere (ヤンデレ) type refers to a character who starts out nice and sweet but eventually becomes dark and obsessive over the one they love.\n They become stalkers and use violence on, and possibly even murder, any person who gets close to their love interest — even if they’re too shy to simply speak with that person they have a crush on.\n This word is an abbreviation of Yanderu (やんでる) which means to be mentally or emotionally ill and Deredere (デレデレ) which means lovey dovey.",
-        "yangire": "The Yangire (ヤンギレ) type is similar in some ways to Yandere. \n It is a character who may start out nice and sweet but becomes very aggressive and psychotic.\n However, unlike Yandere, Yangire do not become violent because of they attraction to a character. \n Instead, they may snap simply because they’re irritated with a character that has nothing to do with their love interest.\n This word is an abbreviation of Yanderu (やんでる) which means to be mentally or emotionally ill and Kire (きれ) which means to cut or snap."
+        "no-dere": "Typ dere który chcesz wyszukaćnie istnieje. Lista możliwych dere:",
+        "dandere": "Dandere (だんデレ) typ postaci głównie cichych i zamkniętych w sobie.\n Może to być spowodowane nieśmiałością lub po prostu tacy są.\n Jednak w pobliżu osób, które im się podobają, zmieniają się i zaczynają okazywać swoje uczucia.\n Te słowo wywodzi się od Danmari (だんまり) co oznacza ciszę, oraz Deredere (デレデレ) czyli czuły/kochający.",
+        "deredere": "Deredere (デレデレ) typ postaci życzliwych, szczęśliwych i pełnych energii.\n Bez znaczenie co się stanie, szybko powracają do ich radosnych charakterów.\n To może być jedyny typ postaci, który nie wywodzi się od Deredere (デレデレ), jednak definicja to nie tylko kochający jak w pozostałych rodzajach.",
+        "himedere": "Himedere (ひめデレ) typ postaci chcącej, aby traktować ją jak księżniczkę przez osobę, którą ona kocha, nawet jeżeli w rzeczywistości nimi nie są.\n Te słowo wywodzi się od Hime (ひめ) księżniczka oraz Deredere (デレデレ) czyli kochający. ",
+        "kamidere": "Kamidere (かみデレ) typ postaci z kompleksem boga.\n Mocno zadufani w sobie, aroganccy, nie bojący się głosić swoich przekonań oraz pokazywania wszystkim w okół, jak bardzo mają rację.\n Te słowo wywodzi się od Kami (かみ) Bóg i Deredere (デレデレ) czyli kochający.",
+        "kuudere": "Kuudere (クーデレ), czasem pisane Coodere lub Kūdere, typ postaci, które są zazwyczaj zimne, tępe i cyniczne.\n Z zewnątrz mogą wydawać się być bez uczyć, ale wewnątrz są bardzo opiekuńczy — przynajmniej wobec tych, których kochają.\nTe słowo wywodzi się z Cool (クール) chłodny i Deredere (デレデレ) czyli kochający.",
+        "mayadere": "Mayadere (まやデレ) typ postaci, które są zazwyczaj niebezpieczne i antagonistami serii, ale zmieniają stronę po zakochaniu się w innej postaci.\n Postać może pozostać mordercza i nieprzewidywalna dla protagonisty lub innej głównej postaci w anime lub mandze.",
+        "oujidere": "Oujidere (おうじデレ) typ postaci, który życzy być traktowany jak książe przez osobę, którą on kocha, nawet jeżeli w rzeczywistości nimi nie są.\nTe słowo wywodzi się od Ouji (おうじ) książe i Deredere (デレデレ) czyli kochający.",
+        "tsundere": "Tsundere (ツンデレ) typ postaci prawdopodobnie najczęściej występujący w anime i mandze.\n Ten typ postaci traktuje kochanych w nieodpowiedni sposób. \nCzasem jest to spowodowane tym, że z początku ich nienawidzili a po czasie zaczynając kochać wraz z rozwojem serii, czasem jest to jedyny sposób w jaki potrafią się zachowywać.\n Na przykład jeżeli główna postać nazywa tsundere słodką.\n Typ tsundere może się zdenerwować i skrzywdzić tych, których kochają, po czym nazwać ich głupcami.\nTe słowo wywodzi się od Tsuntsun (ツンツン) czyli patrzeć z obrzydzeniem, oraz Deredere (デレデレ) czyli kochający.",
+        "undere": "Undere (ウンデレ) typpostaci mówiącej tak, na wszystko co powie ich miłość. \n Zgadzają się na bardzo wiele w celu zbliżenia się do osoby, w której są zakochani. \n Te słowo wywodzi się od Un (ウン) czyli japoński skrót od tak, oraz Deredere (デレデレ) czyli kochający.",
+        "yandere": "Yandere (ヤンデレ) typ postaci z początku miłej i słodkiej, która staje się mroczna i mająca obsesję na punkcie tych, których kocha.\n Zostają prześladowcami i używają przemocy, a nawet posuwają się do morderstwa, wobec kogokolwiek, kto zbliży się do ich ukochanych — nawet jeżeli są zbyt nieśmiali by po prostu porozmawiać z osobą , w której są zakochani.\n Te słowo wywodzi się od Yanderu (やんでる) psychicznie lub emocjonalnie chory, oraz Deredere (デレデレ) czyli kochający.",
+        "yangire": "Yangire (ヤンギレ) typ częściowo podobny do Yandere. \n Postać z początku miła i słodka, staje się bardzo agresywna i psychotyczna.\n W przeciwieństwie do Yandere, Yangire nie staje się brutalny/a z powodu jego/jej uczuć miłosnych. Może to być po prostu spowodowane złością skierowaną do postaci.\n Te słowo wywodzi się od Yanderu (やんでる) psychicznie lub emocjonalnie chory, oraz Kire (きれ) czyli ciąć lub rwać."
     },
     "shuffle": {
-        "not-enough-shuffle": "There have to be at least 3 songs in the queue for me to shuffle them.",
-        "success": "Shuffled the queue!"
+        "not-enough-shuffle": "W kolejce muszą znajdować się co najmniej 3 piosenki, aby móc ją wymieszać.",
+        "success": "Wymieszano kolejkę!"
     },
     "get-node": {
-        "success": "Permission node: `{{- node}}` Category node:`{{- category}}.*` Category:`{{- category}}`",
-        "not-found": "This command does not exist.",
-        "no-args": "Type a cmd without a prefix after this to get it's permission node, category node and category"
+        "success": "Węzeł uprawnień: `{{- node}}` Kategoria węzła:`{{- category}}.*` Kategoria:`{{- category}}`",
+        "not-found": "Ta komenda nie istnieje.",
+        "no-args": "Wpisz po tym komendę bez prefiksu, aby wyświetlić jej węzeł uprawnień, kategorię węzła i kategorię"
     },
     "ap": {
         "type": {
-            "user": "user",
-            "guild": "guild",
-            "role": "role",
-            "channel": "channel"
+            "user": "użytkownik",
+            "guild": "gildia",
+            "role": "rola",
+            "channel": "kanał"
         },
-        "success": "Ok, I just added the permission `{{- node}}` `{{- allowed}}` to the `{{- type}}` `{{- name}}`",
-        "wrong-node": "The permission node `{{- node}}` will not work, as it is not a valid permission node. To get the permission node for a command type `{{- prefix}}getNode command`",
-        "target-not-found": "I could not find the target {{- target}} for this command",
-        "no-allowance-set": "You did not tell me if the perm should be allowed or not, add `true` or `false` depending on your choice",
-        "missing-args": "The correct syntax for this cmd is `{{-prefix}}ap <node> [-u|-r|-c] [target] <allowed>`\n Example:\n```{{-prefix}}ap playlist.* true -> allows all commands of the category playlist in the server\n{{-prefix}}ap music.fskip -u @user true -> allows the mentioned user to use {{- prefix}}fskip```"
+        "success": "Ok, właśnie dodałam uprawnienie  `{{- node}}` `{{- allowed}}` do `{{- type}}` `{{- name}}` ",
+        "wrong-node": "Węzeł uprawnień `{{- node}}` nie będzie działał, ponieważ jest niepoprawny. Aby wyświetlić węzeł komendy wpisz `{{- prefix}}getNode komenda` ",
+        "target-not-found": "Nie mogłam znaleźć celu {{- target}} tej komendy",
+        "no-allowance-set": "Nie określiłeś czy uprawnienie powinno być dozwolone czy zakazane, dodaj `true` lub `false` w zależności od Twojego wyboru.",
+        "missing-args": "Poprawna składnia tej komendy to `{{-prefix}}ap <węzel> [-u|-r|-c] [cel] <zezwolenie>`\n Przykład:\n```{{-prefix}}ap playlist.* true -> zezwala wszystkie komendy z kategorii playlist na serwerze\n{{-prefix}}ap music.fskip -u @użytkownik true -> zezwala wspomnianemu użytkownikowi na używanie {{- prefix}}fskip```"
     },
     "reset-perms": {
-        "nothing-found": "You did not set any Permissions yet.",
-        "confirmation": "Are you sure you want to reset the Permissions ? Type `yes` to reset them and `no` to cancel this command.",
-        "success": "I just reset all permissions you set."
+        "nothing-found": "Nie ustawiłeś jeszcze żadnych uprawnień.",
+        "confirmation": "Czy jesteś pewien, że chcesz zresetować uprawnienia? Wpisz `yes` aby zatwierdzić, `no` aby anulować.",
+        "success": "Właśnie zresetowałam wszystkie uprawnienia, które ustawiłeś/aś."
     }
 }
