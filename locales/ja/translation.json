@@ -77,7 +77,7 @@
         "pp": "任意のACCとmodから譜面のPPを計算します。",
         "cookie": "メンションをしたユーザーに対してクッキーをプレゼントします。\nメンションの無い場合はあなたの所持しているクッキーを表示します。",
         "eatCookie": "クッキーを食べます。",
-        "git": "BotのGithubのリンクを表示します。",
+        "git": "BotのGithubリポジトリへのリンクを表示します。",
         "roll": "0から指定した数字の間でサイコロを転がします。\n指定された数字のない場合は10までの間で転がします。",
         "8ball": "マジック・エイト・ボールを使ってあなたの質問にお答えします！",
         "garfield": "ランダムなガーフィールドの漫画を投下します。",
@@ -147,7 +147,8 @@
         "owo": "Wolke厳選の\"OwO What's This\"ミームの一つを表示します。",
         "getNode": "コマンドに関連付けられたパーミッションノード、カテゴリーノードとカテゴリを表示します。",
         "resetPerms": "すべてのパーミッションをリセットします。注意して使用してください。",
-        "pat": "いい子をよしよしします。"
+        "pat": "いい子をよしよしします。",
+        "triggered": "TRIGGERED"
     },
     "version": "現在の私のバージョンは {{version}} です。",
     "add": "このリンクを使って私をあなたのサーバーに追加してください！\n{{- link}}",
@@ -238,7 +239,11 @@
     "set-lang": {
         "no-lang": "あなたの指定した言語はまだ用意されていません！\n現在使用可能な言語は {{languages}} です。",
         "success": "了解しました。サーバーのロケールを{{- language}}に設定します。",
-        "unsupported": "この言語はまだ実装されていませんが、Githubでこの言語のリクエストを送信することで手助けをすることができます。\n現在利用可能な言語は {{languages}} です。"
+        "unsupported": "この言語はまだ実装されていませんが、Githubでこの言語のリクエストを送信することで手助けをすることができます。\n現在利用可能な言語は {{languages}} です。",
+        "native-name": "日本語",
+        "english-name": "Japanese",
+        "shortcode": "ja",
+        "available-languages": "利用可能な言語\nsetLangにはshortcode(日本語の`ja`等)を入力する必要があります。"
     },
     "np": {
         "song-duration": "【現在再生中】\n{{- title}} {{current}}/{{duration}} {{repeat}}",
@@ -246,9 +251,9 @@
         "repeat-on": "リピート:ON",
         "repeat-single": "リピート： 一曲のみ",
         "repeat-queue": "リピート：キュー全体",
-        "emoji-repeat-single": ":repeat_one:",
-        "emoji-repeat-queue": ":repeat:",
-        "emoji-repeat-off": ":heavy_check_mark:"
+        "emoji-repeat-single": ":repeat_one: リピート：一曲",
+        "emoji-repeat-queue": ":repeat: リピート：キュー全体",
+        "emoji-repeat-off": ":heavy_check_mark: リピート：オフ"
     },
     "queue": {
         "queued": "キューリストに追加しました:"
@@ -320,7 +325,9 @@
     "leave": "了解しました。ボイスチャンネルから切断しました。",
     "play": {
         "no-result": "楽曲が見つかりません！",
-        "playing": ":musical_note: 【現在再生中】\n **{{- song}}**"
+        "playing": ":musical_note: 【現在再生中】\n **{{- song}}**",
+        "success": ":musical_note: 再生： **{{- song}}**",
+        "next": ":musical_note: 次の楽曲： **{{- song}}**"
     },
     "prefix": {
         "success": "プレフィックスを{{- prefix}}に設定しました。\n確認のために'{{- prefix}}ping'を送信してください。",
@@ -455,13 +462,13 @@
         "yangire": "「ヤンギレ」であるキャラクターはヤンデレに多少似ているが、特筆すべき点は病む原因がキャラクターへの愛情にない事である。特定のキャラクターに異常な執着を見せたり、他の心的ストレスからキャラクターの殺害を試みたりと、一般に非常に危険な存在である。\nこの語は「ヤンデレ」の「ヤン」と（頭が）「キレ」（ている）の合成語とされる。"
     },
     "shuffle": {
-        "not-enough-shuffle": "シャッフルするにはキューに最低３曲がある必要があります。",
+        "not-enough-shuffle": "シャッフルするにはキューに３曲以上が予約されている必要があります。",
         "success": "キューをシャッフルしました！"
     },
     "get-node": {
         "success": "パーミッションノード: `{{- node}}` カテゴリーノード:`{{- category}}.*` カテゴリー:`{{- category}}`",
         "not-found": "コマンドが見つかりません。",
-        "no-args": "プレフィックスなしのコマンドを入力すると、関連付けられたパーミッションノード、カテゴリーノードとカテゴリーが表示されます。"
+        "no-args": "プレフィックスなしのコマンドを入力すると、関連付けられたパーミッションノード、カテゴリーノードとカテゴリーを表示します。"
     },
     "ap": {
         "type": {
@@ -477,7 +484,7 @@
         "missing-args": "このコマンドの使用法は `{{-prefix}}ap <ノード> [-u|-r|-c] [対象] <真偽値>`です。\n例：```{{-prefix}}ap playlist.* true -> サーバー内でのplaylistカテゴリ内のすべてのコマンドの使用を許可する\n{{-prefix}}ap music.fskip -u @user true -> メンションされたユーザーに {{- prefix}}fskip の仕様を許可する``` "
     },
     "reset-perms": {
-        "nothing-found": "パーミッションは設定されていませんよ？",
+        "nothing-found": "パーミッションはまだ設定されていませんよ？",
         "confirmation": "パーミッションを本当にリセットしますか？`yes`でリセットし、`no`でキャンセルします。",
         "success": "設定されたパーミッションをすべてリセットしました。"
     }
