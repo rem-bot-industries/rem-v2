@@ -66,8 +66,8 @@
         "remLewd": "Supprime le salon actuel de la liste des salons NSFW",
         "setPrefix": "Change le préfixe du bot, ni espaces ni mentions permis!",
         "other": "[Autres]",
-        "r34": "Recherche Rule34 pour les tags et renvoie 1 image, uniquement utilisable avec le rôle WolkeBot ou un salon configuré NSFW.",
-        "kona": "Recherche sur Konachan pour les tags et renvoie 1 image, uniquement utilisable un salon configuré NSFW ou Admin",
+        "r34": "Recherche sur Rule34 pour les tags et renvoie 1 image, uniquement utilisable avec le rôle WolkeBot ou un salon configuré NSFW.",
+        "kona": "Recherche sur Konachan pour les tags et renvoie 1 image, uniquement utilisable avec un salon configuré NSFW ou Admin",
         "e621": "Recherche sur E621 pour les tags et renvoie 1 image, uniquement utilisable avec un salon configuré NSFW ou Admin",
         "yandere": "Recherche sur Yande.re pour les tags et renvoie 1 image, uniquement utilisable avec un salon configuré NSFW ou Admin.",
         "level": "Ton niveau et l'xp requis pour le prochain niveau",
@@ -79,7 +79,7 @@
         "eatCookie": "Mange un cookie.",
         "git": "Donne le lien pour le github de Rem",
         "roll": "Tire un nombre entre zéro et un nombre, s'il n'y a pas de nombre le tirage sera sur 10",
-        "8ball": "Donne l'opinion de la boule8 magique à la question",
+        "8ball": "Donne l'opinion de la boule8 magique à une question",
         "garfield": "Donne une planche de Garfield au hasard",
         "cat": "Envoi une image de chat au hasard",
         "hug": "Donne un gif d'un calin d'anime",
@@ -431,7 +431,7 @@
         }
     },
     "rp": {
-        "success": "J'ai supprimé avec succès la permission `{{- node}}` from the **{{- type}}** `{{- id}}`"
+        "success": "J'ai supprimé avec succès la permission `{{- node}}` du **{{- type}}** `{{- id}}`"
     },
     "love": {
         "success": "Tu viens de donner à **{{- target}}** **{{- rep}}** :heart: Point d'Amour.\nUtilisations restantes **{{uses}}**.",
@@ -455,8 +455,8 @@
         "yangire": "Le type Yangire (ヤンギレ) est dans un certain sens similaire à Yandere.\nC'est un personnage qui peut commencer en étant sympas et tendre mais devient très agressif  et psychotique.\nCependant, contrairement aux Yandere, les Yangire ne deviennent pas violent dû à leur attraction au personnage.\nAu lieu, ils peuvent partir simplement parce que ils sont irrités avec un personnage qui n'a rien à faire avec son/sa bien aimé(e).\nCe mot est une abréviation de Yanderu (やんでる) qui veut dire mentalement ou émotionnellement malade et Kire (きれ) qui veut dire couper ou basculer."
     },
     "shuffle": {
-        "not-enough-shuffle": "Il doit y avoir au moins 3 chansons dans la file d'attente.",
-        "success": "Mélange la file d'attente !"
+        "not-enough-shuffle": "Il doit y avoir au moins 3 chansons dans la file d'attente pour moi les mélanger.",
+        "success": "La file d'attente a été mélangée !"
     },
     "get-node": {
         "success": "Noeud de la permission: `{{- node}}` Noeud de la catégorie: `{{- category}}.*` catégorie: `{{- category}}`",
