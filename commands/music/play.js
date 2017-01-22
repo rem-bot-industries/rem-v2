@@ -32,6 +32,7 @@ class Play extends Command {
 
     run(msg) {
         let msgSplit = msg.content.split(' ').splice(1);
+        if (msgSplit.length === 0) return msg.channel.createMessage(this.t('qa.empty-search', {lngs: msg.lang}));
         let uwu = this.checkNext(msgSplit);
         let next = uwu.next;
         msgSplit = uwu.msgSplit;
@@ -84,7 +85,7 @@ class Play extends Command {
             if (err) {
                 return msg.channel.createMessage(this.t(err, {lngs: msg.lang}));
             }
-            msg.content = `https://youtube.com/watch?v=${results[number - 1].id}`;
+            msg.content = `!w.play https://youtube.com/watch?v=${results[number - 1].id}`;
             this.run(msg);
         });
     }
