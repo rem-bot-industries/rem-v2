@@ -147,7 +147,8 @@
         "owo": "Wysyła losowy meme OwO What's this?, spośród ręcznie wybranych przez Wolke",
         "getNode": "Wyświetla węzeł uprawnień, węzeł kategorii i kategorię komendy",
         "resetPerms": "Resetuje wszystkie ustawione uprawnienia do tej pory, używaj rozsądnie",
-        "pat": "Nagradza poklepaniem dobrego chłopca/dziewczynkę/helikopter"
+        "pat": "Nagradza poklepaniem dobrego chłopca/dziewczynkę/helikopter",
+        "triggered": "TRIGGERED"
     },
     "version": "Obecnie używam wersji {{version}}",
     "add": "Użyj ten link, aby dodać mnie do Twojego serwera: {{- link}}",
@@ -238,7 +239,11 @@
     "set-lang": {
         "no-lang": "Nie określiłeś języka! Obecnie dostępne: {{languages}} .",
         "success": "Ok, właśnie ustawiłam język serwera na {{- language}}.",
-        "unsupported": "Ten język nie został jeszcze dodany. Możesz go zaproponować poprzez żądanie pull z językiem na github'ie. Obecnie dostępne: {{languages}}"
+        "unsupported": "Ten język nie został jeszcze dodany. Możesz go zaproponować poprzez żądanie pull z językiem na github'ie. Obecnie dostępne: {{languages}}",
+        "native-name": "Polski",
+        "english-name": "Polish",
+        "shortcode": "skrót",
+        "available-languages": "Lista dostępnych języków\nProszę, zwróć uwagę, że setLang wymaga skrótu języka"
     },
     "np": {
         "song-duration": "Odtwarzanie:` {{- title}} {{current}}/{{duration}} {{repeat}} ` ",
@@ -320,7 +325,9 @@
     "leave": "Ok, opuściłam kanał głosowy.",
     "play": {
         "no-result": "Nie znaleziono piosenki!",
-        "playing": ":musical_note: Odtwarzanie **{{- song}}**"
+        "playing": ":musical_note: Odtwarzanie **{{- song}}**",
+        "success": ":musical_note: Odtwarzanie **{{- song}}**",
+        "next": ":musical_note: Następna pozycja **{{- song}}**"
     },
     "prefix": {
         "success": "Ok, właśnie ustawiłam prefiks na {{- prefix}}, spróbuj `{{- prefix}}ping` aby to sprawdzić",
