@@ -84,7 +84,7 @@
         "cat": "Sendet ein zufälliges Bild einer Katze",
         "hug": "Gibt dir ein Gif einer Umarmung",
         "slap": "Gibt dir ein Gif einer Backpfeife",
-        "setLang": "stellt die Sprache ein, momentan verfügbar sind die folgenden Sprachen verfügbar: {{- languages}}",
+        "setLang": "stellt die Sprache ein, rufe !w.setLang ohne argumente auf, um eine Liste mit Sprachen zu erhalten.",
         "report": "Wenn du zu schüchtern bist um auf den Support Discord zu kommen, kannst du hiermit Wolke eine Nachricht schreiben.",
         "feedback": "Benutze für Feedback bitte den Support Discord ^^",
         "talk": "Wenn du mir mit reden willst, erwähn mich einfach :D",
@@ -111,7 +111,7 @@
         "gtn": "Schickt dir ein zufälliges Green Tea Neko Comic, nur benutzbar mit einem NSFW Kanal oder mit Admin Rechten.",
         "cuddle": "Sendet dir ein Anime Knuddel gif",
         "trig": "TRIGGERED",
-        "bot": "Gibt dir Informationen über die aktuelle Laufzeit von Rem, Sprachverbindungen, Benutzeranzahl und Serveranzahl",
+        "bot": "Gibt dir Informationen über Rem, die Laufdauer und einige praktische Links",
         "top": "Zeigt dir die Top 10 Server (nach Benutzern sortiert) an die diesen Bot benutzen",
         "about": "Zeigt dir grundlegende Informationen über mich, wie die Bibliotheken und wer mich erschaffen hat",
         "lenny": "( ͡° ͜ʖ ͡°)",
@@ -147,7 +147,8 @@
         "owo": "Schickt ein zufälliges \"OwO What's this\" meme.\nAusgesucht von Wolke",
         "getNode": "Gibt dir die Berechtigungs ID, Kategorie ID und Kategorie eines Befehls",
         "resetPerms": "Setzt alle Berechtigungen zurück, nur mit Vorsicht verwenden.",
-        "pat": "Streichelt jmd. der ein guter Junge/gutes Mädel/guter Helikopter war."
+        "pat": "Streichelt jmd. der ein guter Junge/gutes Mädel/guter Helikopter war.",
+        "triggered": "TRIGGERED"
     },
     "version": "Momentan verwende ich Version{{version}}",
     "add": "Benutze diesen Link um mich auf deinem Server hinzuzufügen: {{- link}}",
@@ -204,7 +205,7 @@
     },
     "qa": {
         "nothing-found": "Ich habe kein Lied mit dem Begriff `{{- search}}` gefunden!",
-        "empty-search": "Du hast keinen Suchbegriff eingegeben",
+        "empty-search": "Du hast keinen Suchbegriff/Link eingegeben",
         "started-download": ":hourglass: Ok, ich lade nun`{{- url}}` ",
         "success": "**{{- song}}** ist jetzt in der Warteschlange!"
     },
@@ -238,7 +239,11 @@
     "set-lang": {
         "no-lang": "Du hast keine Sprache angegeben! Momentan verfügbar sind die folgenden Sprachen: {{- languages}}",
         "success": "Ok Ich habe die Sprache auf {{- language}} umgestellt.",
-        "unsupported": "Diese Sprache ist bisher noch nicht eingebaut worden, aber du kannst helfen indem du eine pullrequest mit der gewünschten Sprache auf github öffnest. Momentan verfügbar sind die folgenden Sprachen {{- languages}}"
+        "unsupported": "Diese Sprache ist bisher noch nicht eingebaut worden, aber du kannst helfen,indem du dich hier: <https://poeditor.com/join/project/xOTc6XGBqX> registrierst und auf den support server kommst. Momentan verfügbare Sprachen siehst du, indem du diesen Befehl ohne Argumente ausführst.",
+        "native-name": "Lokaler Name",
+        "english-name": "Englischer Name",
+        "shortcode": "Kurzzeichen",
+        "available-languages": "Verfügbare Sprachen:\nBitte beachte: setLang benötigt das Kurzzeichen"
     },
     "np": {
         "song-duration": "Aktuell läuft: `{{- title}} {{- current}}/{{- duration}} {{- repeat}} `",
@@ -320,7 +325,9 @@
     "leave": "Ok, ich habe den Voicechannel verlassen",
     "play": {
         "no-result": "Kein Lied gefunden!",
-        "playing": ":musical_note: Jetzt spielt **{{- song}}**"
+        "playing": ":musical_note: Jetzt spielt **{{- song}}**",
+        "success": ":musical_note: Jetzt spielt: **{{- song}}**",
+        "next": ":musical_note: Als nächstes spielt: **{{- song}}**"
     },
     "prefix": {
         "success": "Ok, ich habe gerade das prefix auf `{{- prefix}}` umgestellt! Probier `{{- prefix}}ping` aus um es zu überprüfen!",
