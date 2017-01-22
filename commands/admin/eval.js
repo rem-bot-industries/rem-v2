@@ -13,6 +13,7 @@ class EvalCode extends Command {
         this.t = t;
         this.accessLevel = 2;
         this.hub = mod.getMod('hub');
+        this.mod = mod;
     }
 
     run(msg) {

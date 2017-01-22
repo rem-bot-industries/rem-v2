@@ -55,7 +55,7 @@ ${this.buildTable(msg)}
         for (let i = 0; i < msg.lngs.length; i++) {
             let sc = msg.lngs[i];
             if (sc !== 'dev') {
-                let native_name = this.t('generic.native-name', {lng: msg.lngs[i]});
+                let native_name = this.t('generic.native-name', {lng: msg.lngs[i]}).trim();
                 let english_name = this.t('generic.language-name-en', {lng: msg.lngs[i]});
                 if (native_name === 'generic.native-name' || (native_name === this.t('generic.language-name-en', {lng: 'en'}) && sc !== 'en')) {
                     native_name = 'not defined';
@@ -64,6 +64,8 @@ ${this.buildTable(msg)}
                 table.addRow(sc, english_name, native_name);
             }
         }
+        table.addRow('uwu', 'uwu', 'にほんご');
+        console.log(table.toString());
         return table.toString();
     }
 }
