@@ -5,6 +5,7 @@ let Command = require('../../structures/command');
 let Canvas = require('canvas');
 let Image = Canvas.Image;
 let fs = require('fs');
+let adminId = require('../../config/main.json').owner_id;
 class CanvasTest extends Command {
     constructor({t}) {
         super();
@@ -17,6 +18,7 @@ class CanvasTest extends Command {
     }
 
     run(msg) {
+        if (msg.author.id !== adminId) return;
         let canvas = new Canvas(200, 200);
         let ctx = canvas.getContext('2d');
         ctx.font = '30px Impact';
