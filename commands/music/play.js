@@ -32,7 +32,6 @@ class Play extends Command {
 
     run(msg) {
         let msgSplit = msg.content.split(' ').splice(1);
-        if (msgSplit.length === 0) return msg.channel.createMessage(this.t('qa.empty-search', {lngs: msg.lang}));
         let uwu = this.checkNext(msgSplit);
         let next = uwu.next;
         msgSplit = uwu.msgSplit;
