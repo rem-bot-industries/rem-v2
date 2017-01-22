@@ -49,7 +49,6 @@
     "qr": "You can remove single songs with their songid, or multiple with `qr startid-stopid`, this would remove all songs starting at the startid and ending at the stopid, or delete multiple ids by seperating them with commas",
     "queue": "Shows the current Queue",
     "np": "Shows the currently playing Song",
-    "rq": "Adds a random Song/a number of songs to the Queue",
     "shuffle": "Shuffles the queue. Note that at least 3 Songs have to be in the queue for this command to work.",
     "stream": "Streams the selected Internet radio, you can search for radios or directly add them by appending -u url to the command",
     "youtube": "[YOUTUBE]",
@@ -82,12 +81,11 @@
     "hug": "Gives you an anime hug gif",
     "slap": "Gives you an anime slap gif",
     "cuddle": "Gives you an anime cuddle gif",
-    "trig": "TRIGGERED",
-    "setLang": "sets the language, currently supported are {{languages}}",
+    "triggered": "TRIGGERED",
+    "setLang": "sets the language, run !w.setLang without any arguments to get a list of languages",
     "talk": "If you want to talk with me @mention me with a message :D",
     "helpReply": "OK, I sent you a list of commands over PM.",
-    "bot": "Gives you information about the current uptime of Rem, voice connections, usercount and guildcount",
-    "about": "Shows you basic information about me, like the library and who made me.",
+    "bot": "Gives you some information about Rem, the uptime and some useful links.",
     "say": "Make Rem say something",
     "sayd": "Make Rem say something and delete your cmd",
     "ar": "Add a role to yourself or a user",
@@ -128,7 +126,6 @@
     "resetPerms": "Resets all permissions set until now, use with caution",
     "pat": "Pat someone who has been a good boy/girl/helicopter"
   },
-  "version": "Currently I am running on version {{version}}",
   "add": "Use this link to add me to your Server: {{- link}}",
   "bug": "Please join the support discord: {{- link}} to report a bug.",
   "level": {
@@ -185,16 +182,8 @@
   },
   "qa": {
     "nothing-found": "No Song found with Search Term `{{search}}` ",
-    "empty-search": "You did not enter a search Term!",
-    "started-download": "Started download of `{{- url}}` ",
+    "empty-search": "You did not enter a link/searchterm.",
     "success": "Queued **{{- song}}**"
-  },
-  "rq": {
-    "db-error": "A database error occured!",
-    "success-multiple": "Added the following Songs:\n```{{- table}}```",
-    "too-big": "Added {{number}} songs",
-    "no-songs-added": "I could not add any songs as they are already in the queue, try again!",
-    "too-much": "You can not add more than {{number}} songs at once!"
   },
   "qra": {
     "no-number": "You did not say how many songs I should remove from the queue!",
@@ -216,9 +205,12 @@
     "magic": "xX_Cats_Xx was here -10.10.2016"
   },
   "set-lang": {
-    "no-lang": "You did not specify a language! Currently there are {{languages}} available.",
+    "native-name": "Native Name",
+    "english-name": "English Name",
+    "shortcode": "shortcode",
+    "available-languages": "List of available Languages\nPlease note that setLang needs the shortcode",
     "success": "Ok I just set the language for this server to {{- language}}.",
-    "unsupported": "This language is not implemented yet, but you can help with it by adding a pull request with your language on github. Currently there are {{languages}} available."
+    "unsupported": "This language is not implemented yet, but you can help with it by adding a pull request with your language on github. You can find the current available Languages by running this command without arguments."
   },
   "np": {
     "song-duration": "Currently playing:` {{- title}} {{current}}/{{duration}} {{repeat}} `",
@@ -311,18 +303,14 @@
   },
   "leave": "Ok I left the voice channel.",
   "play": {
-    "no-result": "No song found!",
-    "playing": ":musical_note: Now playing **{{- song}}**"
+    "success": ":musical_note: Now playing **{{- song}}**",
+    "next": ":musical_note: Playing next **{{- song}}**"
   },
   "prefix": {
     "success": "Ok I just set the prefix to {{- prefix}}, try `{{- prefix}}ping` to check it",
     "no-prefix": "Please add a prefix!"
   },
   "voice": {
-    "in-queue": "**{{- song}}** is already in the queue.",
-    "error-volume": "Error while setting volume!",
-    "success-volume": "Set volume to {{- volume}}",
-    "already-playing": "This Song is already playing!",
     "blocked": "This Video is not available to download. Maybe it is too long or blocked/removed",
     "dl-start": ":hourglass: loading song!",
     "use-proxy": "Trying to download over the proxy, this could take a bit."
@@ -349,13 +337,6 @@
     "no-limit": "You did not specify how many messages I should delete.",
     "nothing-found": "I did not find a message that matched the filter!"
   },
-  "search": {
-    "success": "Found the following Songs:"
-  },
-  "set-lewd": {
-    "success": "Successfully added {{- channel}} to the NSFW Channels!"
-  },
-  "report": "OK, I sent your report to Wolke, please dont abuse this, as it could get you banned from using the bot!",
   "greeting": {
     "no-greeting": "You did not add the greeting I should use!",
     "no-add": "You can either set or reset the greeting."

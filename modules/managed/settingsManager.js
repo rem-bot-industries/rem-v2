@@ -16,8 +16,9 @@ let validKeys = {
     }
 };
 class SettingsManager extends Manager {
-    constructor() {
+    constructor({mod}) {
         super();
+        this.t = mod.getMod('lm').getT();
     }
 
     updateCache(data) {
@@ -78,4 +79,4 @@ class SettingsManager extends Manager {
     }
 
 }
-module.exports = {class: SettingsManager, deps: [], async: false, shortcode: 'sm'};
+module.exports = {class: SettingsManager, deps: ['lm'], async: false, shortcode: 'sm'};

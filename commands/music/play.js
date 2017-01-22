@@ -4,6 +4,7 @@
 let Command = require('../../structures/command');
 let winston = require('winston');
 let Selector = require('../../structures/selector');
+let _ = require("lodash");
 let track_error = !require('../../config/main.json').no_error_tracking;
 /**
  * The play command
@@ -30,10 +31,20 @@ class Play extends Command {
     }
 
     run(msg) {
-        this.v.addToQueue(msg, true).then(result => {
+        let msgSplit = msg.content.split(' ').splice(1);
+        if (msgSplit.length === 0) return msg.channel.createMessage(this.t('qa.empty-search', {lngs: msg.lang}));
+        let uwu = this.checkNext(msgSplit);
+        let next = uwu.next;
+        msgSplit = uwu.msgSplit;
+        msg.content = msgSplit.join(' ');
+        this.v.addToQueue(msg, !next, next).then(result => {
             switch (result.type) {
                 case "added":
-                    msg.channel.createMessage(this.t('qa.success', {song: result.data.title, lngs: msg.lang}));
+                    if (next) return msg.channel.createMessage(this.t('play.next', {
+                        song: result.data.title,
+                        lngs: msg.lang
+                    }));
+                    msg.channel.createMessage(this.t('play.success', {song: result.data.title, lngs: msg.lang}));
                     return;
                 case "search_result":
                     this.searchResult(msg, result.data);
@@ -57,6 +68,16 @@ class Play extends Command {
             }
             msg.channel.createMessage(this.t('generic.error', {lngs: msg.lang}));
         });
+    }
+
+    checkNext(msgSplit) {
+        let next = false;
+        let index = _.indexOf(msgSplit, '-next');
+        if (index > -1) {
+            _.pull(msgSplit, '-next');
+            next = true;
+        }
+        return {next, msgSplit};
     }
 
     searchResult(msg, results) {

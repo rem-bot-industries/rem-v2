@@ -25,7 +25,6 @@ class ModuleManager {
                 // winston.info(files);
                 for (let file of files) {
                     try {
-
                         let mod = require(file);
                         that.loadRawMod(mod);
                     } catch (e) {
@@ -55,9 +54,6 @@ class ModuleManager {
     }
 
     loadRawMod(mod) {
-        if (this.rawMods[mod.shortcode]) {
-            throw new Error(`${mod.shortcode} is already used.`);
-        }
         this.rawMods[mod.shortcode] = mod;
     }
 

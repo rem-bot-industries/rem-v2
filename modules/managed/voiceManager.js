@@ -130,7 +130,7 @@ class VoiceManager extends Manager {
 
     }
 
-    addToQueue(msg, immediate) {
+    addToQueue(msg, immediate, next) {
         let that = this;
         return new Promise(function (resolve, reject) {
             that.join(msg, (err, conn) => {
@@ -150,12 +150,11 @@ class VoiceManager extends Manager {
                     that.emit(`${msg.id}_added`, Song);
                     if (typeof (that.players[msg.channel.guild.id]) !== 'undefined') {
                         that.players[msg.channel.guild.id].updateConnection(conn);
-                        that.players[msg.channel.guild.id].addToQueue(Song, immediate);
-                        console.log('uwu');
+                        that.players[msg.channel.guild.id].addToQueue(Song, immediate, next);
                         resolve({type: 'added', event: `${msg.id}_added`, data: Song});
                     } else {
                         that.createPlayer(msg, conn, ytdl).then(player => {
-                            that.players[msg.channel.guild.id].addToQueue(Song, immediate);
+                            that.players[msg.channel.guild.id].addToQueue(Song, immediate, next);
                             resolve({type: 'added', event: `${msg.id}_added`, data: Song});
                         }).catch(err => {
                             winston.error(err);
@@ -400,6 +399,10 @@ class VoiceManager extends Manager {
             id: id
         });
         Queue.save(cb);
+    }
+
+    getPlayer(id) {
+        return this.players[id];
     }
 }
 module.exports = {class: VoiceManager, deps: [], async: false, shortcode: 'vm'};

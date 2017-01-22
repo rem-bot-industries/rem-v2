@@ -33,11 +33,23 @@ class Repeat extends Command {
                     result = this.v.repeat(msg, 'off');
                     break;
                 }
+                case "off": {
+                    result = this.v.repeat(msg, 'off');
+                    break;
+                }
                 case "song": {
                     result = this.v.repeat(msg, 'single');
                     break;
                 }
+                case "single": {
+                    result = this.v.repeat(msg, 'single');
+                    break;
+                }
                 case "queue": {
+                    result = this.v.repeat(msg, 'queue');
+                    break;
+                }
+                case "all": {
                     result = this.v.repeat(msg, 'queue');
                     break;
                 }

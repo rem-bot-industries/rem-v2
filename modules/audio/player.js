@@ -52,11 +52,8 @@ class Player extends EventEmitter {
         if (this.connection && this.connection.ready) {
             let stream;
             let options = {};
-            dogstatsd.increment(`${stat}.music.play`);
             if (Song.type === SongTypes.youtube) {
-                dogstatsd.increment(`${stat}.music.youtube`);
                 if (!Song.needsYtdl) {
-                    dogstatsd.increment(`${stat}.music.youtube.opus`);
                     try {
                         stream = request(Song.streamUrl);
                     } catch (e) {
@@ -68,7 +65,6 @@ class Player extends EventEmitter {
                     options.format = 'webm';
                     options.frameDuration = 20;
                 } else {
-                    dogstatsd.increment(`${stat}.music.youtube.nonopus`);
                     let options = {
                         filter: (format) => format.container === 'mp4' && format.audioEncoding || format.container === 'webm' && format.audioEncoding,
                         quality: ['250', '249', '251', '140', '141', '139', 'lowest'],
@@ -84,7 +80,6 @@ class Player extends EventEmitter {
                     });
                 }
             } else if (Song.type === SongTypes.soundcloud) {
-                dogstatsd.increment(`${stat}.music.soundcloud`);
                 if (Song.streamUrl) {
                     stream = request(Song.streamUrl);
                     stream.on('error', (err) => {
@@ -94,7 +89,6 @@ class Player extends EventEmitter {
                     return this.nextSong();
                 }
             } else if (Song.type === SongTypes.osu) {
-                dogstatsd.increment(`${stat}.music.osu`);
                 try {
                     stream = fs.createReadStream(Song.url);
                 } catch (e) {
@@ -129,6 +123,7 @@ class Player extends EventEmitter {
             //     winston.info(`Debug: ${information}`);
             // });
             this.connection.on("error", (err) => {
+                console.log('connection error');
                 winston.info(`Error: ${err}`);
                 this.nextSong(Song);
             });
@@ -169,8 +164,9 @@ class Player extends EventEmitter {
      * Adds a song to the queue
      * @param Song - the song that should be added to the queue
      * @param immediate - if the song should be played immediately
+     * @param next - if the song should be enqueued to the 2nd position
      */
-    addToQueue(Song, immediate) {
+    addToQueue(Song, immediate, next) {
         this.toggleRepeat('off');
         if (immediate) {
             this.queue.songs.unshift(Song);
@@ -179,6 +175,22 @@ class Player extends EventEmitter {
             }
             this.play(Song);
             this.started = true;
+        } else if (next) {
+            let current;
+            if (this.queue.songs.length > 0) {
+                current = this.queue.songs.shift();
+            }
+            this.queue.songs.unshift(Song);
+            if (typeof (current) === 'undefined' || !current) {
+                if (this.started) {
+                    this.endSong();
+                }
+                this.play(Song);
+                this.started = true;
+                immediate = true;
+            } else {
+                this.queue.songs.unshift(current);
+            }
         } else {
             this.queue.songs.push(Song);
         }
@@ -269,6 +281,7 @@ class Player extends EventEmitter {
         try {
             this.connection.stopPlaying();
         } catch (e) {
+            console.error(e);
             this.emit('debug', e);
         }
     }

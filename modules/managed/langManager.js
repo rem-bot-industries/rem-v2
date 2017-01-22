@@ -86,5 +86,9 @@ class LangManager extends Manager {
     getT() {
         return this.t;
     }
+
+    getList() {
+        return this.list();
+    }
 }
 module.exports = {class: LangManager, deps: [], async: true, shortcode: 'lm'};

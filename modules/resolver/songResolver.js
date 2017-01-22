@@ -16,8 +16,6 @@ let winston = require('winston');
 let youtubesearch = require('youtube-search');
 let KeyManager = require('../keyManager');
 let km = new KeyManager(keys);
-let Song = require('../../structures/song');
-const SongTypes = require('../../structures/constants').SONG_TYPES;
 let opts = {
     maxResults: 10,
     key: km.getKey(),
