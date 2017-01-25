@@ -194,6 +194,9 @@ class AddPermission extends Command {
                     node = nodeSplit.join('.');
                     if (nodeSplit[1] !== '*') {
                         let cmd = msg.cmds[nodeSplit[1]];
+                        if (!cmd) {
+                            cmd = {cmd: 'cleverbot', cat: 'fun'}
+                        }
                         if (cmd || nodeSplit[1] === 'cleverbot') {
                             if ((nodeSplit[0] === cmd.cat && nodeSplit[1] === cmd.cmd) || node === 'fun.cleverbot') {
 
