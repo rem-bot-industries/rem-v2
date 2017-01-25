@@ -1,6 +1,6 @@
 {
   "name": "rem-v2",
-  "version": "1.2.0",
+  "version": "2.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -25,10 +25,10 @@
     "cleverbot-node": "^0.2.6",
     "clusterhub": "^0.2.9",
     "eris": "^0.5.2",
-    "eslint": "^3.14.0",
+    "eslint": "^3.14.1",
     "eventemitter3": "^2.0.2",
     "hot-shots": "^4.3.1",
-    "i18next": "^6.0.1",
+    "i18next": "^6.0.2",
     "i18next-node-fs-backend": "^0.1.3",
     "knuth-shuffle": "^1.0.1",
     "le-table": "^6.1.4",
@@ -51,7 +51,7 @@
     "youtube-api": "^2.0.6",
     "youtube-dl": "^1.11.1",
     "youtube-search": "^1.0.8",
-    "ytdl-core": "^0.7.21"
+    "ytdl-core": "^0.7.22"
   },
   "devDependencies": {
     "babel-cli": "^6.18.0",
