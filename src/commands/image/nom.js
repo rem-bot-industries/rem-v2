@@ -1,15 +1,15 @@
 /**
- * Created by Julian/Wolke on 15.11.2016.
+ * Created by Julian/Wolke on 25.01.2017.
  */
 let RRACommand = require('../../structures/rraCommand');
-class Pat extends RRACommand {
+class Nom extends RRACommand {
     constructor({t}) {
         super();
-        this.cmd = "pat";
-        this.cat = "fun";
+        this.cmd = "nom";
+        this.cat = "image";
         this.needGuild = false;
         this.t = t;
         this.accessLevel = 0;
     }
 }
-module.exports = Pat;
+module.exports = Nom;

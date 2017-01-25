@@ -32,6 +32,7 @@ class UserInfo extends Command {
     buildReply(msg, user, member) {
         let avatar = user.avatar ? (user.avatar.startsWith('a_') ? `​https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.gif` : user.avatarURL) : user.defaultAvatarURL;
         avatar = avatar.replace(/[^a-zA-Z0-9_\-./:]/, "");
+        avatar += '?size=1024';
         this.u.loadUser(user, (err, dbUser) => {
             if (err) return winston.error(err);
             let reply = {

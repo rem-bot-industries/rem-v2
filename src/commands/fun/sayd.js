@@ -16,6 +16,7 @@ class SayDelete extends Command {
 
     run(msg) {
         let content = msg.content.substr(msg.prefix.length + this.cmd.length).trim();
+        if (content === '') return msg.channel.createMessage(this.t('generic.empty-say', {lngs: msg.lang}));
         msg.trueContent = content;
         msg.channel.createMessage('\u200B' + content).then(newMsg => {
             msg.id = newMsg.id;

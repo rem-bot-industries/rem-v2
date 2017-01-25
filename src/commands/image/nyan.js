@@ -3,14 +3,14 @@
  */
 
 let RRACommand = require('../../structures/rraCommand');
-class LewdImage extends RRACommand {
+class NyanImage extends RRACommand {
     constructor({t}) {
         super();
-        this.cmd = "lewd";
-        this.cat = "fun";
+        this.cmd = "nyan";
+        this.cat = "image";
         this.needGuild = false;
         this.t = t;
         this.accessLevel = 0;
     }
 }
-module.exports = LewdImage;
+module.exports = NyanImage;

@@ -116,6 +116,7 @@ class VoiceManager extends Manager {
                         if (err) {
                             reject({type: 'error', event: `${msg.id}_error`, err: err});
                         } else {
+                            that.players[msg.channel.guild.id].updateConnection(conn);
                             that.players[msg.channel.guild.id].addToQueue(playlist.songs[0]);
                             for (let i = 1; i < playlist.songs.length; i++) {
                                 that.players[msg.channel.guild.id].pushQueue(playlist.songs[i]);

@@ -20,7 +20,7 @@ class ServerInfo extends Command {
     }
 
     buildReply(msg) {
-        let avatar = msg.channel.guild.iconURL;
+        let avatar = `${msg.channel.guild.iconURL}?size=1024`;
         this.g.loadGuild(msg.channel.guild.id, (err, dbGuild) => {
             if (err) return winston.error(err);
             let reply = {

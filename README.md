@@ -19,7 +19,7 @@
 6. If you have Windows, open a console with administrator permissions and type `npm install --global windows-build-tools` into it. This will install the neccessary tools, which will be later needed by npm to build Rems dependencies
 7. For Linux environments, you should get `buildtools-essentials` and `python 2.7` installed.
 8. Clone the source of v2 from git
-9. Go into the just created directory and open a cmd and execute `npm install`
+9. Go into the just created directory and open a cmd and execute `npm install --no-optional`
 10. Create the following directories within the root: `temp`,`audio`,`config`
 11. Create 2 files within the config directory: `main.json` and `keys.json`. An Example can be found down below.
 

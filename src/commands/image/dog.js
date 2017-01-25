@@ -4,23 +4,21 @@
 let Command = require('../../structures/command');
 let winston = require('winston');
 let request = require("request");
-class Cat extends Command {
+class Dog extends Command {
     constructor({t}) {
         super();
-        this.cmd = "cat";
-        this.cat = "fun";
+        this.cmd = "dog";
+        this.cat = "image";
         this.needGuild = false;
         this.t = t;
         this.accessLevel = 0;
     }
 
     run(msg) {
-        request.get('http://random.cat/meow', (err, response, body) => {
+        request.get('http://random.dog/woof', (err, response, body) => {
             if (err) return winston.info(err);
-            let parsedBody = JSON.parse(body);
-            let url = parsedBody.file.replace('\\', 'g');
-            msg.channel.createMessage(url);
+            msg.channel.createMessage(`http://random.dog/${body}`);
         });
     }
 }
-module.exports = Cat;
+module.exports = Dog;

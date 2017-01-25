@@ -14,6 +14,7 @@ class Say extends Command {
 
     run(msg) {
         let content = msg.content.substr(msg.prefix.length + this.cmd.length).trim();
+        if (content === '') return msg.channel.createMessage(this.t('generic.empty-say', {lngs: msg.lang}));
         msg.channel.createMessage('\u200B' + content);
     }
 }

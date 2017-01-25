@@ -1,15 +1,15 @@
 /**
- * Created by Julian/Wolke on 15.11.2016.
+ * Created by Julian/Wolke on 04.01.2017.
  */
 let RRACommand = require('../../structures/rraCommand');
-class TriggeredImage extends RRACommand {
+class OWOImage extends RRACommand {
     constructor({t}) {
         super();
-        this.cmd = "triggered";
-        this.cat = "fun";
+        this.cmd = "owo";
+        this.cat = "image";
         this.needGuild = false;
         this.t = t;
         this.accessLevel = 0;
     }
 }
-module.exports = TriggeredImage;
+module.exports = OWOImage;

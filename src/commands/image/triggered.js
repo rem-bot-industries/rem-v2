@@ -1,15 +1,15 @@
 /**
- * Created by Julian/Wolke on 04.01.2017.
+ * Created by Julian/Wolke on 15.11.2016.
  */
 let RRACommand = require('../../structures/rraCommand');
-class CryImage extends RRACommand {
+class TriggeredImage extends RRACommand {
     constructor({t}) {
         super();
-        this.cmd = "cry";
-        this.cat = "fun";
+        this.cmd = "triggered";
+        this.cat = "image";
         this.needGuild = false;
         this.t = t;
         this.accessLevel = 0;
     }
 }
-module.exports = CryImage;
+module.exports = TriggeredImage;
