@@ -10,12 +10,11 @@
     "no-voice": ":no_entry_sign: I am not connected to any voice channel on this Server!",
     "level-update": ":tada: You just reached **Level  {{level}}** on **{{- server}}**",
     "empty-search": ":no_entry_sign: You did not enter a search Term!",
+    "empty-say": ":no_entry_sign: You did not enter a message!",
     "negative": ":no_entry_sign: Please dont use a negative number!",
     "cancel": "cancel",
     "abort": ":x: canceled",
-    "version": "version",
-    "author": "author",
-    "lib": "library used",
+    "version": "Version",
     "more": "{{number}} more",
     "cat-nope": ":no_entry_sign: This category does not exist!",
     "mention": "Please mention a user.",
@@ -124,7 +123,12 @@
     "iblewd": "Searches on ibsearch.xxx (same as ibsafe but with nsfw pics too)",
     "getNode": "Gives you the permission node, category node and category of a command",
     "resetPerms": "Resets all permissions set until now, use with caution",
-    "pat": "Pat someone who has been a good boy/girl/helicopter"
+    "pat": "Pat someone who has been a good boy/girl/helicopter",
+    "stare": "stareeeee...",
+    "nom": "Nom :>",
+    "potato": "Everyone wants a potato",
+    "choose": "Make Rem choose something for you, seperate the choices with `;`",
+    "tickle": "Tickle Tickle Tickle"
   },
   "add": "Use this link to add me to your Server: {{- link}}",
   "bug": "Please join the support discord: {{- link}} to report a bug.",
@@ -258,12 +262,15 @@
     "users": "Users",
     "channels": "Channels",
     "guilds": "Guilds",
-    "guilds-s": "Guilds on this shard",
-    "channels-s": "Channels on this shard",
+    "guilds-s": "Guilds (shard)",
+    "channels-s": "Channels (shard)",
     "users-s": "Users on this shard",
     "avg-channels": "Avg. Channels per guild",
     "avg-users": "Avg. Users per guild",
-    "voice": "Voiceconnections",
+    "voice": "VC",
+    "voice_active": "AVC",
+    "voice_s": "VC(shard)",
+    "voice_active_s": "AVC (shard)",
     "shard": "shard",
     "lib": "Library"
   },
@@ -414,6 +421,10 @@
     "nothing-found": "You did not set any Permissions yet.",
     "confirmation": "Are you sure you want to reset the Permissions ? Type `yes` to reset them and `no` to cancel this command.",
     "success": "I just reset all permissions you set."
+  },
+  "choose": {
+    "empty-choose": ":no_entry_sign: I can not choose anything, if you enter nothing!",
+    "success": "I choose **{{- choice}}**!"
   },
   "dere": {
     "no-dere": "The dere type you searched for does not exist. Here is a list of possible deres:\n",
