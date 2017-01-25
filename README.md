@@ -1,14 +1,16 @@
 # Rem v2
 >The rewrite of Rem, now even cleaner and soon fully documented.
 
+>This Code is provided as is, there will be no support for getting it to run.
+
 [![Discord](https://discordapp.com/api/guilds/206530953391243275/embed.png)](https://discord.gg/yuTxmYn) [![Dependencies](https://david-dm.org/DasWolke/rem-v2/status.svg)](https://david-dm.org/DasWolke/rem-v2) [![GitHub stars](https://img.shields.io/github/stars/DasWolke/rem-v2.svg?style=social&label=Star)]()[![GitHub issues](https://img.shields.io/github/issues/DasWolke/rem-v2.svg)]()
 ## Requirements:
 * Node and NPM
 * Git
-* MongoDB (follow instructions on how to configure the server at https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows/)
+* MongoDB (follow instructions on how to configure the server at [https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows/](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows/))
 * ffmpeg and youtube-dl
 * Buildtools and Python 2.7
-* Basic understanding of node
+* Basic understanding of node js
 
 ## Installation instructions
 1. Install MongoDB with the [guide](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows/).
@@ -22,6 +24,7 @@
 9. Go into the just created directory and open a cmd and execute `npm install --no-optional`
 10. Create the following directories within the root: `temp`,`audio`,`config`
 11. Create 2 files within the config directory: `main.json` and `keys.json`. An Example can be found down below.
+12. Run `npm run build` in your terminal and then start rem by going into the dist folder and then executing `node index.js` in there.
 
 ## Example main.json
 ```json
@@ -62,4 +65,6 @@ If you need help creating tokens and a Youtube api I suggest reading these two t
 * https://github.com/reactiflux/discord-irc/wiki/Creating-a-discord-bot-&-getting-a-token
 * http://docs.thesharks.xyz/install_windows/
 
-Hail uwu
+## Contibuting Guidelines
+
+I will wrote those if people actually want to contribute. Until then: Just make it work good and fast. uwu
