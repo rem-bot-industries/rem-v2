@@ -12,7 +12,7 @@
         "empty-search": ":no_entry_sign: Tu n'as pas entré de terme de recherche!",
         "negative": ":no_entry_sign: S'il te plaît n'utilise pas de nombre négatif!",
         "cancel": "annuler",
-        "version": "version",
+        "version": "Version",
         "author": "auteur",
         "lib": "bibliothèque utilisée",
         "more": "{{number}} en plus",
@@ -24,7 +24,8 @@
         "support": "Support",
         "invite": "Inviter",
         "language-name-en": "French",
-        "native-name": "Français"
+        "native-name": "Français",
+        "empty-say": ":no_entry_sign: Vous n'avez pas entré de message!"
     },
     "help": {
         "intro": "ayons du plaisir tous ensemble sur Discord (/^▽^)/  sélectionne une catégorie de commandes en répondant avec {{pre}}help \"numéro de la commande\" pour en apprendre plus:",
@@ -84,7 +85,7 @@
         "cat": "Envoi une image de chat au hasard",
         "hug": "Donne un gif d'un calin d'anime",
         "slap": "Donne un gif d'une gifle d'anime",
-        "setLang": "Défini la langue, actuellement les langues supportées sont {{languages}}",
+        "setLang": "Défini la langue, utilise !w.setLang seul pour voir une liste de toutes les langues",
         "report": "Si tu es trop timide pour venir sur le Discord du support, utilise \"report\" pour envoyer un rapport au développeur Wolke, mais n'en abuses pas!",
         "feedback": "Pour les retours utilises le discord du support s'il te plaît ^^",
         "talk": "Si tu veux parler avec moi mentionne moi (@Rem#5307) avec un message :D",
@@ -111,7 +112,7 @@
         "gtn": "Te donnes un comic \"Green Tea Neko\" aléatoirement, uniquement utilisable avec un salon configuré NSFW ou Admin.",
         "cuddle": "Te donnes un câlin d'anime en gif",
         "trig": "TRIGGERED",
-        "bot": "Te donnes les informations comme la durée de fonctionnement actuelle de Rem, le nombre de connections vocales, le nombre d'utilisateurs et le nombre de guildes",
+        "bot": "Te donnes quelques informations à propos de Rem, comme son temps de fonctionnement et plusieurs liens utiles.",
         "top": "Montre le top 10 des guildes (triée par utilisateurs) auxquelles cette instance (shard) est connectée",
         "about": "Te montre des informations basiques à propos de moi, comme la bibliothèque et qui est la personne qui m'a faite.",
         "lenny": "( ͡° ͜ʖ ͡°)",
@@ -147,7 +148,13 @@
         "owo": "T'envoie au hasard un même \"OwO Qu'est-ce que c'est', qui sont spécialement choisis par Wolke",
         "getNode": "Te donnes le noeud de permission, le noeud de catégorie et la catégorie d'une commande",
         "resetPerms": "Réinitialise toutes les permissions définies jusqu'à présent, à utiliser avec prudence",
-        "pat": "Caresse quelqu'un qui a été un(e) bon(ne) garçon/fille/hélicoptère"
+        "pat": "Caresse quelqu'un qui a été un(e) bon(ne) garçon/fille/hélicoptère",
+        "triggered": "TRIGGERED",
+        "stare": "stareeeee",
+        "nom": "Nom :>",
+        "potato": "Tout le monde veut une patate",
+        "choose": "Fait choisir Rem quelque chose pour vous, sépare les choix avec `;` ",
+        "tickle": "Guili Guili Guili"
     },
     "version": "Actuellement je suis en version {{version}}",
     "add": "Utilise ce lien pour m'ajouter à ton serveur: {{- link}}",
@@ -204,7 +211,7 @@
     },
     "qa": {
         "nothing-found": "Aucune chanson trouvé avec le terme de recherche `{{search}}` ",
-        "empty-search": "Vous n'avez pas entrer de terme de recherche!",
+        "empty-search": "Tu n'as pas entré de terme de recherche/lien.",
         "started-download": "Téléchargement de `{{- url}}` commencé",
         "success": "**{{- song}}** mise en file d'attente"
     },
@@ -238,7 +245,11 @@
     "set-lang": {
         "no-lang": "Tu n'as pas spécifié de langue! Actuellement il y a {{languages}} disponibles.",
         "success": "Ok je viens de définir la langue du serveur sur {{- language}}.",
-        "unsupported": "Cette langue n'est pas encore implémentée, mais tu peux aider en demandant de rajouter ta langue sur github. Actuellement il y a {{languages}} disponibles."
+        "unsupported": "Cette langue n'est pas encore implémentée, mais tu peux aider en demandant de rajouter ta langue sur github. Vous pouvez voir les langues actuellement disponible en utilisant cette commande sans arguments.",
+        "native-name": "Nom Natal",
+        "english-name": "Nom Anglais",
+        "shortcode": "Abbréviation",
+        "available-languages": "Liste des langues disponibles\nS'il te plaît note que setLang à besoin de l'abbréviation (ISO 639-3)"
     },
     "np": {
         "song-duration": "En cours de lecture:` {{- title}} {{current}}/{{duration}} {{repeat}}`",
@@ -290,11 +301,14 @@
         "avg-users": "Moy. Utilisateurs par guilde",
         "voice": "Connections vocales",
         "shard": "shard",
-        "guilds-s": "Guildes sur cette instance (shard)",
-        "channels-s": "Salons sur cette instance (shard)",
+        "guilds-s": "Guildes(shard)",
+        "channels-s": "Salons (shard)",
         "users-s": "Utilisateurs sur cette instance (shard)",
         "made": "Fait par:",
-        "lib": "Bibliothèque"
+        "lib": "Bibliothèque",
+        "voice_active": "SVA",
+        "voice_s": "SV(shard)",
+        "voice_active_s": "SVA(shard)"
     },
     "rank": "Tu peux trouver le classement de ce serveur ici: {{- link}}",
     "pp": {
@@ -320,7 +334,9 @@
     "leave": "Ok, j'ai quitté ton salon vocal.",
     "play": {
         "no-result": "Pas de chanson trouvé!",
-        "playing": ":musical_note: Lecture en cours **{{- song}}**"
+        "playing": ":musical_note: Lecture en cours **{{- song}}**",
+        "success": ":musical_note: Joue actuellement **{{- song}}** ",
+        "next": ":musical_note: Jouera après **{{- song}}** "
     },
     "prefix": {
         "success": "Ok Je viens de définir le préfixe sur {{- prefix}}, essaye `{{- prefix}}ping` pour vérifier",
@@ -480,5 +496,9 @@
         "nothing-found": "Vous n'avez pas encore paramétré de Permissions.",
         "confirmation": "Êtes-vous sûr de remettre à zéro les Permissions ? Saisissez `yes` pour les remettre à zéro `no` pour annuler cette commande.",
         "success": "Je viens de reset toutes les permissions."
+    },
+    "choose": {
+        "empty-choose": ":no_entry_sign: Je ne peut rien choisir, si tu n'entre rien!",
+        "success": "Je choisis **{{- choice}}**! "
     }
 }

@@ -12,7 +12,7 @@
         "empty-search": ":no_entry_sign: Du hast keinen Suchbegriff eingegeben!",
         "negative": ":no_entry_sign: Bitte benutze keine negative Zahl >_< *Coolmen war hier*",
         "cancel": "abbrechen",
-        "version": "Momentan verwende ich Version{{- version}}",
+        "version": "Version",
         "author": "Author",
         "lib": "Bibliothek benutzt",
         "more": "{{number}} mehr",
@@ -24,7 +24,8 @@
         "support": "Support",
         "invite": "Einladung",
         "language-name-en": "German",
-        "native-name": "Deutsch"
+        "native-name": "Deutsch",
+        "empty-say": ":no_entry_sign: Du hast keine Nachricht angegeben!"
     },
     "help": {
         "intro": "lass uns zusammen viel Spass haben hier auf Discord (/^▽^)/ Hier ist eine Auflistung meiner Befehlskategorien, wähle eine von ihnen mit {{- pre}}help zahl aus.",
@@ -148,7 +149,12 @@
         "getNode": "Gibt dir die Berechtigungs ID, Kategorie ID und Kategorie eines Befehls",
         "resetPerms": "Setzt alle Berechtigungen zurück, nur mit Vorsicht verwenden.",
         "pat": "Streichelt jmd. der ein guter Junge/gutes Mädel/guter Helikopter war.",
-        "triggered": "TRIGGERED"
+        "triggered": "TRIGGERED",
+        "stare": "Staaarrrr",
+        "nom": "Nom :>",
+        "potato": "Jeder will eine Kartoffel.",
+        "choose": "Rem wählt für dich etwas aus, deine Auswahlmöglichkeiten trennst du mit `;`",
+        "tickle": "Kitzel Kitzel Kitzel"
     },
     "version": "Momentan verwende ich Version{{version}}",
     "add": "Benutze diesen Link um mich auf deinem Server hinzuzufügen: {{- link}}",
@@ -293,13 +299,16 @@
         "guilds": "Server",
         "avg-channels": "Durchschn. Channel per Server",
         "avg-users": "Durchschn. User per Server",
-        "voice": "Sprachverbindungen",
+        "voice": "VC",
         "shard": "shard",
-        "guilds-s": "Guilds auf diesem Shard.",
-        "channels-s": "Channels auf diesem Shard",
+        "guilds-s": "Guilds(Shard)",
+        "channels-s": "Channels(Shard)",
         "users-s": "Nutzer auf diesem Shard",
         "made": "Programmiert von:",
-        "lib": "Bibliothek"
+        "lib": "Bibliothek",
+        "voice_active": "AVC",
+        "voice_s": "VC(Shard)",
+        "voice_active_s": "AVC(Shard)"
     },
     "rank": "Du kannst die Rangliste für deinen Server hier finden: {{- link}}",
     "pp": {
@@ -487,5 +496,9 @@
         "nothing-found": "Du hast bisher keine Berechtigungen gesetzt.",
         "confirmation": "Bist du dir sicher, dass du alle Berechtigungen resetten willst ? Tippe `yes` um sie zu resetten und `no` um diesen Befehl abzubrechen.",
         "success": "Ich habe gerade alle Berechtigungen resettet."
+    },
+    "choose": {
+        "empty-choose": ":no_entry_sign: ich kann nichts auswählen wenn du nichts angibst.",
+        "success": "Ich wähle **{{- choice}}**!"
     }
 }
