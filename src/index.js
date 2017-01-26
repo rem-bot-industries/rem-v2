@@ -138,7 +138,7 @@ if (cluster.isMaster) {
         let workerobject = {worker: worker, shard_id: env.id, pid: worker.process.pid};
         workers.push(workerobject);
         winstonCluster.bindListeners();
-        ipcMaster.setupListener();
+        ipcMaster.setupListeners();
     }
 } else {
     winston.remove(winston.transports.Console);
