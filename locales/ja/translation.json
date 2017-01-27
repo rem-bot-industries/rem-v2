@@ -24,7 +24,8 @@
         "support": "サポート",
         "invite": "招待",
         "language-name-en": "Japanese",
-        "native-name": "日本語"
+        "native-name": "日本語",
+        "empty-say": ":no_entry_sign: メッセージが入力されていません！"
     },
     "help": {
         "intro": "一緒にディスコードを楽しみましょう(/^▽^)/\n詳しく知りたいカテゴリーの番号と一緒に{{pre}}helpコマンドを送信してください。",
@@ -148,7 +149,14 @@
         "getNode": "コマンドに関連付けられたパーミッションノード、カテゴリーノードとカテゴリを表示します。",
         "resetPerms": "すべてのパーミッションをリセットします。注意して使用してください。",
         "pat": "いい子をよしよしします。",
-        "triggered": "TRIGGERED"
+        "triggered": "TRIGGERED",
+        "stare": "じー…",
+        "nom": "むしゃむしゃ…",
+        "potato": "Everyone wants a potato",
+        "choose": "Remに何かを選んでもらいます。それぞれの選択肢は`;`で区切ってください。",
+        "tickle": "こちょこちょ!",
+        "image": "[IMAGE COMMANDS]",
+        "define": "Get a definition of a term from Urbandictionary"
     },
     "version": "現在の私のバージョンは {{version}} です。",
     "add": "このリンクを使って私をあなたのサーバーに追加してください！\n{{- link}}",
@@ -299,7 +307,10 @@
         "channels-s": "現在のシャードのチャンネル数",
         "users-s": "現在のシャードのユーザー数",
         "made": "作成者：",
-        "lib": "ライブラリ"
+        "lib": "ライブラリ",
+        "voice_active": "AVC",
+        "voice_s": "VC(shard)",
+        "voice_active_s": "AVC (shard)"
     },
     "rank": "このサーバーのリーダーボードはこちらで見つけられます。\n( {{- link}} )",
     "pp": {
@@ -487,5 +498,13 @@
         "nothing-found": "パーミッションはまだ設定されていませんよ？",
         "confirmation": "パーミッションを本当にリセットしますか？`yes`でリセットし、`no`でキャンセルします。",
         "success": "設定されたパーミッションをすべてリセットしました。"
+    },
+    "choose": {
+        "empty-choose": ":no_entry_sign: 何も教えてくれないと選べませんよ？",
+        "success": "**{{- choice}}**を選びます！"
+    },
+    "define": {
+        "empty-search": ":no_entry_sign: I can not search a definition, if you enter nothing!",
+        "no-result": "I could not find anything with the term `{{- term}}`"
     }
 }
