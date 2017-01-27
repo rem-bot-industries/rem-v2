@@ -17,6 +17,7 @@ class UrbanDictionary extends Command {
 
     async run(msg) {
         let term = msg.content.substring(msg.prefix.length + this.cmd.length + 1);
+        if (!term) return await msg.channel.createMessage(this.t('define.empty-search', {lngs: msg.lang}));
         try {
             let result = await axios.get(`https://mashape-community-urban-dictionary.p.mashape.com/define`, {
                 params: {"term": term},
@@ -34,7 +35,7 @@ class UrbanDictionary extends Command {
                     }
                 })
             } else {
-                await msg.channel.createMessage(this.t('generic.error', {lngs: msg.lang}));
+                await msg.channel.createMessage(this.t('define.no-result', {lngs: msg.lang}));
             }
         } catch (e) {
             console.error(e);

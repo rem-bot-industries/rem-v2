@@ -10,7 +10,8 @@
     "minor": "npm --no-git-tag-version version minor",
     "major": "npm --no-git-tag-version version major",
     "build": "babel src --out-dir dist/",
-    "watch": "babel src --watch --out-dir dist/"
+    "watch": "babel src --watch --out-dir dist/",
+    "doit": "npm install && npm rebuild && npm run build"
   },
   "author": "Wolke <wolke@ram.moe>",
   "license": "ISC",
