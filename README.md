@@ -44,7 +44,8 @@
   "shards":1,
   "lbsearch_sfw_key":"the key to use for the ibsear.ch lookup",
   "lbsearch_nsfw_key":"the key to use for the ibsearch.xxx lookup",
-  "cleverbot_api_key":"Contact Info, so that we can use the cleverbot api."
+  "cleverbot_api_key":"Contact Info, so that we can use the cleverbot api.",
+  "mashape_key":"The key to use for mashape (Urbandictionary)"
 }
 ```
 - Beta should always be set to true.
