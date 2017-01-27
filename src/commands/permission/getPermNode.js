@@ -5,8 +5,8 @@ let Command = require('../../structures/command');
 class getPermNode extends Command {
     constructor({t}) {
         super();
-        this.cmd = "getNode";
-        this.cat = "permission";
+        this.cmd = 'getNode';
+        this.cat = 'permission';
         this.needGuild = true;
         this.t = t;
         this.accessLevel = 0;
@@ -18,7 +18,7 @@ class getPermNode extends Command {
             if (msgSplit[1] === 'cleverbot') {
                 return msg.channel.createMessage(this.t('get-node.success', {
                     lngs: msg.lang,
-                    node: `fun.cleverbot`,
+                    node: 'fun.cleverbot',
                     category: 'fun'
                 }));
             }

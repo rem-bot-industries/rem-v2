@@ -4,11 +4,11 @@
 let EventEmitter = require('eventemitter3');
 let shortid = require('shortid');
 let winston = require('winston');
-let request = require("request");
-let path = require("path");
-let fs = require("fs");
+let request = require('request');
+let path = require('path');
+let fs = require('fs');
 let SongTypes = require('../../structures/constants').SONG_TYPES;
-let mergeJSON = require("merge-json");
+let mergeJSON = require('merge-json');
 let YtResolver = require('../resolver/youtubeResolver');
 let ytr = new YtResolver();
 /**
@@ -28,7 +28,7 @@ class Player extends EventEmitter {
         super();
         this.setMaxListeners(20);
         this.msg = msg;
-        this.queue = queue ? queue : {id: msg.channel.guild.id, repeat: 'off', voteskips: [], songs: [], time: ""};
+        this.queue = queue ? queue : {id: msg.channel.guild.id, repeat: 'off', voteskips: [], songs: [], time: ''};
         this.ytdl = ytdl;
         this.connection = connection;
         this.song = null;
@@ -67,7 +67,7 @@ class Player extends EventEmitter {
                         audioonly: true
                     };
                     try {
-                        stream = this.ytdl(Song.url, options)
+                        stream = this.ytdl(Song.url, options);
                     } catch (e) {
                         winston.error(e);
                     }
@@ -109,7 +109,7 @@ class Player extends EventEmitter {
             //     interpolation: {escape: false}
             // }));
             this.announce(Song);
-            this.connection.once("end", () => {
+            this.connection.once('end', () => {
                 // winston.info("File ended!");
                 setTimeout(() => {
                     this.nextSong(Song);
@@ -118,7 +118,7 @@ class Player extends EventEmitter {
             // this.dispatcher.on("debug", information => {
             //     winston.info(`Debug: ${information}`);
             // });
-            this.connection.on("error", (err) => {
+            this.connection.on('error', (err) => {
                 console.log('connection error');
                 winston.info(`Error: ${err}`);
                 this.nextSong(Song);
@@ -309,7 +309,7 @@ class Player extends EventEmitter {
 
     bind(id) {
         if (this.channel !== '') {
-            this.channel = "";
+            this.channel = '';
             return false;
         } else {
             this.channel = id;
@@ -378,7 +378,7 @@ class Player extends EventEmitter {
         let h = Math.floor(d / 3600);
         let m = Math.floor(d % 3600 / 60);
         let s = Math.floor(d % 3600 % 60);
-        return ((h > 0 ? h + ":" + (m < 10 ? "0" : "") : "") + m + ":" + (s < 10 ? "0" : "") + s);
+        return ((h > 0 ? h + ':' + (m < 10 ? '0' : '') : '') + m + ':' + (s < 10 ? '0' : '') + s);
     }
 }
 module.exports = Player;

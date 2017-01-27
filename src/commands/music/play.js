@@ -4,7 +4,7 @@
 let Command = require('../../structures/command');
 let winston = require('winston');
 let Selector = require('../../structures/selector');
-let _ = require("lodash");
+let _ = require('lodash');
 let track_error = !require('../../../config/main.json').no_error_tracking;
 /**
  * The play command
@@ -21,8 +21,8 @@ class Play extends Command {
      */
     constructor({t, v, mod}) {
         super();
-        this.cmd = "play";
-        this.cat = "music";
+        this.cmd = 'play';
+        this.cat = 'music';
         this.needGuild = true;
         this.t = t;
         this.v = v;
@@ -39,14 +39,14 @@ class Play extends Command {
         msg.content = msgSplit.join(' ');
         this.v.addToQueue(msg, !next, next).then(result => {
             switch (result.type) {
-                case "added":
+                case 'added':
                     if (next) return msg.channel.createMessage(this.t('play.next', {
                         song: result.data.title,
                         lngs: msg.lang
                     }));
                     msg.channel.createMessage(this.t('play.success', {song: result.data.title, lngs: msg.lang}));
                     return;
-                case "search_result":
+                case 'search_result':
                     this.searchResult(msg, result.data);
                     return;
 

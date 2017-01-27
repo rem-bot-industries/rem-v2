@@ -5,8 +5,8 @@ let Command = require('../../structures/command');
 class Ping extends Command {
     constructor({t}) {
         super();
-        this.cmd = "ping";
-        this.cat = "generic";
+        this.cmd = 'ping';
+        this.cat = 'generic';
         this.needGuild = false;
         this.t = t;
         this.accessLevel = 0;
@@ -15,7 +15,7 @@ class Ping extends Command {
     run(msg) {
         // this.emit('run');
         let start = msg.timestamp;
-        msg.channel.createMessage("pong").then(sendedMsg => {
+        msg.channel.createMessage('pong').then(sendedMsg => {
             let diff = (sendedMsg.timestamp - start);
             sendedMsg.edit(`pong \`${diff}ms\``);
             // this.emit('done');

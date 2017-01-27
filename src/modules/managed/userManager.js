@@ -83,7 +83,7 @@ class UserManager extends Manager {
         let reps = [];
         for (let i = 0; i < user.reps.length; i++) {
             if (user.reps[i] > Date.now()) {
-                reps.push(user.reps[i])
+                reps.push(user.reps[i]);
             }
         }
         reps.push(Date.now() + 1000 * 60 * 60 * 24);
@@ -166,7 +166,7 @@ class UserManager extends Manager {
     updateServerData(user, data) {
         return new Promise((reject, resolve) => {
             let i = _.findIndex(user.servers, (s) => {
-                return s.id === data.id
+                return s.id === data.id;
             });
             user.servers[i] = data;
             userCache.set(user.id, user);

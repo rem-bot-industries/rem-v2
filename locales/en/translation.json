@@ -107,6 +107,7 @@
     "roles": "[ROLES]",
     "wip": "[WORK IN PROGRESS]",
     "generic": "[GENERIC]",
+    "image": "[IMAGE COMMANDS]",
     "fun": "[FUN]",
     "coin": "flips a coin for you",
     "nyan": "Nya :3",
@@ -128,7 +129,8 @@
     "nom": "Nom :>",
     "potato": "Everyone wants a potato",
     "choose": "Make Rem choose something for you, seperate the choices with `;`",
-    "tickle": "Tickle Tickle Tickle"
+    "tickle": "Tickle Tickle Tickle",
+    "define": "Get a definition of a term from Urbandictionary"
   },
   "add": "Use this link to add me to your Server: {{- link}}",
   "bug": "Please join the support discord: {{- link}} to report a bug.",
@@ -425,6 +427,10 @@
   "choose": {
     "empty-choose": ":no_entry_sign: I can not choose anything, if you enter nothing!",
     "success": "I choose **{{- choice}}**!"
+  },
+  "define": {
+    "empty-search": ":no_entry_sign: I can not search a definition, if you enter nothing!",
+    "no-result": "I could not find anything with the term `{{- term}}`"
   },
   "dere": {
     "no-dere": "The dere type you searched for does not exist. Here is a list of possible deres:\n",

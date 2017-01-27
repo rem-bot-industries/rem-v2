@@ -4,13 +4,13 @@
 let Command = require('../../structures/command');
 let moment = require('moment');
 let winston = require('winston');
-let _ = require("lodash");
+let _ = require('lodash');
 let version = require('../../../package.json').version;
 class BotInfo extends Command {
     constructor({t, mod}) {
         super();
-        this.cmd = "bot";
-        this.cat = "misc";
+        this.cmd = 'bot';
+        this.cat = 'misc';
         this.needGuild = false;
         this.t = t;
         this.accessLevel = 0;
@@ -26,7 +26,7 @@ class BotInfo extends Command {
         }).catch(err => {
             console.error(err);
             let res = err === 'Timeout!' ? err : 'kyaa >_<';
-            msg.channel.createMessage(`:x: \`${res}\``)
+            msg.channel.createMessage(`:x: \`${res}\``);
         });
     }
 
@@ -83,8 +83,8 @@ class BotInfo extends Command {
             inline: true
         });
         fields.push({name: this.t('generic.version', {lngs: msg.lang}), value: version, inline: true});
-        fields.push({name: this.t('bot-info.made', {lngs: msg.lang}), value: `Wolke#6746`, inline: true});
-        fields.push({name: this.t('bot-info.lib', {lngs: msg.lang}), value: `Eris V0.5.2`, inline: true});
+        fields.push({name: this.t('bot-info.made', {lngs: msg.lang}), value: 'Wolke#6746', inline: true});
+        fields.push({name: this.t('bot-info.lib', {lngs: msg.lang}), value: 'Eris V0.5.2', inline: true});
         fields.push({name: this.t('bot-info.guilds', {lngs: msg.lang}), value: guilds, inline: true});
         fields.push({name: this.t('bot-info.users', {lngs: msg.lang}), value: users, inline: true});
         fields.push({name: this.t('bot-info.channels', {lngs: msg.lang}), value: channels, inline: true});
@@ -103,17 +103,17 @@ class BotInfo extends Command {
         fields.push({name: this.t('bot-info.channels-s', {lngs: msg.lang}), value: shard_channels, inline: true});
         fields.push({
             name: this.t('generic.donate', {lngs: msg.lang}),
-            value: `[patreon.com/rem_bot](https://www.patreon.com/rem_bot)`,
+            value: '[patreon.com/rem_bot](https://www.patreon.com/rem_bot)',
             inline: true
         });
         fields.push({
             name: this.t('generic.support', {lngs: msg.lang}),
-            value: `[ram.moe/support](https://ram.moe/support)`,
+            value: '[ram.moe/support](https://ram.moe/support)',
             inline: true
         });
         fields.push({
             name: this.t('generic.invite', {lngs: msg.lang}),
-            value: `[ram.moe/invite](https://ram.moe/invite)`,
+            value: '[ram.moe/invite](https://ram.moe/invite)',
             inline: true
         });
         fields.push({

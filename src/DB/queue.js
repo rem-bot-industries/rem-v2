@@ -10,10 +10,10 @@ let queueSchema = mongoose.Schema({
     time: {type: String, default: ''}
 });
 queueSchema.methods.setSongs = function (songs, cb) {
-    this.model('Queues').update({server:this.server},{$set:{songs:songs}}, cb);
+    this.model('Queues').update({server: this.server}, {$set: {songs: songs}}, cb);
 };
 queueSchema.methods.removeOldest = function (cb) {
-    this.model('Queues').update({server:this.server},{$pop: {songs: 1}}, cb);
+    this.model('Queues').update({server: this.server}, {$pop: {songs: 1}}, cb);
 };
 queueSchema.methods.updateTitle = function (id, title, cb) {
     this.model('Queues').update({server: this.server, 'songs.id': id}, {$set: {'songs.$.title': title}}, cb);

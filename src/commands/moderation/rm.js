@@ -8,13 +8,13 @@ let async = require('async');
 class RemoveMessages extends Command {
     constructor({t}) {
         super();
-        this.cmd = "rm";
-        this.cat = "moderation";
+        this.cmd = 'rm';
+        this.cat = 'moderation';
         this.needGuild = true;
         this.t = t;
         this.accessLevel = 0;
         this.msg = null;
-        this.example = "!w.rm 100 -cr"
+        this.example = '!w.rm 100 -cr';
     }
 
     run(msg) {
@@ -54,7 +54,7 @@ class RemoveMessages extends Command {
                 });
             });
         } else {
-            msg.channel.createMessage(this.t('rm.no-limit', {lngs: msg.lang}))
+            msg.channel.createMessage(this.t('rm.no-limit', {lngs: msg.lang}));
         }
     }
 
@@ -127,7 +127,7 @@ class RemoveMessages extends Command {
         }, (err) => {
             if (err) return cb(err);
             return cb(null, filtered);
-        })
+        });
     }
 
     getMessages(msg, limit, cb) {

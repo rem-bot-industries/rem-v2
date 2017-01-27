@@ -4,12 +4,12 @@
 let Command = require('../../structures/command');
 let moment = require('moment');
 let winston = require('winston');
-let _ = require("lodash");
+let _ = require('lodash');
 class GuildFinder extends Command {
     constructor({t, mod}) {
         super();
-        this.cmd = "shardinfo";
-        this.cat = "admin";
+        this.cmd = 'shardinfo';
+        this.cat = 'admin';
         this.needGuild = false;
         this.hidden = true;
         this.t = t;
@@ -24,7 +24,7 @@ class GuildFinder extends Command {
             this.buildReply(msg, data, time);
         }).catch(err => {
             console.error(err);
-            msg.channel.createMessage(`:x: \`${err}\``)
+            msg.channel.createMessage(`:x: \`${err}\``);
         });
     }
 
@@ -48,7 +48,7 @@ class GuildFinder extends Command {
         let reply = {
             embed: {
                 author: {
-                    name: `Shardstatus`
+                    name: 'Shardstatus'
                 },
                 fields: this.buildShardData(msg, data, time),
                 color: 0x00ADFF

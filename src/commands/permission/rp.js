@@ -8,8 +8,8 @@ let async = require('async');
 class GetPermission extends Command {
     constructor({t, mod}) {
         super();
-        this.cmd = "rp";
-        this.cat = "permission";
+        this.cmd = 'rp';
+        this.cat = 'permission';
         this.needGuild = true;
         this.t = t;
         this.accessLevel = 0;
@@ -64,7 +64,7 @@ class GetPermission extends Command {
                     msg.channel.createMessage('```' + table.toString() + '```');
                     this.startCollector(msg, added);
                 } else {
-                    msg.channel.createMessage(this.t('gp.no-cat', {lngs: msg.lang, cat: type}))
+                    msg.channel.createMessage(this.t('gp.no-cat', {lngs: msg.lang, cat: type}));
                 }
             });
         });
@@ -73,7 +73,7 @@ class GetPermission extends Command {
     startCollector(msg, added) {
         let collector = msg.CON.addCollector(msg.channel.id, {
             filter: (newMSG) => {
-                return msg.author.id === newMSG.author.id
+                return msg.author.id === newMSG.author.id;
             }
         });
         collector.on('message', (collMsg) => {
@@ -99,7 +99,7 @@ class GetPermission extends Command {
                         node: perm.cat + '.' + perm.perm,
                         type: perm.type,
                         id: perm.id
-                    }))
+                    }));
                 });
             }
         });

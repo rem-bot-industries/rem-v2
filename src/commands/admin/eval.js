@@ -6,8 +6,8 @@ let adminId = require('../../../config/main.json').owner_id;
 class EvalCode extends Command {
     constructor({t, mod}) {
         super();
-        this.cmd = "eval";
-        this.cat = "admin";
+        this.cmd = 'eval';
+        this.cat = 'admin';
         this.needGuild = false;
         this.hidden = true;
         this.t = t;

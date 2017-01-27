@@ -23,7 +23,7 @@ class StatTrack extends EventEmitter {
         this.setMaxListeners(20);
         this.interval = setInterval(() => {
             this.emit('fetch');
-        }, interval * 1000)
+        }, interval * 1000);
     }
 
     /**
@@ -60,7 +60,7 @@ class StatTrack extends EventEmitter {
             };
             request(requestOptionsCarbon, (err, response, body) => {
                 if (err) {
-                    return this.emit('error', err)
+                    return this.emit('error', err);
                 }
                 this.emit('info', 'Stats Updated Carbon!');
                 this.emit('info', body);

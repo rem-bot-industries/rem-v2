@@ -8,8 +8,8 @@ let key = require('../../../config/main.json').lbsearch_sfw_key;
 class Ibsafe extends Command {
     constructor({t}) {
         super();
-        this.cmd = "ibsafe";
-        this.cat = "misc";
+        this.cmd = 'ibsafe';
+        this.cat = 'misc';
         this.needGuild = false;
         this.t = t;
         this.accessLevel = 0;
@@ -17,13 +17,13 @@ class Ibsafe extends Command {
 
     run(msg) {
         let msgSplit = msg.content.split(' ');
-        let msgSearch = "";
-        let searchOrig = "";
+        let msgSearch = '';
+        let searchOrig = '';
         for (let i = 1; i < msgSplit.length; i++) {
             if (i === 1) {
                 searchOrig = msgSplit[i];
             } else {
-                searchOrig = searchOrig + " " + msgSplit[i];
+                searchOrig = searchOrig + ' ' + msgSplit[i];
             }
         }
         msgSearch = 'random: ' + searchOrig;
@@ -31,7 +31,7 @@ class Ibsafe extends Command {
             qs: {
                 limit: 100,
                 q: msgSearch
-            }, headers: {"X-lbSearch-Key": key}
+            }, headers: {'X-lbSearch-Key': key}
         }, (error, response, body) => {
             if (error) {
                 msg.channel.createMessage(this.t('generic.error', {lngs: msg.lang}));

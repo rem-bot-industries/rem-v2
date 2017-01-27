@@ -2,7 +2,7 @@
  * Created by Julian/Wolke on 27.11.2016.
  */
 let Manager = require('../../structures/manager');
-let clever = require("cleverbot-node");
+let clever = require('cleverbot-node');
 let re = /<@[0-9].*>/g;
 let cleverbotKey = require('../../../config/main.json').cleverbot_api_key;
 class CleverBotManager extends Manager {
@@ -44,7 +44,7 @@ class CleverBot {
     }
 
     talk(msg, cb) {
-        let msgClean = msg.content.replace(re, "");
+        let msgClean = msg.content.replace(re, '');
         this.clever.write(msgClean, (res) => {
             cb(res.message);
         });

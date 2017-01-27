@@ -2,7 +2,7 @@
  * Created by Julian/Wolke on 07.11.2016.
  */
 let Command = require('../../structures/command');
-let util = require("util");
+let util = require('util');
 /**
  * The show queue command,
  * shows the current queue
@@ -17,8 +17,8 @@ class Queue extends Command {
      */
     constructor({t, v}) {
         super();
-        this.cmd = "queue";
-        this.cat = "music";
+        this.cmd = 'queue';
+        this.cat = 'music';
         this.needGuild = true;
         this.t = t;
         this.v = v;
@@ -47,11 +47,11 @@ class Queue extends Command {
      * @param msg - the message that triggered the command
      */
     buildReply(Queue, msg) {
-        let reply = "";
+        let reply = '';
         let iteration = Queue.songs.length > 20 ? 20 : Queue.songs.length;
         for (let q = 0; q < iteration; q++) {
             if (q === 0) {
-                let repeat = Queue.repeat !== 'off' ? this.t(`np.repeat-${Queue.repeat}`, {lngs: msg.lang}) : "";
+                let repeat = Queue.repeat !== 'off' ? this.t(`np.repeat-${Queue.repeat}`, {lngs: msg.lang}) : '';
                 if (Queue.songs[0].duration && Queue.songs[0].duration !== '') {
                     reply = reply + `${this.t('np.song-duration', {
                             lngs: msg.lang,
@@ -75,7 +75,7 @@ class Queue extends Command {
             } else {
                 let end = '\n';
                 if (q === Queue.songs.length - 1) {
-                    end = `\`\`\``;
+                    end = '```';
                 }
                 if (Queue.songs[q].duration) {
                     reply = reply + `${parseInt(q + 1)}. ${Queue.songs[q].title} ${Queue.songs[q].duration}${end}`;

@@ -5,8 +5,8 @@ let RRACommand = require('../../structures/rraCommand');
 class Potato extends RRACommand {
     constructor({t}) {
         super();
-        this.cmd = "potato";
-        this.cat = "eastereggs";
+        this.cmd = 'potato';
+        this.cat = 'eastereggs';
         this.needGuild = false;
         this.t = t;
         this.accessLevel = 0;

@@ -5,8 +5,8 @@ let Command = require('../../structures/command');
 class Magic extends Command {
     constructor({t}) {
         super();
-        this.cmd = "eggplant";
-        this.cat = "eastereggs";
+        this.cmd = 'eggplant';
+        this.cat = 'eastereggs';
         this.needGuild = false;
         this.t = t;
         this.accessLevel = 0;

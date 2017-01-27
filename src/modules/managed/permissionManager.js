@@ -4,9 +4,9 @@
 let Manager = require('../../structures/manager');
 let permModel = require('../../DB/permission');
 let winston = require('winston');
-let async = require("async");
+let async = require('async');
 let config = require('../../../config/main.json');
-let util = require("util");
+let util = require('util');
 let _ = require('lodash');
 /**
  * The permission manager, it loads all permissions from the database and builds the permission tree
@@ -65,12 +65,13 @@ class PermissionManager {
                     {type: 'guild', id: '228604101800230912', cat: 'eastereggs', perm: '*', use: true},
                     {type: 'guild', id: '228604101800230912', cat: 'generic', perm: '*', use: true},
                     {type: 'guild', id: '228604101800230912', cat: 'misc', perm: '*', use: true},
+                    {type: 'guild', id: '228604101800230912', cat: 'image', perm: '*', use: true},
                     {type: 'guild', id: '228604101800230912', cat: 'music', perm: '*', use: true},
                     {type: 'guild', id: '228604101800230912', cat: 'music', perm: 'fskip', use: false},
                 ];
                 this.buildPermTree(Perms, cb);
             }
-        })
+        });
     }
 
     /**
@@ -84,7 +85,7 @@ class PermissionManager {
         let tree = {channel: {}, user: {}, role: {}};
         async.each(Perms, (Perm, cb) => {
             switch (Perm.type) {
-                case "guild":
+                case 'guild':
                     if (!tree[Perm.cat]) {
                         tree[Perm.cat] = {};
                     }
@@ -98,7 +99,7 @@ class PermissionManager {
                         cb();
                     });
                     return;
-                case "channel":
+                case 'channel':
                     if (Perm.id === this.msg.channel.id) {
                         if (!tree.channel[Perm.cat]) {
                             tree.channel[Perm.cat] = {};
@@ -114,7 +115,7 @@ class PermissionManager {
                         cb();
                     });
                     return;
-                case "role":
+                case 'role':
                     if (this.checkRoleExistId(this.msg, Perm.id)) {
                         if (!tree.role[Perm.cat]) {
                             tree.role[Perm.cat] = {};
@@ -130,7 +131,7 @@ class PermissionManager {
                         cb();
                     });
                     return;
-                case "user":
+                case 'user':
                     if (this.msg.author.id === Perm.id) {
                         if (!tree.user[Perm.cat]) {
                             tree.user[Perm.cat] = {};
@@ -299,10 +300,11 @@ class PermissionManager {
             if (Perms) {
                 permModel.remove({id}, cb);
             } else {
-                return cb({err: 'No permissions found', t: 'reset-perms.nothing-found'})
+                return cb({err: 'No permissions found', t: 'reset-perms.nothing-found'});
             }
-        })
+        });
     }
+
     createDbPerm(id, perm, cb) {
         let perms = new permModel({
             id: id,
@@ -328,7 +330,7 @@ class PermissionManager {
             } else {
                 cb('no-perms');
             }
-        })
+        });
     }
 
     checkRoleExistName(msg, name) {

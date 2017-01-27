@@ -5,8 +5,8 @@ let Command = require('../../structures/command');
 class ResetPermissions extends Command {
     constructor({t, mod}) {
         super();
-        this.cmd = "resetPerms";
-        this.cat = "permission";
+        this.cmd = 'resetPerms';
+        this.cat = 'permission';
         this.needGuild = true;
         this.t = t;
         this.accessLevel = 0;
@@ -17,20 +17,20 @@ class ResetPermissions extends Command {
         msg.channel.createMessage(this.t('reset-perms.confirmation', {lngs: msg.lang}));
         let collector = msg.CON.addCollector(msg.channel.id, {
             filter: (conMsg) => {
-                return (msg.author.id === conMsg.author.id)
+                return (msg.author.id === conMsg.author.id);
             }
         });
         collector.on('message', (msg) => {
             collector.stop();
             switch (msg.content) {
-                case "yes": {
+                case 'yes': {
                     this.p.resetDbPerm(msg.channel.guild.id, (err) => {
                         if (err) return msg.channel.createMessage(this.t(err, {lngs: msg.lang}));
                         msg.channel.createMessage(this.t('reset-perms.success', {lngs: msg.lang}));
                     });
                     return;
                 }
-                case "no": {
+                case 'no': {
                     msg.channel.createMessage(this.t('generic.cancelled-command', {lngs: msg.lang})).then().catch(err => console.error(err));
                     return;
                 }
@@ -39,7 +39,7 @@ class ResetPermissions extends Command {
                     return;
                 }
             }
-        })
+        });
 
     }
 }

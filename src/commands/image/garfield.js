@@ -7,8 +7,8 @@ let moment = require('moment');
 class Garfield extends Command {
     constructor({t}) {
         super();
-        this.cmd = "garfield";
-        this.cat = "image";
+        this.cmd = 'garfield';
+        this.cat = 'image';
         this.needGuild = false;
         this.t = t;
         this.accessLevel = 0;

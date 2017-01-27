@@ -5,8 +5,8 @@ let RRACommand = require('../../structures/rraCommand');
 class TriggeredImage extends RRACommand {
     constructor({t}) {
         super();
-        this.cmd = "triggered";
-        this.cat = "image";
+        this.cmd = 'triggered';
+        this.cat = 'image';
         this.needGuild = false;
         this.t = t;
         this.accessLevel = 0;

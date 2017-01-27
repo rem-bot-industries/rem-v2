@@ -5,8 +5,8 @@ let Command = require('../../structures/command');
 class SetPrefix extends Command {
     constructor({t, mod}) {
         super();
-        this.cmd = "setPrefix";
-        this.cat = "moderation";
+        this.cmd = 'setPrefix';
+        this.cat = 'moderation';
         this.needGuild = true;
         this.t = t;
         this.accessLevel = 0;

@@ -5,8 +5,8 @@ let Command = require('../../structures/command');
 class TableFlip extends Command {
     constructor({t}) {
         super();
-        this.cmd = "flip";
-        this.cat = "fun";
+        this.cmd = 'flip';
+        this.cat = 'fun';
         this.needGuild = false;
         this.t = t;
         this.accessLevel = 0;
@@ -14,7 +14,7 @@ class TableFlip extends Command {
 
     run(msg) {
         // this.emit('run');
-        msg.channel.createMessage('\u200B' + "(╯°□°）╯︵ ┻━┻");
+        msg.channel.createMessage('\u200B' + '(╯°□°）╯︵ ┻━┻');
     }
 }
 module.exports = TableFlip;

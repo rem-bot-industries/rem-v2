@@ -4,7 +4,7 @@
 let Manager = require('../../structures/manager');
 const winston = require('winston');
 const recursive = require('recursive-readdir');
-let path = require("path");
+let path = require('path');
 let async = require('async');
 let StatsD = require('hot-shots');
 let dogstatsd = new StatsD();
@@ -106,7 +106,7 @@ class MessageManager extends Manager {
                                     } else {
                                         dogstatsd.increment(`${stat}.failed-commands`);
                                         this.s.logCmdStat(msg, cmd, false, 'need-guild');
-                                        return msg.channel.createMessage(this.t('generic.no-pm', {lngs: msg.lang}))
+                                        return msg.channel.createMessage(this.t('generic.no-pm', {lngs: msg.lang}));
                                     }
                                 } else {
                                     this.s.logCmdStat(msg, cmd, true);
@@ -176,7 +176,7 @@ class MessageManager extends Manager {
                     Guild.prefix = '!w.';
                 }
                 cb(null, Guild);
-            })
+            });
         } else {
             let Guild = {prefix: '!w.', lng: 'en'};
             cb(null, Guild);

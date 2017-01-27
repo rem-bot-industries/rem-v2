@@ -1,7 +1,7 @@
 /**
  * Created by Aurieh#0258 on 26.11.2016.
  */
-const MessageCollector = require("./messageCollector");
+const MessageCollector = require('./messageCollector');
 
 class Connector {
     constructor() {

@@ -3,12 +3,12 @@
  */
 let Command = require('../../structures/command');
 let winston = require('winston');
-let request = require("request");
+let request = require('request');
 class Dog extends Command {
     constructor({t}) {
         super();
-        this.cmd = "dog";
-        this.cat = "image";
+        this.cmd = 'dog';
+        this.cat = 'image';
         this.needGuild = false;
         this.t = t;
         this.accessLevel = 0;

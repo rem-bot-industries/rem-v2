@@ -9,9 +9,8 @@ let StatTrack = require('./modules/statTrack');
 let _ = require('lodash');
 require('longjohn');
 require('winston-daily-rotate-file');
-const util = require("util");
+const util = require('util');
 let Shard = require('./shard');
-let async = require('async');
 /**
  * Check if the Cluster process is master
  */
@@ -61,7 +60,7 @@ if (cluster.isMaster) {
          * set up a timeout
          */
         let time = setTimeout(() => {
-            returnData({err: 'Timeout!'})
+            returnData({err: 'Timeout!'});
         }, 2000);
         /**
          * Called once a shard received the request and submitted data
@@ -137,8 +136,6 @@ if (cluster.isMaster) {
         let worker = cluster.fork(env);
         let workerobject = {worker: worker, shard_id: env.id, pid: worker.process.pid};
         workers.push(workerobject);
-        winstonCluster.bindListeners();
-        ipcMaster.setupListeners();
     }
 } else {
     winston.remove(winston.transports.Console);
@@ -162,7 +159,7 @@ function findWorkerByShardId(id, workers) {
 }
 process.on('unhandledRejection', (reason, promise) => {
     if (typeof reason === 'undefined') return;
-    winston.error(`Unhandled rejection: ${reason} - ${util.inspect(promise)}`)
+    winston.error(`Unhandled rejection: ${reason} - ${util.inspect(promise)}`);
 });
 winston.cli();
 

@@ -4,13 +4,13 @@
 let Command = require('../../structures/command');
 let moment = require('moment');
 let winston = require('winston');
-let _ = require("lodash");
+let _ = require('lodash');
 let adminId = require('../../../config/main.json').owner_id;
 class GuildFinder extends Command {
     constructor({t, mod}) {
         super();
-        this.cmd = "findGuild";
-        this.cat = "admin";
+        this.cmd = 'findGuild';
+        this.cat = 'admin';
         this.hidden = true;
         this.needGuild = false;
         this.t = t;
@@ -27,7 +27,7 @@ class GuildFinder extends Command {
                     this.buildReply(msg, data);
                 }).catch(err => {
                     console.error(err);
-                    msg.channel.createMessage(`:x: \`${err}\``)
+                    msg.channel.createMessage(`:x: \`${err}\``);
                 });
             }
         }
@@ -57,7 +57,7 @@ class GuildFinder extends Command {
                 if (guild) {
                     resolve(guild);
                 } else {
-                    resolve({name: `Not Found ${id}`, found: false})
+                    resolve({name: `Not Found ${id}`, found: false});
                 }
             });
         });

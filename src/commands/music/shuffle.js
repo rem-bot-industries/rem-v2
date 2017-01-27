@@ -15,8 +15,8 @@ class Shuffle extends Command {
      */
     constructor({t, v}) {
         super();
-        this.cmd = "shuffle";
-        this.cat = "music";
+        this.cmd = 'shuffle';
+        this.cat = 'music';
         this.needGuild = true;
         this.t = t;
         this.v = v;

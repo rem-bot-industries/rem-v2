@@ -16,8 +16,8 @@ class ForceSkip extends Command {
      */
     constructor({t, v}) {
         super();
-        this.cmd = "skip";
-        this.cat = "music";
+        this.cmd = 'skip';
+        this.cat = 'music';
         this.needGuild = true;
         this.t = t;
         this.v = v;
@@ -52,6 +52,7 @@ class ForceSkip extends Command {
             msg.channel.createMessage(this.t(err, {lngs: msg.lang}));
         });
     }
+
     startVoteskip(msg, channel) {
         this.inprogress[msg.channel.id] = {inprogress: true, id: msg.channel.id};
         let size = channel.voiceMembers.size - 1;

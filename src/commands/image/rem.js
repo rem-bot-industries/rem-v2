@@ -5,8 +5,8 @@ let RRACommand = require('../../structures/rraCommand');
 class RemImage extends RRACommand {
     constructor({t}) {
         super();
-        this.cmd = "rem";
-        this.cat = "image";
+        this.cmd = 'rem';
+        this.cat = 'image';
         this.needGuild = false;
         this.t = t;
         this.accessLevel = 0;

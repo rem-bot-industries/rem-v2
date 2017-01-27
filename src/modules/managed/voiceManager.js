@@ -8,9 +8,9 @@ let winston = require('winston');
 let SongImporter = require('./../resolver/songResolver');
 let queueModel = require('../../DB/queue');
 // let Selector = require('./selector');
-let async = require("async");
+let async = require('async');
 let PlaylistResolver = require('../resolver/playlistResolver');
-let shortid = require("shortid");
+let shortid = require('shortid');
 let shuffle = require('knuth-shuffle').knuthShuffle;
 class VoiceManager extends Manager {
     constructor() {
@@ -80,7 +80,7 @@ class VoiceManager extends Manager {
                     reject({
                         err: 'There are not enough songs in the queue to shuffle it.',
                         t: 'shuffle.not-enough-shuffle'
-                    })
+                    });
                 }
                 let currentSong = queue.songs.shift();
                 let shuffledQueue = shuffle(queue.songs.splice(0));
@@ -90,7 +90,7 @@ class VoiceManager extends Manager {
             } else {
                 reject({err: 'There is no player object atm.', t: 'generic.no-voice'});
             }
-        })
+        });
 
     }
 
@@ -140,7 +140,7 @@ class VoiceManager extends Manager {
                 importer.once('search-result', (results) => {
                     importer.removeAllListeners();
                     that.emit(`${msg.id}_search-result`, results);
-                    resolve({type: 'search_result', event: `${msg.id}_search-result`, data: results})
+                    resolve({type: 'search_result', event: `${msg.id}_search-result`, data: results});
                 });
                 importer.once('error', (err) => {
                     importer.removeAllListeners();
@@ -221,7 +221,7 @@ class VoiceManager extends Manager {
                             reject({t: 'generic.nan'});
                         }
                         for (let i = 0; i < songsToSkip - 1; i++) {
-                            queue.songs.shift()
+                            queue.songs.shift();
                         }
                         queue.songs.unshift(current);
                         vm.players[msg.channel.guild.id].setQueueSongs(queue.songs);
@@ -283,7 +283,7 @@ class VoiceManager extends Manager {
                         for (let i = 0; i < range2.length; i++) {
                             let id = 0;
                             try {
-                                id = parseInt(range2[i])
+                                id = parseInt(range2[i]);
                             } catch (e) {
                                 reject({err: e, t: 'generic.nan'});
                             }
@@ -294,7 +294,7 @@ class VoiceManager extends Manager {
                             }
                         }
                         ids.sort((a, b) => {
-                            return b - a
+                            return b - a;
                         });
                         for (let i = 0; i < ids.length; i++) {
                             queue.songs.splice(ids[i] - 1, 1);
@@ -344,7 +344,7 @@ class VoiceManager extends Manager {
         if (typeof (this.players[msg.channel.guild.id]) !== 'undefined') {
             let res = this.players[msg.channel.guild.id].bind(msg.channel.id);
             this.players[msg.channel.guild.id].on('announce', (song, channel) => {
-                rem.createMessage(channel, `:arrow_forward: **${song.title}** \<${song.url}\>`)
+                rem.createMessage(channel, `:arrow_forward: **${song.title}** \<${song.url}\>`);
             });
             cb(res);
         } else {
@@ -362,7 +362,7 @@ class VoiceManager extends Manager {
                     if (!this.players[msg.channel.guild.id]) {
                         this.players[msg.channel.guild.id] = new Player(msg, conn, ytdl, queue);
                         this.players[msg.channel.guild.id].on('sync', (queue) => {
-                            this.syncQueue(queue)
+                            this.syncQueue(queue);
                         });
                     }
                     this.players[msg.channel.guild.id].updateConnection(conn);
@@ -379,7 +379,7 @@ class VoiceManager extends Manager {
             if (err) return winston.error(err);
             queueModel.update({id: queue.id}, {$set: queue}, (err) => {
                 if (err) return winston.error(err);
-                console.log('synced Queue')
+                console.log('synced Queue');
             });
         });
     }
@@ -410,7 +410,7 @@ class VoiceManager extends Manager {
         if (playing) {
             return Object.values(rem.voiceConnections.guilds).filter(conn => conn.playing).length; //I love @NoobLance™#3500 for giving me this code
         }
-        return Object.keys(rem.voiceConnections.guilds).length
+        return Object.keys(rem.voiceConnections.guilds).length;
     }
 }
 module.exports = {class: VoiceManager, deps: [], async: false, shortcode: 'vm'};

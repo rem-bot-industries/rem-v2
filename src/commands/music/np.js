@@ -2,7 +2,7 @@
  * Created by Julian/Wolke on 07.11.2016.
  */
 let Command = require('../../structures/command');
-let util = require("util");
+let util = require('util');
 /**
  * The Now Playing command,
  * shows the current queue
@@ -17,8 +17,8 @@ class NowPlaying extends Command {
      */
     constructor({t, v}) {
         super();
-        this.cmd = "np";
-        this.cat = "music";
+        this.cmd = 'np';
+        this.cat = 'music';
         this.needGuild = true;
         this.t = t;
         this.v = v;
@@ -48,8 +48,8 @@ class NowPlaying extends Command {
      * @returns {String} The Reply
      */
     buildReply(Queue, msg) {
-        let reply = "";
-        let repeat = Queue.repeat !== 'off' ? this.t(`np.repeat-${Queue.repeat}`, {lngs: msg.lang}) : "";
+        let reply = '';
+        let repeat = Queue.repeat !== 'off' ? this.t(`np.repeat-${Queue.repeat}`, {lngs: msg.lang}) : '';
         if (Queue.songs[0].duration && Queue.songs[0].duration !== '') {
             reply = reply + `${this.t('np.song-duration', {
                     lngs: msg.lang,
