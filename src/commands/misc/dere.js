@@ -5,24 +5,24 @@ let Command = require('../../structures/command');
 class Dere extends Command {
     constructor({t}) {
         super();
-        this.cmd = "dere";
-        this.cat = "misc";
+        this.cmd = 'dere';
+        this.cat = 'misc';
         this.needGuild = false;
         this.t = t;
         this.accessLevel = 0;
         this.deres = [
-            "dandere",
-            "deredere",
-            "himedere",
-            "kamidere",
-            "kuudere",
-            "mayadere",
-            "yandere",
-            "oujidere",
-            "tsundere",
-            "undere",
-            "yangire"
-        ]
+            'dandere',
+            'deredere',
+            'himedere',
+            'kamidere',
+            'kuudere',
+            'mayadere',
+            'yandere',
+            'oujidere',
+            'tsundere',
+            'undere',
+            'yangire'
+        ];
     }
 
     run(msg) {

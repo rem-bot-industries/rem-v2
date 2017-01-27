@@ -16,8 +16,8 @@ class AddPlaylistToQueue extends Command {
      */
     constructor({t, v}) {
         super();
-        this.cmd = "apq";
-        this.cat = "playlist";
+        this.cmd = 'apq';
+        this.cat = 'playlist';
         this.needGuild = true;
         this.t = t;
         this.v = v;
@@ -27,7 +27,7 @@ class AddPlaylistToQueue extends Command {
     run(msg) {
         this.v.addPlaylistToQueue(msg).then(result => {
             let Playlist = result.data;
-            msg.channel.createMessage(`Added Playlist \`${Playlist.title}\` from the channel \`${Playlist.author}\` with \`${Playlist.songs.length}\` songs to the queue!`)
+            msg.channel.createMessage(`Added Playlist \`${Playlist.title}\` from the channel \`${Playlist.author}\` with \`${Playlist.songs.length}\` songs to the queue!`);
         }).catch(err => {
             if (track_error) {
                 if (typeof(err) === 'object') {

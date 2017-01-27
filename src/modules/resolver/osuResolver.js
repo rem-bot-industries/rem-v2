@@ -8,9 +8,9 @@
  */
 let BasicImporter = require('../../structures/basicImporter');
 let winston = require('winston');
-let fs = require("fs");
-let path = require("path");
-let child_process = require("child_process");
+let fs = require('fs');
+let path = require('path');
+let child_process = require('child_process');
 const types = require('../../structures/constants').SONG_TYPES;
 const Song = require('../../structures/song');
 let config = require('../../../config/main.json');
@@ -83,13 +83,13 @@ class OsuImporter extends BasicImporter {
             loader.send({type: 'info', map: map});
             loader.once('message', (m) => {
                 if (m.type === 'result') {
-                    resolve(m.map)
+                    resolve(m.map);
                 } else {
                     reject(m.err);
                 }
                 setTimeout(() => {
                     loader.kill();
-                }, 2000)
+                }, 2000);
             });
         });
     }
@@ -113,7 +113,7 @@ class OsuImporter extends BasicImporter {
             addedAt: new Date(),
             loaderUrl: map.link,
             id: map.beatmapSetId,
-            type: "osuV2",
+            type: 'osuV2',
             path: map.path,
             user: {}
         };

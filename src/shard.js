@@ -3,7 +3,7 @@
  */
 //uwu
 global.Promise = require('bluebird');
-const Eris = require("eris");
+const Eris = require('eris');
 let StatsD = require('hot-shots');
 let dogstatsd = new StatsD();
 const EventEmitter = require('eventemitter3');
@@ -92,16 +92,16 @@ class Shard extends EventEmitter {
         this.bot = bot;
         global.rem = bot;
         bot.on('ready', () => {
-            bot.editStatus(`online`, {name: `!w.help for commands`});
-            this.clientReady()
+            bot.editStatus('online', {name: '!w.help for commands'});
+            this.clientReady();
         });
         bot.on('messageCreate', (msg) => {
             dogstatsd.increment(`${stat}.messages`);
             msg.CON = this.CON;
-            this.message(msg)
+            this.message(msg);
         });
         bot.on('guildCreate', (Guild) => {
-            this.guildCreate(Guild)
+            this.guildCreate(Guild);
         });
         bot.on('guildDelete', (Guild) => {
             this.guildDelete(Guild);
@@ -113,16 +113,16 @@ class Shard extends EventEmitter {
             this.voiceUpdate(m, o, true);
         });
         bot.on('guildMemberAdd', (g, m) => {
-            this.guildMemberAdd(g, m)
+            this.guildMemberAdd(g, m);
         });
         bot.on('guildMemberRemove', (g, m) => {
-            this.guildMemberRemove(g, m)
+            this.guildMemberRemove(g, m);
         });
         // bot.on('debug', this.debug);
         // bot.on('warn', this.warn);
         bot.on('error', this.error);
         process.on('SIGINT', () => {
-            this.shutdown()
+            this.shutdown();
         });
         bot.connect();
     }
@@ -150,7 +150,7 @@ class Shard extends EventEmitter {
                 this.emitCacheUpdate(data);
             });
             this.SM.on('_cache_update', (data) => {
-                this.updateLocalCache(data)
+                this.updateLocalCache(data);
             });
             this.HUB.on('_cache_update', (data) => {
                 this.updateLocalCache(data);
@@ -197,12 +197,12 @@ class Shard extends EventEmitter {
                     id: Guild.id,
                     nsfwChannels: [],
                     cmdChannels: [],
-                    lastVoiceChannel: "",
+                    lastVoiceChannel: '',
                     levelEnabled: true,
                     pmNotifications: true,
                     chNotifications: false,
-                    prefix: "!w.",
-                    lng: "en"
+                    prefix: '!w.',
+                    lng: 'en'
                 });
                 guild.save((err) => {
                     if (err) return winston.error(err);
@@ -292,7 +292,7 @@ class Shard extends EventEmitter {
 
     hubAction(event) {
         switch (event.action) {
-            case "bot_info": {
+            case 'bot_info': {
                 let data = {
                     users: this.bot.guilds.map(g => g.memberCount).reduce((a, b) => a + b),
                     guilds: this.bot.guilds.size,
@@ -303,28 +303,28 @@ class Shard extends EventEmitter {
                 this.resolveAction(event, data);
                 return;
             }
-            case "user_info_id": {
+            case 'user_info_id': {
                 let user = this.bot.users.find(u => u.id === event.user_id);
                 if (user) {
                     user.found = true;
                     this.resolveAction(event, user);
                 } else {
-                    this.resolveAction(event, {found: false})
+                    this.resolveAction(event, {found: false});
                 }
                 return;
             }
-            case "guild_info_id": {
+            case 'guild_info_id': {
                 let guild = this.bot.guilds.find(g => g.id === event.guild_id);
                 if (guild) {
                     guild.found = true;
                     this.resolveAction(event, this.simplifyGuildData(guild));
                 } else {
-                    this.resolveAction(event, {found: false})
+                    this.resolveAction(event, {found: false});
                 }
                 return;
             }
-            case "shard_info": {
-                this.resolveAction(event, {uwu: "uwu"});
+            case 'shard_info': {
+                this.resolveAction(event, {uwu: 'uwu'});
                 return;
             }
         }

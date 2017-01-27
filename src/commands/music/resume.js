@@ -16,8 +16,8 @@ class Resume extends Command {
      */
     constructor({t, v}) {
         super();
-        this.cmd = "resume";
-        this.cat = "music";
+        this.cmd = 'resume';
+        this.cat = 'music';
         this.needGuild = true;
         this.t = t;
         this.v = v;

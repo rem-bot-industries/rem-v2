@@ -15,8 +15,8 @@ class QueueMove extends Command {
      */
     constructor({t, v}) {
         super();
-        this.cmd = "qm";
-        this.cat = "music";
+        this.cmd = 'qm';
+        this.cat = 'music';
         this.needGuild = true;
         this.t = t;
         this.v = v;

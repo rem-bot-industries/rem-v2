@@ -5,8 +5,8 @@ let Command = require('../../structures/command');
 class SetLanguage extends Command {
     constructor({t, mod}) {
         super();
-        this.cmd = "set";
-        this.cat = "moderation";
+        this.cmd = 'set';
+        this.cat = 'moderation';
         this.needGuild = true;
         this.t = t;
         this.accessLevel = 0;

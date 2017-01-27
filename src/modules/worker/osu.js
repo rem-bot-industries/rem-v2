@@ -1,12 +1,12 @@
-let fs = require("fs");
+let fs = require('fs');
 let Promise = require('bluebird');
-let path = require("path");
-let unzip = require("unzip2");
+let path = require('path');
+let unzip = require('unzip2');
 let config = require('../../../config/main.json');
 const osu = require('node-osu');
 let osuApi = new osu.Api(config.osu_token);
 let request = require('request');
-let shortid = require("shortid");
+let shortid = require('shortid');
 request = request.defaults({jar: true});
 process.on('message', (ev) => {
     downloadOsuMap(ev.map).then(map => {
@@ -14,11 +14,11 @@ process.on('message', (ev) => {
             process.send({type: 'result', map: map});
         }).catch(err => {
             console.log(err);
-            process.send({type: 'err', err: err})
+            process.send({type: 'err', err: err});
         });
     }).catch(err => {
         console.log(err);
-        process.send({type: 'err', err: err})
+        process.send({type: 'err', err: err});
     });
 });
 function downloadOsuMap(url) {
@@ -31,9 +31,9 @@ function downloadOsuMap(url) {
             if (beatmaps.length > 0) {
                 let beatmap = beatmaps[0];
                 request.post({
-                    url: "https://osu.ppy.sh/forum/ucp.php?mode=login",
+                    url: 'https://osu.ppy.sh/forum/ucp.php?mode=login',
                     formData: {
-                        login: "Login",
+                        login: 'Login',
                         password: config.osu_password,
                         username: config.osu_username
                     }

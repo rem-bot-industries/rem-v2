@@ -14,12 +14,12 @@ class GuildManager extends Manager {
             id: id,
             nsfwChannels: [],
             cmdChannels: [],
-            lastVoiceChannel: "",
+            lastVoiceChannel: '',
             levelEnabled: true,
             pmNotifications: true,
             chNotifications: false,
-            prefix: "!w.",
-            lng: "en"
+            prefix: '!w.',
+            lng: 'en'
         });
         guild.save((err) => {
             if (err) return cb(err);

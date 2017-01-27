@@ -13,7 +13,7 @@ class Worker extends EventEmitter {
 
     setupListener() {
         process.on('message', (msg) => {
-            this.messageHandler(msg)
+            this.messageHandler(msg);
         });
     }
 
@@ -29,7 +29,7 @@ class Worker extends EventEmitter {
             origin: `worker-${process.pid}-${this.cluster.worker.id}`,
             data: msg,
             sendedAt: Date.now()
-        })
+        });
     }
 
     emitRemote(event, msg) {
@@ -39,7 +39,7 @@ class Worker extends EventEmitter {
             origin: `worker-${process.pid}-${this.cluster.worker.id}`,
             data: msg,
             sendedAt: Date.now()
-        })
+        });
     }
 }
 module.exports = Worker;

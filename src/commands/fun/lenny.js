@@ -5,8 +5,8 @@ let Command = require('../../structures/command');
 class Lenny extends Command {
     constructor({t}) {
         super();
-        this.cmd = "lenny";
-        this.cat = "fun";
+        this.cmd = 'lenny';
+        this.cat = 'fun';
         this.needGuild = false;
         this.t = t;
         this.accessLevel = 0;
@@ -14,7 +14,7 @@ class Lenny extends Command {
 
     run(msg) {
         // this.emit('run');
-        msg.channel.createMessage('\u200B' + "( ͡° ͜ʖ ͡°)");
+        msg.channel.createMessage('\u200B' + '( ͡° ͜ʖ ͡°)');
     }
 }
 module.exports = Lenny;

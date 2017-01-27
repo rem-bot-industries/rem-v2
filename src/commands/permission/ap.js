@@ -8,8 +8,8 @@ let Selector = require('../../structures/selector');
 class AddPermission extends Command {
     constructor({t, mod}) {
         super();
-        this.cmd = "ap";
-        this.cat = "permission";
+        this.cmd = 'ap';
+        this.cat = 'permission';
         this.needGuild = true;
         this.t = t;
         this.accessLevel = 0;
@@ -74,12 +74,12 @@ class AddPermission extends Command {
                 allowed: perm.use,
                 type,
                 name
-            }))
-        })
+            }));
+        });
     }
 
     guild(msg, args) {
-        let perm = this.p.createPermission(args.node, "guild", msg.channel.guild.id, args.allow);
+        let perm = this.p.createPermission(args.node, 'guild', msg.channel.guild.id, args.allow);
         this.addPermission(msg, perm);
     }
 
@@ -88,7 +88,7 @@ class AddPermission extends Command {
         if (discordReg.test(args.u)) {
             user = msg.mentions[0];
             if (user) {
-                let perm = this.p.createPermission(args.node, "user", user.id, args.allow);
+                let perm = this.p.createPermission(args.node, 'user', user.id, args.allow);
                 this.addPermission(msg, perm);
             } else {
                 return msg.channel.createMessage(this.t('ap.target-not-found', {lngs: msg.lang, target: args.u}));
@@ -96,19 +96,19 @@ class AddPermission extends Command {
         } else {
             let regex = new RegExp(`${args.u}.*`, 'gi');
             let users = msg.channel.guild.members.filter(u => {
-                return regex.test(u.user.username)
+                return regex.test(u.user.username);
             });
             if (users.length > 1) {
                 let collector = new Selector(msg, users, this.t, (err, number) => {
                     if (err) return msg.channel.createMessage(this.t(err, {lngs: msg.lang}));
                     user = users[number - 1];
-                    let perm = this.p.createPermission(args.node, "user", user.id, args.allow);
+                    let perm = this.p.createPermission(args.node, 'user', user.id, args.allow);
                     this.addPermission(msg, perm);
                 });
             } else {
                 if (users.length === 1) {
                     user = users[0];
-                    let perm = this.p.createPermission(args.node, "user", user.id, args.allow);
+                    let perm = this.p.createPermission(args.node, 'user', user.id, args.allow);
                     this.addPermission(msg, perm);
                 } else {
                     return msg.channel.createMessage(this.t('ap.target-not-found', {lngs: msg.lang, target: args.u}));
@@ -122,7 +122,7 @@ class AddPermission extends Command {
         if (discordReg.test(args.r)) {
             role = msg.roleMentions[0];
             if (role) {
-                let perm = this.p.createPermission(args.node, "role", role, args.allow);
+                let perm = this.p.createPermission(args.node, 'role', role, args.allow);
                 this.addPermission(msg, perm);
             } else {
                 return msg.channel.createMessage(this.t('ap.target-not-found', {lngs: msg.lang, target: args.r}));
@@ -134,13 +134,13 @@ class AddPermission extends Command {
                 let collector = new Selector(msg, roles, this.t, (err, number) => {
                     if (err) return msg.channel.createMessage(this.t(err, {lngs: msg.lang}));
                     role = roles[number - 1];
-                    let perm = this.p.createPermission(args.node, "role", role.id, args.allow);
+                    let perm = this.p.createPermission(args.node, 'role', role.id, args.allow);
                     this.addPermission(msg, perm);
                 });
             } else {
                 if (roles.length === 1) {
                     role = roles[0];
-                    let perm = this.p.createPermission(args.node, "role", role.id, args.allow);
+                    let perm = this.p.createPermission(args.node, 'role', role.id, args.allow);
                     this.addPermission(msg, perm);
                 } else {
                     return msg.channel.createMessage(this.t('ap.target-not-found', {lngs: msg.lang, target: args.r}));
@@ -154,7 +154,7 @@ class AddPermission extends Command {
         if (discordReg.test(args.c)) {
             channel = msg.channelMentions[0];
             if (channel) {
-                let perm = this.p.createPermission(args.node, "channel", channel, args.allow);
+                let perm = this.p.createPermission(args.node, 'channel', channel, args.allow);
                 this.addPermission(msg, perm);
             } else {
                 return msg.channel.createMessage(this.t('ap.target-not-found', {lngs: msg.lang, target: args.c}));
@@ -162,19 +162,19 @@ class AddPermission extends Command {
         } else {
             let regex = new RegExp(`${args.c}.*`, 'gi');
             let channels = msg.channel.guild.channels.filter(c => {
-                return regex.test(c.name) && c.type === 0
+                return regex.test(c.name) && c.type === 0;
             });
             if (channels.length > 1) {
                 let collector = new Selector(msg, channels, this.t, (err, number) => {
                     if (err) return msg.channel.createMessage(this.t(err, {lngs: msg.lang}));
                     channel = channels[number - 1];
-                    let perm = this.p.createPermission(args.node, "channel", channel.id, args.allow);
+                    let perm = this.p.createPermission(args.node, 'channel', channel.id, args.allow);
                     this.addPermission(msg, perm);
                 });
             } else {
                 if (channels.length === 1) {
                     channel = channels[0];
-                    let perm = this.p.createPermission(args.node, "channel", channel.id, args.allow);
+                    let perm = this.p.createPermission(args.node, 'channel', channel.id, args.allow);
                     this.addPermission(msg, perm);
                 } else {
                     return msg.channel.createMessage(this.t('ap.target-not-found', {lngs: msg.lang, target: args.c}));
@@ -195,16 +195,16 @@ class AddPermission extends Command {
                     if (nodeSplit[1] !== '*') {
                         let cmd = msg.cmds[nodeSplit[1]];
                         if (!cmd) {
-                            cmd = {cmd: 'cleverbot', cat: 'fun'}
+                            cmd = {cmd: 'cleverbot', cat: 'fun'};
                         }
                         if (cmd || nodeSplit[1] === 'cleverbot') {
                             if ((nodeSplit[0] === cmd.cat && nodeSplit[1] === cmd.cmd) || node === 'fun.cleverbot') {
 
                             } else {
-                                return cb(this.t('ap.wrong-node', {lngs: msg.lang, prefix: msg.prefix, node}))
+                                return cb(this.t('ap.wrong-node', {lngs: msg.lang, prefix: msg.prefix, node}));
                             }
                         } else {
-                            return cb(this.t('ap.wrong-node', {lngs: msg.lang, prefix: msg.prefix, node}))
+                            return cb(this.t('ap.wrong-node', {lngs: msg.lang, prefix: msg.prefix, node}));
                         }
                     }
                 }
@@ -213,10 +213,10 @@ class AddPermission extends Command {
                     node = '*.*';
                 } else {
                     node = nodeSplit.join('.');
-                    return cb(this.t('ap.wrong-node', {lngs: msg.lang, prefix: msg.prefix, node}))
+                    return cb(this.t('ap.wrong-node', {lngs: msg.lang, prefix: msg.prefix, node}));
                 }
             } else {
-                return cb(this.t('ap.wrong-node', {lngs: msg.lang, prefix: msg.prefix, node: '-'}))
+                return cb(this.t('ap.wrong-node', {lngs: msg.lang, prefix: msg.prefix, node: '-'}));
             }
             args.node = node;
             if (args._.length > 1) {
@@ -225,10 +225,10 @@ class AddPermission extends Command {
                     cb(null, args);
                 }
             } else {
-                return cb(this.t('ap.no-allowance-set', {lngs: msg.lang}))
+                return cb(this.t('ap.no-allowance-set', {lngs: msg.lang}));
             }
         } else {
-            return cb(this.t('ap.missing-args', {lngs: msg.lang, prefix: msg.prefix, node: '-'}))
+            return cb(this.t('ap.missing-args', {lngs: msg.lang, prefix: msg.prefix, node: '-'}));
         }
     }
 }

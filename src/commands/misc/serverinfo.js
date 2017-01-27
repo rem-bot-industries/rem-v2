@@ -7,8 +7,8 @@ let winston = require('winston');
 class ServerInfo extends Command {
     constructor({t, mod}) {
         super();
-        this.cmd = "sinfo";
-        this.cat = "misc";
+        this.cmd = 'sinfo';
+        this.cat = 'misc';
         this.needGuild = true;
         this.t = t;
         this.accessLevel = 0;

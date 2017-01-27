@@ -6,8 +6,8 @@ let adminId = require('../../../config/main.json').owner_id;
 class RestartShard extends Command {
     constructor({mod}) {
         super();
-        this.cmd = "restartShard";
-        this.cat = "admin";
+        this.cmd = 'restartShard';
+        this.cat = 'admin';
         this.needGuild = false;
         this.accessLevel = 2;
         this.hidden = true;

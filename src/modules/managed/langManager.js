@@ -3,9 +3,9 @@
  */
 let Manager = require('../../structures/manager');
 const winston = require('winston');
-let fs = require("fs");
-let path = require("path");
-let util = require("util");
+let fs = require('fs');
+let path = require('path');
+let util = require('util');
 let i18next = require('i18next');
 let Backend = require('i18next-node-fs-backend');
 class LangManager extends Manager {
@@ -24,7 +24,7 @@ class LangManager extends Manager {
             that.load().then(t => {
                 resolve(t);
             }).catch(err => reject(err));
-        })
+        });
     }
 
     load() {

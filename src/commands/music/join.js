@@ -15,8 +15,8 @@ class Join extends Command {
      */
     constructor({t, v}) {
         super();
-        this.cmd = "voice";
-        this.cat = "music";
+        this.cmd = 'voice';
+        this.cat = 'music';
         this.needGuild = true;
         this.t = t;
         this.v = v;

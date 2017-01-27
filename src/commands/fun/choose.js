@@ -5,8 +5,8 @@ let Command = require('../../structures/command');
 class Choose extends Command {
     constructor({t}) {
         super();
-        this.cmd = "choose";
-        this.cat = "fun";
+        this.cmd = 'choose';
+        this.cat = 'fun';
         this.needGuild = false;
         this.t = t;
         this.accessLevel = 0;
@@ -16,7 +16,7 @@ class Choose extends Command {
         let chooseString = msg.content.substring(msg.prefix.length);
         if (chooseString === '') return msg.channel.createMessage(this.t('choose.empty-choose', {lngs: msg.lang}));
         if (chooseString.endsWith(';')) {
-            chooseString = chooseString.substring(0, string.length - 1);
+            chooseString = chooseString.substring(0, chooseString.length - 1);
         }
         let msgSplit = chooseString.split(' ').splice(1);
         msgSplit = msgSplit.join(' ').split(';');

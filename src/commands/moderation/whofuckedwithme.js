@@ -6,8 +6,8 @@ let msgModel = require('../../DB/message');
 class WhoFuckedWithMe extends Command {
     constructor({t}) {
         super();
-        this.cmd = "wfwm";
-        this.cat = "moderation";
+        this.cmd = 'wfwm';
+        this.cat = 'moderation';
         this.needGuild = true;
         this.t = t;
         this.accessLevel = 0;

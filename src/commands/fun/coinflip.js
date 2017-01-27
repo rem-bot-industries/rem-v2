@@ -5,8 +5,8 @@ let Command = require('../../structures/command');
 class FlipCoin extends Command {
     constructor({t}) {
         super();
-        this.cmd = "coin";
-        this.cat = "fun";
+        this.cmd = 'coin';
+        this.cat = 'fun';
         this.needGuild = false;
         this.t = t;
         this.accessLevel = 0;

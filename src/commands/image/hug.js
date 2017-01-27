@@ -5,8 +5,8 @@ let RRACommand = require('../../structures/rraCommand');
 class HugImage extends RRACommand {
     constructor({t}) {
         super();
-        this.cmd = "hug";
-        this.cat = "image";
+        this.cmd = 'hug';
+        this.cat = 'image';
         this.needGuild = false;
         this.t = t;
         this.accessLevel = 0;

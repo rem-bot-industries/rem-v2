@@ -6,8 +6,8 @@ let RRACommand = require('../../structures/rraCommand');
 class LewdImage extends RRACommand {
     constructor({t}) {
         super();
-        this.cmd = "lewd";
-        this.cat = "image";
+        this.cmd = 'lewd';
+        this.cat = 'image';
         this.needGuild = false;
         this.t = t;
         this.accessLevel = 0;

@@ -16,7 +16,7 @@ class msgSender {
     sendDm(user, content) {
         return new Promise((resolve, reject) => {
             user.getDMChannel().then(channel => {
-                channel.createMessage(content).then(resolve)
+                channel.createMessage(content).then(resolve);
             }).catch(reject);
         });
     }

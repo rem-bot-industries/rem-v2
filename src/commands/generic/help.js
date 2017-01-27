@@ -6,8 +6,8 @@ let winston = require('winston');
 class Help extends Command {
     constructor({t, mod}) {
         super();
-        this.cmd = "help";
-        this.cat = "generic";
+        this.cmd = 'help';
+        this.cat = 'generic';
         this.needGuild = false;
         this.t = t;
         this.accessLevel = 0;
@@ -29,16 +29,16 @@ class Help extends Command {
         if (msgSplit.length > 0) {
             return this.exactHelp(msg, msgSplit, categoriesData);
         }
-        categoriesData.categories_name.push({name: `Support`, value: `https://discord.gg/vX96Zz8`});
-        categoriesData.categories_name.push({name: `Donate`, value: `https://www.patreon.com/rem_bot`});
+        categoriesData.categories_name.push({name: 'Support', value: 'https://discord.gg/vX96Zz8'});
+        categoriesData.categories_name.push({name: 'Donate', value: 'https://www.patreon.com/rem_bot'});
         categoriesData.categories_name.push({
-            name: `How to`,
-            value: `"Type !w.help name to get the commands of a category. Example: \`!w.help music\` gives you the help for the music commands.`
+            name: 'How to',
+            value: '"Type !w.help name to get the commands of a category. Example: `!w.help music` gives you the help for the music commands.'
         });
         let reply = {
             embed: {
-                author: {name: "Command categories"},
-                footer: {text: "Type !w.help name to get the commands of a category."},
+                author: {name: 'Command categories'},
+                footer: {text: 'Type !w.help name to get the commands of a category.'},
                 fields: categoriesData.categories_name,
                 color: 0x00ADFF
             }
@@ -48,7 +48,7 @@ class Help extends Command {
                 this.catReply(channel, reply);
             }).catch(e => {
                 this.r.captureException(e, {extra: {userid: msg.author.id, reply}});
-                winston.error(e)
+                winston.error(e);
             });
         } else {
             this.catReply(msg.channel, reply);
@@ -132,12 +132,12 @@ class Help extends Command {
             });
         }
         fields.push({
-            name: `Support`,
-            value: `https://discord.gg/vX96Zz8`
+            name: 'Support',
+            value: 'https://discord.gg/vX96Zz8'
         });
         fields.push({
-            name: `Donate`,
-            value: `https://www.patreon.com/rem_bot`
+            name: 'Donate',
+            value: 'https://www.patreon.com/rem_bot'
         });
         let reply = {
             embed: {
@@ -158,7 +158,7 @@ class Help extends Command {
 
     buildLang(list) {
         let i = list.length;
-        let answer = "";
+        let answer = '';
         while (i--) {
             if (list[i] !== 'dev') {
                 answer = answer + `${list[i]} | `;

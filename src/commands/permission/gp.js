@@ -7,8 +7,8 @@ let AsciiTable = require('ascii-table');
 class GetPermission extends Command {
     constructor({t, mod}) {
         super();
-        this.cmd = "gp";
-        this.cat = "permission";
+        this.cmd = 'gp';
+        this.cat = 'permission';
         this.needGuild = true;
         this.t = t;
         this.accessLevel = 0;
@@ -67,7 +67,7 @@ class GetPermission extends Command {
             if (added > 0) {
                 msg.channel.createMessage('```' + table.toString() + '```');
             } else {
-                msg.channel.createMessage(this.t('gp.no-cat', {lngs: msg.lang, cat: type}))
+                msg.channel.createMessage(this.t('gp.no-cat', {lngs: msg.lang, cat: type}));
             }
         });
     }

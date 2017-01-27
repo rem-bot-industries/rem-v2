@@ -6,8 +6,8 @@ let RRACommand = require('../../structures/rraCommand');
 class NyanImage extends RRACommand {
     constructor({t}) {
         super();
-        this.cmd = "nyan";
-        this.cat = "image";
+        this.cmd = 'nyan';
+        this.cat = 'image';
         this.needGuild = false;
         this.t = t;
         this.accessLevel = 0;

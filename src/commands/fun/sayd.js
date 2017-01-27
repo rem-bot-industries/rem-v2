@@ -7,8 +7,8 @@ let winston = require('winston');
 class SayDelete extends Command {
     constructor({t}) {
         super();
-        this.cmd = "sayd";
-        this.cat = "fun";
+        this.cmd = 'sayd';
+        this.cat = 'fun';
         this.needGuild = true;
         this.t = t;
         this.accessLevel = 0;

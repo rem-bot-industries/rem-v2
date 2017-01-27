@@ -11,7 +11,7 @@ class MessageCollector extends EventEmitter {
         super();
         this.max = 1000;
         this.filter = (msg) => {
-            return true
+            return true;
         };
         this.channelID = channelID;
         this.stopped = false;
@@ -30,7 +30,7 @@ class MessageCollector extends EventEmitter {
                 this.filter = opts.filter;
             }
         }
-        this.on("message", this.message);
+        this.on('message', this.message);
     }
 
     message(msg) {
@@ -53,7 +53,7 @@ class MessageCollector extends EventEmitter {
 
     check(msg) {
         if (msg.channel.id === this.channelID && !this.stopped && this.filter(msg) && msg.author.id !== rem.user.id) {
-            this.emit("message", msg);
+            this.emit('message', msg);
         }
     }
 }

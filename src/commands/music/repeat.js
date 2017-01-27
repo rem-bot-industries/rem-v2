@@ -16,8 +16,8 @@ class Repeat extends Command {
      */
     constructor({t, v}) {
         super();
-        this.cmd = "repeat";
-        this.cat = "music";
+        this.cmd = 'repeat';
+        this.cat = 'music';
         this.needGuild = true;
         this.t = t;
         this.v = v;
@@ -29,27 +29,27 @@ class Repeat extends Command {
         let result = 'off';
         if (repeat) {
             switch (repeat) {
-                case "none": {
+                case 'none': {
                     result = this.v.repeat(msg, 'off');
                     break;
                 }
-                case "off": {
+                case 'off': {
                     result = this.v.repeat(msg, 'off');
                     break;
                 }
-                case "song": {
+                case 'song': {
                     result = this.v.repeat(msg, 'single');
                     break;
                 }
-                case "single": {
+                case 'single': {
                     result = this.v.repeat(msg, 'single');
                     break;
                 }
-                case "queue": {
+                case 'queue': {
                     result = this.v.repeat(msg, 'queue');
                     break;
                 }
-                case "all": {
+                case 'all': {
                     result = this.v.repeat(msg, 'queue');
                     break;
                 }

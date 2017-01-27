@@ -5,7 +5,7 @@ let BasicImporter = require('../../structures/basicImporter');
 const types = require('../../structures/constants').SONG_TYPES;
 const Song = require('../../structures/song');
 class SoundcloudImporter extends BasicImporter {
-    constructor(url,loader) {
+    constructor(url, loader) {
         super();
         this.url = url;
         this.dl = loader;

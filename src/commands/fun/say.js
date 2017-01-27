@@ -5,8 +5,8 @@ let Command = require('../../structures/command');
 class Say extends Command {
     constructor({t}) {
         super();
-        this.cmd = "say";
-        this.cat = "fun";
+        this.cmd = 'say';
+        this.cat = 'fun';
         this.needGuild = false;
         this.t = t;
         this.accessLevel = 0;

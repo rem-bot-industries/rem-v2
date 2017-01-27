@@ -6,8 +6,8 @@ let AsciiTable = require('ascii-table');
 class SetLanguage extends Command {
     constructor({t, mod}) {
         super();
-        this.cmd = "setLang";
-        this.cat = "moderation";
+        this.cmd = 'setLang';
+        this.cat = 'moderation';
         this.needGuild = true;
         this.t = t;
         this.accessLevel = 0;
@@ -30,7 +30,7 @@ class SetLanguage extends Command {
 \`\`\`
 ${this.buildTable(msg)}
 \`\`\`
-`)
+`);
         }
 
     }

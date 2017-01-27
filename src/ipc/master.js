@@ -13,11 +13,11 @@ class Master extends EventEmitter {
 
     setupListeners() {
         this.cluster.on('message', (worker, msg, handle) => {
-            this.messageHandler(worker, msg, handle)
+            this.messageHandler(worker, msg, handle);
         });
     }
 
-    messageHandler(worker, msg, handle) {
+    messageHandler(worker, msg) {
         if (msg.uwu !== 'uwu') return;
         this.emit(msg.event, msg.data);
     }
@@ -25,7 +25,7 @@ class Master extends EventEmitter {
     broadcast(event, msg) {
         Object.keys(this.cluster.workers).forEach((id) => {
             let worker = this.cluster.workers[id];
-            worker.send({event: event, uwu: 'uwu', origin: 'master', data: msg, sendedAt: Date.now()})
+            worker.send({event: event, uwu: 'uwu', origin: 'master', data: msg, sendedAt: Date.now()});
         });
 
     }

@@ -18,8 +18,8 @@ class AddToQueue extends Command {
      */
     constructor({t, v, mod}) {
         super();
-        this.cmd = "qa";
-        this.cat = "music";
+        this.cmd = 'qa';
+        this.cat = 'music';
         this.needGuild = true;
         this.t = t;
         this.v = v;
@@ -30,10 +30,10 @@ class AddToQueue extends Command {
     run(msg) {
         this.v.addToQueue(msg, false).then(result => {
             switch (result.type) {
-                case "added":
+                case 'added':
                     msg.channel.createMessage(this.t('qa.success', {song: result.data.title, lngs: msg.lang}));
                     return;
-                case "search_result":
+                case 'search_result':
                     this.searchResult(msg, result.data);
                     return;
 

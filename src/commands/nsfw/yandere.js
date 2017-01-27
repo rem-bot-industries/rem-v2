@@ -7,8 +7,8 @@ let request = require('request');
 class Yandere extends Command {
     constructor({t}) {
         super();
-        this.cmd = "yandere";
-        this.cat = "nsfw";
+        this.cmd = 'yandere';
+        this.cat = 'nsfw';
         this.needGuild = false;
         this.t = t;
         this.accessLevel = 0;
@@ -16,13 +16,13 @@ class Yandere extends Command {
 
     run(msg) {
         let msgSplit = msg.content.split(' ');
-        let msgSearch = "";
-        let searchOrig = "";
+        let msgSearch = '';
+        let searchOrig = '';
         for (let i = 1; i < msgSplit.length; i++) {
             if (i === 1) {
                 searchOrig = msgSplit[i];
             } else {
-                searchOrig = searchOrig + " " + msgSplit[i];
+                searchOrig = searchOrig + ' ' + msgSplit[i];
             }
         }
         msgSearch = 'order:score rating:questionableplus ' + searchOrig;
