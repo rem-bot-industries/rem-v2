@@ -24,7 +24,8 @@
         "support": "지원하기",
         "invite": "초대하기",
         "language-name-en": "Korean",
-        "native-name": "한국어"
+        "native-name": "한국어",
+        "empty-say": ":no_entry_sign: You did not enter a message!"
     },
     "help": {
         "intro": "Discord에서 저랑 같이 신나게 놀자구요! (/^▽^)/ 명령어 카테고리를 하나 골라 {{pre}}help <카테고리 번호>를 입력하면 해당 카테고리의 명령어들을 알아볼 수 있어요. :",
@@ -147,7 +148,15 @@
         "owo": "Sends you random OwO What's this memes, which are handpicked by Wolke",
         "getNode": "Gives you the permission node, category node and category of a command",
         "resetPerms": "지금까지 설정된 모든 권한을 초기화합니다. 주의해서 사용하세요.",
-        "pat": "Pat someone who has been a good boy/girl/helicopter"
+        "pat": "Pat someone who has been a good boy/girl/helicopter",
+        "triggered": "TRIGGERED",
+        "stare": "stareeeee...",
+        "nom": "Nom :>",
+        "potato": "Everyone wants a potato",
+        "choose": "Make Rem choose something for you, seperate the choices with `;`",
+        "tickle": "Tickle Tickle Tickle",
+        "image": "[IMAGE COMMANDS]",
+        "define": "Get a definition of a term from Urbandictionary"
     },
     "version": "제 현재 버전은 다음과 같아요. : {{version}}",
     "add": "이 링크로 당신의 서버에 저를 추가해 주세요. : {{- link}}",
@@ -238,7 +247,11 @@
     "set-lang": {
         "no-lang": "언어를 하나 고르셔야 해요! 현재 다음과 같은 언어들로 말할 수 있어요. : {{languages}}",
         "success": "알겠어요. 이제부터 이 서버에선 한국어({{- language}})로 이야기할게요.",
-        "unsupported": "선택하신 언어는 아직 제가 말할 수 있는 언어가 아니에요. 하지만 GitHub에서 선택하신 언어로 번역하여 풀 리퀘스트를 올리면 제가 그 언어로 말할 수 있게 될지도 몰라요! 현재 제가 말할 수 있는 언어는 다음과 같아요. : {{languages}}"
+        "unsupported": "선택하신 언어는 아직 제가 말할 수 있는 언어가 아니에요. 하지만 GitHub에서 선택하신 언어로 번역하여 풀 리퀘스트를 올리면 제가 그 언어로 말할 수 있게 될지도 몰라요! 현재 제가 말할 수 있는 언어는 다음과 같아요. : {{languages}}",
+        "native-name": "Native Name",
+        "english-name": "English Name",
+        "shortcode": "shortcode",
+        "available-languages": "List of available Languages\nPlease note that setLang needs the shortcode"
     },
     "np": {
         "song-duration": "현재 재생 중 :` {{- title}} {{current}}/{{duration}} {{repeat}} `",
@@ -290,11 +303,14 @@
         "avg-users": "길드 당 평균 유저 수",
         "voice": "보이스 채널 연결 수",
         "shard": "shard",
-        "guilds-s": "Guilds on this shard",
-        "channels-s": "Channels on this shard",
+        "guilds-s": "Guilds (shard)",
+        "channels-s": "Channels (shard)",
         "users-s": "Users on this shard",
         "made": "제작자 :",
-        "lib": "라이브러리"
+        "lib": "라이브러리",
+        "voice_active": "AVC",
+        "voice_s": "VC(shard)",
+        "voice_active_s": "AVC (shard)"
     },
     "rank": "You can find the Leaderboard for this Server here: {{- link}}",
     "pp": {
@@ -320,7 +336,9 @@
     "leave": "알았어요. 지금 보이스 채널에서 나왔어요.",
     "play": {
         "no-result": "곡을 찾을 수 없어요!",
-        "playing": ":musical_note: 현재 재생 중 : **{{- song}}**"
+        "playing": ":musical_note: 현재 재생 중 : **{{- song}}**",
+        "success": ":musical_note: Now playing **{{- song}}**",
+        "next": ":musical_note: Playing next **{{- song}}**"
     },
     "prefix": {
         "success": "Ok I just set the prefix to {{- prefix}}, try `{{- prefix}}ping` to check it",
@@ -480,5 +498,13 @@
         "nothing-found": "아직 아무런 권한을 설정하시지도 않으셨어요.",
         "confirmation": "정말 모든 권한을 초기화 하실거에요? `yes`라고 입력하시면 초기화를 하고, `no`라고 입력하시면 아무 일 없다는 듯이 쭉 당신을 바라볼거에요.",
         "success": "당신이 설정하신 모든 권한을 초기화했어요."
+    },
+    "choose": {
+        "empty-choose": ":no_entry_sign: I can not choose anything, if you enter nothing!",
+        "success": "I choose **{{- choice}}**!"
+    },
+    "define": {
+        "empty-search": ":no_entry_sign: I can not search a definition, if you enter nothing!",
+        "no-result": "I could not find anything with the term `{{- term}}`"
     }
 }

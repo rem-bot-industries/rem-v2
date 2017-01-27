@@ -154,7 +154,9 @@
         "nom": "Nom :>",
         "potato": "Jeder will eine Kartoffel.",
         "choose": "Rem wählt für dich etwas aus, deine Auswahlmöglichkeiten trennst du mit `;`",
-        "tickle": "Kitzel Kitzel Kitzel"
+        "tickle": "Kitzel Kitzel Kitzel",
+        "image": "[BILDER]",
+        "define": "Hol dir die Definition eines Begriffes von Urbandictionary"
     },
     "version": "Momentan verwende ich Version{{version}}",
     "add": "Benutze diesen Link um mich auf deinem Server hinzuzufügen: {{- link}}",
@@ -500,5 +502,9 @@
     "choose": {
         "empty-choose": ":no_entry_sign: ich kann nichts auswählen wenn du nichts angibst.",
         "success": "Ich wähle **{{- choice}}**!"
+    },
+    "define": {
+        "empty-search": ":no_entry_sign: Ich kann nicht nach einer Definition für einen Begriff suchen, wenn du mir keinen Begriff sagst!",
+        "no-result": "Ich konnte keine Definition zu dem Begriff `{{- term}}` finden."
     }
 }

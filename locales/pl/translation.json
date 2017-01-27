@@ -24,7 +24,8 @@
         "support": "Wsparcie",
         "invite": "Zaproszenie",
         "language-name-en": "Polish",
-        "native-name": "Polski"
+        "native-name": "Polski",
+        "empty-say": ":no_entry_sign: Nie podałeś/łaś wiadomości! "
     },
     "help": {
         "intro": "bawmy sie razem tutaj na Discordzie (/^▽^)/ wybierz kategorię komend poprzez odpowiedź {{pre}}help numer kategorii:",
@@ -148,7 +149,14 @@
         "getNode": "Wyświetla węzeł uprawnień, węzeł kategorii i kategorię komendy",
         "resetPerms": "Resetuje wszystkie ustawione uprawnienia do tej pory, używaj rozsądnie",
         "pat": "Nagradza poklepaniem dobrego chłopca/dziewczynkę/helikopter",
-        "triggered": "TRIGGERED"
+        "triggered": "TRIGGERED",
+        "stare": "gapienie się",
+        "nom": "Nom nom nom :>",
+        "potato": "Wszyscy chcą ziemniaka",
+        "choose": "Poproś Rem, aby wybrała coś za Ciebie, oddziel opcje średnikami `;`",
+        "tickle": "Gili gili gili",
+        "image": "[IMAGE COMMANDS]",
+        "define": "Get a definition of a term from Urbandictionary"
     },
     "version": "Obecnie używam wersji {{version}}",
     "add": "Użyj ten link, aby dodać mnie do Twojego serwera: {{- link}}",
@@ -242,8 +250,8 @@
         "unsupported": "Ten język nie został jeszcze dodany. Możesz go zaproponować poprzez żądanie pull z językiem na github'ie. Obecnie dostępne: {{languages}}",
         "native-name": "Polski",
         "english-name": "Polish",
-        "shortcode": "skrót",
-        "available-languages": "Lista dostępnych języków\nProszę, zwróć uwagę, że setLang wymaga skrótu języka"
+        "shortcode": "kody ISO",
+        "available-languages": "Lista dostępnych języków\nProszę, zwróć uwagę, że setLang wymaga kodu ISO"
     },
     "np": {
         "song-duration": "Odtwarzanie:` {{- title}} {{current}}/{{duration}} {{repeat}} ` ",
@@ -299,7 +307,10 @@
         "channels-s": "Kanały na tym shardzie",
         "users-s": "Użytkownicy na tym shardzie",
         "made": "Stworzono przez:",
-        "lib": "Biblioteka"
+        "lib": "Biblioteka",
+        "voice_active": "AKG",
+        "voice_s": "KG(shard)",
+        "voice_active_s": "AKG (shard)"
     },
     "rank": "Możesz znaleźć ranking tego servera tutaj: {{- link}}",
     "pp": {
@@ -487,5 +498,13 @@
         "nothing-found": "Nie ustawiłeś jeszcze żadnych uprawnień.",
         "confirmation": "Czy jesteś pewien, że chcesz zresetować uprawnienia? Wpisz `yes` aby zatwierdzić, `no` aby anulować.",
         "success": "Właśnie zresetowałam wszystkie uprawnienia, które ustawiłeś/aś."
+    },
+    "choose": {
+        "empty-choose": ":no_entry_sign: Nie mogę wybrać niczego, jeżeli nic nie podałeś/łaś!",
+        "success": "Wybieram **{{- choice}}**!"
+    },
+    "define": {
+        "empty-search": ":no_entry_sign: I can not search a definition, if you enter nothing!",
+        "no-result": "I could not find anything with the term `{{- term}}`"
     }
 }
