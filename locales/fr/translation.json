@@ -25,7 +25,7 @@
         "invite": "Inviter",
         "language-name-en": "French",
         "native-name": "Français",
-        "empty-say": ":no_entry_sign: Vous n'avez pas entré de message!"
+        "empty-say": ":no_entry_sign: Tu n'as pas entré de message!"
     },
     "help": {
         "intro": "ayons du plaisir tous ensemble sur Discord (/^▽^)/  sélectionne une catégorie de commandes en répondant avec {{pre}}help \"numéro de la commande\" pour en apprendre plus:",
@@ -154,7 +154,9 @@
         "nom": "Nom :>",
         "potato": "Tout le monde veut une patate",
         "choose": "Fait choisir Rem quelque chose pour vous, sépare les choix avec `;` ",
-        "tickle": "Guili Guili Guili"
+        "tickle": "Guili Guili Guili",
+        "image": "[COMMANDES DES IMAGES]",
+        "define": "Cherche une définition d'un terme sur Urbandictionary"
     },
     "version": "Actuellement je suis en version {{version}}",
     "add": "Utilise ce lien pour m'ajouter à ton serveur: {{- link}}",
@@ -498,7 +500,11 @@
         "success": "Je viens de reset toutes les permissions."
     },
     "choose": {
-        "empty-choose": ":no_entry_sign: Je ne peut rien choisir, si tu n'entre rien!",
+        "empty-choose": ":no_entry_sign: Je ne peux rien choisir, si tu n'entres rien !",
         "success": "Je choisis **{{- choice}}**! "
+    },
+    "define": {
+        "empty-search": ":no_entry_sign: Je ne peux pas chercher de définition si tu n'entres rien!",
+        "no-result": "Je n'ai rien pu trouver avec le terme `{{- term}}`"
     }
 }
