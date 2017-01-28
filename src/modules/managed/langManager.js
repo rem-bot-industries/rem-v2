@@ -90,5 +90,16 @@ class LangManager extends Manager {
     getList() {
         return this.list();
     }
+
+    reload() {
+        this.i18next.reloadResources();
+        this.i18next.on('loaded', () => {
+            console.log('reloaded!');
+        })
+        this.i18next.on('failedLoading', () => {
+            console.log('failed reload!');
+        })
+
+    }
 }
 module.exports = {class: LangManager, deps: [], async: true, shortcode: 'lm'};
