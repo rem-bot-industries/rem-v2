@@ -155,8 +155,8 @@
         "potato": "Wszyscy chcą ziemniaka",
         "choose": "Poproś Rem, aby wybrała coś za Ciebie, oddziel opcje średnikami `;`",
         "tickle": "Gili gili gili",
-        "image": "[IMAGE COMMANDS]",
-        "define": "Get a definition of a term from Urbandictionary"
+        "image": "[KOMENDY OBRAZKOWE]",
+        "define": "Wyświetl definicję ze słownika Urbandictionary"
     },
     "version": "Obecnie używam wersji {{version}}",
     "add": "Użyj ten link, aby dodać mnie do Twojego serwera: {{- link}}",
@@ -504,7 +504,7 @@
         "success": "Wybieram **{{- choice}}**!"
     },
     "define": {
-        "empty-search": ":no_entry_sign: I can not search a definition, if you enter nothing!",
-        "no-result": "I could not find anything with the term `{{- term}}`"
+        "empty-search": ":no_entry_sign: Nie mogę znaleźć definicji, jeżeli niczego nie podałeś/aś!",
+        "no-result": "Nie mogłam niczego znaleźć z `{{- term}}`"
     }
 }
