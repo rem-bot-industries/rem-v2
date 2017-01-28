@@ -36,7 +36,6 @@ class ModuleManager {
                 }
                 async.eachSeries(that.rawMods, (mod, cb) => {
                     that.load(mod).then(loadedMod => {
-                        //winston.info(`${mod.shortcode} is loaded!`);
                         that.mods[mod.shortcode] = loadedMod;
                         cb();
                     }).catch(err => {
@@ -64,8 +63,7 @@ class ModuleManager {
         return new Promise(function (resolve, reject) {
             if (that.mods[mod.shortcode]) {
                 resolve(that.mods[mod.shortcode]);
-            }
-            if (mod.deps.length > 0) {
+            } else if (mod.deps.length > 0) {
                 that.resolveDependencies(mod.deps).then(resolvedDeps => {
                     resolvedDeps['mod'] = that;
                     return that.instantiateMod(mod, resolvedDeps);

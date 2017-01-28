@@ -210,7 +210,7 @@ class Player extends EventEmitter {
     nextSong(Song) {
         if (this.queue.songs.length > 0) {
             if (typeof (Song) !== 'undefined') {
-                if (Song.qid === this.queue.songs[0].qid) {
+                if (this.queue.songs[0] && Song.qid === this.queue.songs[0].qid) {
                     this.queue.songs.shift();
                     if (this.queue.repeat === 'single') {
                         Song.qid = shortid.generate();
@@ -238,7 +238,7 @@ class Player extends EventEmitter {
                         this.endSong();
                     }
                 }
-            } else {
+            } else if (this.queue.songs[0]) {
                 let song = this.queue.songs[0];
                 this.queue.songs.shift();
                 if (this.queue.repeat === 'single') {
@@ -267,6 +267,8 @@ class Player extends EventEmitter {
                     this.endSong();
                 }
                 return song;
+            } else {
+                this.endSong();
             }
         } else {
             this.endSong();

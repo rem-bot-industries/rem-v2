@@ -15,7 +15,7 @@ let Shard = require('./shard');
  * Check if the Cluster process is master
  */
 if (cluster.isMaster) {
-    let ipcMaster = new ipc.master(cluster);
+    let ipcMaster = new ipc.master();
     const tracker = new StatTrack(60);
     let workers = [];
     let shards = {};
@@ -136,6 +136,7 @@ if (cluster.isMaster) {
         let worker = cluster.fork(env);
         let workerobject = {worker: worker, shard_id: env.id, pid: worker.process.pid};
         workers.push(workerobject);
+        winstonCluster.bindListeners();
     }
 } else {
     winston.remove(winston.transports.Console);
