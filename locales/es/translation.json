@@ -20,11 +20,12 @@
         "cat-nope": ":no_entry_sign: ¡Esa categoría no existe!",
         "mention": "Por favor menciona a un usuario.",
         "cancelled-command": "Comando cancelado.",
-        "donate": "Donar",
+        "donate": "Donaciones",
         "support": "Soporte",
-        "invite": "Invitar",
+        "invite": "Invita a Rem",
         "language-name-en": "Spanish",
-        "native-name": "Español"
+        "native-name": "Español",
+        "empty-say": ":no_entry_sign: ¡No has introducido ningún mensaje!"
     },
     "help": {
         "intro": "¡Vamos a pasarlo bien en Discord (/^▽^)/!, selecciona una categoría del listado respondiendo con {{pre}}help y el número de la categoría que quieras seleccionar, con el fin de conocer más acerca de los comandos:",
@@ -84,7 +85,7 @@
         "cat": "Envía una imagen aleatoria con gatos.",
         "hug": "Muestra una gif de un abrazo en un anime.",
         "slap": "Muestra un gif de una bofetada en un anime.",
-        "setLang": "Seleccionas el idioma, hasta ahora {{languages}} idiomas han sido integrados.",
+        "setLang": "Seleccionas el idioma, utiliza !w.setLang sin argumentos para obtener una lista de idiomas.",
         "report": "Si eres muy tímido como para pasar por el Discord de soporte, utiliza el comando report para mandar un reporte al Desarrollador Wolke, ¡pero no abuses de él!",
         "feedback": "Para dar feedback utiliza el Discord de soporte por favor ^^",
         "talk": "Si quieres hablar conmigo @mencioname con un mensaje :D",
@@ -111,8 +112,8 @@
         "gtn": "Muestra un comic aleatorio de green tea neko, solo puede ser usado en un canal configurado como NSFW o por un Administrador.",
         "cuddle": "Muestra un gif de un abrazo en un anime.",
         "trig": "Provocar",
-        "bot": "Da información sobre el tiempo de actividad de Rem, los canales de voz, recuento de usuarios y recuento de gremios.",
-        "top": "Muestra el top 10 de los gremios (según la cantidad de usuarios) en el que está conectado este shard.",
+        "bot": "Da información sobre el tiempo de actividad de Rem, el tiempo activo y enlaces útiles.",
+        "top": "Muestra el top 10 de los gremios (según la cantidad de usuarios) en el que está conectado esta sección.",
         "about": "Muestra la información básica sobre mi, como la librería que utilizo y quien me creó.",
         "lenny": "( ͡° ͜ʖ ͡°)",
         "lmg": "Buscaré algo en Google por ti",
@@ -147,7 +148,15 @@
         "owo": "Manda un meme aleatorio de \"¿Qué es esto? OwO\" seleccionado cuidadosamente por Wolke.",
         "getNode": "Te doy el nodo del permiso, la categoría del nodo y la categoría de un comando.",
         "resetPerms": "Restablece todos los permisos establecidos hasta ahora, usa esto con cuidado.",
-        "pat": "Acaricia a alguien que ha sido un/a buen/a chico/chica/helicoptero"
+        "pat": "Acaricia a alguien que ha sido un/a buen/a chico/chica/helicoptero",
+        "triggered": "TRIGGERED",
+        "stare": "Mira fijamente...",
+        "nom": "Ñom :>",
+        "potato": "Todos quieren una patata",
+        "choose": "Haz que Rem elija algo por ti, separa las opciones con `;`",
+        "tickle": "Cosquillas, Cosquillas, Cosquillas",
+        "image": "[COMANDOS DE IMÁGENES]",
+        "define": "Obtén la definición de un término de Urbandictionary"
     },
     "version": "Actualmente me encuentro en la versión {{version}}",
     "add": "Utiliza este enlace para añadirme a tu servidor: {{- link}}",
@@ -204,7 +213,7 @@
     },
     "qa": {
         "nothing-found": "No se han encontrado canciones con el término `{{search}}` ",
-        "empty-search": "¡No has introducido un término de búsqueda!",
+        "empty-search": "No has introducido un enlace o término de búsqueda.",
         "started-download": "Empieza la descarga de `{{- url}}`␣",
         "success": "Añadido a la cola **{{- song}}**"
     },
@@ -238,7 +247,11 @@
     "set-lang": {
         "no-lang": "¡No has especificado un idioma!, actualmente hay {{languages}} idiomas disponibles.",
         "success": "Vale, he establecido el idioma del servidor a {{- language}}.",
-        "unsupported": "Este idioma no está implementado aún, pero puedes ayudarnos añadiendo una solicitud con tu lenguaje en github. Actualmente hay {{languages}} idiomas disponibles."
+        "unsupported": "Este idioma no está implementado aún, pero puedes ayudarnos añadiendo una solicitud del lenguaje que deseas añadir en github. Puedes ver la lista de idiomas disponibles lanzando este comando sin argumentos.",
+        "native-name": "Nombre Nativo",
+        "english-name": "Nombre en Inglés",
+        "shortcode": "Código",
+        "available-languages": "Lista de idiomas disponibles\nTen en cuenta que el comando setLang necesita los nombres de la columna `código`"
     },
     "np": {
         "song-duration": "Está sonando ahora mismo: `{{- title}} {{current}}/{{duration}} {{repeat}}`",
@@ -288,13 +301,16 @@
         "guilds": "Gremios",
         "avg-channels": "Promedio de canales por gremio.",
         "avg-users": "Promedio de usuarios por gremio.",
-        "voice": "Conexiones de voz",
-        "shard": "Shard",
-        "guilds-s": "Gremios en este shard",
-        "channels-s": "Canales en este shard",
-        "users-s": "Usuarios en este shard",
+        "voice": "CV",
+        "shard": "Sección",
+        "guilds-s": "Gremios (sección)",
+        "channels-s": "Canales (sección)",
+        "users-s": "Usuarios en esta sección",
         "made": "Hecho por:",
-        "lib": "Libreria"
+        "lib": "Libreria",
+        "voice_active": "CVA",
+        "voice_s": "CV (sección)",
+        "voice_active_s": "CVA (sección)"
     },
     "rank": "Puedes encontrar la clasificación de este servidor aquí: {{- link}}",
     "pp": {
@@ -320,7 +336,9 @@
     "leave": "Vale, he abandonado el canal de voz.",
     "play": {
         "no-result": "Ninguna canción fue encontrada.",
-        "playing": ":musical_note: Actualmente se está reproduciendo **{{- song}}** "
+        "playing": ":musical_note: Actualmente se está reproduciendo **{{- song}}**",
+        "success": ":musical_note: Actualmente se está reproduciendo **{{- song}}**",
+        "next": ":musical_note: Se reproducirá a continuación **{{- song}}**"
     },
     "prefix": {
         "success": "Vale, he establecido el prefijo a {{- prefix}}, utiliza `{{- prefix}}ping` para comprobarlo.",
@@ -480,5 +498,13 @@
         "nothing-found": "Todavía no has establecido ningún permiso.",
         "confirmation": "¿Estás seguro de que deseas restablecer los permisos? Escribe `yes` para restablecerlos y `no` para cancelar este comando.",
         "success": "Acabo de restablecer todos los permisos que se habían establecido."
+    },
+    "choose": {
+        "empty-choose": ":no_entry_sign: ¡No puedo elegir ninguna opción si no introduces nada!",
+        "success": "¡Elijo **{{- choice}}**!"
+    },
+    "define": {
+        "empty-search": ":no_entry_sign: ¡No puedo buscar una definición si no introduces nada!",
+        "no-result": "No he encontrado nada con el término `{{- term}}`"
     }
 }
