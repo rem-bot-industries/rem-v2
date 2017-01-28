@@ -152,11 +152,11 @@
         "triggered": "TRIGGERED",
         "stare": "じー…",
         "nom": "むしゃむしゃ…",
-        "potato": "Everyone wants a potato",
+        "potato": "ポテト食べたいですか？",
         "choose": "Remに何かを選んでもらいます。それぞれの選択肢は`;`で区切ってください。",
         "tickle": "こちょこちょ!",
         "image": "[IMAGE COMMANDS]",
-        "define": "Get a definition of a term from Urbandictionary"
+        "define": "Urban Dictionaryで言葉の定義を検索します。"
     },
     "version": "現在の私のバージョンは {{version}} です。",
     "add": "このリンクを使って私をあなたのサーバーに追加してください！\n{{- link}}",
@@ -308,9 +308,9 @@
         "users-s": "現在のシャードのユーザー数",
         "made": "作成者：",
         "lib": "ライブラリ",
-        "voice_active": "AVC",
-        "voice_s": "VC(shard)",
-        "voice_active_s": "AVC (shard)"
+        "voice_active": "アクティブボイスチャンネル数",
+        "voice_s": "シャード内のボイスチャンネル数",
+        "voice_active_s": "シャード内のアクティブボイスチャンネル数"
     },
     "rank": "このサーバーのリーダーボードはこちらで見つけられます。\n( {{- link}} )",
     "pp": {
@@ -504,7 +504,7 @@
         "success": "**{{- choice}}**を選びます！"
     },
     "define": {
-        "empty-search": ":no_entry_sign: I can not search a definition, if you enter nothing!",
-        "no-result": "I could not find anything with the term `{{- term}}`"
+        "empty-search": ":no_entry_sign: 何か入力しないと定義が探せませんよ！",
+        "no-result": "`{{- term}}`の検索結果は見つかりませんでした…"
     }
 }
