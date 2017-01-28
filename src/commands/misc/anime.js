@@ -5,14 +5,15 @@ let Command = require('../../structures/command');
 let axios = require('axios');
 let key = require('../../../config/main.json').mashape_key;
 let winston = require('winston');
-class UrbanDictionary extends Command {
+class AnimeSearch extends Command {
     constructor({t}) {
         super();
-        this.cmd = 'define';
+        this.cmd = 'anime';
         this.cat = 'misc';
         this.needGuild = false;
         this.t = t;
         this.accessLevel = 0;
+        this.hidden = true;
     }
 
     async run(msg) {
@@ -43,4 +44,4 @@ class UrbanDictionary extends Command {
         }
     }
 }
-module.exports = UrbanDictionary;
+module.exports = AnimeSearch;
