@@ -1,5 +1,5 @@
 /**Require the dependencies*/
-//uwuu
+//uwu
 const cluster = require('cluster');
 const winston = require('winston');
 const winstonCluster = require('winston-cluster');
@@ -36,13 +36,24 @@ if (cluster.isMaster) {
     ipcMaster.on('_guild_update', (data) => {
         shards[data.sid].guilds = data.data;
     });
+    ipcMaster.on('_cache_update', (data) => {
+        ipcMaster.broadcast('_cache_update', data)
+    });
     ipcMaster.on('_user_update', (data) => {
         shards[data.sid].users = data.data;
+    });
+    ipcMaster.on('_heartbeat_fail', (shardID) => {
+        let Shard = findWorkerByShardId(shardID, workers);
+        if (Shard) {
+            Shard.worker.kill('SIGINT');
+        }
     });
     ipcMaster.on('shard_restart_request', (data) => {
         let Shard = findWorkerByShardId(data.sid, workers);
         if (Shard) {
             Shard.worker.kill('SIGINT');
+        } else {
+            console.error(`Invalid Shard Restart Request: ${data}`);
         }
     });
     /**
@@ -133,7 +144,6 @@ if (cluster.isMaster) {
      * @param env
      */
     function spawnWorker(env) {
-        shards[env.id] = {guilds: 0, users: 0};
         let worker = cluster.fork(env);
         let workerobject = {worker: worker, shard_id: env.id, pid: worker.process.pid};
         workers.push(workerobject);
@@ -146,7 +156,7 @@ if (cluster.isMaster) {
         'colorize': true
     });
     winstonCluster.bindTransport();
-    let ipcWorker = new ipc.worker(cluster);
+    let ipcWorker = new ipc.worker(cluster, process.env.id);
     let client = new Shard(process.env.id, process.env.count, ipcWorker);
     winston.info(`Worker started ${process.env.id}/${process.env.count}`);
 
