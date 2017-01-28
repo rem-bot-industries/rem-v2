@@ -66,6 +66,7 @@ if (cluster.isMaster) {
          * Called once a shard received the request and submitted data
          */
         ipcMaster.on(`resolve_data_master_${event.id}`, (data) => {
+            if (shardData[data.sid]) return;
             shardData[data.sid] = data;
             responses++;
             if (responses === config.shards) {
