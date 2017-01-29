@@ -2,13 +2,12 @@
 //uwu
 const cluster = require('cluster');
 const winston = require('winston');
-const winstonCluster = require('winston-cluster');
 const config = require('../config/main.json');
+
 let ipc = require('./ipc/index');
 let StatTrack = require('./modules/statTrack');
 let _ = require('lodash');
 require('longjohn');
-require('winston-daily-rotate-file');
 const util = require('util');
 let Shard = require('./shard');
 /**
@@ -23,11 +22,6 @@ if (cluster.isMaster) {
     winston.add(winston.transports.Console, {
         'timestamp': true,
         'colorize': true
-    });
-    winston.add(winston.transports.DailyRotateFile, {
-        'timestamp': true,
-        'datePattern': '.yyyy-MM-dd',
-        'filename': '../logs/rem.log'
     });
     cluster.on('exit', (worker, code, signal) => {
         winston.error(`worker ${worker.process.pid} died`);
@@ -72,7 +66,7 @@ if (cluster.isMaster) {
          */
         let time = setTimeout(() => {
             returnData({err: 'Timeout!'});
-        }, 2000);
+        }, 3000);
         /**
          * Called once a shard received the request and submitted data
          */
@@ -122,7 +116,6 @@ if (cluster.isMaster) {
         workers.push(workerobject);
     }
     winston.info('Spawned Shards!');
-    winstonCluster.bindListeners();
     /**
      * Restarts a Worker if it died
      * @param pid Process ID
@@ -147,7 +140,6 @@ if (cluster.isMaster) {
         let worker = cluster.fork(env);
         let workerobject = {worker: worker, shard_id: env.id, pid: worker.process.pid};
         workers.push(workerobject);
-        winstonCluster.bindListeners();
     }
 } else {
     winston.remove(winston.transports.Console);
@@ -155,7 +147,6 @@ if (cluster.isMaster) {
         'timestamp': true,
         'colorize': true
     });
-    winstonCluster.bindTransport();
     let ipcWorker = new ipc.worker(cluster, process.env.id);
     let client = new Shard(process.env.id, process.env.count, ipcWorker);
     winston.info(`Worker started ${process.env.id}/${process.env.count}`);

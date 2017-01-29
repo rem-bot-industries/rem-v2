@@ -3,12 +3,13 @@
  */
 //uwu
 global.Promise = require('bluebird');
+const config = require('../config/main.json');
+global.remConfig = config;
 const Eris = require('eris');
 let StatsD = require('hot-shots');
 let dogstatsd = new StatsD();
 const EventEmitter = require('eventemitter3');
 const guildModel = require('./DB/guild');
-const config = require('../config/main.json');
 let winston = require('winston');
 let raven = require('raven');
 let mongoose = require('mongoose');

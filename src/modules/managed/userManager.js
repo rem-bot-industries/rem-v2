@@ -46,7 +46,6 @@ class UserManager extends Manager {
             if (err) return cb(err);
             if (User) {
                 userCache.set(user.id, User);
-                this.sendCacheUpdate(User);
                 cb(null, User);
             } else {
                 this.createUser(user, cb);
