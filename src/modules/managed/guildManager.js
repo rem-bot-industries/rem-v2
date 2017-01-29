@@ -36,7 +36,6 @@ class GuildManager extends Manager {
             if (err) return cb(err);
             if (Guild) {
                 guildCache.set(Guild.id, Guild);
-                this.sendCacheUpdate(Guild);
                 cb(null, Guild);
             } else {
                 this.createGuild(id, cb);
