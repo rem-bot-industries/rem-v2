@@ -325,10 +325,10 @@
     "use-proxy": "Trying to download over the proxy, this could take a bit."
   },
   "skip": {
-    "success": ":track_next: Skipped song {{- title}}",
-    "stop": ":stop_button: Stopped current song",
+    "success": ":track_next: Skipped song {{- title}}.",
+    "stop": ":stop_button: Stopped current song.",
     "all": ":stop_button: Skipped all songs.",
-    "some": ":track_next: Skipped {{- amount}} songs"
+    "some": ":track_next: Skipped {{- amount}} songs."
   },
   "vskip": {
     "user-no-voice": "You can not voteskip, if you are not in the same voicechannel!",

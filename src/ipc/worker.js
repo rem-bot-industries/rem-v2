@@ -78,7 +78,7 @@ class Worker extends EventEmitter {
             this.ws.send(JSON.stringify({op: OPCODE.hearbeat, shardID: this.shardId}));
             this.hearbeatTimeout = setTimeout(() => {
                 console.error('Master did not respond!');
-            }, beat + 3000);
+            }, beat + 5000);
         }, beat - 3000);
     }
 
