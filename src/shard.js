@@ -260,7 +260,7 @@ class Shard extends EventEmitter {
     createInterval() {
         this.interval = setInterval(() => {
             this.sendStats();
-        }, 1000 * 60);
+        }, 1000 * 120);
     }
 
     sendStats() {

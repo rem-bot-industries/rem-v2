@@ -11,25 +11,33 @@ class Worker extends EventEmitter {
         if (!cluster) throw new Error('No cluster given.');
         if (!cluster.isWorker) throw new Error('This process is not a worker!');
         this.cluster = cluster;
-        this.ws = new uws(`ws://127.0.0.1:${ws_port}`);
-        this.ws.on('open', () => {
-            this.onConnection();
-        });
+        this.connectionAttempts = 0;
+        this.ws = null;
         this.shardId = id;
         this.state = {ready: false, connected: false, hearbeat: -1};
         this.hearbeatInterval = null;
         this.hearbeatTimeout = null;
+        this.connect();
+    }
+
+    connect() {
+        this.ws = new uws(`ws://127.0.0.1:${ws_port}`);
+        this.ws.on('open', () => {
+            this.connectionAttempts = 1;
+            this.onConnection();
+        });
+        this.ws.on('error', (err) => this.onError(err));
+        this.ws.on('close', (code, number) => this.onDisconnect(code, number));
     }
 
     onConnection() {
         this.state.connected = true;
         this.ws.on('message', (msg, flags) => this.onMessage(msg, flags));
-        this.ws.on('close', (code, number) => this.onDisconnect(code, number));
-        this.ws.on('error', (err) => this.onError(err));
     }
 
     onError(err) {
         console.error(err);
+        this.reconnect();
     }
 
     onDisconnect(code, number) {
@@ -38,6 +46,25 @@ class Worker extends EventEmitter {
         this.state.connected = false;
         this.state.ready = false;
         this.state.hearbeat = -1;
+        let time = this.generateInterval(this.connectionAttempts);
+        clearInterval(this.hearbeatInterval);
+        setTimeout(() => {
+            this.connectionAttempts++;
+            this.connect();
+        }, time);
+    }
+
+    reconnect() {
+        this.ws.close(8000, 'Reconnect on User Wish!');
+    }
+
+    generateInterval(k) {
+        let maxInterval = (Math.pow(2, k) - 1) * 1000;
+
+        if (maxInterval > 30 * 1000) {
+            maxInterval = 30 * 1000;
+        }
+        return Math.random() * maxInterval;
     }
 
     onMessage(msg, flags) {
@@ -47,6 +74,7 @@ class Worker extends EventEmitter {
             console.error(msg);
             return console.error(e);
         }
+        // console.log(msg);
         switch (msg.op) {
             case OPCODE.identify: {
                 // console.log(msg);
@@ -56,6 +84,7 @@ class Worker extends EventEmitter {
             case OPCODE.ready: {
                 // console.log(msg);
                 this.state.hearbeat = msg.hearbeat;
+                this.state.ready = true;
                 this.setupHeartbeat(msg.hearbeat);
                 return;
             }
