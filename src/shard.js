@@ -100,7 +100,7 @@ class Shard extends EventEmitter {
         winston.info(options);
         let bot = new Eris(config.token, options);
         if (useCrystal) {
-            bot.voiceConnections = new Crystal.ErisClient();
+            bot.voiceConnections = new Crystal.ErisClient({host: config.crystal_host});
         }
         this.bot = bot;
         global.rem = bot;
