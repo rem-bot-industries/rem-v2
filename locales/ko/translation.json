@@ -1,13 +1,13 @@
 {
     "generic": {
         "error": ":x: 오류가 발견되었어요!",
-        "no-pm": ":no_entry: 이 명령어는 개인 채팅에서 사용할 수 없다구요!",
-        "whole-num": ":no_entry_sign: 아무 숫자이든 써넣어야 해요!",
-        "nan": ":no_entry_sign: 무슨 말이든 보내셔도 되니까, 아무 숫자이든 하나 추가하세요. :) ",
+        "no-pm": ":no_entry: 이 명령어는 개인 채팅에서 사용할 수 없어요!",
+        "whole-num": ":no_entry_sign: 아무 숫자든 써넣어야 해요!",
+        "nan": ":no_entry_sign: 무슨 말이든 보내셔도 되니까, 아무 숫자든 하나 추가하세요. :) ",
         "no-song-in-queue": ":no_entry_sign: 현재 큐에 아무런 노래도 없어요. 한 곡 추가할까요? :musical_note:",
         "no-song-playing": ":musical_note: 현재 아무런 노래도 재생되고 있지 않아요!",
         "no-permission": ":no_entry_sign: 이 명령어를 사용할 권한이 없으시네요. 권한 `{{- node}}`이 당신에게 부여되면 명령어를 사용할 수 있어요.",
-        "no-voice": ":no_entry_sign: 이 서버의 어떠한 보이스 채널에도 연결되어 있지 않다구요!",
+        "no-voice": ":no_entry_sign: 이 서버의 어떠한 보이스 채널에도 연결되어 있지 않아요!",
         "level-update": ":tada: **{{- server}}**에서 **Level  {{level}}**에 달성되셨어요!",
         "empty-search": ":no_entry_sign: 검색어를 입력해주세요!",
         "negative": ":no_entry_sign: 음수는 사용할 수 없어요!",
@@ -23,9 +23,9 @@
         "donate": "기부하기",
         "support": "지원하기",
         "invite": "초대하기",
-        "language-name-en": "Korean",
-        "native-name": "한국어",
-        "empty-say": ":no_entry_sign: You did not enter a message!"
+        "language-name-en": "영어",
+        "native-name": "영어",
+        "empty-say": ":no_entry_sign: 메세지를 입력하지 않으셨어요!"
     },
     "help": {
         "intro": "Discord에서 저랑 같이 신나게 놀자구요! (/^▽^)/ 명령어 카테고리를 하나 골라 {{pre}}help <카테고리 번호>를 입력하면 해당 카테고리의 명령어들을 알아볼 수 있어요. :",
@@ -36,63 +36,63 @@
         "add": "서버에 저를 추가할 수 있는 링크를 가져옵니다.",
         "music": "[음악]",
         "voice": "당신이 현재 연결하고 있는 보이스 채널에 접속합니다. (일반적인 음악 명령어들도 봇을 보이스 채널에 접속시킵니다.)",
-        "silent": "i leave the Voice Channel i am currently connected to. (only usable with WolkeBot Role)",
-        "play": "YouTube/SoundCloud/osu!에서 노래를 검색해서 재생합니다.",
+        "silent": "현재 연결되어있는 보이스 채널에서 떠납니다. (WolkeBot 역할에 한함)",
+        "play": "YouTube / SoundCloud / osu! 에서 노래를 검색하여 재생합니다.",
         "pause": "현재 곡을 일시중지합니다.",
         "resume": "현재 곡을 다시 재생합니다.",
-        "volume": "Sets the Volume of the Bot, Values between 1-200 (only usable with WolkeBot Role)",
-        "forever": "Plays a song on Repeat until new ones are added to the queue, only usable with the WolkeBot Role",
+        "volume": "봇의 볼륨을 조절합니다. 값은 1-200 사이로 정해야합니다. (WolkeBot 역할에 한함)",
+        "forever": "새로운 노래가 대기열(큐)에 추가 될 때까지 노래를 반복 재생합니다. (WolkeBot 역할에 한함)",
         "search": "봇의 데이터베이스에서 곡을 검색하고 5개의 검색 결과를 가져와 드립니다.",
-        "skip": "Starts a Voteskip for the current Song, more than 50% of the channel have to vote, then it is skipped.",
-        "voteskip": "Starts a Voteskip for the current Song, more than 50% of the channel have to vote, then it is skipped.",
-        "qa": "YouTube/SoundCloud/osu! 에서 곡을 검색해서 큐에 추가합니다.",
-        "qra": "removes either all Songs except the one that is playing right now or a certain number of songs.",
+        "skip": "현재 곡을 건너 뛸지에 대한 투표를 시작하여, 50% 이상이 찬성할 경우, 곡을 건너 뜁니다.",
+        "voteskip": "현재 곡을 건너 뛸지에 대한 투표를 시작하여, 50% 이상이 찬성할 경우, 곡을 건너 뜁니다.",
+        "qa": "YouTube / SoundCloud / osu! 에서 곡을 검색해서 큐에 추가합니다.",
+        "qra": "지금 재생되는 곡을 제외하고 모든 곡을 제거하거나 제시한 개수만큼의 곡을 제거합니다.",
         "queue": "현재 큐를 보여드립니다.",
         "np": "현재 재생 중인 곡을 보여드립니다.",
-        "rq": "Adds a random Song/a number of songs to the Queue",
-        "stream": "Streams the selected Internet radio, you can search for radios or directly add them by appending -u url to the command",
-        "youtube": "[YOUTUBE]",
+        "rq": "큐에 있는 곡들을 임의로 재생합니다.",
+        "stream": "선택한 인터넷 라디오를 스트리밍합니다. 라디오를 검색하거나 명령어에 `-u url`을 추가하여 직접 추가 할 수 있습니다.",
+        "youtube": "[YouTube]",
         "yts": "YouTube에서 검색하고 첫 번째 검색 결과를 가져와 드립니다.",
         "ytq": "YouTube에서 검색하고 첫 번째 검색 결과를 큐에 추가합니다.",
-        "mod": "The Mod cp",
-        "mod-info": "These Commands all require that the user has a Discord Role named WolkeBot",
+        "mod": "모드 제어판",
+        "mod-info": "이 명령어들은 `WolkeBot`이라는 Discord 역할이 있는 유저가 필요합니다.",
         "info": "현재 서버에 대한 정보를 알려드립니다.",
         "ban": "사용자 한 분을 영구 추방하고 7일동안의 그 사용자의 채팅 메세지를 전부 지웁니다.",
-        "kick": "사용자 한 분을 킥(Kick)해버립니다.",
-        "rm": "removes messages, you can filter for bots, users, commands/responses of rem or just delete up to 100 messages. Filters: -b -> bots| -r -> messages from rem| -u @user -> messages from a certain user| -c -> messages that start with the prefix of rem.",
+        "kick": "사용자 한 분을 추방해 버립니다.",
+        "rm": "채팅 메세지를 지울 때, 봇 메세지나 특정 사용자의 메세지, 렘봇에 사용한 명령어나 렘봇의 응답을 필터링하거나 그냥 최대 100개의 채팅 메세지를 지울 수 있습니다.\n\n필터 :\n\n-b -> 봇 메세지 필터링\n-r -> 렘봇의 응답 메세지 필터링\n-u @user -> 특정 사용자의 메세지 필터링\n-c -> 렘봇에 사용한 명령어 필터링",
         "noLevelServer": "서버 전역에 레벨 시스템을 비활성화합니다. 다시 활성화하시려면 이 명령어를 다시 입력하시면 되요.",
-        "noPmServer": "Disables the pm notifications for the entire server, use the command again to re-enable it",
-        "noChServer": "Disables the pm notifications for the entire server and enables channel notifications instead, use the command again to revert it",
+        "noPmServer": "서버 전역에 개인 메세지를 비활성화합니다. 다시 활성화 하시려면 이 명령어를 다시 입력하시면 되요.",
+        "noChServer": "서버 전역에 개인 메세지를 비활성화하는 대신에 채널 알림을 활성화합니다. 명령어를 다시 입력하시면 전 상태로 돌아가요.",
         "setLewd": "현재 채널을 NSFW 채널 목록에 추가합니다.",
         "remLewd": "현재 채널을 NSFW 채널 목록에서 지웁니다.",
         "setPrefix": "봇 명령어의 선행사(Prefix)를 설정합니다. 빈 공간(스페이스)과 멘션은 쓸 수 없어요!",
         "other": "[기타 잡다한 것들]",
-        "r34": "Searches Rule34 for tags and gives back 1 Image, only usable with WolkeBot Role or a configured NSFW Channel.",
+        "r34": "Rule34에서 입력된 태그를 검색하여 이미지를 1 장 보여드립니다. 단, WolkeBot 역할 또는 구성된 NSFW 채널에서만 사용할 수 있어요.",
         "kona": "Konachan에서 입력한 태그에 해당하는 이미지를 검색하고 검색 결과 중 한 장을 가져와 보여드립니다. 태그를 입력하지 않으시면 랜덤으로 한 장 가져옵니다. 구성된 NSFW 채널 혹은 어드민만 사용할 수 있어요.",
         "e621": "E621에서 입력한 태그에 해당하는 이미지를 검색하고 검색 결과 중 한 장을 가져와 보여드립니다. 태그를 입력하지 않으시면 랜덤으로 한 장 가져옵니다. 구성된 NSFW 채널 혹은 어드민만 사용할 수 있어요.",
         "yandere": "Yande.re에서 입력한 태그에 해당하는 이미지를 검색하고 검색 결과 중 한 장을 가져와 보여드립니다. 태그를 입력하지 않으시면 랜덤으로 한 장 가져옵니다. 구성된 NSFW 채널 혹은 어드민만 사용할 수 있어요.",
         "level": "당신의 현재 레벨과 다음 레벨에 도달하는데 필요한 경험치를 보여드립니다.",
         "rank": "이 서버의 리더보드를 보여드립니다.",
-        "noLevel": "당신에게만 레벨 시스템을 비활성화합니다. 이 명령어를 다시 입력하면 레벨 시스템을 활성화합니다.",
-        "noPm": "disables the PM notifications for you. Use again to enable it again for you.",
+        "noLevel": "당신에게만 레벨 시스템을 비활성화 해드립니다. 명령어를 다시 입력하면 다시 활성화 해드려요.",
+        "noPm": "제가 보내는 개인 메세지를 비활성화 합니다. 명령어를\n 다시 입력하시면 활성화 해드려요.",
         "pp": "정확도와 모드를 지정하여 비트맵의 퍼포먼스 점수(PP)를 계산해 드립니다.",
         "cookie": "멘션한 유저에게 쿠키를 주거나, 멘션하지 않으면 당신의 현재 쿠키의 개수를 알려드립니다.",
         "eatCookie": "쿠키를 하나 먹습니다. 냠냠!",
         "git": "이 렘봇의 GitHub 링크를 드립니다.",
-        "roll": "Rolls a number between zero and number, if there is no number it will be out of 10",
+        "roll": "0부터 지정한 숫자 사이로 숫자 하나를 굴려봅니다. 숫자가 지정되지 않으면, 0부터 10 사이에서 숫자를 굴려볼 거에요.",
         "8ball": "마법의 에잇볼(8-ball)이 당신의 질문에 답해드립니다.",
         "garfield": "무작위로 가필드 만화를 가져와 드립니다.",
         "cat": "무작위로 고양이 사진을 가져와 드립니다.",
         "hug": "무작위로 허그하는 애니메이션 움짤을 가져와 드립니다.",
-        "slap": "Gives you an anime slap gif",
+        "slap": "무작위로 찰싹 때리는 애니메이션 움짤을 가져와 드립니다.",
         "setLang": "언어를 설정합니다. 현재 지원되는 언어는 다음과 같습니다. : {{languages}}",
-        "report": "If you are too shy to come on the Support Discord, use report to send a report to the Developer Wolke, but dont abuse it!",
-        "feedback": "피드백을 원하시면 렘봇 지원 Discord 서버에 들어와주세요! ㅎㅎ",
+        "report": "혹시 렘봇 지원 Discord 서버에 오시는게 부끄럽다면, `report`를 이용하여 개발자 Wolke에게 문제를 알려줄 수 있어요. 마구마구 보내시면 힘들어요!",
+        "feedback": "피드백을 원하시면 렘봇 지원 Discord 서버에 들어와주세요! ^^",
         "talk": "저랑 이야기하고 싶으시다구요? @멘션으로 채팅해주시면 같이 이야기할 수 있어요. :D",
         "helpReply": "알겠어요. 개인 채팅으로 저한테 쓰실 수 있는 명령어의 목록을 보내드렸어요.",
         "moderation": "[관리]",
         "misc": "[기타 명령어]",
-        "stats": "[STATS]",
+        "stats": "[통계]",
         "user": "[사용자]",
         "admin": "[관리자]",
         "nsfw": "[야짤 (NSFW)]",
@@ -101,80 +101,80 @@
         "no-cat": "[카테고리가 없는 명령어]",
         "ping": "봇 간의 핑 속도를 가져옵니다. 보이스 핑이 아님을 유의해주세요.",
         "lewd": "뭔가 음탕한 것 같은 이미지를 가져ㅇ... 으음",
-        "rem": "무작위로 렘 일러스트를 가져와 드립니다.",
+        "rem": "무작위로 렘 일러스트를 가져와 드립니다. 제가 나온 일러스트, 마음껏 보여드릴게요! >.<",
         "wip": "[개발 중인 명령어]",
-        "gr": "Set a greeting with set greetingMessage,{{user}} will be replaced with the user that just joined and {{guild}} with the name of the server.\nThe greeting will be in the Channel, where the cmd was executed",
-        "fw": "Set a farewell with set farewellMessage,{{user}} will be replaced with the user that just joined and {{guild}} with the name of the server\nThe farewell will be in the channel, where the cmd was executed",
-        "s": "The server command, sets stuff like greetings and farewells",
+        "gr": "`set greetingMessage`로 환영 인사를 설정하실 수 있습니다. {{user}}는 방금 접속한, 환영 인사를\n받으실 분으로, {{guild}}는 서버의 이름으로 바뀔 거에요.\n환영 인사는 이 명령어를 입력한 채널에서만 할 거에요.",
+        "fw": "`set farewellMessage`로 작별 인사를 설정하실 수 있습니다. {{user}}는 방금 퇴장한, 작별 인사를\n받으실 분으로, {{guild}}는 서버의 이름으로 바뀔 거에요.\n작별 인사는 이 명령어를 입력한 채널에서만 할 거에요.",
+        "s": "환영 인사 및 작별 인사와 같은 항목을 설정하는 서버 명령어들입니다.",
         "shrug": "¯\\_(ツ)_/¯",
-        "flip": "(╯°□°）╯︵ ┻━┻ 쾅!",
+        "flip": "(╯°□°）╯︵ ┻━┻  쾅!",
         "eggplant": "식물 하나 심어볼까요?",
-        "gtn": "GTN(Green Tea Neko) 코믹에서 무작위로 이미지를 가져와 드립니다. 구성된 NSFW 채널이나 어드민만 이\n명령어를 사용할 수 있어요.",
-        "cuddle": "Gives you an anime cuddle gif",
-        "trig": "TRIGGERED",
-        "bot": "이 렘봇이 실행된 시간, 보이스 채널 연결 수, 사용자 수 및 서버(길드) 수 등의 봇 정보를 보여드립니다.",
+        "gtn": "GTN (Green Tea Neko) 코믹에서 무작위로 이미지를 가져와 드립니다. 구성된 NSFW 채널이나 어드민만 이 명령어를 사용할 수 있어요.",
+        "cuddle": "서로 껴안고 있는 애니메이션 장면 GIF 움짤을 드립니다. 꼬옥~:heart:",
+        "trig": "반응합니다. 뭔진 몰라도 반응한다구요!",
+        "bot": "이 렘봇이 실행된 시간, 보이스 채널 연결 수, 사용자 수 및 서버(길드) 수 등의 유용한 정보, 링크를 보여드립니다.",
         "top": "Shows the top 10 guilds (sorted by users) that this shard is connected to",
         "about": "라이브러리나 제작자분 등, 저에 관한 기본적인 정보를 보여드립니다.",
         "lenny": "( ͡° ͜ʖ ͡°)",
-        "lmg": "Let me google that for you",
-        "fskip": "Skips the Current Song/a number of songs/all songs",
+        "lmg": "구글에서 검색해봅니다.",
+        "fskip": "현재 곡 / 특정 개수의 곡 / 모든 곡을 건너 뜁니다.",
         "leave": "현재 연결되어 있는 보이스 채널에서 떠납니다.",
         "say": "렘이 지정한 말을 하도록 합니다.",
-        "ar": "Add a role to yourself or a user",
-        "cr": "Create a role or add a role to the bot, -d -> default, -l 2 -> gives the role to the user once he reaches level 2, -s -> make the role self assignable, example -> cr -l 20 rolename, adds a role a user gets with level 20 called rolename",
-        "lr": "Lists all roles that are linked with Rem at the moment",
-        "rr": "Removes a Role from yourself, another user or the server",
-        "roles": "[ROLES]",
-        "repeat": "Plays a song/the queue on Repeat until new ones are added to the queue.",
+        "ar": "자기 자신 혹은 특정 사용자에게 역할을 부여합니다.",
+        "cr": "역할을 만들거나 봇에 역할을 부여합니다.\n\n-d -> 기본 설정.\n-l 2 -> 사용자가 레벨 2에 도달하면 해당 역할을 부여합니다.\n -s -> 역할을 사용자가 자신에게 직접 부여할 수 있도록 합니다.\n\n예) `cr -l 20 rolename` 레벨 20에 도달한 사용자에게 해당 역할(`rolename`)이 부여됩니다.",
+        "lr": "현재 렘봇에 연결된 모든 역할을 나열합니다.",
+        "rr": "자기 자신, 다른 사용자 또는 서버에서 역할을 제거합니다.",
+        "roles": "[역할들]",
+        "repeat": "새로운 노래가 큐에 추가될 때까지 노래 혹은 큐를 반복 재생합니다.",
         "sayd": "렘이 지정한 말을 하도록 하고 명령어를 지웁니다.",
         "generic": "[일반 명령어]",
-        "fun": "[재미]",
+        "fun": "[재미를 위한 명령어]",
         "coin": "코인을 뒤집습니다.",
-        "nyan": "냐냥 :3",
-        "uwu": "우우웅",
+        "nyan": "냐냥~ :3",
+        "uwu": "우우웅~",
         "dere": "데레 성향들 중 하나의 정의(뜻)를 검색하거나 무작위로 하나 보여드립니다.",
         "love": "멘션한 유저한테 러브 포인트를 줍니다. - 를 추가하면 멘션한 유저의 러브 포인트를 하나 없앱니다.",
-        "sinfo": "gives you some information about the current server",
-        "uinfo": "gives you some information about yourself/the mentioned User",
-        "apq": "adds a playlist to the queue, only supports youtube-playlists and only needs the id. NOT THE LINK.",
-        "ap": "The add permission command, an extensive explanation can be found on the support discord (!w.bug to get the invite)",
-        "gp": "The get permission command, an extensive explanation can be found on the support discord (!w.bug to get the invite)",
-        "rp": "The remove permission command, an extensive explanation can be found on the support discord (!w.bug to get the invite)",
+        "sinfo": "현재 서버에 대한 정보를 알려드립니다.",
+        "uinfo": "자기 자신 혹은 언급된 유저의 정보를 알려드립니다.",
+        "apq": "재생 목록을 큐에 추가합니다. 단, 유튜브만 가능하며, 링크가 아닌 아이디를 적어주세요.",
+        "ap": "명령어를 추가합니다, 광범위한 설명은 지원하지 못합니다 (초대장을 받으려면! w.bug)에서 찾을 수 있습니다.",
+        "gp": "명령어를 가집니다, 광범위한 설명은 지원하지 못합니다 (초대장을 받으려면! w.bug)에서 찾을 수 있습니다.",
+        "rp": "명령어를 삭제합니다, 광범위한 설명은 지원하지 못합니다 (초대장을 받으려면! w.bug)에서 찾을 수 있습니다.",
         "cry": "슬프시나요? 아마 이 명령어가 지금의 당신에겐 딱 맞는 명령어일 거에요.",
-        "ibsafe": "ibsear.ch에서 이미지를 하나 가져와 드립니다. (SFW 짤들만)",
+        "ibsafe": "ibsear.ch에서 이미지를 하나 가져와 드립니다. (SFW 짤들만! 야짤은 안돼요!)",
         "iblewd": "ibsearch.xxx에서 이미지를 하나 가져와 드립니다. (ibsafe 명령어와 같지만 야짤(NSFW)들도 포함됩니다.)",
-        "qr": "You can remove single songs with their songid, or multiple with `qr startid-stopid`, this would remove all songs starting at the startid and ending at the stopid, or delete multiple ids by seperating them with commas",
-        "shuffle": "Shuffles the queue. Note that at least 3 Songs have to be in the queue for this command to work.",
-        "owo": "Sends you random OwO What's this memes, which are handpicked by Wolke",
-        "getNode": "Gives you the permission node, category node and category of a command",
+        "qr": "songid로 하나의 노래를 제거하거나`qr startid-stopid`로 여러 노래를 제거 할 수 있습니다. 이는 startid에서 시작하여 stopid에서 끝나는 모든 노래를 제거하거나 쉼표로 구분하여 여러 곡들을 삭제합니다",
+        "shuffle": "큐를 섞습니다. 단, 큐 안데 3곡은 있어야 섞을 수 있어요.",
+        "owo": "랜덤 OwO짤들을 보냅니다. 개발자분이 직접 고르신거에요!",
+        "getNode": "권한 노드, 카데코리 노드 및 명령 카데코리를 제공해 드립니다.",
         "resetPerms": "지금까지 설정된 모든 권한을 초기화합니다. 주의해서 사용하세요.",
-        "pat": "Pat someone who has been a good boy/girl/helicopter",
-        "triggered": "TRIGGERED",
-        "stare": "stareeeee...",
-        "nom": "Nom :>",
-        "potato": "Everyone wants a potato",
-        "choose": "Make Rem choose something for you, seperate the choices with `;`",
-        "tickle": "Tickle Tickle Tickle",
-        "image": "[IMAGE COMMANDS]",
-        "define": "Get a definition of a term from Urbandictionary"
+        "pat": "좋은 소년,소녀 및 헬리콥터였던 분을 펫으로 만듭니다.",
+        "triggered": "반응했어요. (o_o)",
+        "stare": "빤~~~히...",
+        "nom": "냠 :>",
+        "potato": "모두들 감자를 먹고싶어 하시네요",
+        "choose": "렘이 당신에게 뭔가를 선택하게하고, 선택지는 `;`로 구분해주세요.",
+        "tickle": "간질 간질 간질",
+        "image": "[이미지 명령어]",
+        "define": "속어 사전에서 궁금한것을 찾아봐 드릴게요."
     },
     "version": "제 현재 버전은 다음과 같아요. : {{version}}",
     "add": "이 링크로 당신의 서버에 저를 추가해 주세요. : {{- link}}",
     "bug": "이 링크로 지원 서버(버그 제보 등)에 들어오실 수 있어요. : {{- link}}",
     "level": {
-        "result": "You are **Level {{level}}** XP: **{{current}}XP**/**{{needed}}XP** Total XP:**{{total}}**",
+        "result": "**레벨 {{level}}** 경험치 : **{{current}}XP**/**{{needed}}XP** 총 경험치 :**{{total}}**",
         "disabled": "이 서버는 현재 경험치 시스템을 사용하고 있지 않아요!"
     },
     "joinVoice": {
         "join": "알았어요. 당신의 보이스 채널로 곧장 들어갈게요.",
         "error": "왠진 모르겠지만 당신의 보이스 채널로 들어갈 수 없었어요!",
-        "permission": "No permission! You need to give yourself the WolkeBot role to use this.",
-        "no-voice": "현재 보이스 채널에 안계시는 것 같은데요?",
-        "already-voice": "I am already in a voice channel, move me to change it!"
+        "permission": "사용할 권한이 없으세요! 당신이 당신 자신에게 직접 WolkeBot 역할을 부여하면 사용하실 수 있어요.",
+        "no-voice": "현재 보이스 채널에 계시지 않으셔요!",
+        "already-voice": "전 이미 보이스 채널에 있으니, 바꾸시려면 절 옮겨주세요!"
     },
     "nsfw-images": {
         "nothing-found": "다음 태그에 해당하는 이미지는 찾을 수 없었어요. : `{{tags}}`",
-        "no-nsfw-channel": "Please set/add a NSFW channel with {{- prefix}}setLewd (in one of the NSFW Channels) to use NSFW Commands",
+        "no-nsfw-channel": "한 NSFW 채널 내에서 {{- prefix}}setLewd 명령어를 입력하시면 그 채널에서 NSFW 명령어를 사용할 수 있도록 NSFW 채널 목록에 설정 및 추가할 수 있어요.",
         "error-body": "API 응답을 해석하는데 오류가 있는 것 같아요. 이따가 다시 시도해 보시고, 그래도 문제가 계속 발생된다면 Wolke#6746으로 연락주세요."
     },
     "8ball": {
@@ -194,22 +194,22 @@
         "success": "사용자 {{user}}님을 영구 추방했어요.",
         "privilege": "저한테 배정된 역할엔 사용자 {{user}}님을 영구 추방할 수 있는 권한이 없어요!",
         "err": "사용자 {{user}}님을 영구 추방하는데에 문제가 발생했어요!",
-        "perms": "You can not ban the Owner or anyone with the WolkeBot Role.",
+        "perms": "서버 소유자 및 WolkeBot 역할을 가지는 사용자는 영구 추방할 수 없어요.",
         "self": "저를 영구 추방하시려구요...? 아쉽지만 제 명령어로 저를 영구 추방할 수는 없어요. 다음부턴 제가 싫으면 싫다고 말해주시구요!",
         "no-mention": "영구 추방할 사용자분을 멘션해주세요."
     },
     "kick": {
-        "success": "사용자 {{user}}님을 킥(Kick)했어요.",
-        "privilege": "저한테 배정된 역할엔 사용자 {{user}}님을 킥(Kick)할 권한이 없어요!",
-        "err": "사용자 {{user}}님을 킥(Kick)하는데에 문제가 발생했어요!",
-        "perms": "You can not kick the Owner or anyone with the WolkeBot Role.",
-        "self": "저를 내쫓으시려고 한거에요...!? 저는 당신을 쭉 봐왔는데 이렇게 차갑게 대하시다니, 조금 슬퍼져요. 그리고 어차피 제 명령어로 저를 킥(Kick)하실 수는 없어요.",
-        "no-mention": "킥(Kick)하려는 사용자분을 멘션해주세요."
+        "success": "사용자 {{user}}님을 추방했어요.",
+        "privilege": "저한테 부여된 역할로는 사용자 {{user}}님을 추방할 수 없어요!",
+        "err": "사용자 {{user}}님을 추방하는데에 문제가 발생했어요!",
+        "perms": "서버 소유자 및 WolkeBot 역할을 가지는 사용자는 추방할 수 없어요.",
+        "self": "저를 내쫓으시려고 한거에요...!? 저는 당신을 쭉 봐왔는데 이렇게 차갑게 대하시다니, 조금 슬퍼져요. 그리고 어차피 제 명령어로 저를 추방하실 수는 없어요.",
+        "no-mention": "추방하려는 사용자를 멘션해주세요."
     },
     "roll": {
         "whole-number": "아무 숫자나 지정해주세요!",
-        "negative": "I cant roll with a {{number}}",
-        "success": "Rolled a {{first}} out of {{second}}"
+        "negative": "{{number}} 만큼의 숫자는 굴릴 수 없어요.",
+        "success": "{{first}} 에서 {{second}} 사이의 숫자를 굴렸어요."
     },
     "qa": {
         "nothing-found": "검색어 `{{search}}`로는 아무 곡도 찾을 수 없었어요.",
@@ -219,16 +219,16 @@
     },
     "rq": {
         "db-error": "데이터베이스에 오류가 발생한 것 같아요!",
-        "success-multiple": "Added the following Songs:\n```{{- table}}```",
+        "success-multiple": "다음 곡들을 추가했어요.\n```{{- table}}``` ",
         "too-big": "곡 {{number}}개가 추가되었어요.",
-        "no-songs-added": "I could not add any songs as they are already in the queue, try again!",
-        "too-much": "You can not add more than {{number}} songs at once!"
+        "no-songs-added": "당신이 말하신 곡은 이미 큐에 있다구요. 확인해주세요! 정확히!",
+        "too-much": "{{number}}개보다 더 많은 곡을 한번에 다 추가할 수는 없었어요. 아무리 저라고 해도 힘들어요!"
     },
     "qra": {
         "to-small": "{{number}}개의 곡은 제거할 수 없었어요!",
         "success": "곡 `{{number}}`개가 제거되었어요.",
         "too-big": "{{number}}개의 곡을 제거했어요.",
-        "one-song": "{{- prefix}}fskip으로 현재 곡을 건너뛸 수 이어요!",
+        "one-song": "{{- prefix}}fskip으로 현재 곡을 건너뛸 수 있어요!",
         "no-number": "큐에서 곡을 얼마나 제거할 것인지 말씀해주셔야죠! 확 다 지워버릴 수도 없구...",
         "removed": "`{{- title}}`이(가) 큐에서 제거되었어요."
     },
@@ -236,32 +236,32 @@
         "give": "**{{- user}}**님에게 쿠키 **1**개를 선물해 드리셨어요!",
         "new-server": "다시 시도해주시기 바래요.",
         "arere": "어라라... 뭔가 잘못된 것 같아요...",
-        "perms": "You need a discord role called WolkeBot to give cookies!",
+        "perms": "쿠키를 주시려면 WolkeBot 역할이 부여되어야 해요!",
         "one-user": "더도말고 덜도말고 딱 **한 분**만 멘션해주시라구요!",
         "count": "현재 당신은 **{{number}}개**의 쿠키를 가지고 계셔요. 쿠키가 있다면 저도 한 입 주실거죠..? 헤헤."
     },
     "eastereggs": {
-        "jay": "Jay는 당신을 좋아한다구요~! :heart: ",
+        "jay": "Jay는 당신을 좋아한다구요~! :heart:",
         "magic": "xX_Cats_Xx는 여기에 있었다… -2016.10.10"
     },
     "set-lang": {
-        "no-lang": "언어를 하나 고르셔야 해요! 현재 다음과 같은 언어들로 말할 수 있어요. : {{languages}}",
+        "no-lang": "언어를 하나 고르셔야 해요! 현재 저는 다음과 같은 언어들로 말할 수 있어요. : {{languages}}",
         "success": "알겠어요. 이제부터 이 서버에선 한국어({{- language}})로 이야기할게요.",
         "unsupported": "선택하신 언어는 아직 제가 말할 수 있는 언어가 아니에요. 하지만 GitHub에서 선택하신 언어로 번역하여 풀 리퀘스트를 올리면 제가 그 언어로 말할 수 있게 될지도 몰라요! 현재 제가 말할 수 있는 언어는 다음과 같아요. : {{languages}}",
-        "native-name": "Native Name",
-        "english-name": "English Name",
-        "shortcode": "shortcode",
-        "available-languages": "List of available Languages\nPlease note that setLang needs the shortcode"
+        "native-name": "원래 이름",
+        "english-name": "영어 이름",
+        "shortcode": "단축코드(약자)",
+        "available-languages": "사용 가능한 언어 목록\n' setLang '에는 단축 코드가 필요하다는 점에 유의해주세요."
     },
     "np": {
-        "song-duration": "현재 재생 중 :` {{- title}} {{current}}/{{duration}} {{repeat}} `",
+        "song-duration": "현재 재생 중 : `{{- title}} {{current}}/{{duration}} {{repeat}}`",
         "song": "현재 재생 중 : `{{-title}} {{repeat}}`",
         "repeat-on": "반복 모드 : 켬",
-        "repeat-single": "반복 모드 : 한 곡만",
+        "repeat-single": "반복 모드 : 단일 곡",
         "repeat-queue": "반복 모드 : 큐 전체",
-        "emoji-repeat-single": ":repeat_one: 반복 모드 : 현재 곡만",
-        "emoji-repeat-queue": ":repeat: 반복 모드 : 큐 전체",
-        "emoji-repeat-off": ":heavy_check_mark: 반복 모드 해제"
+        "emoji-repeat-single": ":repeat_one: 한 곡만 반복 재생할게요.",
+        "emoji-repeat-queue": ":repeat: 큐 전체를 반복 재생할게요.",
+        "emoji-repeat-off": ":heavy_check_mark: 반복 모드를 해제했어요."
     },
     "queue": {
         "queued": "큐에 추가되었어요. :"
@@ -275,20 +275,20 @@
         "success-enable": "이 서버에 레벨 시스템을 활성화 해뒀어요. 비활성화하고 싶으시다면 이 명령어를 한번 더 입력하시면 되요."
     },
     "no-pm-server": {
-        "success-disable": "Ok I just disabled pm notifications for this server, type this command again to enable them.",
-        "success-enable": "Ok I just enabled pm notifications for this server, type this command again to disable them."
+        "success-disable": "이 서버에서의 개인 메세지를 비활성화했어요. 다시 활성화하려면 이 명령어를 한번 더 입력해주시면 되요.",
+        "success-enable": "이 서버에서의 개인 메세지를 활성화 해뒀어요. 비활성화하고 싶으시다면 이 명령어를 한번 더 입력하시면 되요."
     },
     "no-channel-server": {
-        "success-disable": "Ok I just disabled pm notifications for this server and enabled the channel notifications, type this command again to revert it.",
-        "success-enable": "Ok I just enabled pm notifications for this server and disabled the channel notifications, type this command again to revert it."
+        "success-disable": "이 서버에서 개인 메세지를 비활성화 하는 대신 채널 알림을 활성화 했어요. 되돌리고 싶으시다면 다시 이 명령어를 입력해 주세요.",
+        "success-enable": "이 서버에서 개인 메세지를 활성화 하는 대신 채널 알림을 비활성화 했어요. 되돌리고 싶으시다면 다시 이 명령어를 입력해 주세요."
     },
     "no-level": {
         "success-disable": "알겠어요. 당신에게만 레벨 시스템을 비활성화했어요. 이 명령어를 다시 입력해서 레벨 시스템을 다시 활성화할 수 있답니다.",
         "success-enable": "알았어요. 당신에게만 레벨 시스템을 활성화했어요. 이 명령어를 다시 입력하면 레벨 시스템을 비활성화할 수 있어요."
     },
     "no-pm": {
-        "success-disable": "Ok I just disabled pm notifications for you, type this command again to enable them.",
-        "success-enable": "Ok I just enabled pm notifications for you, type this command again to disable them."
+        "success-disable": "당신에게 보내는 개인 메세지를 비활성화 했어요. 메세지를 다시 받고 싶으시다면 이 명령어를 다시 입력하시면 되요.",
+        "success-enable": "당신에게 보내는 개인 메세지를 활성화 했어요. 메세지를 받고 싶지 않으시다면 이 명령어를 다시 입력해주세요."
     },
     "eat-cookie": {
         "success": "{{number}}개의 쿠키를 드셨어요! 맛있지 않나요?",
@@ -303,8 +303,8 @@
         "avg-users": "길드 당 평균 유저 수",
         "voice": "보이스 채널 연결 수",
         "shard": "shard",
-        "guilds-s": "Guilds (shard)",
-        "channels-s": "Channels (shard)",
+        "guilds-s": "길드 (shard)",
+        "channels-s": "채널 (shard)",
         "users-s": "Users on this shard",
         "made": "제작자 :",
         "lib": "라이브러리",
@@ -312,7 +312,7 @@
         "voice_s": "VC(shard)",
         "voice_active_s": "AVC (shard)"
     },
-    "rank": "You can find the Leaderboard for this Server here: {{- link}}",
+    "rank": "이곳에서 리더보드를 찾으실 수 있어요 : {{- link}} ",
     "pp": {
         "err": {
             "api-body": "API 응답을 읽을 수 없었어요!",
@@ -328,20 +328,20 @@
         "member": "멤버",
         "text": "채팅 채널",
         "voice": "보이스 채널",
-        "roles": "Roles",
+        "roles": "역할",
         "creation": "만들어진 날짜",
-        "region": "지역",
+        "region": "서버 위치",
         "owner": "소유자"
     },
     "leave": "알았어요. 지금 보이스 채널에서 나왔어요.",
     "play": {
         "no-result": "곡을 찾을 수 없어요!",
         "playing": ":musical_note: 현재 재생 중 : **{{- song}}**",
-        "success": ":musical_note: Now playing **{{- song}}**",
-        "next": ":musical_note: Playing next **{{- song}}**"
+        "success": ":musical_note: 현재 곡은 **{{- song}}** 입니다.",
+        "next": ":musical_note: 다음 곡은 **{{- song}}** 입니다."
     },
     "prefix": {
-        "success": "Ok I just set the prefix to {{- prefix}}, try `{{- prefix}}ping` to check it",
+        "success": "명령어 선행사를 {{- prefix}}로 바꾸었어요. `{{- prefix}}ping` 를 입력해서 올바르게 바뀌었는지 확인해 보세요.",
         "no-prefix": "명령어 선행사(Prefix)를 설정해주세요!"
     },
     "voice": {
@@ -349,7 +349,7 @@
         "error-volume": "볼륨을 설정하는 데에 문제가 있었어요!",
         "success-volume": "볼륨이 설정되었어요. : {{- volume}}",
         "no-volume": "볼륨이 설정되어 있지 않아요!",
-        "repeat-start": "Started repeat for **{{- song}}**",
+        "repeat-start": "곡 반복 재생 시작 : **{{- song}}**",
         "already-playing": "이 곡은 이미 재생 중이잖아요!",
         "blocked": "이 영상은 다운로드할 수 없었어요. 영상의 길이가 너무 길거나, 제한되어 있거나 삭제되었을 수도 있어요.",
         "dl-start": ":hourglass: 곡을 불러오고 있어요!",
@@ -357,7 +357,7 @@
         "too-much": "볼륨을 200 이상으로 올릴 수 없다구요! 귀 상하시겠어요!"
     },
     "yts": {
-        "success": "Found the following song: {{- link}}"
+        "success": "물어보신 곡을 찾았어요! : {{- link}} "
     },
     "skip": {
         "success": ":track_next: 현재 곡 건너뛰기 : {{- title}}",
@@ -366,90 +366,90 @@
         "some": ":track_next: {{- amount}}개의 곡을 건너 뛰셨어요."
     },
     "vskip": {
-        "user-no-voice": "You can not voteskip, if you are not in the same voicechannel!",
+        "user-no-voice": "같은 보이스 채널에 있지 않다면 곡 건너뛰기 투표를 진행할 수 없어요!",
         "same-voice": "저랑 같은 보이스 채널에 계시지 않네요. 얼른 이쪽으로 와주세요! 아니면 제가 가도 되구요…",
         "dup": "이미 투표하셨잖아요! 투표는 공정하게 하자구요!",
-        "success-add": "Added Your Vote, votepercentage at **{{current}}%/{{needed}}%**",
-        "success-skip": "Voteskipped Song: **{{- title}}**",
-        "vote": "Type {{- prefix}}yes to voteskip the current song. Current votepercentage at {{- perct}}%/{{- needed}}\nUsers that have voted:\n ```{{- table}}```",
-        "in-prog": "There is already a voteskip in progress, use {{- prefix}}yes to skip the current song."
+        "success-add": "당신의 투표를 반영했어요. 현재 투표율은 **{{current}}%/{{needed}}%** 에요.",
+        "success-skip": "투표로 이 곡을 건너뛰었어요. : **{{- title}}**",
+        "vote": "{{- prefix}}yes를 입력하시면 투표 결과에 의거하여, 현재 곡을 건너 뛸 거에요.\n현재 투표율은 {{- perct}}%/{{- needed}}이에요.\n다음은 투표한 사용자 목록이에요. :\n ```{{- table}}```",
+        "in-prog": "이미 진행 중인 투표가 있어요. {{- prefix}}yes를 입력하면 현재 곡을 건너 뛰어요."
     },
     "rm": {
         "less-2": "채팅 메세지는 2개 이하로는 지울 수 없어요!",
         "over-100": "채팅 메세지를 한 번에 100개 이상 지울 수는 없다구요! 저도 쉬엄쉬엄 일을 하고 싶어요…",
         "success": "{{number}}개의 채팅 메세지를 지웠어요!",
         "error": "채팅 메세지를 지우는데 조금 문제가 있어요! 사...사실 지우고 싶지 않았...아, 아니에요!",
-        "over-limit": "You can not delete less than 2 messages or more than 100 Messages at once!",
+        "over-limit": "채팅 메세지를 한번에 2개 미만 혹은 100개를 초과하여 지울 수는 없어요! 기록은 소중히 하자구요…!",
         "no-limit": "채팅 메세지를 얼마나 지워야할지 말씀해주시지 않으셨어요. 그렇다고 채팅들을 다 지울 수는 없었다구요!",
-        "nothing-found": "I did not find a message that matched the filter!"
+        "nothing-found": "말씀하신 필터가 올바르지 않아요!"
     },
     "search": {
         "success": "다음과 같은 곡들이 발견되었어요. :"
     },
     "set-lewd": {
-        "success": "성공적으로 {{- channel}}을(를) NSFW 채널에 추가했어요!"
+        "success": "성공적으로 {{- channel}}을(를) NSFW 채널에 추가했어요! ... 그... 너무 많이 추가하진 마세요... (부끄)"
     },
-    "report": "OK, I sent your report to Wolke, please dont abuse this, as it could get you banned from using the bot!",
+    "report": "개발자이신 Wolke님께 보고해 드렸어요. 하지만, 남용하면 안 좋은 일이 생길거에요…. 남용하시면 다음부터 저를 만날 수 없을지도 모른다구요! 저는 당신을 계속 보고 싶다구요….",
     "greeting": {
-        "no-greeting": "제가 말하게 될 인삿말을 지정하시지 않으셨어요!",
-        "no-add": "인삿말을 추가하거나 초기화할 수 있어요."
+        "no-greeting": "제가 말하게 될 환영 인사를 지정하시지 않으셨어요!",
+        "no-add": "환영 인사를 추가하거나 초기화할 수 있어요."
     },
     "farewell": {
-        "no-farewell": "You did not add the farewell I should use!",
-        "no-add": "You can either set or reset the farewell."
+        "no-farewell": "제가 말하게 될 작별 인사를 지정하시지 않으셨어요!",
+        "no-add": "작별 인사를 추가하거나 초기화할 수 있어요."
     },
     "add-role": {
-        "ok": "Ok I just gave {{- user}} the role {{- role}}"
+        "ok": "알겠어요. {{- user}}님께 {{- role}} 역할을 부여할게요."
     },
     "create-role": {
-        "missing": "The role name you specified does not exist on the server.",
-        "new": "Should I create the role for you ?",
-        "no-args": "You did not add any arguments to the command",
-        "ok": "Ok, I just created the role {{- role}}",
-        "exists": "The role {{- role}} exists already in the db"
+        "missing": "당신이 말한 역할은 이 서버에 존재하지 않아요. 확인을 하시라구요, 확인을!",
+        "new": "당신을 위해 역할을 만들어 드려도 될까요?",
+        "no-args": "이 명령어에는 추가적인 인수가 필요해요!",
+        "ok": "역할 {{- role}}을(를) 만들었어요 ",
+        "exists": "역할 {{- role}}은(는) 이미 데이터베이스에 있어요."
     },
     "remove-role": {
-        "ok": "Ok I just removed the role {{- role}} from {{- user}} !"
+        "ok": "사용자 {{- user}}님으로부터 역할 {{- role}}을(를) 해제했어요!"
     },
     "list-roles": {
-        "nr": "nr.",
-        "id": "id",
+        "nr": "숫자",
+        "id": "ID",
         "name": "이름",
-        "self": "직접 자신에게 지정 가능한지 여부",
-        "lvl": "Available at level",
-        "default": "기본"
+        "self": "자가 할당 가능 여부",
+        "lvl": "사용 가능 레벨",
+        "default": "기본값"
     },
     "user-info": {
         "id": "$t(server-info.id)",
         "name": "$t(server-info.name)",
-        "discriminator": "discriminator",
+        "discriminator": "판별 ID",
         "nick": "닉네임",
-        "join": "가입 일자",
+        "join": "서버 가입 일자",
         "created": "계정 생성 일자",
-        "playing": "Playing",
+        "playing": "현재 플레이 중",
         "info": "사용자 정보",
         "bot": "봇 여부",
         "status": "상태",
-        "role": "Roles"
+        "role": "할당된 역할"
     },
     "flip": {
-        "head": "The coin flipped to head {{- url}}",
-        "tail": "The coin flipped to tail {{- url}}"
+        "head": "두둥! 동전은 앞면을 가리켰습니다~! {{- url}}",
+        "tail": "두둥! 동전은 뒷면을 가리켰습니다~! {{- url}}"
     },
     "gp": {
-        "no-cat": "I could not find any permissions with the category {{- cat}}",
+        "no-cat": "{{- cat}}이라는 명령어 카테고리를 찾을 수 없었어요!",
         "no-perms": "아직 아무런 권한도 추가하시지 않으셨어요.",
         "table": {
             "id": "$t(server-info.id)",
             "name": "이름",
             "type": "종류",
-            "cat": "카테고리",
-            "perm": "권한",
-            "use": "Use"
+            "cat": "명령어 카테고리",
+            "perm": "허용 여부",
+            "use": "사용"
         }
     },
     "rp": {
-        "success": "I successfully removed the permission `{{- node}}` from the **{{- type}}** `{{- id}}`"
+        "success": "성공적으로 **{{- type}}** `{{- id}}` 의 `{{- node}}` 의 권한을 제거했어요."
     },
     "love": {
         "success": "**{{- target}}**님에게 **{{- rep}}** :heart:만큼의 러브 포인트를 주셨어요. 앞으로 **{{uses}}**번 주실 수 있어요.",
@@ -460,51 +460,51 @@
     },
     "dere": {
         "no-dere": "입력하신 데레 성향을 찾을 수 없었어요. 검색 가능한 데레 성향들의 목록이에요. : \n",
-        "dandere": "The Dandere (だんデレ) type refers to a character who is often silent and to themselves.\n It may be due to shyness or just because they’re the quiet type.\n However,when alone with the person they are attracted to, they usually come out of their shell and become more loving.\n This word is an abbreviation of Danmari (だんまり) which means silent and Deredere (デレデレ) which means lovey dovey.",
-        "deredere": "The Deredere (デレデレ) type refers to a character who is completely kind, happy, and energetic.\n No matter what may happen, they quickly revert to their cheerful self.\n This may be the only character type that doesn’t have any abbreviation with the base Deredere (デレデレ) word, although the definition isn’t simply lovey dovey like the other types.",
-        "himedere": "The Himedere (ひめデレ) type refers to a character who wishes to be treated like a princess by the person she loves, even if they aren’t royalty in actuality.\nThis word is an abbreviation of Hime (ひめ) which means princess and Deredere (デレデレ) which means lovey dovey.",
-        "kamidere": "The Kamidere (かみデレ) type refers to a character with a god complex.\n They’re highly arrogant and proud, and aren’t afraid to speak their minds and show everyone how right they are.\n This word is an abbreviation of Kami (かみ) which means God and Deredere (デレデレ) which means lovey dovey.",
-        "kuudere": "The Kuudere (クーデレ), sometimes written Coodere or Kūdere, type refers to a character who is often cold, blunt, and cynical.\n They may seem very emotionless on the outside, but on the inside they’re very caring — at least when it comes to the ones they love.\nThis word is an abbreviation of Cool (クール) and Deredere (デレデレ) which means lovey dovey.",
-        "mayadere": "The Mayadere (まやデレ) type refers to a character who is often a dangerous antagonist of a series, but switches sides after falling in love with another character.\n The character may remain deadly and unpredictable for the protagonist or other main character in the Anime or Manga.",
-        "oujidere": "The Oujidere (おうじデレ) type refers to a character who wishes to be treated like a prince by the person he loves, even if they aren’t royalty in actuality.\nThis word is an abbreviation of Ouji (おうじ) which means prince and Deredere (デレデレ) which means lovey dovey.",
-        "tsundere": "The Tsundere (ツンデレ) type is possibly one of the most popular or simply most used character types in anime and manga.\n This type refers to a character who treats the one they love poorly. \nSometimes this is because they started out hating them and eventually loves them as the series goes on, and sometimes it’s because that’s the only way they know how to react.\n An example is if the main character calls a tsundere character cute.\n The tsundere character will get upset and flustered, possibly cause physical harm to the one they love, and then call them stupid.\nThis word is an abbreviation of Tsuntsun (ツンツン) which means to look away in disgust and Deredere (デレデレ) which means lovey dovey.",
-        "undere": "The Undere (ウンデレ) type refers to a character who says yes to pretty much everything the one they love says. \n They agree as much as possible to become as close as they can to their love interest. \n This word is an abbreviation of Un (ウン) which is a short way Japanese people say Yes and Deredere (デレデレ) which means lovey dovey.",
-        "yandere": "The Yandere (ヤンデレ) type refers to a character who starts out nice and sweet but eventually becomes dark and obsessive over the one they love.\n They become stalkers and use violence on, and possibly even murder, any person who gets close to their love interest — even if they’re too shy to simply speak with that person they have a crush on.\n This word is an abbreviation of Yanderu (やんでる) which means to be mentally or emotionally ill and Deredere (デレデレ) which means lovey dovey.",
-        "yangire": "The Yangire (ヤンギレ) type is similar in some ways to Yandere. \n It is a character who may start out nice and sweet but becomes very aggressive and psychotic.\n However, unlike Yandere, Yangire do not become violent because of they attraction to a character. \n Instead, they may snap simply because they’re irritated with a character that has nothing to do with their love interest.\n This word is an abbreviation of Yanderu (やんでる) which means to be mentally or emotionally ill and Kire (きれ) which means to cut or snap."
+        "dandere": "단데레(だんデレ)는 침묵을 좋아하고 자주 혼잣말을 하는 캐릭터에 해당하는 성향입니다.\n수줍음 때문이거나 조용한 유형일 수 있습니다.\n  그러나, 그들이 끌리는 사람과 단 둘이 있을 때, 그들은 보통 그들의 분위기 에서 나와 더욱 사랑스럽게 변합니다.\n  이 단어는 약어로 단마리 (だんまり)의  침묵과 데레데레 (デレデレ)의 부끄부끄 를 의미합니다.",
+        "deredere": "데레데레 (デレデレ) 유형은 완전히 친절하고 행복하며 활력있는 캐릭터를 나타냅니다.\n  일어날 수있는 일이 무엇이든간에, 그들은 빨리 쾌활한 상태로 되돌아갑니다.\n  이 정의는 다른 유형과 마찬가지로 단순한  부끄부끄는 아니지만, 기본 데레데레 (デレデレ) 단어로 약어 가없는 유일한 문자 유형일 수 있습니다.",
+        "himedere": "히메데레(ひめデレ) 란 실제로는 왕족이 아니더라도 자신이 사랑하는 사람이 공주처럼 대하는 것을 원하는 캐릭터를 가리킵니다.\n이 단어는 약어로 히메 (ひめ)의  공주를 의미하고 데레데레 (デレデレ)는 부끄러워하는것을 의미합니다.",
+        "kamidere": "카미데레(かみデレ)은 신과 같은 느낌을 가진 캐릭터에 해당하는 성향입니다.\n  그들은 아주 거만하고 자랑스러워하며 마음을 잘 표현하고 자기 자신을 모두 보여 주는 것을 꺼려 하지 않습니다.\n  이 단어는 약어로 카미 (か み)의 신과 데레데레 (デレデレ)의 부끄부끄를 합친 뜻입니다.",
+        "kuudere": "쿨데레 (クーデレ)는 때로는 차갑고, 둔하고, 냉소적인 캐릭터를 지칭합니다.\n  그들은 외부에서 매우 냉정하게 보일지 모르지만, 내부에서 그들은 적어도 그들이 사랑하는 것에 관해서는 매우 배려하고 있습니다.\n이 단어는 약어로 쿨 (ク ー ル)은 쿨함, 데레데레 (デ レ デ レ)는 부끄부끄를 의미합니다.",
+        "mayadere": "메가데레 (ま や デ レ) 유형은 종종 시리즈의 위험한 인물이지만 속성이 다른 사람과 사랑에 빠지면 다르게 바뀝니다.\n  캐릭터는 애니 또는 망가의 주인공이나 부인물에게 치명적이고 예측 불가능한 행동을 할 수 있습니다.",
+        "oujidere": "오지데레 (おうじデレ) 타입은 실제로는 왕족이 아니더라도 자신이 사랑하는 사람이 왕자처럼 대하는 것을 원하는 캐릭터를 가리킵니다.\n이 단어는 약어이며, 황태자를 의미하는 오우지 (お う じ) , 부끄부끄를 의미하는 데레데레 (デレデレ)를 의미합니다.",
+        "tsundere": "츤데레 (ツンデレ) 유형은 아마도 애니메이션 및 만화에서 가장 인기 있거나 흔히 사용되는 유형 중 하나 일 수 있습니다.\n  이 유형은 사랑하는 사람을 새침하게 다루는 성격을 지칭합니다.\n때로는 시리즈 시착부분에는 주인공에게 새초롬하게 반응하지만, 시리즈가 진행됨에 따라 결국 그들을 사랑하게 됩니다. 때로는 반응하는 방법을 알고있는 유일한 사람이기도 합니다.\n  예를 들어 주인공이 츤데레를 귀엽게 대하는 경우입니다.\n  그러면 츤데레 캐릭터는 화가 나서 사랑하는 사람을 때리거나 바보라고 부르기도 합니다.\n이 단어는 약어로, 츤츤 (ツンツン)의 혐오감을 멀리하는 것과 데레데레 (デレデレ)는 부끄부끄를 의미합니다.",
+        "undere": "운데레 (ウンデレ) 유형은 사랑하는 사람이 말하는 모든 것에 긍정하는 사람을 가리 킵니다.\n  그들은 가능한 한 그들이 사랑과 관심사에 가능한 한 가까워지는 것을 원합니다.\n  이 단어는 약어로, 운 (ウ ン)의 예스와 데레데레 (デレデレ)의 부끄부끄라는 뜻이 합쳐져 있습니다",
+        "yandere": "얀데레 (ヤンデレ)는 멋지고 달콤하지만 결국 사랑하는 사람보다 어둡고 강박적 인 사람을 의미합니다.\n  그들은 스토커가 되어 사랑에 관심을 갖게되는 사람에게 폭력을 사용하고, 심지어는 살인을 저지르기도 합니다.\n  이 단어는 약어이며, 정신적으로나 정서적으로 아픈 것을 의미하는 얀도루 (やんでる), 부끄부끄를 의미하는 데레데레 (デレデレ)를 합친 단어 입니다.",
+        "yangire": "얀기레 (ヤンギレ) 유형은 얀데레와 몇 가지면에서 유사합니다.\n  멋지고 달콤하지만 아주 공격적이고 정신적으로 끔찍한 캐릭터입니다.\n  그러나 얀데레와 달리 얀기레는 캐릭터에 대한 매력으로 인해 폭력적으로 변하지 않습니다.\n  대신, 그들은 사랑 혹은 관심사와 아무런 관련이없는 인물에 짜증을 내기 때문에 간단히 피할 수 있습니다.\n  이 단어는 약어로, 정신적으로나 정서적으로 아픈 것을 의미하는 얀데레 (や ん で る), 잘라내는 것을 의미하는 기레 (き れ)를 합친 말 입니다."
     },
     "shuffle": {
         "not-enough-shuffle": "큐의 순서를 다 바꾸려면 큐에 최소한 3개의 곡은 있어야 해요.",
-        "success": "큐 순서를 다 갈아엎어버렸어요!"
+        "success": "큐 순서를 다 섞어버렸어요!"
     },
     "get-node": {
-        "success": "Permission node: `{{- node}}` Category node:`{{- category}}.*` Category:`{{- category}}`",
+        "success": "권한 노드 : `{{- node}}` \n카테고리 노드 :`{{- category}}.` \n카테고리 :`{{- category}}`",
         "not-found": "명령어를 찾을 수 없다구요!",
-        "no-args": "Type a cmd without a prefix after this to get it's permission node, category node and category"
+        "no-args": "선행사가 없는 명령어를 입력하여 권한 노드, 카테고리 노드 및 카테고리를 가져옵니다."
     },
     "ap": {
         "type": {
-            "user": "user",
-            "guild": "guild",
-            "role": "role",
-            "channel": "channel"
+            "user": "사용자",
+            "guild": "길드",
+            "role": "역할",
+            "channel": "채널"
         },
-        "success": "Ok, I just added the permission `{{- node}}` `{{- allowed}}` to the `{{- type}}` `{{- name}}`",
-        "wrong-node": "The permission node `{{- node}}` will not work, as it is not a valid permission node. To get the permission node for a command type `{{- prefix}}getNode command`",
-        "target-not-found": "I could not find the target {{- target}} for this command",
-        "no-allowance-set": "You did not tell me if the perm should be allowed or not, add `true` or `false` depending on your choice",
-        "missing-args": "The correct syntax for this cmd is `{{-prefix}}ap <node> [-u|-r|-c] [target] <allowed>`\n Example:\n```{{-prefix}}ap playlist.* true -> allows all commands of the category playlist in the server\n{{-prefix}}ap music.fskip -u @user true -> allows the mentioned user to use {{- prefix}}fskip```"
+        "success": "`{{- type}}` `{{- name}}` 에게 `{{- node}}` `{{- allowed}}` 라는 권한을 추가했습니다. ",
+        "wrong-node": "권한 노드인 `{{- node}}` 가 실행되지 않는다면, 이는 유효한 권한 노드가 아니기 때문입니다. 명령 유형`{{- prefix}} getNode command`에 대한 권한 노드를 얻으세요.",
+        "target-not-found": "{{- target}} 이라는 타깃을 지정하지 못하겠어요!",
+        "no-allowance-set": "권한을 허용해야 하는지 말하지 않으셨고, 선택에 따라`true` 또는`false`를 추가하세요.",
+        "missing-args": "이 명령어의 올바른 구문은`{{-prefix}} ap <node> [-u | -r | -c] [target] <allowed>`입니다.\n  예:\n``{{-prefix}} ap playlist. * true -> 는 서버에 있는 카테고리 재생 목록의 모든 명령을 허용합니다\n{{-prefix}} ap music.fskip -u @user true -> 는 언급 된 사용자가 {{- prefix}} fskip```을 사용할 수있게 합니다."
     },
     "reset-perms": {
-        "nothing-found": "아직 아무런 권한을 설정하시지도 않으셨어요.",
+        "nothing-found": "아직 아무런 권한을 설정하시지 않으셨어요!",
         "confirmation": "정말 모든 권한을 초기화 하실거에요? `yes`라고 입력하시면 초기화를 하고, `no`라고 입력하시면 아무 일 없다는 듯이 쭉 당신을 바라볼거에요.",
         "success": "당신이 설정하신 모든 권한을 초기화했어요."
     },
     "choose": {
-        "empty-choose": ":no_entry_sign: I can not choose anything, if you enter nothing!",
-        "success": "I choose **{{- choice}}**!"
+        "empty-choose": ":no_entry_sign: 아무것도 적지 않으시면, 아무것도 못 골라요!",
+        "success": "전 이걸 고르겠어요! **{{- choice}}** "
     },
     "define": {
-        "empty-search": ":no_entry_sign: I can not search a definition, if you enter nothing!",
-        "no-result": "I could not find anything with the term `{{- term}}`"
+        "empty-search": ":no_entry_sign: 아무것도 적지 않으시면, 아무것도 못 찾아요!",
+        "no-result": "`{{- term}}` 을 찾지 못하겠어요..."
     }
 }
