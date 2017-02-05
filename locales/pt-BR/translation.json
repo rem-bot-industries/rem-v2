@@ -24,7 +24,8 @@
         "support": "Suporte",
         "invite": "Convite",
         "language-name-en": "Brazilian Portuguese",
-        "native-name": "Português brasileiro"
+        "native-name": "Português brasileiro",
+        "empty-say": ":no_entry_sign: You did not enter a message!"
     },
     "help": {
         "intro": "vamos nos divertir juntos aqui no Discord (/^▽^)/ para escolher uma categoria de comando utilize {{pre}}help e o número do comando para saber mais:",
@@ -147,7 +148,15 @@
         "owo": "Manda um meme \" OwO What's this\" aleatório, que são escolhidos a mão por Wolke",
         "getNode": "Retorna o Node de permissão, Node de categoria e Categoria de um commando",
         "resetPerms": "Redefine todas permissões definidas até agora, use com cuidado!",
-        "pat": "Acaricie alguém que foi um bom garoto/garota/helicóptero"
+        "pat": "Acaricie alguém que foi um bom garoto/garota/helicóptero",
+        "triggered": "TRIGGERED",
+        "stare": "stareeeee...",
+        "nom": "Nom :>",
+        "potato": "Everyone wants a potato",
+        "choose": "Make Rem choose something for you, seperate the choices with `;`",
+        "tickle": "Tickle Tickle Tickle",
+        "image": "[IMAGE COMMANDS]",
+        "define": "Get a definition of a term from Urbandictionary"
     },
     "version": "No momento estou rodando na versão {{version}} ",
     "add": "Use este link para me colocar no seu Servidor: {{- link}} ",
@@ -238,7 +247,11 @@
     "set-lang": {
         "no-lang": "Você não especificou um idioma! Os idiomas suportados até o momento são:  {{languages}}",
         "success": "Ok, acabei de definir o idioma deste Servidor como {{- language}}.",
-        "unsupported": "O idioma ainda não foi implementado, mas você pode ajudar adicionando um Pull Request com seu idioma no Github. No momento estão disponíveis {{languages}}."
+        "unsupported": "O idioma ainda não foi implementado, mas você pode ajudar adicionando um Pull Request com seu idioma no Github. No momento estão disponíveis {{languages}}.",
+        "native-name": "Native Name",
+        "english-name": "English Name",
+        "shortcode": "shortcode",
+        "available-languages": "List of available Languages\nPlease note that setLang needs the shortcode"
     },
     "np": {
         "song-duration": "Tocando agora: ` {{- title}} {{current}}/{{duration}} {{repeat}} `",
@@ -294,7 +307,10 @@
         "channels-s": "Canais nesse shard",
         "users-s": "Usuários nesse shard",
         "made": "Feito por:",
-        "lib": "Biblioteca"
+        "lib": "Biblioteca",
+        "voice_active": "AVC",
+        "voice_s": "VC(shard)",
+        "voice_active_s": "AVC (shard)"
     },
     "rank": "Você pode conferir o placar para este Servidor aqui: {{- link}}",
     "pp": {
@@ -320,7 +336,9 @@
     "leave": "Ok, saí do Canal de Voz",
     "play": {
         "no-result": "Não encontrei nenhuma música!",
-        "playing": ":musical_note: Tocando agora: **{{- song}}** "
+        "playing": ":musical_note: Tocando agora: **{{- song}}** ",
+        "success": ":musical_note: Now playing **{{- song}}**",
+        "next": ":musical_note: Playing next **{{- song}}**"
     },
     "prefix": {
         "success": "Ok, acabei de definir o prefixo como {{- prefix}}, use `{{- prefix}}ping` para testar.",
@@ -480,5 +498,13 @@
         "nothing-found": "Você ainda não definiu nenhuma permissão",
         "confirmation": "Você tem certeza que quer resetar as permissões? Digite `yes` para resetar e `no` para cancelar este comando.",
         "success": "Acabei de resetar todas as permissões que você definiu."
+    },
+    "choose": {
+        "empty-choose": ":no_entry_sign: I can not choose anything, if you enter nothing!",
+        "success": "I choose **{{- choice}}**!"
+    },
+    "define": {
+        "empty-search": ":no_entry_sign: I can not search a definition, if you enter nothing!",
+        "no-result": "I could not find anything with the term `{{- term}}`"
     }
 }
