@@ -21,7 +21,9 @@
 6. If you have Windows, open a console with administrator permissions and type `npm install --global windows-build-tools` into it. This will install the neccessary tools, which will be later needed by npm to build Rems dependencies
 7. For Linux environments, you should get `buildtools-essentials` and `python 2.7` installed.
 8. Clone the source of v2 from git
-9. Go into the just created directory and open a cmd and execute `npm install --no-optional`
+9. Go into the just created directory and open a cmd and execute `npm install`.
+There could be some errors while installing the dependencies as the optional depenency of rem links to `eris-crystal`
+If the installation fails due to that remove it from the dependencies in the package.json
 10. Create the following directories within the root: `temp`,`audio`,`config`
 11. Create 2 files within the config directory: `main.json` and `keys.json`. An Example can be found down below.
 12. Run `npm run build` in your terminal and then start rem by going into the dist folder and then executing `node index.js` in there.
@@ -50,7 +52,7 @@
 }
 ```
 - Beta should always be set to true.
-- no_error_tracking disabled sentry, the bugtracker of rem, leave this set to true.
+- no_error_tracking disables sentry, the bugtracker of rem, leave this set to true.
 - the number of shards defines how many processes the master will spawn.
  Can be set to 1 unless you want to operate this fork on over 2500 servers.
  
