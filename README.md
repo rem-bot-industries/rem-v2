@@ -23,10 +23,12 @@
 8. Clone the source of v2 from git
 9. Go into the just created directory and open a cmd and execute `npm install`.
 There could be some errors while installing the dependencies as the optional depenency of rem links to `eris-crystal`
-If the installation fails due to that remove it from the dependencies in the package.json
+If the installation fails, due to not being able to clone the git repo of it, remove it from the dependencies in the package.json.
 10. Create the following directories within the root: `temp`,`audio`,`config`
 11. Create 2 files within the config directory: `main.json` and `keys.json`. An Example can be found down below.
-12. Run `npm run build` in your terminal and then start rem by going into the dist folder and then executing `node index.js` in there.
+12. Run `npm run build` in your terminal.
+13. Start the MongoDB Server
+14. Start Rem by going into the dist folder and typing the following:  `node index.js`.
 
 ## Example main.json
 ```json
@@ -71,4 +73,4 @@ If you need help creating tokens and a Youtube api I suggest reading these two t
 
 ## Contibuting Guidelines
 
-I will wrote those if people actually want to contribute. Until then: Just make it work good and fast. uwu
+I will write those if people actually want to contribute. Until then: Just make it work good and fast. uwu

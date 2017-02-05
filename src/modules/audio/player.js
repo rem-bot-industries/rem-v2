@@ -45,7 +45,7 @@ class Player extends EventEmitter {
      * @param {Song} Song - the song to play
      */
     play(Song) {
-        if (this.connection) {
+        if (this.connection && this.connection.ready || this.connection && rem.options.crystal) {
             let stream;
             let link;
             let options = {};
@@ -59,12 +59,30 @@ class Player extends EventEmitter {
                 }
             } else if (Song.type === SongTypes.soundcloud) {
                 if (Song.streamUrl) {
-                    link = Song.streamUrl;
+                    if (!rem.options.crystal) {
+                        link = request(Song.streamUrl);
+                        link.on('error', (err) => {
+                            winston.error(err);
+                        });
+                    } else {
+                        link = Song.streamUrl;
+                    }
                 } else {
                     return this.nextSong();
                 }
             } else if (Song.type === SongTypes.osu) {
-                return this.nextSong();
+                if (!rem.options.crystal) {
+                    try {
+                        link = fs.createReadStream(Song.url);
+                    } catch (e) {
+                        this.emit('error', e);
+                    }
+                    link.on('error', (err) => {
+                        winston.error(err);
+                    });
+                } else {
+                    return this.nextSong();
+                }
             } else {
                 return this.nextSong();
             }
