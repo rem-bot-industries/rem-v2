@@ -2,7 +2,7 @@
  * Created by julia on 24.01.2017.
  */
 let EventEmitter = require('eventemitter3');
-let uws = require('uws');
+let uws = require('ws');
 let ws_port = process.env.ws_port;
 let ws_host = process.env.ws_hostname;
 let OPCODE = require('../structures/constants').MESSAGE_TYPES;
@@ -54,7 +54,7 @@ class Worker extends EventEmitter {
     }
 
     reconnect() {
-        this.onDisconnect(8000, "uwu");
+        this.ws.close(8000, 'Reconnect on User Wish!');
     }
 
     generateInterval(k) {
@@ -73,7 +73,7 @@ class Worker extends EventEmitter {
             console.error(msg);
             return console.error(e);
         }
-        console.log(msg);
+        // console.log(msg);
         switch (msg.op) {
             case OPCODE.identify: {
                 // console.log(msg);

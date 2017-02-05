@@ -4,6 +4,14 @@
 //uwu
 global.Promise = require('bluebird');
 global.remConfig = process.env;
+let useCrystal = false;
+let Crystal;
+// try {
+//     Crystal = require("eris-crystal");
+//     useCrystal = true;
+// } catch (e) {
+//
+// }
 const Eris = require('eris');
 let StatsD = require('hot-shots');
 let dogstatsd = new StatsD();
@@ -85,6 +93,7 @@ class Shard extends EventEmitter {
             firstShardID: parseInt(this.id),
             lastShardID: parseInt(this.id),
             maxShards: parseInt(this.count),
+            crystal: useCrystal,
             disableEvents: ['typingStart', 'typingStop', 'guildMemberSpeaking', 'messageUpdate']
         };
         winston.info(options);
