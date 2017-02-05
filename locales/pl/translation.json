@@ -12,7 +12,7 @@
         "empty-search": ":no_entry_sign: Nie wpisałeś/aś niczego do wyszukania!",
         "negative": ":no_entry_sign: Proszę nie używaj ujemnych liczb!",
         "cancel": "anuluj",
-        "version": "wersja",
+        "version": "Wersja",
         "author": "autor",
         "lib": "użyta biblioteka",
         "more": "{{number}} więcej",
@@ -141,8 +141,8 @@
         "gp": "Komenda do wyświetlenia uprawnień, dokładne wytłumaczenie znajduje się na serwerze wsparcia (!w.bug aby dostać zaproszenie)",
         "rp": "Komenda do usunięcia uprawnień, dokładne wytłumaczenie znajduje się na serwerze wsparcia (!w.bug aby dostać zaproszenie)",
         "cry": "Smutno? Komenda w sam raz dla Ciebie!",
-        "ibsafe": "Przeszukuje ibsear.ch (tylko sfw obrazki)",
-        "iblewd": "Przeszukuje ibsearch.xxx (to samo co ibsafe + obrazki nsfw)",
+        "ibsafe": "Przeszukuje ibsear.ch (tylko obrazki sfw)",
+        "iblewd": "Przeszukuje ibsearch.xxx (to samo co ibsafe ale z obrazkami nsfw)",
         "qr": "Możesz usunąć pojedynczą piosenkę poprzez jej id lub kilka na raz poprzez `qr startid-stopid`, usunie to wszystkie piosenki zaczynając od startid i kończąc na stopid, możesz także usunąć kilka id poprzez rozdzielanie ich przecinkami",
         "shuffle": "Miesza kolejkę. Zauważ, że w kolejce muszą być co najmniej 3 piosenki, aby to działało.",
         "owo": "Wysyła losowy meme OwO What's this?, spośród ręcznie wybranych przez Wolke",
@@ -316,8 +316,8 @@
     "pp": {
         "err": {
             "api-body": "Nie można przeanalizować odpowiedzi api!",
-            "osu-api": "Wygląda na to że osu! api ma mały problem.",
-            "no-link": "To nie jest porpawny link osu!",
+            "osu-api": "Wygląda na to że api osu! ma mały problem.",
+            "no-link": "To nie jest poprawny link osu!",
             "unvalid-link": "Brak linku mapy!"
         },
         "success": "PP do mapy `{{- artist}} - {{- title}} [{{- version}}] z dokładnością {{- accuracy}}%` `{{- pp}}PP` `{{- mods}}`"
@@ -351,7 +351,7 @@
         "no-volume": "Nie ustalono głośności!",
         "repeat-start": "Rozpoczęto powtarzanie piosenki **{{- song}}**",
         "already-playing": "Ta piosenka jest już odtwarzana!",
-        "blocked": "Nie można pobrać tego wideo. Może jest za długie albo zablokowane/usunięte",
+        "blocked": "Nie można pobrać tego wideo. Może jest za długie bądź zablokowane/usunięte",
         "dl-start": ":hourglass: Ładuję piosenkę!",
         "use-proxy": "Próba pobrania przez proxy, może chwilę zająć.",
         "too-much": "Nie możesz ustawić głośności powyżej 200!"
@@ -416,7 +416,7 @@
         "id": "id",
         "name": "nazwa",
         "self": "samo przyznawalna",
-        "lvl": "Dostepne od poziomu",
+        "lvl": "Dostępne od poziomu",
         "default": "standardowe"
     },
     "user-info": {
@@ -433,7 +433,7 @@
         "role": "Role"
     },
     "flip": {
-        "head": "Moneta wylądowała na orłże {{- url}}",
+        "head": "Moneta wylądowała na orle {{- url}}",
         "tail": "Moneta wylądowała na reszce {{- url}}"
     },
     "gp": {
@@ -445,7 +445,7 @@
             "type": "Typ",
             "cat": "Kategoria",
             "perm": "Uprawnienie",
-            "use": "Zezwolona"
+            "use": "Użyj"
         }
     },
     "rp": {
