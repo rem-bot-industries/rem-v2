@@ -1,12 +1,12 @@
 {
     "generic": {
-        "error": "Ett fel uppstod!",
+        "error": ":x: Ett fel uppstod!",
         "no-pm": ":no_entry: Det här kommandot fungerar inte i privata kanaler!",
-        "whole-num": "Var snäll och skriv ett heltal!",
-        "nan": "Vad du än skriver nu så var snäll och skriv ett heltal. :)",
-        "no-song-in-queue": "Det finns ingen låt i kön, du kanske vill lägga till en :musical_note: ?",
-        "no-song-playing": "Ingen låt spelas för tillfället!",
-        "no-permission": "Du har inte tillåtelse att utföra det här kommandot, du behöver rollen WolkeBot för att kunna använda det.",
+        "whole-num": ":no_entry_sign: Var snäll och skriv ett heltal! ",
+        "nan": ":no_entry_sign: Var snäll och lägga till ett heltal. :)",
+        "no-song-in-queue": ":no_entry_sign: Det finns ingen låt i kön, du kanske vill lägga till en :musical_note: ?",
+        "no-song-playing": ":musical_note: Ingen låt spelas just nu!",
+        "no-permission": ":no_entry_sign: Du har inte tillåtelse att utföra det här kommandot, du behöver rollen WolkeBot för att kunna använda det.",
         "no-voice": "Jag är inte ansluten till någon röstkanal på denna server!",
         "level-update": ":tada: Du nådde precis **Level  {{level}}** på **{{server}}**",
         "empty-search": "Du angav ingen sökterm!",
@@ -19,12 +19,13 @@
         "abort": ":x: avbruten",
         "cat-nope": ":no_entry_sign: Denna kategori existerar inte!",
         "mention": "Snälla nämn en användare.",
-        "cancelled-command": "Cancelled the command.",
-        "donate": "Donate",
+        "cancelled-command": "kommando annullerat.",
+        "donate": "Donera",
         "support": "Support",
         "invite": "Invite",
         "language-name-en": "English",
-        "native-name": "English"
+        "native-name": "English",
+        "empty-say": ":no_entry_sign: You did not enter a message!"
     },
     "help": {
         "intro": "Låt oss ha kul tillsammans på Discord! (/^▽^)/ Kommandon du kan utföra:",
@@ -138,16 +139,24 @@
         "apq": "adds a playlist to the queue, only supports youtube-playlists and only needs the id. NOT THE LINK.",
         "ap": "The add permission command, an extensive explanation can be found on the support discord (!w.bug to get the invite)",
         "gp": "The get permission command, an extensive explanation can be found on the support discord (!w.bug to get the invite)",
-        "rp": "The remove permission command, an extensive explanation can be found on the support discord (!w.bug to get the invite)",
-        "cry": "Feeling sad ? This is the right cmd for you.",
-        "ibsafe": "Searches on ibsear.ch (only sfw pics)",
-        "iblewd": "Searches on ibsearch.xxx (same as ibsafe but with nsfw pics too)",
-        "qr": "You can remove single songs with their songid, or multiple with `qr startid-stopid`, this would remove all songs starting at the startid and ending at the stopid, or delete multiple ids by seperating them with commas",
-        "shuffle": "Shuffles the queue. Note that at least 3 Songs have to be in the queue for this command to work.",
-        "owo": "Sends you random OwO What's this memes, which are handpicked by Wolke",
+        "rp": "För att ta bort tillståndet till kommando, mer information finns i vår support discord (!w.bug för att få inbjudan)",
+        "cry": "Känner sig ledsen? Detta är rät cmd för dig.",
+        "ibsafe": "Söker på ibsear.ch (endast sfw bilder)",
+        "iblewd": "Söker på ibsearch.xxx (samma som ibsafe men med nsfw bilder också)",
+        "qr": "Du kan ta bort enstaka låtar med sin songid eller flera med `qr startid-stopid`, det ska ta bort alla spår med början i startid och slutar vid stopid, eller ta bort flera ids genom att separera dem med kommatecken.",
+        "shuffle": "Blandar spellista. Observera att minst 3 låtar måste vara i kö för detta kommando för att fungera.",
+        "owo": "Skickar dig random OwO Vad är detta memes, som är handplockade av Wolke",
         "getNode": "Gives you the permission node, category node and category of a command",
         "resetPerms": "Resets all permissions set until now, use with caution",
-        "pat": "Pat someone who has been a good boy/girl/helicopter"
+        "pat": "Pat someone who has been a good boy/girl/helicopter",
+        "triggered": "TRIGGERED",
+        "stare": "stareeeee...",
+        "nom": "Nom :>",
+        "potato": "Everyone wants a potato",
+        "choose": "Make Rem choose something for you, seperate the choices with `;`",
+        "tickle": "Tickle Tickle Tickle",
+        "image": "[IMAGE COMMANDS]",
+        "define": "Get a definition of a term from Urbandictionary"
     },
     "version": "För tillfället så kör jag version {{version}}",
     "add": "Använd denna länk för att lägga till mig på din server: {{- link}}",
@@ -220,8 +229,8 @@
         "success": "Tog bort följande låtar:\n {{- table}}",
         "too-big": "Tog bort {{number}} låtar",
         "one-song": "Använd {{- prefix}}fskip för att hoppa över den nuvarande låten!",
-        "no-number": "You did not say how many songs I should remove from the queue!",
-        "removed": "Removed `{{- title}}` from the queue."
+        "no-number": "Du sa inte hur många låtar ska jag ta bort från spellistan!",
+        "removed": "Tog bort `{{- title}}` från spellistan."
     },
     "cookie": {
         "give": "Gav användaren **{{- user}}** **1** kaka!",
@@ -238,7 +247,11 @@
     "set-lang": {
         "no-lang": "Du specifierade inte ett språk! För tillfället så finns de (Tyska), en (Engelska), se (Svenska) och ru (Ryska) tillgängliga.,",
         "success": "Okej, jag satte precis språket för denna server till: {{- language}}.",
-        "unsupported": "Det här språket är inte implementerat än, men du kan hjälpa till med det genom att lägga till en pull-request med din översättning på github. För tillfället så finns de (Tyska), en (Engelska), se (Svenska) och ru (Ryska) tillgängliga."
+        "unsupported": "Det här språket är inte implementerat än, men du kan hjälpa till med det genom att lägga till en pull-request med din översättning på github. För tillfället så finns de (Tyska), en (Engelska), se (Svenska) och ru (Ryska) tillgängliga.",
+        "native-name": "Native Name",
+        "english-name": "English Name",
+        "shortcode": "shortcode",
+        "available-languages": "List of available Languages\nPlease note that setLang needs the shortcode"
     },
     "np": {
         "song-duration": "Just nu spelas:` {{- title}} {{current}}/{{duration}} {{repeat}} `",
@@ -293,8 +306,11 @@
         "guilds-s": "Servrar anslutna till denna instans av Rem",
         "channels-s": "Kanaler på denna instans av Rem",
         "users-s": "Användare på denna instans av Rem",
-        "made": "Made by:",
-        "lib": "Library"
+        "made": "Tillverkad av:",
+        "lib": "Bibliotek",
+        "voice_active": "AVC",
+        "voice_s": "VC(shard)",
+        "voice_active_s": "AVC (shard)"
     },
     "rank": "Du kan hitta topplistan för servern här: {{- link}}",
     "pp": {
@@ -320,7 +336,9 @@
     "leave": "Ok, jag lämnade röstkanalen.",
     "play": {
         "no-result": "Ingen låt hittades!",
-        "playing": ":musical_note: Spelas nu: **{{- song}}**"
+        "playing": ":musical_note: Spelas nu: **{{- song}}**",
+        "success": ":musical_note: Now playing **{{- song}}**",
+        "next": ":musical_note: Playing next **{{- song}}**"
     },
     "prefix": {
         "success": "Ok, jag satte prefixet till {{- prefix}}",
@@ -344,8 +362,8 @@
     "skip": {
         "success": ":track_next: Hoppade över låt: {{- title}}",
         "stop": ":stop_button: Stoppade nuvarande låt.",
-        "all": ":stop_button: Skipped all songs.",
-        "some": ":track_next: Skipped {{- amount}} songs"
+        "all": ":stop_button: Hoppade över alla låtar.",
+        "some": ":track_next: Hoppade över {{- amount}} låtar."
     },
     "vskip": {
         "user-no-voice": "Du kan inte rösta på att hoppa över låten, eftersom att du inte är i samma röstkanal!",
@@ -455,8 +473,8 @@
         "yangire": "The Yangire (ヤンギレ) type is similar in some ways to Yandere. \n It is a character who may start out nice and sweet but becomes very aggressive and psychotic.\n However, unlike Yandere, Yangire do not become violent because of they attraction to a character. \n Instead, they may snap simply because they’re irritated with a character that has nothing to do with their love interest.\n This word is an abbreviation of Yanderu (やんでる) which means to be mentally or emotionally ill and Kire (きれ) which means to cut or snap."
     },
     "shuffle": {
-        "not-enough-shuffle": "There have to be at least 3 songs in the queue for me to shuffle them.",
-        "success": "Shuffled the queue!"
+        "not-enough-shuffle": "Det måste vara minst 3 låtar i spellista för mig att blanda dem.",
+        "success": "Kö blandat!"
     },
     "get-node": {
         "success": "Permission node: `{{- node}}` Category node:`{{- category}}.*` Category:`{{- category}}`",
@@ -480,5 +498,13 @@
         "nothing-found": "You did not set any Permissions yet.",
         "confirmation": "Are you sure you want to reset the Permissions ? Type `yes` to reset them and `no` to cancel this command.",
         "success": "I just reset all permissions you set."
+    },
+    "choose": {
+        "empty-choose": ":no_entry_sign: I can not choose anything, if you enter nothing!",
+        "success": "I choose **{{- choice}}**!"
+    },
+    "define": {
+        "empty-search": ":no_entry_sign: I can not search a definition, if you enter nothing!",
+        "no-result": "I could not find anything with the term `{{- term}}`"
     }
 }
