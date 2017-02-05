@@ -25,7 +25,7 @@
     "cleverbot-node": "^0.2.6",
     "eris": "github:abalabahaha/eris#dev",
     "erlpack": "github:hammerandchisel/erlpack",
-    "eslint": "^3.14.1",
+    "eslint": "^3.15.0",
     "eventemitter3": "^2.0.2",
     "hot-shots": "^4.3.1",
     "i18next": "^6.0.3",
@@ -52,7 +52,7 @@
     "youtube-api": "^2.0.6",
     "youtube-dl": "^1.11.1",
     "youtube-search": "^1.0.8",
-    "ytdl-core": "^0.7.23"
+    "ytdl-core": "^0.8.1"
   },
   "devDependencies": {
     "babel-cli": "^6.18.0",

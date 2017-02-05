@@ -7,12 +7,12 @@ const config = require('../config/main.json');
 global.remConfig = config;
 let useCrystal = false;
 let Crystal;
-try {
-    Crystal = require("eris-crystal");
-    useCrystal = true;
-} catch (e) {
-
-}
+// try {
+//     Crystal = require("eris-crystal");
+//     useCrystal = true;
+// } catch (e) {
+//
+// }
 const Eris = require('eris');
 let StatsD = require('hot-shots');
 let dogstatsd = new StatsD();

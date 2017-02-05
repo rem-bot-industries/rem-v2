@@ -24,7 +24,7 @@ class VoiceManager extends Manager {
             let conn = rem.voiceConnections.get(msg.channel.guild.id);
             if (!conn) {
                 if (msg.member.voiceState.channelID) {
-                    rem.joinVoiceChannel(msg.member.voiceState.channelID).then((connection) => {
+                    rem.voiceConnections.join(msg.channel.guild.id, msg.member.voiceState.channelID).then((connection) => {
                         if (typeof (this.players[msg.channel.guild.id]) === 'undefined') {
                             this.createPlayer(msg, connection, ytdl).then(player => {
                                 cb(null, connection);
