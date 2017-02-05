@@ -3,7 +3,6 @@
 const cluster = require('cluster');
 const winston = require('winston');
 const config = require('../config/main.json');
-
 let ipc = require('./ipc/index');
 let StatTrack = require('./modules/statTrack');
 let _ = require('lodash');
@@ -89,7 +88,7 @@ if (cluster.isMaster) {
         }
     });
     tracker.on('error', (err) => {
-
+        console.error(err);
     });
     tracker.on('fetch', () => {
         let guilds = 0;

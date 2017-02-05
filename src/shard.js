@@ -5,6 +5,14 @@
 global.Promise = require('bluebird');
 const config = require('../config/main.json');
 global.remConfig = config;
+let useCrystal = false;
+let Crystal;
+// try {
+//     Crystal = require("eris-crystal");
+//     useCrystal = true;
+// } catch (e) {
+//
+// }
 const Eris = require('eris');
 let StatsD = require('hot-shots');
 let dogstatsd = new StatsD();
@@ -86,10 +94,14 @@ class Shard extends EventEmitter {
             firstShardID: parseInt(this.id),
             lastShardID: parseInt(this.id),
             maxShards: parseInt(this.count),
+            crystal: useCrystal,
             disableEvents: ['typingStart', 'typingStop', 'guildMemberSpeaking', 'messageUpdate']
         };
         winston.info(options);
         let bot = new Eris(config.token, options);
+        if (useCrystal) {
+            bot.voiceConnections = new Crystal.ErisClient({host: config.crystal_host});
+        }
         this.bot = bot;
         global.rem = bot;
         bot.on('ready', () => {
@@ -260,7 +272,7 @@ class Shard extends EventEmitter {
     createInterval() {
         this.interval = setInterval(() => {
             this.sendStats();
-        }, 1000 * 60);
+        }, 1000 * 120);
     }
 
     sendStats() {

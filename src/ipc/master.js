@@ -2,14 +2,18 @@
  * Created by julia on 24.01.2017.
  */
 let EventEmitter = require('eventemitter3');
-let uws = require('uws');
+let uws = require('ws');
 let ws_port = require('../../config/main.json').ws_port;
 let OPCODE = require('../structures/constants').MESSAGE_TYPES;
 let _ = require('lodash');
+const config = require('../../config/main.json');
+let StatsD = require('hot-shots');
+let dogstatsd = new StatsD();
+let stat = config.beta ? 'rem-beta' : 'rem-live';
 class Master extends EventEmitter {
     constructor() {
         super();
-        this.wss = new uws.Server({host: 'localhost', port: ws_port, clientTracking: true}, () => {
+        this.wss = new uws.Server({host: 'localhost', port: ws_port, clientTracking: true, noServer: true}, () => {
             this.setupListeners()
         });
         this.shards = {};
@@ -17,7 +21,8 @@ class Master extends EventEmitter {
 
     setupListeners() {
         this.wss.on('connection', (ws) => {
-            this.onConnection(ws)
+            dogstatsd.increment(`${stat}.websocket_connect`);
+            this.onConnection(ws);
         });
         this.wss.on('error', (err) => this.onError(err));
     }
@@ -35,6 +40,7 @@ class Master extends EventEmitter {
 
     onDisconnect(code, number, ws) {
         console.error(`Disconnect: Code: ${code} Number: ${number}`);
+        dogstatsd.increment(`${stat}.websocket_disconnect`);
         _.forEach(this.shards, (shard) => {
             if (shard.ws === ws) {
                 clearInterval(this.shards[shard.shardID].interval);
@@ -51,6 +57,8 @@ class Master extends EventEmitter {
             console.error(msg);
             return console.error(e);
         }
+        dogstatsd.increment(`${stat}.websocket`);
+        // console.log(msg);
         switch (msg.op) {
             case OPCODE.identify: {
                 // console.log(`Master: ${JSON.stringify(msg)}`);
