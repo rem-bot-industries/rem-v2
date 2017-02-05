@@ -51,11 +51,25 @@ class Player extends EventEmitter {
             let options = {};
             if (Song.type === SongTypes.youtube) {
                 if (Song.isOpus) {
-                    link = Song.streamUrl;
+                    if (!rem.options.crystal) {
+                        link = request(Song.streamUrl);
+                        link.on('error', (err) => {
+                            winston.error(err);
+                        });
+                    } else {
+                        link = Song.streamUrl;
+                    }
                     options.format = 'webm';
                     options.frameDuration = 20;
                 } else {
-                    link = Song.streamUrl;
+                    if (!rem.options.crystal) {
+                        link = request(Song.streamUrl);
+                        link.on('error', (err) => {
+                            winston.error(err);
+                        });
+                    } else {
+                        link = Song.streamUrl;
+                    }
                 }
             } else if (Song.type === SongTypes.soundcloud) {
                 if (Song.streamUrl) {
