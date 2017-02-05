@@ -45,58 +45,30 @@ class Player extends EventEmitter {
      * @param {Song} Song - the song to play
      */
     play(Song) {
-        if (this.connection && this.connection.ready) {
+        if (this.connection) {
             let stream;
+            let link;
             let options = {};
             if (Song.type === SongTypes.youtube) {
-                if (!Song.needsYtdl) {
-                    try {
-                        stream = request(Song.streamUrl);
-                    } catch (e) {
-                        winston.error(e);
-                    }
-                    stream.on('error', (err) => {
-                        winston.error(err);
-                    });
+                if (Song.isOpus) {
+                    link = Song.streamUrl;
                     options.format = 'webm';
                     options.frameDuration = 20;
                 } else {
-                    let options = {
-                        filter: (format) => format.container === 'mp4' && format.audioEncoding || format.container === 'webm' && format.audioEncoding,
-                        quality: ['250', '249', '251', '140', '141', '139', 'lowest'],
-                        audioonly: true
-                    };
-                    try {
-                        stream = this.ytdl(Song.url, options);
-                    } catch (e) {
-                        winston.error(e);
-                    }
-                    stream.on('error', (err) => {
-                        winston.error(err);
-                    });
+                    link = Song.streamUrl;
                 }
             } else if (Song.type === SongTypes.soundcloud) {
                 if (Song.streamUrl) {
-                    stream = request(Song.streamUrl);
-                    stream.on('error', (err) => {
-                        winston.error(err);
-                    });
+                    link = Song.streamUrl;
                 } else {
                     return this.nextSong();
                 }
             } else if (Song.type === SongTypes.osu) {
-                try {
-                    stream = fs.createReadStream(Song.url);
-                } catch (e) {
-                    this.emit('error', e);
-                }
-                stream.on('error', (err) => {
-                    winston.error(err);
-                });
+                return this.nextSong();
             } else {
-
+                return this.nextSong();
             }
-            this.connection.play(stream, options);
+            this.connection.play(link, options);
             // winston.info(path.resolve(Song.path));
             // updatePlays(Song.id).then(() => {
             //
@@ -127,6 +99,7 @@ class Player extends EventEmitter {
 
         else {
             setTimeout(() => {
+                console.log('TIMEOUT!');
                 this.play(Song);
             }, 1000);
         }

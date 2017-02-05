@@ -2,7 +2,7 @@
  * Created by julia on 24.01.2017.
  */
 let EventEmitter = require('eventemitter3');
-let uws = require('uws');
+let uws = require('ws');
 let ws_port = require('../../config/main.json').ws_port;
 let OPCODE = require('../structures/constants').MESSAGE_TYPES;
 let _ = require('lodash');
@@ -13,7 +13,7 @@ let stat = config.beta ? 'rem-beta' : 'rem-live';
 class Master extends EventEmitter {
     constructor() {
         super();
-        this.wss = new uws.Server({host: 'localhost', port: ws_port, clientTracking: true}, () => {
+        this.wss = new uws.Server({host: 'localhost', port: ws_port, clientTracking: true, noServer: true}, () => {
             this.setupListeners()
         });
         this.shards = {};

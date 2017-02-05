@@ -2,7 +2,7 @@
  * Created by julia on 24.01.2017.
  */
 let EventEmitter = require('eventemitter3');
-let uws = require('uws');
+let uws = require('ws');
 let ws_port = require('../../config/main.json').ws_port;
 let OPCODE = require('../structures/constants').MESSAGE_TYPES;
 class Worker extends EventEmitter {
