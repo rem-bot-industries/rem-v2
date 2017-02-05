@@ -8,7 +8,7 @@ let path = require('path');
 let async = require('async');
 let StatsD = require('hot-shots');
 let dogstatsd = new StatsD();
-let beta = require('../../../config/main.json').beta;
+let beta = process.env.beta;
 let stat = beta ? 'rem-beta' : 'rem-live';
 class MessageManager extends Manager {
     constructor({cm, lm, gm, vm, um, pm, rm, stm, mod}) {

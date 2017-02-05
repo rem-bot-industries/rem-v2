@@ -3,14 +3,12 @@
  */
 let EventEmitter = require('eventemitter3');
 let uws = require('uws');
-let ws_port = require('../../config/main.json').ws_port;
+let ws_port = process.env.ws_port;
+let ws_host = process.env.ws_hostname;
 let OPCODE = require('../structures/constants').MESSAGE_TYPES;
 class Worker extends EventEmitter {
-    constructor(cluster, id) {
+    constructor(id) {
         super();
-        if (!cluster) throw new Error('No cluster given.');
-        if (!cluster.isWorker) throw new Error('This process is not a worker!');
-        this.cluster = cluster;
         this.connectionAttempts = 0;
         this.ws = null;
         this.shardId = id;
@@ -21,7 +19,7 @@ class Worker extends EventEmitter {
     }
 
     connect() {
-        this.ws = new uws(`ws://127.0.0.1:${ws_port}`);
+        this.ws = new uws(`ws://${ws_host}:${ws_port}`);
         this.ws.on('open', () => {
             this.connectionAttempts = 1;
             this.onConnection();
@@ -37,6 +35,7 @@ class Worker extends EventEmitter {
 
     onError(err) {
         console.error(err);
+        console.log(`ws error!`);
         this.reconnect();
     }
 
@@ -55,7 +54,7 @@ class Worker extends EventEmitter {
     }
 
     reconnect() {
-        this.ws.close(8000, 'Reconnect on User Wish!');
+        this.onDisconnect(8000, "uwu");
     }
 
     generateInterval(k) {
@@ -74,11 +73,11 @@ class Worker extends EventEmitter {
             console.error(msg);
             return console.error(e);
         }
-        // console.log(msg);
+        console.log(msg);
         switch (msg.op) {
             case OPCODE.identify: {
                 // console.log(msg);
-                this.ws.send(JSON.stringify({op: OPCODE.identify, shardID: this.shardId}));
+                this.ws.send(JSON.stringify({op: OPCODE.identify, shardToken: process.env.shard_token}));
                 return;
             }
             case OPCODE.ready: {
@@ -86,6 +85,7 @@ class Worker extends EventEmitter {
                 this.state.hearbeat = msg.hearbeat;
                 this.state.ready = true;
                 this.setupHeartbeat(msg.hearbeat);
+                this.emit('ws_ready', (msg.d));
                 return;
             }
             case OPCODE.message: {
@@ -97,6 +97,10 @@ class Worker extends EventEmitter {
                 // console.log(msg);
                 return;
             }
+            case OPCODE.unauthorized: {
+                console.error('The token was not accepted!');
+                return;
+            }
             default:
                 return console.error(`Unkown Message ${JSON.stringify(msg)}`);
         }
@@ -104,7 +108,11 @@ class Worker extends EventEmitter {
 
     setupHeartbeat(beat) {
         this.hearbeatInterval = setInterval(() => {
-            this.ws.send(JSON.stringify({op: OPCODE.hearbeat, shardID: this.shardId}));
+            this.ws.send(JSON.stringify({
+                op: OPCODE.hearbeat,
+                shardID: this.shardId,
+                shardToken: process.env.shard_token
+            }));
             this.hearbeatTimeout = setTimeout(() => {
                 console.error('Master did not respond!');
             }, beat + 5000);
@@ -113,10 +121,12 @@ class Worker extends EventEmitter {
 
     send(event, msg) {
         this.ws.send(JSON.stringify({
-            op: OPCODE.message, d: {
+            op: OPCODE.message,
+            shardToken: process.env.shard_token,
+            shardID: this.shardId, d: {
                 event: event,
                 uwu: 'uwu',
-                origin: `worker-${process.pid}-${this.cluster.worker.id}-${this.shardId}`,
+                origin: `worker-${process.pid}-${this.shardId}`,
                 data: msg,
                 sendedAt: Date.now(),
                 shardID: this.shardId
@@ -126,9 +136,12 @@ class Worker extends EventEmitter {
 
     emitRemote(event, msg) {
         this.ws.send(JSON.stringify({
-            op: OPCODE.message, d: {
+            op: OPCODE.message,
+            shardToken: process.env.shard_token,
+            shardID: this.shardId, d: {
                 event: event,
-                origin: `worker-${process.pid}-${this.cluster.worker.id}-${this.shardId}`,
+                origin: `worker-${process.pid}
+                -${this.shardId}`,
                 shardID: this.shardId,
                 data: msg,
                 sendedAt: Date.now()

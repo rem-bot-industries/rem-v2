@@ -3,7 +3,7 @@
  */
 let Command = require('../../structures/command');
 let Selector = require('../../structures/selector');
-let track_error = !require('../../../config/main.json').no_error_tracking;
+let track_error = !process.env.no_error_tracking;
 /**
  * The addToQueueCommand
  * @extends Command

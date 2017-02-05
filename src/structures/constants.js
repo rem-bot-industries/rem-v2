@@ -13,6 +13,7 @@ module.exports = {
         message: 3,
         hearbeat: 4,
         cache_update: 5,
-        stat_update: 6
+        stat_update: 6,
+        unauthorized: 7
     }
 };

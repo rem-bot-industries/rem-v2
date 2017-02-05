@@ -3,7 +3,7 @@
  */
 //uwu
 let request = require('request');
-const config = require('../../config/main.json');
+const config = process.env;
 let EventEmitter = require('eventemitter3');
 let StatsD = require('hot-shots');
 let dogstatsd = new StatsD();

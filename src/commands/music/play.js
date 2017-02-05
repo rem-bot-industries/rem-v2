@@ -5,7 +5,7 @@ let Command = require('../../structures/command');
 let winston = require('winston');
 let Selector = require('../../structures/selector');
 let _ = require('lodash');
-let track_error = !require('../../../config/main.json').no_error_tracking;
+let track_error = !process.env.no_error_tracking;
 /**
  * The play command
  * plays a song duh.

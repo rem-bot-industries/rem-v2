@@ -3,8 +3,7 @@
  */
 //uwu
 global.Promise = require('bluebird');
-const config = require('../config/main.json');
-global.remConfig = config;
+global.remConfig = process.env;
 const Eris = require('eris');
 let StatsD = require('hot-shots');
 let dogstatsd = new StatsD();
@@ -13,21 +12,21 @@ const guildModel = require('./DB/guild');
 let winston = require('winston');
 let raven = require('raven');
 let mongoose = require('mongoose');
-let url = config.beta ? 'mongodb://localhost/discordbot-beta' : 'mongodb://localhost/discordbot';
+let url = process.env.beta ? `mongodb://${process.env.mongo_hostname}/discordbot-beta` : `mongodb://${process.env.mongo_hostname}/discordbot`;
 let Connector = require('./structures/connector');
 let ModuleManager = require('./modules/moduleManager');
 mongoose.Promise = Promise;
 mongoose.connect(url, (err) => {
     if (err) return winston.error('Failed to connect to the database!');
 });
-let stat = config.beta ? 'rem-beta' : 'rem-live';
+let stat = process.env.beta ? 'rem-beta' : 'rem-live';
 let blocked = require('blocked');
 let version = require('./../package.json').version;
 let Raven = require('raven');
-if (!config.no_error_tracking) {
-    Raven.config(config.sentry_token, {
+if (!process.env.no_error_tracking) {
+    Raven.config(process.env.sentry_token, {
         release: version,
-        environment: config.environment
+        environment: process.env.environment
     }).install(() => {
         winston.error('Oh no I died!');
         process.exit(1);
@@ -89,7 +88,7 @@ class Shard extends EventEmitter {
             disableEvents: ['typingStart', 'typingStop', 'guildMemberSpeaking', 'messageUpdate']
         };
         winston.info(options);
-        let bot = new Eris(config.token, options);
+        let bot = new Eris(process.env.token, options);
         this.bot = bot;
         global.rem = bot;
         bot.on('ready', () => {
@@ -160,7 +159,9 @@ class Shard extends EventEmitter {
                 this.hubAction(event);
             });
             winston.info('commands are ready!');
-            this.sendStats();
+            setTimeout(() => {
+                this.sendStats();
+            }, 10000);
             this.createInterval();
         });
         // this.LANG = new LanguageManager();

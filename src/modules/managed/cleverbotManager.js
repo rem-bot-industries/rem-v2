@@ -4,7 +4,7 @@
 let Manager = require('../../structures/manager');
 let clever = require('cleverbot-node');
 let re = /<@[0-9].*>/g;
-let cleverbotKey = require('../../../config/main.json').cleverbot_api_key;
+let cleverbotKey = process.env.cleverbot_api_key;
 class CleverBotManager extends Manager {
     constructor() {
         super();

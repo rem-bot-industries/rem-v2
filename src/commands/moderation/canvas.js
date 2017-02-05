@@ -6,7 +6,7 @@ let Canvas = require('canvas');
 let Image = Canvas.Image;
 let fs = require('fs');
 let path = require('path');
-let adminId = require('../../../config/main.json').owner_id;
+let adminId = process.env.owner_id;
 function fontFile(name) {
     return path.join(__dirname, '../../../fonts/', name);
 }

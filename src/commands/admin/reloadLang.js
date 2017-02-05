@@ -2,7 +2,7 @@
  * Created by Julian/Wolke on 07.11.2016.
  */
 let Command = require('../../structures/command');
-let adminId = require('../../../config/main.json').owner_id;
+let adminId = process.env.owner_id;
 class ReloadLang extends Command {
     constructor({t, mod}) {
         super();

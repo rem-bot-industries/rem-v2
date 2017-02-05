@@ -5,7 +5,7 @@ let Manager = require('../../structures/manager');
 let permModel = require('../../DB/permission');
 let winston = require('winston');
 let async = require('async');
-let config = require('../../../config/main.json');
+let config = process.env;
 let util = require('util');
 let _ = require('lodash');
 /**

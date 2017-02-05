@@ -4,7 +4,7 @@
 let Command = require('../../structures/command');
 let winston = require('winston');
 let request = require('request');
-let key = require('../../../config/main.json').lbsearch_nsfw_key;
+let key = process.env.lbsearch_nsfw_key;
 class Iblewd extends Command {
     constructor({t}) {
         super();
