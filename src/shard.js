@@ -262,15 +262,12 @@ class Shard extends EventEmitter {
         } catch (e) {
             console.log(e);
         }
-        setTimeout(() => {
-            process.exit(0);
-        }, 200);
     }
 
     createInterval() {
         this.interval = setInterval(() => {
             this.sendStats();
-        }, 1000 * 120);
+        }, 1000 * 60);
     }
 
     sendStats() {

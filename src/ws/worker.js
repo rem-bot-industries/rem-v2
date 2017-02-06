@@ -7,11 +7,11 @@ let ws_port = process.env.ws_port;
 let ws_host = process.env.ws_hostname;
 let OPCODE = require('../structures/constants').MESSAGE_TYPES;
 class Worker extends EventEmitter {
-    constructor(id) {
+    constructor() {
         super();
         this.connectionAttempts = 0;
         this.ws = null;
-        this.shardId = id;
+        this.shardId = null;
         this.state = {ready: false, connected: false, hearbeat: -1};
         this.hearbeatInterval = null;
         this.hearbeatTimeout = null;
@@ -82,9 +82,10 @@ class Worker extends EventEmitter {
             }
             case OPCODE.ready: {
                 // console.log(msg);
-                this.state.hearbeat = msg.hearbeat;
+                this.state.hearbeat = msg.d.heartbeat;
                 this.state.ready = true;
-                this.setupHeartbeat(msg.hearbeat);
+                this.setupHeartbeat(msg.d.heartbeat);
+                this.shardId = msg.d.sid;
                 this.emit('ws_ready', (msg.d));
                 return;
             }
