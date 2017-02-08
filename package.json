@@ -11,7 +11,9 @@
     "major": "npm --no-git-tag-version version major",
     "build": "babel src --out-dir dist/",
     "watch": "babel src --watch --out-dir dist/",
-    "doit": "npm install && npm rebuild && npm run build"
+    "doit": "npm install && npm rebuild && npm run build",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "author": "Wolke <wolke@ram.moe>",
   "license": "ISC",
@@ -52,7 +54,8 @@
     "youtube-api": "^2.0.6",
     "youtube-dl": "^1.11.1",
     "youtube-search": "^1.0.8",
-    "ytdl-core": "^0.8.1"
+    "ytdl-core": "^0.8.1",
+    "snyk": "^1.25.0"
   },
   "devDependencies": {
     "babel-cli": "^6.18.0",
@@ -63,5 +66,6 @@
   },
   "optionalDependencies": {
     "eris-crystal": "github:abalabahaha/eris-crystal"
-  }
+  },
+  "snyk": true
 }
