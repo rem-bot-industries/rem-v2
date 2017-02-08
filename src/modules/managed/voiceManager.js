@@ -245,7 +245,7 @@ class VoiceManager extends Manager {
         let vm = this;
         return new Promise(function (resolve, reject) {
             if (typeof (vm.players[msg.channel.guild.id]) !== 'undefined') {
-                vm.players[msg.channel.guild.id].toggleRepeatSingle('off');
+                vm.players[msg.channel.guild.id].toggleRepeat('off');
                 let queue = vm.players[msg.channel.guild.id].getQueue(msg);
                 if (args === 'all') {
                     let current = queue.songs.shift();

@@ -186,7 +186,6 @@ class Shard extends EventEmitter {
         //     // console.log(cmds);
         // });
     }
-
     message(msg) {
         if (this.ready && !msg.author.bot) {
             this.CON.invokeAllCollectors(msg);

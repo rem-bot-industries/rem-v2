@@ -9,7 +9,7 @@
     "patch": "npm --no-git-tag-version version patch",
     "minor": "npm --no-git-tag-version version minor",
     "major": "npm --no-git-tag-version version major",
-    "build": "babel src --out-dir dist/",
+    "build": "./node_modules/.bin/babel src --out-dir dist/",
     "watch": "babel src --watch --out-dir dist/",
     "doit": "npm install && npm rebuild && npm run build"
   },
@@ -19,10 +19,10 @@
     "ascii-table": "0.0.9",
     "async": "^2.1.4",
     "axios": "^0.15.3",
-    "babel-cli": "^6.22.2",
     "blocked": "^1.2.1",
     "bluebird": "^3.4.7",
     "cleverbot-node": "^0.2.6",
+    "dotenv": "^4.0.0",
     "eris": "github:abalabahaha/eris#dev",
     "erlpack": "github:hammerandchisel/erlpack",
     "eslint": "^3.15.0",
@@ -47,20 +47,17 @@
     "unzip2": "^0.2.5",
     "winston": "^2.3.1",
     "winston-daily-rotate-file": "^1.4.4",
-    "ws": "^2.0.2",
+    "ws": "^2.0.3",
     "youtube-api": "^2.0.6",
     "youtube-dl": "^1.11.1",
     "youtube-search": "^1.0.8",
     "ytdl-core": "^0.8.1"
   },
   "devDependencies": {
-    "babel-cli": "^6.18.0",
+    "babel-cli": "^6.22.2",
     "babel-plugin-transform-async-to-generator": "^6.16.0",
     "babel-preset-latest": "^6.16.0",
     "eslint": "^3.14.1",
     "minami": "^1.1.1"
-  },
-  "optionalDependencies": {
-    "eris-crystal": "github:abalabahaha/eris-crystal"
   }
 }
