@@ -6,7 +6,7 @@ let request = require('request');
 const config = process.env;
 let EventEmitter = require('eventemitter3');
 let StatsD = require('hot-shots');
-let dogstatsd = new StatsD();
+let dogstatsd = new StatsD({host: process.env.statsdhost});
 let stat = config.beta ? 'rem-beta' : 'rem-live';
 /**
  * The stattrack engine

@@ -20,9 +20,9 @@ module.exports = {
     osu_token: {
         required: true
     },
-    osu_path: {
-        required: false
-    },
+    // osu_path: {
+    //     required: false
+    // },
     osu_username: {
         required: true
     },

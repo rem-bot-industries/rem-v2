@@ -14,7 +14,7 @@ let Crystal;
 // }
 const Eris = require('eris');
 let StatsD = require('hot-shots');
-let dogstatsd = new StatsD();
+let dogstatsd = new StatsD({host: process.env.statsdhost});
 const EventEmitter = require('eventemitter3');
 const guildModel = require('./DB/guild');
 let winston = require('winston');

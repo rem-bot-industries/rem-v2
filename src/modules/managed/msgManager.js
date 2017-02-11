@@ -7,7 +7,7 @@ const recursive = require('recursive-readdir');
 let path = require('path');
 let async = require('async');
 let StatsD = require('hot-shots');
-let dogstatsd = new StatsD();
+let dogstatsd = new StatsD({host: process.env.statsdhost});
 let beta = process.env.beta;
 let stat = beta ? 'rem-beta' : 'rem-live';
 class MessageManager extends Manager {
