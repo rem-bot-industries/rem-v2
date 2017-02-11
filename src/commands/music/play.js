@@ -36,7 +36,7 @@ class Play extends Command {
         let uwu = this.checkNext(msgSplit);
         let next = uwu.next;
         msgSplit = uwu.msgSplit;
-        msg.content = msgSplit.join(' ');
+        msg.content = msgSplit.join(' ').trim();
         this.v.addToQueue(msg, !next, next).then(result => {
             switch (result.type) {
                 case 'added':

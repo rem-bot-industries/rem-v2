@@ -11,7 +11,6 @@ let yt = require('./youtubeResolver');
 let pl = require('./playlistResolver');
 let osu = require('./osuResolver');
 let ytdl = require('ytdl-core');
-let youtubedl = require('youtube-dl');
 let winston = require('winston');
 let youtubesearch = require('youtube-search');
 let KeyManager = require('../keyManager');
@@ -34,7 +33,6 @@ class SongImporter extends EventEmitter {
         this.msg = msg;
         this.messageSplit = msg.content.split(' ');
         this.ytdl = ytdl;
-        this.youtubedl = youtubedl;
         if (instant) {
             this.resolveSong();
         }
@@ -101,16 +99,14 @@ class SongImporter extends EventEmitter {
         });
     }
 
-    soundcloud(url) {
-        let importer = new sc(url, this.youtubedl);
-        importer.once('done', (song) => {
+    async soundcloud(url) {
+        let importer = new sc();
+        try {
+            let song = await importer.loadSong(url);
             this.emit('done', song);
-            importer.removeAllListeners();
-        });
-        importer.once('error', (err) => {
-            this.emit('error', err);
-            importer.removeAllListeners();
-        });
+        } catch (e) {
+            this.emit('error', e);
+        }
     }
 
     osu(url) {

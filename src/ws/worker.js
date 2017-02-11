@@ -2,9 +2,7 @@
  * Created by julia on 24.01.2017.
  */
 let EventEmitter = require('eventemitter3');
-let uws = require('ws');
-let ws_port = process.env.ws_port;
-let ws_host = process.env.ws_hostname;
+let websocket = require('ws');
 let OPCODE = require('../structures/constants').MESSAGE_TYPES;
 class Worker extends EventEmitter {
     constructor() {
@@ -19,7 +17,7 @@ class Worker extends EventEmitter {
     }
 
     connect() {
-        this.ws = new uws(`ws://${ws_host}:${ws_port}`);
+        this.ws = new websocket(`ws://${process.env.master_hostname}`);
         this.ws.on('open', () => {
             this.connectionAttempts = 1;
             this.onConnection();

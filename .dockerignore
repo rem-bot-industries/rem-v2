@@ -8,3 +8,4 @@ cmd.bat
 LICENSE
 README.md
 .jsdoc.json
+.env-safe

@@ -9,3 +9,4 @@ cmd.bat
 /logs
 .env
 /dist
+.env-safe
