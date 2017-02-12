@@ -20,6 +20,7 @@ const guildModel = require('./DB/guild');
 let winston = require('winston');
 let raven = require('raven');
 let mongoose = require('mongoose');
+process.env.beta = process.env.beta === 'true';
 let url = process.env.beta ? `mongodb://${process.env.mongo_hostname}/discordbot-beta` : `mongodb://${process.env.mongo_hostname}/discordbot`;
 let Connector = require('./structures/connector');
 let ModuleManager = require('./modules/moduleManager');
