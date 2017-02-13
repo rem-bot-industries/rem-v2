@@ -31,8 +31,8 @@ class LangManager extends Manager {
         let that = this;
         return new Promise(function (resolve, reject) {
             let backendOptions = {
-                loadPath: '../locales/{{lng}}/{{ns}}.json',
-                addPath: '../locales/{{lng}}/{{ns}}.missing.json',
+                loadPath: '../rem_translate/{{lng}}/{{ns}}.json',
+                addPath: '../rem_translate/{{lng}}/{{ns}}.missing.json',
                 jsonIndent: 2
             };
             that.getDirs('locales/', (list) => {
@@ -95,7 +95,7 @@ class LangManager extends Manager {
         this.i18next.reloadResources();
         this.i18next.on('loaded', () => {
             console.log('reloaded!');
-        })
+        });
         this.i18next.on('failedLoading', () => {
             console.log('failed reload!');
         })
