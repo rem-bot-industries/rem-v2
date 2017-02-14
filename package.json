@@ -24,7 +24,7 @@
     "bluebird": "^3.4.7",
     "cleverbot.io": "^1.0.4",
     "dotenv": "^4.0.0",
-    "eris": "github:abalabahaha/eris",
+    "eris": "^0.5.2",
     "erlpack": "github:hammerandchisel/erlpack",
     "eslint": "^3.15.0",
     "eventemitter3": "^2.0.2",
