@@ -21,10 +21,14 @@
 6. If you have Windows, open a console with administrator permissions and type `npm install --global windows-build-tools` into it. This will install the neccessary tools, which will be later needed by npm to build Rems dependencies
 7. For Linux environments, you should get `buildtools-essentials` and `python 2.7` installed.
 8. Clone the source of v2 from git
-9. Go into the just created directory and open a cmd and execute `npm install --no-optional`
+9. Go into the just created directory and open a cmd and execute `npm install`.
+There could be some errors while installing the dependencies as the optional depenency of rem links to `eris-crystal`
+If the installation fails, due to not being able to clone the git repo of it, remove it from the dependencies in the package.json.
 10. Create the following directories within the root: `temp`,`audio`,`config`
 11. Create 2 files within the config directory: `main.json` and `keys.json`. An Example can be found down below.
-12. Run `npm run build` in your terminal and then start rem by going into the dist folder and then executing `node index.js` in there.
+12. Run `npm run build` in your terminal.
+13. Start the MongoDB Server
+14. Start Rem by going into the dist folder and typing the following:  `node index.js`.
 
 ## Example main.json
 ```json
@@ -45,11 +49,12 @@
   "lbsearch_sfw_key":"the key to use for the ibsear.ch lookup",
   "lbsearch_nsfw_key":"the key to use for the ibsearch.xxx lookup",
   "cleverbot_api_key":"Contact Info, so that we can use the cleverbot api.",
-  "mashape_key":"The key to use for mashape (Urbandictionary)"
+  "mashape_key":"The key to use for mashape (Urbandictionary)",
+  "ws_port":8080
 }
 ```
 - Beta should always be set to true.
-- no_error_tracking disabled sentry, the bugtracker of rem, leave this set to true.
+- no_error_tracking disables sentry, the bugtracker of rem, leave this set to true.
 - the number of shards defines how many processes the master will spawn.
  Can be set to 1 unless you want to operate this fork on over 2500 servers.
  
@@ -68,4 +73,4 @@ If you need help creating tokens and a Youtube api I suggest reading these two t
 
 ## Contibuting Guidelines
 
-I will wrote those if people actually want to contribute. Until then: Just make it work good and fast. uwu
+I will write those if people actually want to contribute. Until then: Just make it work good and fast. uwu

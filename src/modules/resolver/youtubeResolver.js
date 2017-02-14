@@ -22,6 +22,7 @@ class YoutubeImporter extends BasicImporter {
                     this.emit('error', err);
                 } else {
                     info.loaderUrl = `https://www.youtube.com/watch?v=${info.video_id}`;
+                    let isOpus = this.filterOpus(info.formats);
                     let directUrl = this.filterStreams(info.formats);
                     let song = new Song({
                         id: info.video_id,
@@ -30,7 +31,7 @@ class YoutubeImporter extends BasicImporter {
                         type: types.youtube,
                         url: info.loaderUrl,
                         streamUrl: directUrl,
-                        needsYtdl: !directUrl,
+                        isOpus: isOpus,
                         isResolved: true,
                         local: false
                     });
@@ -68,11 +69,28 @@ class YoutubeImporter extends BasicImporter {
         });
     }
 
+    filterOpus(formats) {
+        for (let i = 0; i < formats.length; i++) {
+            // console.log(formats[i].itag);
+            if (formats[i].itag === '250' || formats[i].itag === '251' || formats[i].itag === '249') {
+                // console.log(formats[i]);
+                return formats[i].url;
+            }
+        }
+        return null;
+    }
+
     filterStreams(formats) {
         for (let i = 0; i < formats.length; i++) {
             // console.log(formats[i].itag);
             if (formats[i].itag === '250' || formats[i].itag === '251' || formats[i].itag === '249') {
                 // console.log(formats[i]);
+                return formats[i].url;
+            }
+            if (formats[i].container === 'mp4' && formats[i].audioEncoding || formats[i].container === 'webm' && formats[i].audioEncoding) {
+                return formats[i].url;
+            }
+            if (formats[i].audioEncoding) {
                 return formats[i].url;
             }
         }
