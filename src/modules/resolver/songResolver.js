@@ -9,7 +9,7 @@ let winston = require('winston');
 let keys;
 try {
     if (process.env.secret_keys_name) {
-        keys = require(`/var/run/${process.env.secret_keys_name}`).keys;
+        keys = require(`/run/secrets/${process.env.secret_keys_name}`).keys;
     } else {
         keys = require('../../../config/keys.json').keys;
     }
