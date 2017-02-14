@@ -2,7 +2,7 @@
  * Created by Julian/Wolke on 13.01.2017.
  */
 let Command = require('../../structures/command');
-let adminId = process.env.owner_id;
+let adminId = remConfig.owner_id;
 class RestartShard extends Command {
     constructor({mod}) {
         super();

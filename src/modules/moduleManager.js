@@ -16,8 +16,16 @@ class ModuleManager {
     }
 
     init(hub, Raven) {
-        this.mods['hub'] = hub;
-        this.mods['raven'] = Raven;
+        if (hub) {
+            this.mods['hub'] = hub;
+        } else {
+            winston.warn(`There was no websocket client passed, this means that either sharding is disabled and you can ignore this message or that something went seriously wrong!`);
+        }
+        if (Raven) {
+            this.mods['raven'] = Raven;
+        } else {
+            winston.warn(`There was no error tracking client passed, this means that either errortracking is disabled and you can ignore this message or that something went seriously wrong!`);
+        }
         let that = this;
         return new Promise(function (resolve, reject) {
             readDir(ModPath, (err, files) => {

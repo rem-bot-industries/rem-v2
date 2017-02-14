@@ -5,13 +5,23 @@ let EventEmitter = require('eventemitter3');
 let YoutubeReg = /(?:http?s?:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=)?([a-zA-Z0-9_-]+)(&.*|)/;
 let SoundcloudReg = /(?:http?s?:\/\/)?(?:www\.)?(?:soundcloud\.com|snd\.sc)\/(?:.*)/;
 let osuRegex = /(?:http(?:s|):\/\/osu.ppy.sh\/(s|b)\/([0-9]*)((\?|\&)m=[0-9]|))/;
-let keys = require('../../../config/keys.json').keys;
+let winston = require('winston');
+let keys;
+try {
+    if (process.env.secret_keys_name) {
+        keys = require(`/var/run/${process.env.secret_keys_name}`).keys;
+    } else {
+        keys = require('../../../config/keys.json').keys;
+    }
+} catch (e) {
+    winston.error(e);
+    winston.error('The file with the youtube keys could not be loaded!');
+}
 let sc = require('./soundCloudResolver');
 let yt = require('./youtubeResolver');
 let pl = require('./playlistResolver');
 let osu = require('./osuResolver');
 let ytdl = require('ytdl-core');
-let winston = require('winston');
 let youtubesearch = require('youtube-search');
 let KeyManager = require('../keyManager');
 let km = new KeyManager(keys);

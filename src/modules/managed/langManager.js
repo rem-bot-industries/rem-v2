@@ -35,7 +35,7 @@ class LangManager extends Manager {
                 addPath: '../rem_translate/{{lng}}/{{ns}}.missing.json',
                 jsonIndent: 2
             };
-            that.getDirs('locales/', (list) => {
+            that.getDirs('rem_translate/', (list) => {
                 that.list = list;
                 i18next.use(Backend).init({
                     backend: backendOptions,

@@ -2,8 +2,6 @@
  * Created by Julian/Wolke on 01.11.2016.
  */
 //uwu
-global.Promise = require('bluebird');
-global.remConfig = process.env;
 let useCrystal = false;
 let Crystal;
 // try {
@@ -14,33 +12,22 @@ let Crystal;
 // }
 const Eris = require('eris');
 let StatsD = require('hot-shots');
-let dogstatsd = new StatsD({host: process.env.statsdhost});
+let dogstatsd = new StatsD({host: remConfig.statsdhost});
 const EventEmitter = require('eventemitter3');
 const guildModel = require('./DB/guild');
 let winston = require('winston');
-let raven = require('raven');
 let mongoose = require('mongoose');
-process.env.beta = process.env.beta === 'true';
-let url = process.env.beta ? `mongodb://${process.env.mongo_hostname}/discordbot-beta` : `mongodb://${process.env.mongo_hostname}/discordbot`;
+remConfig.beta = remConfig.beta === 'true';
+let url = remConfig.beta ? `mongodb://${remConfig.mongo_hostname}/discordbot-beta` : `mongodb://${remConfig.mongo_hostname}/discordbot`;
 let Connector = require('./structures/connector');
 let ModuleManager = require('./modules/moduleManager');
 mongoose.Promise = Promise;
 mongoose.connect(url, (err) => {
     if (err) return winston.error('Failed to connect to the database!');
 });
-let stat = process.env.beta ? 'rem-beta' : 'rem-live';
+let stat = remConfig.environment;
 let blocked = require('blocked');
-let version = require('./../package.json').version;
-let Raven = require('raven');
-if (!process.env.no_error_tracking) {
-    Raven.config(process.env.sentry_token, {
-        release: version,
-        environment: process.env.environment
-    }).install(() => {
-        winston.error('Oh no I died!');
-        process.exit(1);
-    });
-}
+
 /**
  * The base shard class
  * @extends EventEmitter
@@ -51,9 +38,10 @@ class Shard extends EventEmitter {
      * @constructor
      * @param SHARD_ID The shardid of the bot
      * @param SHARD_COUNT the max shardcount
-     * @param hub the clusterhub instance used to send data back and forth
+     * @param hub the ws_client instance used to send data back and forth between shards
+     * @param raven the errortracking rem uses.
      */
-    constructor(SHARD_ID, SHARD_COUNT, hub) {
+    constructor(SHARD_ID, SHARD_COUNT, hub, raven) {
         super();
         this.id = SHARD_ID;
         this.count = SHARD_COUNT;
@@ -62,10 +50,12 @@ class Shard extends EventEmitter {
         this.CON = new Connector();
         this.MSG = null;
         this.HUB = hub;
+        this.SHARDED = !hub;
         this.MOD = new ModuleManager();
         this.GM = null;
         this.UM = null;
         this.interval = null;
+        this.Raven = raven;
         this.init();
     }
 
@@ -98,7 +88,7 @@ class Shard extends EventEmitter {
             disableEvents: ['typingStart', 'typingStop', 'guildMemberSpeaking', 'messageUpdate']
         };
         winston.info(options);
-        let bot = new Eris(process.env.token, options);
+        let bot = new Eris(remConfig.token, options);
         this.bot = bot;
         global.rem = bot;
         bot.on('ready', () => {
@@ -147,7 +137,7 @@ class Shard extends EventEmitter {
      * 6. A Interval gets created to update data every 5 mins
      */
     clientReady() {
-        this.MOD.init(this.HUB, Raven).then(() => {
+        this.MOD.init(this.HUB, this.Raven).then(() => {
             this.ready = true;
             this.MSG = this.MOD.getMod('mm');
             this.GM = this.MOD.getMod('gm');
@@ -162,12 +152,14 @@ class Shard extends EventEmitter {
             this.SM.on('_cache_update', (data) => {
                 this.updateLocalCache(data);
             });
-            this.HUB.on('_cache_update', (data) => {
-                this.updateLocalCache(data);
-            });
-            this.HUB.on('request_data_master', (event) => {
-                this.hubAction(event);
-            });
+            if (this.SHARDED) {
+                this.HUB.on('_cache_update', (data) => {
+                    this.updateLocalCache(data);
+                });
+                this.HUB.on('request_data_master', (event) => {
+                    this.hubAction(event);
+                });
+            }
             winston.info('commands are ready!');
             setTimeout(() => {
                 this.sendStats();
@@ -187,6 +179,7 @@ class Shard extends EventEmitter {
         //     // console.log(cmds);
         // });
     }
+
     message(msg) {
         if (this.ready && !msg.author.bot) {
             this.CON.invokeAllCollectors(msg);
@@ -198,7 +191,7 @@ class Shard extends EventEmitter {
         this.sendStats();
         guildModel.findOne({id: Guild.id}, (err, guild) => {
             if (err) {
-                Raven.captureError(err);
+                this.Raven.captureError(err);
                 return winston.error(err);
             }
             if (guild) {
@@ -271,11 +264,13 @@ class Shard extends EventEmitter {
     }
 
     sendStats() {
-        this.HUB.emitRemote('_guild_update', {sid: this.id, data: this.bot.guilds.size});
-        this.HUB.emitRemote('_user_update', {
-            sid: this.id,
-            data: this.bot.guilds.map(g => g.memberCount).reduce((a, b) => a + b)
-        });
+        if (this.SHARDED) {
+            this.HUB.emitRemote('_guild_update', {sid: this.id, data: this.bot.guilds.size});
+            this.HUB.emitRemote('_user_update', {
+                sid: this.id,
+                data: this.bot.guilds.map(g => g.memberCount).reduce((a, b) => a + b)
+            });
+        }
     }
 
     updateLocalCache({type, data}) {
@@ -295,7 +290,9 @@ class Shard extends EventEmitter {
     }
 
     emitCacheUpdate({type, data}) {
-        this.HUB.emitRemote('_cache_update', {shard: this.id, type, data});
+        if (this.SHARDED) {
+            this.HUB.emitRemote('_cache_update', {shard: this.id, type, data});
+        }
     }
 
     hubAction(event) {
@@ -356,14 +353,16 @@ class Shard extends EventEmitter {
     }
 
     resolveAction(event, data) {
-        try {
-            this.HUB.emitRemote(`resolve_data_master_${event.id}`, {
-                sid: this.id,
-                responseDate: Date.now(),
-                data: data
-            });
-        } catch (e) {
-            console.log(e);
+        if (this.SHARDED) {
+            try {
+                this.HUB.emitRemote(`resolve_data_master_${event.id}`, {
+                    sid: this.id,
+                    responseDate: Date.now(),
+                    data: data
+                });
+            } catch (e) {
+                console.log(e);
+            }
         }
     }
 

@@ -13,7 +13,7 @@ let path = require('path');
 let child_process = require('child_process');
 const types = require('../../structures/constants').SONG_TYPES;
 const Song = require('../../structures/song');
-let config = process.env;
+let config = remConfig;
 const osu = require('node-osu');
 let osuApi = new osu.Api(config.osu_token);
 let setRegex = /.*http(s|):\/\/osu.ppy.sh\/(s|b)\/([0-9]*)((\?|\&)m=[0-9]|)/;

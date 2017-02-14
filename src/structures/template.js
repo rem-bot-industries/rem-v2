@@ -32,12 +32,12 @@ module.exports = {
     environment: {
         required: true
     },
-    discord_bots_token: {
-        required: true
-    },
-    carbon_token: {
-        required: true
-    },
+    // discord_bots_token: {
+    //     required: true
+    // },
+    // carbon_token: { Not needed anymore, as the stats are handled by the master.
+    //     required: true
+    // },
     sentry_token: {
         required: true
     },

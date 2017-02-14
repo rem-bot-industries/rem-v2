@@ -5,7 +5,7 @@ let Command = require('../../structures/command');
 let moment = require('moment');
 let winston = require('winston');
 let _ = require('lodash');
-let adminId = process.env.owner_id;
+let adminId = remConfig.owner_id;
 class GuildFinder extends Command {
     constructor({t, mod}) {
         super();

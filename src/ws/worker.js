@@ -17,7 +17,7 @@ class Worker extends EventEmitter {
     }
 
     connect() {
-        this.ws = new websocket(`ws://${process.env.master_hostname}`);
+        this.ws = new websocket(`ws://${remConfig.master_hostname}`);
         this.ws.on('open', () => {
             this.connectionAttempts = 1;
             this.onConnection();
@@ -75,7 +75,7 @@ class Worker extends EventEmitter {
         switch (msg.op) {
             case OPCODE.identify: {
                 // console.log(msg);
-                this.ws.send(JSON.stringify({op: OPCODE.identify, shardToken: process.env.shard_token}));
+                this.ws.send(JSON.stringify({op: OPCODE.identify, shardToken: remConfig.shard_token}));
                 return;
             }
             case OPCODE.ready: {
@@ -110,7 +110,7 @@ class Worker extends EventEmitter {
             this.ws.send(JSON.stringify({
                 op: OPCODE.hearbeat,
                 shardID: this.shardId,
-                shardToken: process.env.shard_token
+                shardToken: remConfig.shard_token
             }));
             this.hearbeatTimeout = setTimeout(() => {
                 console.error('Master did not respond!');
@@ -121,7 +121,7 @@ class Worker extends EventEmitter {
     send(event, msg) {
         this.ws.send(JSON.stringify({
             op: OPCODE.message,
-            shardToken: process.env.shard_token,
+            shardToken: remConfig.shard_token,
             shardID: this.shardId, d: {
                 event: event,
                 uwu: 'uwu',
@@ -136,7 +136,7 @@ class Worker extends EventEmitter {
     emitRemote(event, msg) {
         this.ws.send(JSON.stringify({
             op: OPCODE.message,
-            shardToken: process.env.shard_token,
+            shardToken: remConfig.shard_token,
             shardID: this.shardId, d: {
                 event: event,
                 origin: `worker-${process.pid}

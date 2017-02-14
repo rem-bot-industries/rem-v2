@@ -1,39 +1,47 @@
 /**Require the dependencies*/
 //uwu
+global.Promise = require('bluebird');
 const winston = require('winston');
-const util = require('util');
-const configTemplate = require('./vault/template.js');
-require('longjohn');
+let version = require('./../package.json').version;
 winston.remove(winston.transports.Console);
 winston.add(winston.transports.Console, {
     'timestamp': true,
     'colorize': true
 });
-if (!process.env.environment) {
-    winston.warn('No environment var was found, setting the default environment to dev');
-    process.env.environment = 'dev';
+const util = require('util');
+const configTemplate = require('./structures/template.js');
+let wsWorker;
+let config;
+try {
+    if (process.env.secret_name) {
+        config = require(`/run/secrets/${process.env.secret_name}`);
+        winston.info(`Using docker secrets!`);
+    } else {
+        config = require('../config/main.json');
+        winston.info(`Using local secrets!`);
+    }
+
+} catch (e) {
+    winston.error(e);
+    winston.error('Failed to require config!');
+    process.exit(1);
 }
-if (!process.env.statsdhost) {
-    winston.warn('No environment statsdhost var was found, setting the default environment statsdhost var to localhost');
-    process.env.environment = 'localhost';
+global.remConfig = config;
+if (remConfig.use_ws) {
+    wsWorker = require('./ws/worker');
 }
-const config = require('../config/main.json');
-let wsWorker = require('./ws/worker');
-// let vaultWorker = require('./vault/index');
-// if (process.env.vault_adress && process.env.vault_key) {
-//     let vaultService = new vaultWorker(process.env.vault_adress, process.env.vault_key);
-//     vaultService.loadConfig(configTemplate).then(() => {
-//         continueInit();
-//     });
-// } else {
-//     winston.warn('Not using Vault!');
-//     continueInit();
-// }
-// function continueInit() {
-require('dotenv').config({path: '../.env'});
+require('longjohn');
+if (!process.env.environment && !remConfig.environment) {
+    winston.warn('No environment config was found, setting the environment config to development!');
+    remConfig.environment = 'development';
+}
+if (!process.env.statsdhost && remConfig.statsdhost) {
+    winston.warn('No environment/config setting named statsdhost was found, setting the statsdhost config to localhost!');
+    remConfig.statsdhost = 'localhost';
+}
 for (let key in configTemplate) {
     if (configTemplate.hasOwnProperty(key)) {
-        if (!process.env[key]) {
+        if (!remConfig[key]) {
             if (configTemplate[key].required) {
                 throw new Error(`The required config key ${key} is missing!`);
             } else {
@@ -42,35 +50,50 @@ for (let key in configTemplate) {
         }
     }
 }
-let Shard = require('./shard');
-
-let wsService = new wsWorker();
-let client;
-
-wsService.on('ws_ready', (data) => {
-    if (client) {
-        try {
-            client.shutdown();
-        } catch (e) {
-            console.error(e);
-        }
-        console.log(`Restarting Client for Resharding!`);
-    }
-    setTimeout(() => {
-        client = new Shard(data.sid, data.shards, wsService);
-    }, 500);
-
-});
-wsService.on('shutdown_client', () => {
-    if (client) {
-        try {
-            client.shutdown();
-        } catch (e) {
-            console.error(e);
-        }
+let Raven = require('raven');
+if (!remConfig.no_error_tracking) {
+    Raven.config(remConfig.sentry_token, {
+        release: version,
+        environment: remConfig.environment
+    }).install(() => {
+        winston.error('Oh no I died because of an unhandled error!');
         process.exit(1);
-    }
-});
+    });
+    winston.info('Initializing error tracking!');
+} else {
+    winston.warn('No error tracking is used!');
+}
+let Shard = require('./shard');
+let client;
+if (remConfig.use_ws) {
+    let wsService = new wsWorker();
+    wsService.on('ws_ready', (data) => {
+        if (client) {
+            try {
+                client.shutdown();
+            } catch (e) {
+                console.error(e);
+            }
+            console.log(`Restarting Client for Resharding!`);
+        }
+        setTimeout(() => {
+            client = new Shard(data.sid, data.shards, wsService, Raven);
+        }, 500);
+
+    });
+    wsService.on('shutdown_client', () => {
+        if (client) {
+            try {
+                client.shutdown();
+            } catch (e) {
+                console.error(e);
+            }
+            process.exit(1);
+        }
+    })
+} else {
+    client = new Shard(0, 1, null, Raven);
+}
 winston.info(`Client Started!`);
 process.on('SIGINT', () => {
     winston.error('Received SIGINT');
@@ -85,7 +108,6 @@ process.on('SIGINT', () => {
     process.exit(0);
 });
 winston.cli();
-// }
 process.on('unhandledRejection', (reason, promise) => {
     if (typeof reason === 'undefined') return;
     winston.error(`Unhandled rejection: ${reason} - ${util.inspect(promise)}`);

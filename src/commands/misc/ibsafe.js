@@ -4,7 +4,7 @@
 let Command = require('../../structures/command');
 let winston = require('winston');
 let request = require('request');
-let key = process.env.lbsearch_sfw_key;
+let key = remConfig.lbsearch_sfw_key;
 class Ibsafe extends Command {
     constructor({t}) {
         super();

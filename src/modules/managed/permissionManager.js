@@ -1,11 +1,10 @@
 /**
  * Created by Julian/Wolke on 13.11.2016.
  */
-let Manager = require('../../structures/manager');
 let permModel = require('../../DB/permission');
 let winston = require('winston');
 let async = require('async');
-let config = process.env;
+let config = remConfig;
 let util = require('util');
 let _ = require('lodash');
 /**

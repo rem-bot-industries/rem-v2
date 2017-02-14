@@ -14,10 +14,10 @@ class SoundcloudImporter extends BasicImporter {
         let req = await axios.get('https://api.soundcloud.com/resolve.json', {
             params: {
                 url: url,
-                client_id: process.env.soundcloud_key
+                client_id: remConfig.soundcloud_key
             }
         });
-        let req2 = await axios.get(`https://api.soundcloud.com/i1/tracks/${req.data.id}/streams`, {params: {client_id: process.env.soundcloud_key}});
+        let req2 = await axios.get(`https://api.soundcloud.com/i1/tracks/${req.data.id}/streams`, {params: {client_id: remConfig.soundcloud_key}});
         for (let format in req2.data) {
             if (req2.data.hasOwnProperty(format)) {
                 if (format.indexOf('http') > -1) {

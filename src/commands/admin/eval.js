@@ -2,7 +2,7 @@
  * Created by Julian/Wolke on 07.11.2016.
  */
 let Command = require('../../structures/command');
-let adminId = process.env.owner_id;
+let adminId = remConfig.owner_id;
 class EvalCode extends Command {
     constructor({t, mod}) {
         super();
