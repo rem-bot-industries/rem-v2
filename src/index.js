@@ -35,7 +35,7 @@ if (!process.env.environment && !remConfig.environment) {
     winston.warn('No environment config was found, setting the environment config to development!');
     remConfig.environment = 'development';
 }
-if (!process.env.statsdhost && remConfig.statsdhost) {
+if (!process.env.statsdhost && !remConfig.statsdhost) {
     winston.warn('No environment/config setting named statsdhost was found, setting the statsdhost config to localhost!');
     remConfig.statsdhost = 'localhost';
 }
