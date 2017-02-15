@@ -12,7 +12,7 @@ let Crystal;
 // }
 const Eris = require('eris');
 let StatsD = require('hot-shots');
-let dogstatsd = new StatsD({host: remConfig.statsdhost});
+let dogstatsd = new StatsD({host: remConfig.statsd_host});
 const EventEmitter = require('eventemitter3');
 const guildModel = require('./DB/guild');
 let winston = require('winston');
