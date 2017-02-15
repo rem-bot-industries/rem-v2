@@ -33,7 +33,7 @@ class AddPlaylistToQueue extends Command {
                 if (typeof(err) === 'object') {
                     err = err.err;
                 }
-                if (err !== 'joinVoice.no-voice' || err !== 'joinVoice.error' || err !== 'generic.error') {
+                if (err !== 'joinVoice.no-voice' && err !== 'joinVoice.error' && err !== 'generic.error') {
                     this.r.captureException(err, {
                         extra: {
                             userId: msg.author.id,
