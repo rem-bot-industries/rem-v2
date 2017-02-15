@@ -63,7 +63,7 @@ class ForceSkip extends Command {
         msg.channel.createMessage(this.t('vskip.vote', {
             lngs: this.msg.lang,
             prefix: this.msg.prefix,
-            perct: percentage,
+            perct: percentage.toFixed(2),
             needed: 50,
             table: table.toString()
         })).then(voteMsg => {
