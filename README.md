@@ -39,7 +39,6 @@ If the installation fails, due to not being able to clone the git repo of it, re
   "client_id":"the client id of the bot",
   "bot_id":"the bot id of the bot, if there is no field in the app screen named bot id, copy the clientid in here",
   "version": "The version of the bot",
-  "beta":true,
   "osu_token":"The token for the osu api",
   "osu_path":"./audio",
   "osu_username":"The username that should be used when downloading osu songs",
@@ -53,7 +52,6 @@ If the installation fails, due to not being able to clone the git repo of it, re
   "ws_port":8080
 }
 ```
-- Beta should always be set to true.
 - no_error_tracking disables sentry, the bugtracker of rem, leave this set to true.
 - the number of shards defines how many processes the master will spawn.
  Can be set to 1 unless you want to operate this fork on over 2500 servers.

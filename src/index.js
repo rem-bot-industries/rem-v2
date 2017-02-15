@@ -1,16 +1,20 @@
 /**Require the dependencies*/
 //uwu
 global.Promise = require('bluebird');
+//require the logger and modify it, to look cool
 const winston = require('winston');
-let version = require('./../package.json').version;
 winston.remove(winston.transports.Console);
 winston.add(winston.transports.Console, {
     'timestamp': true,
     'colorize': true
 });
+let version = require('./../package.json').version;
 const util = require('util');
 const configTemplate = require('./structures/template.js');
 let wsWorker;
+/**
+ * Use different configs based on the environment (used for easy docker run)
+ */
 let config;
 try {
     if (process.env.secret_name) {
@@ -35,7 +39,7 @@ if (!process.env.environment && !remConfig.environment) {
     winston.warn('No environment config was found, setting the environment config to development!');
     remConfig.environment = 'development';
 }
-if (!process.env.statsdhost && !remConfig.statsdhost) {
+if (!process.env.statsd_host && !remConfig.statsd_host) {
     winston.warn('No environment/config setting named statsdhost was found, setting the statsdhost config to localhost!');
     remConfig.statsdhost = 'localhost';
 }

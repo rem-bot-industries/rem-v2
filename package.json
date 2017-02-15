@@ -42,7 +42,7 @@
     "node-opus": "^0.2.2",
     "node-osu": "^1.2.0",
     "raven": "^1.1.2",
-    "recursive-readdir": "^2.1.0",
+    "recursive-readdir": "^2.1.1",
     "request": "^2.79.0",
     "shortid": "^2.2.6",
     "unzip2": "^0.2.5",

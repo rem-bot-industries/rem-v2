@@ -1,3 +1,4 @@
+//The config template, makes sure rem has all the needed config options
 module.exports = {
     owner: {
         required: false
@@ -14,9 +15,9 @@ module.exports = {
     bot_id: {
         required: true
     },
-    beta: {
-        required: false
-    },
+    // beta: {
+    //     required: false
+    // },
     osu_token: {
         required: true
     },
