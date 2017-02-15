@@ -24,7 +24,7 @@ mongoose.Promise = Promise;
 mongoose.connect(url, (err) => {
     if (err) return winston.error('Failed to connect to the database!');
 });
-let stat = remConfig.environment;
+let stat = `rem_${remConfig.environment}`;
 let blocked = require('blocked');
 
 /**
