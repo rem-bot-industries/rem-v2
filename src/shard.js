@@ -49,7 +49,7 @@ class Shard extends EventEmitter {
         this.CON = new Connector();
         this.MSG = null;
         this.HUB = hub;
-        this.SHARDED = !hub;
+        this.SHARDED = typeof (hub) !== 'undefined';
         this.MOD = new ModuleManager();
         this.GM = null;
         this.UM = null;
