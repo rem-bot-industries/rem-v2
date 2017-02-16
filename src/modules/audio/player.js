@@ -288,7 +288,7 @@ class Player extends EventEmitter {
                 } catch (e) {
                     console.error(e);
                 }
-            }, 1000 * 60 * 10);
+            }, 1000 * 60 * 10); // 10 Minutes
         }
     }
 
