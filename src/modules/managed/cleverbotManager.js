@@ -10,7 +10,6 @@ class CleverBotManager extends Manager {
     constructor() {
         super();
         this.cleverbots = {};
-        this.bot = new Clever(cleverbotUser, cleverbotKey);
     }
 
 
@@ -21,7 +20,7 @@ class CleverBotManager extends Manager {
                 msg.channel.createMessage(':pencil: ' + reply);
             });
         } else {
-            this.cleverbots[msg.channel.guild.id] = new CleverBot(this.bot);
+            this.cleverbots[msg.channel.guild.id] = new CleverBot(cleverbotKey, cleverbotUser);
             this.cleverbots[msg.channel.guild.id].createSession(msg.channel.guild.id, (err) => {
                 if (err) return msg.channel.createMessage(':x: An error with cleverbot occured!');
                 this.cleverbots[msg.channel.guild.id].talk(msg, (err, reply) => {
@@ -34,25 +33,33 @@ class CleverBotManager extends Manager {
     }
 }
 class CleverBot {
-    constructor(bot) {
-        this.clever = bot;
+    constructor(cleverbotUser, cleverbotKey) {
+        this.clever = new Clever(cleverbotUser, cleverbotKey);
     }
 
     talk(msg, cb) {
         let msgClean = msg.content.replace(re, '');
         this.clever.setNick(`wolke_rem_discordbot_${msg.channel.guild.id}`);
-        this.clever.ask(msgClean, (err, res) => {
-            if (err) return cb(err);
-            cb(null, res);
-        });
+        try {
+            this.clever.ask(msgClean, (err, res) => {
+                if (err) return cb(err);
+                cb(null, res);
+            });
+        } catch (e) {
+            return cb(e);
+        }
     }
 
     createSession(name, cb) {
         this.clever.setNick(`wolke_rem_discordbot_${name}`);
-        this.clever.create((err, session) => {
-            if (err) return cb(err);
-            cb();
-        });
+        try {
+            this.clever.create((err, session) => {
+                if (err) return cb(err);
+                cb();
+            });
+        } catch (e) {
+            return cb(e);
+        }
     }
 }
 module.exports = {class: CleverBotManager, deps: [], async: false, shortcode: 'cm'};

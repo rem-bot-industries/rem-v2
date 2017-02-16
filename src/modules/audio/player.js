@@ -34,6 +34,7 @@ class Player extends EventEmitter {
         this.song = null;
         this.channel = '';
         this.started = false;
+        this.autoLeaveTimeout = null;
         this.autoplay();
         // setInterval(() => {
         //     this.emit('sync', this.queue);
@@ -45,6 +46,7 @@ class Player extends EventEmitter {
      * @param {Song} Song - the song to play
      */
     play(Song) {
+        clearTimeout(this.autoLeaveTimeout);
         if (this.connection && this.connection.ready || this.connection && rem.options.crystal) {
             let stream;
             let link;
@@ -277,6 +279,16 @@ class Player extends EventEmitter {
             }
         } else {
             this.endSong();
+            this.autoLeaveTimeout = setTimeout(() => {
+                try {
+                    let conn = rem.voiceConnections.get(this.connection.id);
+                    if (conn) {
+                        rem.voiceConnections.leave(this.connection.id);
+                    }
+                } catch (e) {
+                    console.error(e);
+                }
+            }, 1000 * 60 * 10);
         }
     }
 

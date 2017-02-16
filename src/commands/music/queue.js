@@ -77,7 +77,7 @@ class Queue extends Command {
                 if (q === Queue.songs.length - 1) {
                     end = '```';
                 }
-                if (Queue.songs[q].duration) {
+                if (Queue.songs[q] && Queue.songs[q].duration) {
                     reply = reply + `${parseInt(q + 1)}. ${Queue.songs[q].title} ${Queue.songs[q].duration}${end}`;
                 } else {
                     reply = reply + `${parseInt(q + 1)}. ${Queue.songs[q].title}${end}`;

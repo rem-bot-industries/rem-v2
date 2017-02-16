@@ -295,7 +295,7 @@ class PermissionManager {
 
     resetDbPerm(id, cb) {
         permModel.findOne({id}, (err, Perms) => {
-            if (err) return cb(err);
+            if (err) return cb({err: err, t: 'generic.error'});
             if (Perms) {
                 permModel.remove({id}, cb);
             } else {
@@ -343,10 +343,12 @@ class PermissionManager {
     }
 
     checkRoleExistId(msg, id) {
-        let roles = msg.member.roles;
-        for (let i = 0; i < roles.length; i++) {
-            if (id === roles[i]) {
-                return roles[i];
+        if (msg.member) {
+            let roles = msg.member.roles;
+            for (let i = 0; i < roles.length; i++) {
+                if (id === roles[i]) {
+                    return roles[i];
+                }
             }
         }
         return false;

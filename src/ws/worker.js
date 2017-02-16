@@ -107,14 +107,19 @@ class Worker extends EventEmitter {
 
     setupHeartbeat(beat) {
         this.hearbeatInterval = setInterval(() => {
-            this.ws.send(JSON.stringify({
-                op: OPCODE.hearbeat,
-                shardID: this.shardId,
-                shardToken: remConfig.shard_token
-            }));
-            this.hearbeatTimeout = setTimeout(() => {
-                console.error('Master did not respond!');
-            }, beat + 5000);
+            try {
+                this.ws.send(JSON.stringify({
+                    op: OPCODE.hearbeat,
+                    shardID: this.shardId,
+                    shardToken: remConfig.shard_token
+                }));
+                this.hearbeatTimeout = setTimeout(() => {
+                    console.error('Master did not respond!');
+                }, beat + 5000);
+            } catch (e) {
+                console.error(e);
+                this.reconnect();
+            }
         }, beat - 3000);
     }
 

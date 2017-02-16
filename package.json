@@ -38,7 +38,7 @@
     "merge-json": "0.1.0-b.3",
     "minimist": "^1.2.0",
     "moment": "^2.17.1",
-    "mongoose": "^4.8.2",
+    "mongoose": "^4.8.3",
     "node-opus": "^0.2.2",
     "node-osu": "^1.2.0",
     "raven": "^1.1.2",

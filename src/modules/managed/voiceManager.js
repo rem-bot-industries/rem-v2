@@ -48,8 +48,10 @@ class VoiceManager extends Manager {
         if (msg.channel.guild) {
             let conn = rem.voiceConnections.get(msg.channel.guild.id);
             if (conn) {
-                this.players[msg.channel.guild.id].setQueueSongs([]);
-                this.players[msg.channel.guild.id].endSong();
+                if (this.players[msg.channel.guild.id]) {
+                    this.players[msg.channel.guild.id].setQueueSongs([]);
+                    this.players[msg.channel.guild.id].endSong();
+                }
                 rem.voiceConnections.leave(msg.channel.guild.id);
                 cb();
             } else {
