@@ -20,7 +20,7 @@ class CleverBotManager extends Manager {
                 msg.channel.createMessage(':pencil: ' + reply);
             });
         } else {
-            this.cleverbots[msg.channel.guild.id] = new CleverBot(cleverbotKey, cleverbotUser);
+            this.cleverbots[msg.channel.guild.id] = new CleverBot(cleverbotUser, cleverbotKey);
             this.cleverbots[msg.channel.guild.id].createSession(msg.channel.guild.id, (err) => {
                 if (err) return msg.channel.createMessage(':x: An error with cleverbot occured!');
                 this.cleverbots[msg.channel.guild.id].talk(msg, (err, reply) => {
