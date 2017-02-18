@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "echo \"Error: no test specified\" && exit 0",
     "docs": "jsdoc -c .jsdoc.json -r index.js",
     "patch": "npm --no-git-tag-version version patch",
     "minor": "npm --no-git-tag-version version minor",
@@ -43,6 +43,7 @@
     "node-osu": "^1.2.0",
     "raven": "^1.1.2",
     "recursive-readdir": "^2.1.1",
+    "redis": "^2.6.5",
     "request": "^2.79.0",
     "shortid": "^2.2.6",
     "unzip2": "^0.2.5",

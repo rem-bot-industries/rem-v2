@@ -24,6 +24,19 @@ mongoose.Promise = Promise;
 mongoose.connect(url, (err) => {
     if (err) return winston.error('Failed to connect to the database!');
 });
+let redis = require("redis");
+let redisClient;
+if (remConfig.redis_enabled) {
+    Promise.promisifyAll(redis.RedisClient.prototype);
+    Promise.promisifyAll(redis.Multi.prototype);
+    redisClient = redis.createClient();
+    redisClient.select(remConfig.redis_database, function (err) {
+        if (err) return console.error(err);
+    });
+    redisClient.on("error", (err) => {
+        console.log("Error " + err);
+    });
+}
 let stat = `rem_${remConfig.environment}`;
 let blocked = require('blocked');
 
@@ -55,6 +68,10 @@ class Shard extends EventEmitter {
         this.UM = null;
         this.interval = null;
         this.Raven = raven;
+        this.Redis = null;
+        if (remConfig.redis_enabled) {
+            this.Redis = redisClient;
+        }
         this.init();
     }
 
@@ -136,7 +153,7 @@ class Shard extends EventEmitter {
      * 6. A Interval gets created to update data every 5 mins
      */
     clientReady() {
-        this.MOD.init(this.HUB, this.Raven).then(() => {
+        this.MOD.init(this.HUB, this.Raven, this.Redis).then(() => {
             this.ready = true;
             this.MSG = this.MOD.getMod('mm');
             this.GM = this.MOD.getMod('gm');
@@ -249,6 +266,7 @@ class Shard extends EventEmitter {
     shutdown() {
         clearInterval(this.interval);
         mongoose.connection.close();
+        redisClient.quit();
         try {
             this.bot.disconnect();
         } catch (e) {
@@ -262,7 +280,18 @@ class Shard extends EventEmitter {
         }, 1000 * 60);
     }
 
-    sendStats() {
+    async sendStats() {
+        if (remConfig.redis_enabled) {
+            await this.Redis.set(`guild_size_${this.id}`, this.bot.guilds.size);
+            await this.Redis.set(`user_size_${this.id}`, this.bot.guilds.map(g => g.memberCount).reduce((a, b) => a + b));
+            await this.Redis.set(`shard_stats_${this.id}`, JSON.stringify({
+                users: this.bot.guilds.map(g => g.memberCount).reduce((a, b) => a + b),
+                guilds: this.bot.guilds.size,
+                channels: this.bot.guilds.map(g => g.channels.size).reduce((a, b) => a + b),
+                voice: Object.keys(this.bot.voiceConnections.guilds).length,
+                voice_playing: Object.values(this.bot.voiceConnections.guilds).filter(conn => conn.playing).length
+            }))
+        }
         if (this.SHARDED) {
             this.HUB.emitRemote('_guild_update', {sid: this.id, data: this.bot.guilds.size});
             this.HUB.emitRemote('_user_update', {

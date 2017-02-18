@@ -15,7 +15,7 @@ class ModuleManager {
         this.rawMods = {};
     }
 
-    init(hub, Raven) {
+    init(hub, Raven, Redis) {
         if (hub) {
             this.mods['hub'] = hub;
         } else {
@@ -25,6 +25,11 @@ class ModuleManager {
             this.mods['raven'] = Raven;
         } else {
             winston.warn(`There was no error tracking client passed, this means that either errortracking is disabled and you can ignore this message or that something went seriously wrong!`);
+        }
+        if (Redis) {
+            this.mods['redis'] = Redis;
+        } else {
+            winston.warn(`There was no redis client passed, this means that either redis is disabled and you can ignore this message or that something went seriously wrong!`);
         }
         let that = this;
         return new Promise(function (resolve, reject) {

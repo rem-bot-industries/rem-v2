@@ -72,6 +72,11 @@ let client;
 if (remConfig.use_ws) {
     let wsService = new wsWorker();
     wsService.on('ws_ready', (data) => {
+        if (client && !data.reshard) {
+            console.log('nice!');
+        }
+    });
+    wsService.on('ws_reshard', (data) => {
         if (client) {
             try {
                 client.shutdown();
@@ -83,7 +88,6 @@ if (remConfig.use_ws) {
         setTimeout(() => {
             client = new Shard(data.sid, data.shards, wsService, Raven);
         }, 500);
-
     });
     wsService.on('shutdown_client', () => {
         if (client) {

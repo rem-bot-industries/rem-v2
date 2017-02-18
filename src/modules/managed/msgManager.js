@@ -69,10 +69,10 @@ class MessageManager extends Manager {
 
     }
 
-    check(msg) {
+    async check(msg) {
         if (this.ready) {
-            this.loadData(msg, (err, Data) => {
-                if (err) return winston.error(err);
+            try {
+                let Data = await this.loadData(msg);
                 let Guild = Data.guild;
                 let User = Data.user;
                 msg.db = Guild;
@@ -143,47 +143,39 @@ class MessageManager extends Manager {
                         // }).catch(err => winston.error);
                     }
                 }
-            });
-        }
-    }
-
-    loadData(msg, cb) {
-        async.parallel({
-            guild: (cb) => {
-                this.loadGuild(msg, cb);
-            },
-            user: (cb) => {
-                this.loadUser(msg, cb);
+            } catch (e) {
+                winston.error(e);
             }
-        }, (err, results) => {
-            if (err) return cb(err);
-            cb(null, results);
-        });
-    }
-
-    loadGuild(msg, cb) {
-        if (msg.channel.guild) {
-            this.g.loadGuild(msg.channel.guild.id, (err, Guild) => {
-                if (err) return cb(err);
-                if (typeof (Guild) === 'undefined') {
-                    Guild = {};
-                }
-                if (typeof (Guild.lng) === 'undefined') {
-                    Guild.lng = 'en';
-                }
-                if (typeof (Guild.prefix) === 'undefined') {
-                    Guild.prefix = '!w.';
-                }
-                cb(null, Guild);
-            });
-        } else {
-            let Guild = {prefix: '!w.', lng: 'en'};
-            cb(null, Guild);
         }
     }
 
-    loadUser(msg, cb) {
-        this.u.loadUser(msg.author, cb);
+    async loadData(msg, cb) {
+        let results = {};
+        results.guild = await this.loadGuild(msg);
+        results.user = await this.loadUser(msg);
+        return Promise.resolve(results);
+    }
+
+    async loadGuild(msg) {
+        if (msg.channel.guild) {
+            let Guild = await this.g.loadGuild(msg.channel.guild.id);
+            if (typeof (Guild) === 'undefined') {
+                Guild = {};
+            }
+            if (typeof (Guild.lng) === 'undefined') {
+                Guild.lng = 'en';
+            }
+            if (typeof (Guild.prefix) === 'undefined') {
+                Guild.prefix = '!w.';
+            }
+            return Guild;
+        } else {
+            return {prefix: '!w.', lng: 'en'};
+        }
+    }
+
+    async loadUser(msg) {
+        return this.u.loadUser(msg.author);
     }
 }
 module.exports = {
