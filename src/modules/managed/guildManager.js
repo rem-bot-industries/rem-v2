@@ -12,8 +12,9 @@ if (remConfig.redis_enabled) {
 class GuildManager extends Manager {
     constructor({mod}) {
         super();
+        this.mod = mod;
         if (remConfig.redis_enabled) {
-            guildCache = new guildCache(mod.getMod('redis'))
+            guildCache = new guildCache(this.mod.getMod('redis'))
         }
     }
 

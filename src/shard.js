@@ -30,9 +30,7 @@ if (remConfig.redis_enabled) {
     Promise.promisifyAll(redis.RedisClient.prototype);
     Promise.promisifyAll(redis.Multi.prototype);
     redisClient = redis.createClient();
-    redisClient.select(remConfig.redis_database, function (err) {
-        if (err) return console.error(err);
-    });
+    redisClient.select(remConfig.redis_database);
     redisClient.on("error", (err) => {
         console.log("Error " + err);
     });
