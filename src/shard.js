@@ -69,8 +69,12 @@ class Shard extends EventEmitter {
         this.Redis = null;
         if (remConfig.redis_enabled) {
             this.Redis = redisClient;
+            setTimeout(() => {
+                this.init();
+            }, 1000)
+        } else {
+            this.init();
         }
-        this.init();
     }
 
     /**
