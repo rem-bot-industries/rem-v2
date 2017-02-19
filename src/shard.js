@@ -234,12 +234,45 @@ class Shard extends EventEmitter {
         this.sendStats();
     }
 
-    guildMemberAdd(member) {
-
+    async guildMemberAdd(Guild, Member) {
+        if (this.ready) {
+            try {
+                let greeting = await this.SM.get(Guild.id, 'guild', 'greeting.text');
+                let greetingChannel = await this.SM.get(Guild.id, 'guild', 'greeting.channel');
+                if (greeting && greetingChannel) {
+                    let channel = Guild.channels.find(c => c.id === greetingChannel.value);
+                    if (channel) {
+                        let msg = greeting.value;
+                        msg = msg.replace('%USER%', Member.mention);
+                        msg = msg.replace('%USER_NO_MENTION%', Member.username ? Member.username : Member.user.username);
+                        msg = msg.replace('%GUILD%', Guild.name);
+                        await channel.createMessage(msg);
+                    }
+                }
+            } catch (e) {
+                winston.error(e);
+            }
+        }
     }
 
-    guildMemberRemove(member) {
-
+    async guildMemberRemove(Guild, Member) {
+        if (this.ready) {
+            try {
+                let farewell = await this.SM.get(Guild.id, 'guild', 'farewell.text');
+                let farewellChannel = await this.SM.get(Guild.id, 'guild', 'farewell.channel');
+                if (farewell && farewellChannel) {
+                    let channel = Guild.channels.find(c => c.id === farewellChannel.value);
+                    if (channel) {
+                        let msg = farewell.value;
+                        msg = msg.replace('%USER%', Member.username ? Member.username : Member.user.username);
+                        msg = msg.replace('%GUILD%', Guild.name);
+                        await channel.createMessage(msg);
+                    }
+                }
+            } catch (e) {
+                winston.error(e);
+            }
+        }
     }
 
     voiceUpdate(member, channel, leave) {

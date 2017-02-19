@@ -17,7 +17,7 @@ class WhoFuckedWithMe extends Command {
     run(msg) {
         let content = msg.content.substr(msg.prefix.length + this.cmd.length).trim();
         msgModel.findOne({id: content}, (err, MSG) => {
-            if (err) return msg.channel.createMessage(MSG);
+            if (err) return msg.channel.createMessage('nya that was bad senpai, an error occured!');
             if (MSG) {
                 let reply = {
                     embed: {
@@ -30,6 +30,8 @@ class WhoFuckedWithMe extends Command {
                     }
                 };
                 msg.channel.createMessage(reply);
+            } else {
+                msg.channel.createMessage('nya~ That was bad senpai, nothing was found!');
             }
         });
     }

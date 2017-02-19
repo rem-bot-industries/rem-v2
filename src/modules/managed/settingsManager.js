@@ -23,23 +23,35 @@ class SettingsManager extends Manager {
         }
     }
 
-    async get(id, type, key) {
-        let setting = await settingsCache.get(`${id}_${type}_${key}`);
+    async get(discordId, type, key) {
+        let setting = await settingsCache.get(`${discordId}_${type}_${key}`);
         if (setting) {
             return Promise.resolve(setting);
         }
-        return settingsModel.find({id, type, key});
+        let id = `${discordId}_${type}_${key}`;
+        setting = await settingsModel.findOne({id: id, type: type, key: key});
+        if (setting) {
+            await settingsCache.set(setting.id, setting);
+        }
+    }
+
+    async getOldSetting(oldSetting) {
+        let setting = await settingsCache.get(oldSetting.id);
+        if (setting) {
+            return Promise.resolve(setting);
+        }
+        return settingsModel.findOne({id: oldSetting.id, type: oldSetting.type, key: oldSetting.key});
     }
 
     async set(newSetting) {
-        let oldSetting = await settingsCache.get(`${newSetting.id}_${newSetting.type}_${newSetting.key}`);
+        let oldSetting = await this.getOldSetting(newSetting);
         if (oldSetting.key === newSetting.key && oldSetting.value === newSetting.value) return Promise.resolve(oldSetting);
         await settingsModel.update({id: newSetting.id}, {$set: {value: newSetting.value}});
-        if (!remConfig.enable_redis) {
+        await settingsCache.set(newSetting.id, newSetting);
+        if (!remConfig.redis_enabled) {
             this.emitCacheUpdate(newSetting);
         }
         return Promise.resolve(newSetting);
-
     }
 
     async create(discordId, type, key, value) {
@@ -50,7 +62,13 @@ class SettingsManager extends Manager {
             value
         });
         await setting.save();
+        await settingsCache.set(setting.id, setting);
         return Promise.resolve(setting);
+    }
+
+    async remove(setting) {
+        await settingsCache.remove(setting.id);
+        return settingsModel.remove({id: setting.id, type: setting.type, key: setting.key});
     }
 
     emitCacheUpdate(data) {
@@ -58,4 +76,4 @@ class SettingsManager extends Manager {
     }
 
 }
-module.exports = {class: SettingsManager, deps: ['lm'], async: false, shortcode: 'sm'};
+module.exports = {class: SettingsManager, deps: [], async: false, shortcode: 'sm'};

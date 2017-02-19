@@ -10,7 +10,7 @@ let StatsD = require('hot-shots');
 let dogstatsd = new StatsD({host: remConfig.statsd_host});
 let stat = `rem_${remConfig.environment}`;
 class MessageManager extends Manager {
-    constructor({cm, lm, gm, vm, um, pm, rm, stm, mod}) {
+    constructor({cm, lm, gm, vm, um, pm, rm, sm, stm, mod}) {
         super();
         this.setMaxListeners(20);
         this.l = lm;
@@ -20,6 +20,7 @@ class MessageManager extends Manager {
         this.g = gm;
         this.p = pm;
         this.c = cm;
+        this.sm = sm;
         this.s = stm;
         this.u = um;
         this.r = rm;
@@ -180,7 +181,7 @@ class MessageManager extends Manager {
 }
 module.exports = {
     class: MessageManager,
-    deps: ['lm', 'vm', 'gm', 'um', 'pm', 'rm', 'cm', 'stm'],
+    deps: ['lm', 'vm', 'gm', 'um', 'pm', 'rm', 'cm', 'sm', 'stm'],
     async: true,
     shortcode: 'mm'
 };
