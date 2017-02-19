@@ -28,12 +28,22 @@ class Love extends Command {
                     await this.u.love(target, inc);
                     let reps = await this.u.addLoveCd(msg.dbUser);
                     let lowest = Math.min(...reps);
-                    let reply = this.t('love.success', {
-                        lngs: msg.lang,
-                        target: target.username,
-                        rep: inc,
-                        uses: 2 - reps.length
-                    });
+                    let reply;
+                    if (inc === 1) {
+                        reply = this.t('love.success', {
+                            lngs: msg.lang,
+                            target: target.username,
+                            rep: inc,
+                            uses: 2 - reps.length
+                        });
+                    } else {
+                        reply = this.t('love.success-remove', {
+                            lngs: msg.lang,
+                            target: target.username,
+                            rep: inc,
+                            uses: 2 - reps.length
+                        });
+                    }
                     if (reps.length === 2) {
                         reply += this.t('love.next', {lngs: msg.lang, time: moment().to(lowest)});
                     }
