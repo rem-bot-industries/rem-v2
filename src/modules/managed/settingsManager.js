@@ -3,92 +3,46 @@
  */
 let Manager = require('../../structures/manager');
 let settingsModel = require('../../DB/setting');
-let guildSettingCache = require('../../structures/cache');
-let channelSettingCache = require('../../structures/cache');
-let userSettingCache = require('../../structures/cache');
-let roleSettingsCache = require('../../structures/cache');
+let Cache;
+if (remConfig.redis_enabled) {
+    Cache = require('./../../structures/redisCache');
+} else {
+    Cache = require('./../../structures/cache');
+    settingsCache = Cache;
+}
+let settingsCache;
 class SettingsManager extends Manager {
     constructor({mod}) {
         super();
+        this.version = '1.0.0';
+        this.name = 'Settingsmanager';
+        this.shortcode = 'sm';
         this.mod = mod;
-    }
-
-    updateCache(data) {
-        switch (data.type) {
-            case 'guild': {
-                if (guildSettingCache.get(data.id)) {
-                    guildSettingCache.set(data.id, data);
-                }
-                return;
-            }
-            case 'channel': {
-                if (channelSettingCache.get(data.id)) {
-                    channelSettingCache.set(data.id, data);
-                }
-                return;
-            }
-            case 'role': {
-                if (roleSettingsCache.get(data.id)) {
-                    roleSettingsCache.set(data.id, data);
-                }
-                return;
-            }
-            case 'user': {
-                if (userSettingCache.get(data.id)) {
-                    userSettingCache.set(data.id, data);
-                }
-                return;
-            }
+        if (remConfig.redis_enabled) {
+            settingsCache = new Cache(this.mod.getMod('redis'));
         }
     }
 
-    getValFromCache(id, type) {
-        switch (type) {
-            case 'guild': {
-                if (guildSettingCache.get(id)) {
-                    return guildSettingCache.get(id);
-                }
-                return;
-            }
-            case 'channel': {
-                if (channelSettingCache.get(id)) {
-                    return channelSettingCache.get(id);
-                }
-                return;
-            }
-            case 'role': {
-                if (roleSettingsCache.get(id)) {
-                    return roleSettingsCache.get(id);
-                }
-                return;
-            }
-            case 'user': {
-                if (userSettingCache.get(id)) {
-                    return userSettingCache.get(id)
-                }
-                return;
-            }
-        }
-    }
-
-    async getSetting(id, type, key) {
-        let setting = this.getValFromCache(id, type);
+    async get(id, type, key) {
+        let setting = await settingsCache.get(`${id}_${type}_${key}`);
         if (setting) {
             return Promise.resolve(setting);
         }
         return settingsModel.find({id, type, key});
     }
 
-    async setSetting(newSetting) {
-        let oldSetting = this.getValFromCache(newSetting.id, newSetting.type);
-        if (oldSetting.key === newSetting.key && oldSetting.value === newSetting.value) return;
+    async set(newSetting) {
+        let oldSetting = await settingsCache.get(`${newSetting.id}_${newSetting.type}_${newSetting.key}`);
+        if (oldSetting.key === newSetting.key && oldSetting.value === newSetting.value) return Promise.resolve(oldSetting);
         await settingsModel.update({id: newSetting.id}, {$set: {value: newSetting.value}});
-        this.emitCacheUpdate(newSetting);
+        if (!remConfig.enable_redis) {
+            this.emitCacheUpdate(newSetting);
+        }
         return Promise.resolve(newSetting);
 
     }
 
-    async createSetting(discordId, type, key, value) {
+    async create(discordId, type, key, value) {
         let setting = new settingsModel({
             id: `${discordId}_${type}_${key}`,
             type,
