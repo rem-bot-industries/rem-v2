@@ -70,7 +70,7 @@ class UserManager extends Manager {
     async love(target, rep) {
         let user = await this.loadUser(target);
         user.rep += rep;
-        await userCache.set(`user_${user.id}`, User);
+        await userCache.set(`user_${user.id}`, user);
         if (!remConfig.redis_enabled) {
             this.sendCacheUpdate(user);
         }
@@ -89,7 +89,7 @@ class UserManager extends Manager {
         return false;
     }
 
-    async addLoveCd(user, cb) {
+    async addLoveCd(user) {
         let reps = [];
         for (let i = 0; i < user.reps.length; i++) {
             if (user.reps[i] > Date.now()) {
@@ -98,7 +98,7 @@ class UserManager extends Manager {
         }
         reps.push(Date.now() + 1000 * 60 * 60 * 24);
         user.reps = reps;
-        await userCache.set(`user_${user.id}`, User);
+        await userCache.set(`user_${user.id}`, user);
         if (!remConfig.redis_enabled) {
             this.sendCacheUpdate(user);
         }
@@ -170,7 +170,7 @@ class UserManager extends Manager {
             return s.id === data.id;
         });
         user.servers[i] = data;
-        await userCache.set(`user_${user.id}`, User);
+        await userCache.set(`user_${user.id}`, user);
         if (!remConfig.redis_enabled) {
             this.sendCacheUpdate(user);
         }

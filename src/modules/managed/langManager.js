@@ -1,5 +1,6 @@
 /**
  * Created by Julian/Wolke on 07.11.2016.
+ *
  */
 let Manager = require('../../structures/manager');
 const winston = require('winston');
@@ -7,7 +8,6 @@ let fs = require('fs');
 let path = require('path');
 let util = require('util');
 let i18next = require('i18next');
-Promise.promisifyAll(i18next);
 Promise.promisifyAll(fs);
 let Backend = require('i18next-node-fs-backend');
 class LangManager extends Manager {
@@ -25,6 +25,7 @@ class LangManager extends Manager {
     }
 
     async load() {
+        let that = this;
         let backendOptions = {
             loadPath: '../rem_translate/{{lng}}/{{ns}}.json',
             addPath: '../rem_translate/{{lng}}/{{ns}}.missing.json',
@@ -32,16 +33,23 @@ class LangManager extends Manager {
         };
         let dirs = await this.getDirs('rem_translate/');
         this.list = dirs;
-        let t = await i18next.use(Backend).init({
-            backend: backendOptions,
-            lng: 'en',
-            fallbacklngs: false,
-            preload: dirs,
-            load: 'all'
+        return new Promise(function (resolve, reject) {
+            i18next.use(Backend).init({
+                backend: backendOptions,
+                lng: 'en',
+                fallbacklngs: false,
+                preload: dirs,
+                load: 'all'
+            }, (err, t) => {
+                if (err) {
+                    winston.error('Error at i18n' + err);
+                    reject(err);
+                } else {
+                    that.t = t;
+                    resolve(t);
+                }
+            });
         });
-        this.t = t;
-        return Promise.resolve(t);
-
     }
 
     async getDirs(rootDir) {
