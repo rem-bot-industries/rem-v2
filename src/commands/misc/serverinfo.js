@@ -19,26 +19,37 @@ class ServerInfo extends Command {
         this.buildReply(msg);
     }
 
-    buildReply(msg) {
-        let avatar = `${msg.channel.guild.iconURL}?size=1024`;
-        this.g.loadGuild(msg.channel.guild.id, (err, dbGuild) => {
-            if (err) return winston.error(err);
+    async buildReply(msg) {
+        /**
+         * @type {string}
+         */
+
+            // let avatar = msg.channel.guild.iconURL;
+        let avatar = msg.channel.guild.iconURL.substring(0, msg.channel.guild.iconURL.length - 3);
+        avatar += "webp";
+        try {
+            // let dbGuild = await this.g.loadGuild(msg.channel.guild.id);
             let reply = {
                 embed: {
                     author: {
                         name: msg.channel.guild.name,
                         icon_url: avatar
                     },
-                    fields: this.buildGuildInfo(msg, dbGuild),
+                    fields: this.buildGuildInfo(msg),
                     image: {url: avatar},
                     color: 0x00ADFF
                 }
             };
+            // console.log(JSON.stringify(reply));
             msg.channel.createMessage(reply);
-        });
+        } catch (e) {
+            console.log(e);
+            // return winston.error(e);
+        }
+
     }
 
-    buildGuildInfo(msg, dbGuild) {
+    buildGuildInfo(msg) {
         let fields = [];
         let guild = msg.channel.guild;
         let voice = guild.channels.filter(c => c.type === 2);

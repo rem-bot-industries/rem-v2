@@ -25,16 +25,6 @@ mongoose.connect(url, (err) => {
     if (err) return winston.error('Failed to connect to the database!');
 });
 let redis = require("redis");
-let redisClient;
-if (remConfig.redis_enabled) {
-    Promise.promisifyAll(redis.RedisClient.prototype);
-    Promise.promisifyAll(redis.Multi.prototype);
-    redisClient = redis.createClient();
-    redisClient.select(remConfig.redis_database);
-    redisClient.on("error", (err) => {
-        console.log("Error " + err);
-    });
-}
 let stat = `rem_${remConfig.environment}`;
 let blocked = require('blocked');
 
@@ -68,10 +58,17 @@ class Shard extends EventEmitter {
         this.Raven = raven;
         this.Redis = null;
         if (remConfig.redis_enabled) {
-            this.Redis = redisClient;
-            setTimeout(() => {
+            Promise.promisifyAll(redis.RedisClient.prototype);
+            Promise.promisifyAll(redis.Multi.prototype);
+            let redisClient = redis.createClient();
+            redisClient.select(remConfig.redis_database);
+            redisClient.on("error", (err) => {
+                console.log("Error " + err);
+            });
+            redisClient.on("ready", () => {
                 this.init();
-            }, 1000)
+            });
+            this.Redis = redisClient;
         } else {
             this.init();
         }
@@ -268,7 +265,9 @@ class Shard extends EventEmitter {
     shutdown() {
         clearInterval(this.interval);
         mongoose.connection.close();
-        redisClient.quit();
+        if (remConfig.redis_enabled) {
+            this.Redis.quit();
+        }
         try {
             this.bot.disconnect();
         } catch (e) {

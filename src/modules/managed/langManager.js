@@ -7,6 +7,8 @@ let fs = require('fs');
 let path = require('path');
 let util = require('util');
 let i18next = require('i18next');
+Promise.promisifyAll(i18next);
+Promise.promisifyAll(fs);
 let Backend = require('i18next-node-fs-backend');
 class LangManager extends Manager {
     constructor() {
@@ -18,69 +20,53 @@ class LangManager extends Manager {
         this.list = null;
     }
 
-    init() {
-        let that = this;
-        return new Promise(function (resolve, reject) {
-            that.load().then(t => {
-                resolve(t);
-            }).catch(err => reject(err));
-        });
+    async init() {
+        return this.load();
     }
 
-    load() {
-        let that = this;
-        return new Promise(function (resolve, reject) {
-            let backendOptions = {
-                loadPath: '../rem_translate/{{lng}}/{{ns}}.json',
-                addPath: '../rem_translate/{{lng}}/{{ns}}.missing.json',
-                jsonIndent: 2
-            };
-            that.getDirs('rem_translate/', (list) => {
-                that.list = list;
-                i18next.use(Backend).init({
-                    backend: backendOptions,
-                    lng: 'en',
-                    fallbacklngs: false,
-                    preload: list,
-                    load: 'all'
-                }, (err, t) => {
-                    if (err) {
-                        winston.error('Error at i18n' + err);
-                        reject(err);
-                    } else {
-                        that.t = t;
-                        resolve(t);
-                    }
-                });
-            });
+    async load() {
+        let backendOptions = {
+            loadPath: '../rem_translate/{{lng}}/{{ns}}.json',
+            addPath: '../rem_translate/{{lng}}/{{ns}}.missing.json',
+            jsonIndent: 2
+        };
+        let dirs = await this.getDirs('rem_translate/');
+        this.list = dirs;
+        let t = await i18next.use(Backend).init({
+            backend: backendOptions,
+            lng: 'en',
+            fallbacklngs: false,
+            preload: dirs,
+            load: 'all'
         });
+        this.t = t;
+        return Promise.resolve(t);
+
     }
 
-    getDirs(rootDir, cb) {
+    async getDirs(rootDir) {
         let langPath = path.join(__dirname, `../../../${rootDir}`);
         // console.log(langPath);
-        fs.readdir(langPath, function (err, files) {
-            if (err) {
-                winston.error(err);
-                return cb(err);
-            }
-            let dirs = [];
-            // console.log(files);
-            for (let index = 0; index < files.length; ++index) {
-                let file = files[index];
-                if (file[0] !== '.') {
-                    let filePath = langPath + '/' + file;
-                    fs.stat(filePath, function (err, stat) {
-                        if (stat.isDirectory()) {
-                            dirs.push(this.file);
-                        }
-                        if (files.length === (this.index + 1)) {
-                            return cb(dirs);
-                        }
-                    }.bind({index: index, file: file}));
+        let files = await fs.readdirAsync(langPath);
+        // if (err) {
+        //     winston.error(err);
+        //     return cb(err);
+        // }
+        let dirs = [];
+        // console.log(files);
+        for (let index = 0; index < files.length; ++index) {
+            let file = files[index];
+            if (file[0] !== '.') {
+                let filePath = langPath + '/' + file;
+                let stat = await fs.statAsync(filePath);
+                if (stat.isDirectory()) {
+                    dirs.push(this.file);
+                }
+                if (files.length === (this.index + 1)) {
+                    return Promise.resolve(dirs);
                 }
             }
-        });
+        }
     }
 
     getT() {

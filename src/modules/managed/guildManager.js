@@ -3,18 +3,21 @@
  */
 let Manager = require('../../structures/manager');
 let guildModel = require('../../DB/guild');
-let guildCache;
+let Cache;
 if (remConfig.redis_enabled) {
-    guildCache = require('./../../structures/redisCache');
+    Cache = require('./../../structures/redisCache');
 } else {
-    guildCache = require('./../../structures/cache');
+    Cache = require('./../../structures/cache');
+    guildCache = Cache;
 }
+let guildCache;
 class GuildManager extends Manager {
     constructor({mod}) {
         super();
         this.mod = mod;
         if (remConfig.redis_enabled) {
-            guildCache = new guildCache(this.mod.getMod('redis'))
+            let redis = this.mod.getMod('redis');
+            guildCache = new Cache(redis);
         }
     }
 
@@ -36,7 +39,7 @@ class GuildManager extends Manager {
     async loadGuild(id) {
         let Guild = await guildCache.get(`guild_${id}`);
         if (Guild) {
-            return Guild
+            return Guild;
         }
         Guild = await guildModel.findOne({id: id});
         if (Guild) {

@@ -149,7 +149,7 @@ class MessageManager extends Manager {
         }
     }
 
-    async loadData(msg, cb) {
+    async loadData(msg) {
         let results = {};
         results.guild = await this.loadGuild(msg);
         results.user = await this.loadUser(msg);

@@ -37,14 +37,16 @@ class ModuleManager {
                 if (err) return winston.error(err);
                 // winston.info(files);
                 for (let file of files) {
-                    try {
-                        let mod = require(file);
-                        that.loadRawMod(mod);
-                    } catch (e) {
-                        console.error(`Error while requiring mod ${file}`);
-                        console.error(e);
-                        console.error(e.stack);
-                        reject(e);
+                    if (file.endsWith('.js')) {
+                        try {
+                            let mod = require(file);
+                            that.loadRawMod(mod);
+                        } catch (e) {
+                            console.error(`Error while requiring mod ${file}`);
+                            console.error(e);
+                            console.error(e.stack);
+                            reject(e);
+                        }
                     }
                 }
                 async.eachSeries(that.rawMods, (mod, cb) => {
@@ -70,11 +72,12 @@ class ModuleManager {
     }
 
     load(mod) {
-        //winston.info(mod.shortcode);
+        // winston.info(`Loading mod ${mod.shortcode}`);
         let that = this;
         let protoDep = {mod: this};
         return new Promise(function (resolve, reject) {
             if (that.mods[mod.shortcode]) {
+                // winston.info(`Mod ${mod.shortcode} is already loaded.`);
                 resolve(that.mods[mod.shortcode]);
             } else if (mod.deps.length > 0) {
                 that.resolveDependencies(mod.deps).then(resolvedDeps => {
@@ -85,7 +88,7 @@ class ModuleManager {
                 });
             } else {
                 if (that.rawMods[mod.shortcode].async) {
-                    //winston.info(`Mod ${mod.shortcode} is async`);
+                    // winston.info(`Mod ${mod.shortcode} is async`);
                     that.instantiateMod(mod, protoDep).then(instantiatedMod => {
                         resolve(instantiatedMod);
                     });
@@ -99,37 +102,35 @@ class ModuleManager {
         });
     }
 
-    instantiateMod(mod, deps) {
-        let that = this;
-        return new Promise(function (resolve, reject) {
-            let modInstance = new mod.class(deps);
-            if (mod.async) {
-                //winston.info(`Mod ${mod.shortcode} is being init'D`);
-                modInstance.init().then(() => {
-                    //winston.info(`resolved mod ${mod.shortcode}`);
-                    that.mods[mod.shortcode] = modInstance;
-                    that.mods[mod.shortcode].ready = true;
-                    resolve(modInstance);
-                });
-            } else {
-                //winston.info(`insta resolved mod ${mod.shortcode}`);
-                that.mods[mod.shortcode] = modInstance;
-                that.mods[mod.shortcode].ready = true;
-                resolve(modInstance);
-            }
-        });
+    async instantiateMod(mod, deps) {
+        let modInstance = new mod.class(deps);
+        if (mod.async) {
+            // winston.info(`Mod ${mod.shortcode} is being initiated!`);
+            await modInstance.init();
+            // winston.info(`Instantiated async mod ${mod.shortcode}`);
+            this.mods[mod.shortcode] = modInstance;
+            this.mods[mod.shortcode].ready = true;
+            return Promise.resolve(modInstance);
+        } else {
+            // winston.info(`Instantiated non async mod ${mod.shortcode}`);
+            this.mods[mod.shortcode] = modInstance;
+            this.mods[mod.shortcode].ready = true;
+            return Promise.resolve(modInstance);
+        }
 
     }
 
     resolveDependencies(deps) {
-        return new Promise((resolve, reject) => {
+        let that = this;
+        return new Promise(function (resolve, reject) {
             let resolvedDeps = {};
             async.each(deps, (dep, cb) => {
-                if (this.mods[dep]) {
-                    resolvedDeps[dep] = this.mods[dep];
+                if (that.mods[dep]) {
+                    // winston.info(`Resolved dependency ${dep} from cache`);
+                    resolvedDeps[dep] = that.mods[dep];
                     cb();
                 } else {
-                    this.load(this.rawMods[dep]).then(instantiatedMod => {
+                    that.load(that.rawMods[dep]).then(instantiatedMod => {
                         resolvedDeps[dep] = instantiatedMod;
                         cb();
                     }).catch(err => cb(err));

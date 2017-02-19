@@ -17,6 +17,7 @@ class RedisCache {
         let val = JSON.stringify(value);
         // console.log(value);
         // console.log(id);
+        await this.client.expireAsync(id, 60 * 60);
         return this.client.setAsync(id, val);
     }
 

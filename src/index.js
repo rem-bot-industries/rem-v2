@@ -1,6 +1,9 @@
 /**Require the dependencies*/
 //uwu
 global.Promise = require('bluebird');
+require('source-map-support').install({
+    handleUncaughtExceptions: false
+});
 //require the logger and modify it, to look cool
 const winston = require('winston');
 winston.remove(winston.transports.Console);

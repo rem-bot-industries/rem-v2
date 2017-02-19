@@ -3,12 +3,14 @@
  */
 let Manager = require('../../structures/manager');
 let userModel = require('../../DB/user');
-let userCache;
+let Cache;
 if (remConfig.redis_enabled) {
-    userCache = require('./../../structures/redisCache');
+    Cache = require('./../../structures/redisCache');
 } else {
-    userCache = require('./../../structures/cache');
+    Cache = require('./../../structures/cache');
+    userCache = Cache;
 }
+let userCache;
 let _ = require('lodash');
 class UserManager extends Manager {
     constructor({mod}) {
@@ -18,7 +20,7 @@ class UserManager extends Manager {
         this.shortcode = 'um';
         this.mod = mod;
         if (remConfig.redis_enabled) {
-            userCache = new userCache(this.mod.getMod('redis'));
+            userCache = new Cache(this.mod.getMod('redis'));
         }
     }
 
