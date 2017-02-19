@@ -11,6 +11,7 @@ let SongTypes = require('../../structures/constants').SONG_TYPES;
 let mergeJSON = require('merge-json');
 let YtResolver = require('../resolver/youtubeResolver');
 let ytr = new YtResolver();
+let icy = require('icy');
 /**
  * The audio player
  * @extends EventEmitter
@@ -48,7 +49,6 @@ class Player extends EventEmitter {
     play(Song) {
         clearTimeout(this.autoLeaveTimeout);
         if (this.connection && this.connection.ready || this.connection && rem.options.crystal) {
-            let stream;
             let link;
             let options = {};
             if (Song.type === SongTypes.youtube) {
@@ -99,6 +99,8 @@ class Player extends EventEmitter {
                 } else {
                     return this.nextSong();
                 }
+            } else if (Song.type === SongTypes.radio) {
+
             } else {
                 return this.nextSong();
             }
