@@ -9,6 +9,7 @@ let ModPath = path.join(__dirname, './managed');
 /**
  * This is the ModuleManager Class, it loads all modules within managed/ and instantiates them and their dependencies
  */
+let start;
 class ModuleManager {
     constructor() {
         this.mods = {};
@@ -16,6 +17,7 @@ class ModuleManager {
     }
 
     init(hub, Raven, Redis) {
+        start = Date.now();
         if (hub) {
             this.mods['hub'] = hub;
         } else {
@@ -58,7 +60,7 @@ class ModuleManager {
                     });
                 }, (err) => {
                     if (err) return console.error(err);
-                    winston.info('loaded mods');
+                    winston.info(`loaded mods in ${Date.now() - start}ms`);
                     resolve(that);
                     //winston.info(this.mods);
                 });
