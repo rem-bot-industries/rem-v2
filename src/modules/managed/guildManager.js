@@ -50,14 +50,14 @@ class GuildManager extends Manager {
         }
     }
 
-    async changeLanguage(id, lng, cb) {
+    async changeLanguage(id, lng) {
         let Guild = await guildCache.get(`guild_${id}`);
         Guild.lng = lng;
         await guildCache.set(`guild_${Guild.id}`, Guild);
         if (!remConfig.redis_enabled) {
             this.sendCacheUpdate(Guild);
         }
-        return guildModel.update({id: id}, {$set: {lng: lng}}, cb);
+        return guildModel.update({id: id}, {$set: {lng: lng}});
     }
 
     async changePrefix(id, prefix, cb) {

@@ -15,7 +15,7 @@ class MessageManager extends Manager {
         this.setMaxListeners(20);
         this.l = lm;
         this.v = vm;
-        this.lngs = lm.list;
+        this.lngs = lm.getList();
         this.t = lm.getT();
         this.g = gm;
         this.p = pm;

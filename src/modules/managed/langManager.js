@@ -5,10 +5,10 @@
 let Manager = require('../../structures/manager');
 const winston = require('winston');
 let fs = require('fs');
+Promise.promisifyAll(fs);
 let path = require('path');
 let util = require('util');
 let i18next = require('i18next');
-Promise.promisifyAll(fs);
 let Backend = require('i18next-node-fs-backend');
 class LangManager extends Manager {
     constructor() {
@@ -61,20 +61,17 @@ class LangManager extends Manager {
         //     return cb(err);
         // }
         let dirs = [];
-        // console.log(files);
         for (let index = 0; index < files.length; ++index) {
             let file = files[index];
-            if (file[0] !== '.') {
+            if (!file.startsWith('.')) {
                 let filePath = langPath + '/' + file;
                 let stat = await fs.statAsync(filePath);
                 if (stat.isDirectory()) {
-                    dirs.push(this.file);
-                }
-                if (files.length === (this.index + 1)) {
-                    return Promise.resolve(dirs);
+                    dirs.push(file);
                 }
             }
         }
+        return dirs;
     }
 
     getT() {
@@ -82,7 +79,7 @@ class LangManager extends Manager {
     }
 
     getList() {
-        return this.list();
+        return this.list;
     }
 
     reload() {
