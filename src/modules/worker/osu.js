@@ -2,7 +2,21 @@ let fs = require('fs');
 let Promise = require('bluebird');
 let path = require('path');
 let unzip = require('unzip2');
-let config = remConfig;
+let config;
+try {
+    if (process.env.secret_name) {
+        config = require(`/run/secrets/${process.env.secret_name}`);
+        console.info(`Using docker secrets!`);
+    } else {
+        config = require('../../../config/main.json');
+        console.info(`Using local secrets!`);
+    }
+
+} catch (e) {
+    console.error(e);
+    console.error('Failed to require config!');
+    process.exit(1);
+}
 const osu = require('node-osu');
 let osuApi = new osu.Api(config.osu_token);
 let request = require('request');
