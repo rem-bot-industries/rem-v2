@@ -1,5 +1,8 @@
 FROM node:7.5-alpine
 LABEL maintainer Wolke "wolke@ram.moe"
+RUN mkdir /usr/src/rem
+COPY . /usr/src/rem
+WORKDIR /usr/src/rem
 RUN apk update
 RUN apk upgrade
 RUN apk add git python alpine-sdk ffmpeg
