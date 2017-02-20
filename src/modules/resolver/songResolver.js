@@ -88,24 +88,25 @@ class SongImporter extends EventEmitter {
         // console.log(searchHash);
         let results = await searchCache.get(`youtube_search_${searchHash}`);
         if (results) {
-            return this.emit('search-result', results);
+            this.emit('search-result', results);
+        } else {
+            youtubesearch(search, opts, async(err, results) => {
+                if (err) {
+                    winston.error(err);
+                    winston.info('Switching Keys!');
+                    km.nextKey();
+                    opts.key = km.getKey();
+                    setTimeout(() => {
+                        this.search(search);
+                    }, 50);
+                } else if (results.length > 0) {
+                    await searchCache.set(`youtube_search_${searchHash}`, results);
+                    this.emit('search-result', results);
+                } else {
+                    this.emit('error', 'generic.error');
+                }
+            });
         }
-        youtubesearch(search, opts, async(err, results) => {
-            if (err) {
-                winston.error(err);
-                winston.info('Switching Keys!');
-                km.nextKey();
-                opts.key = km.getKey();
-                setTimeout(() => {
-                    this.search(search);
-                }, 50);
-            } else if (results.length > 0) {
-                await searchCache.set(`youtube_search_${searchHash}`, results);
-                this.emit('search-result', results);
-            } else {
-                this.emit('error', 'generic.error');
-            }
-        });
     }
 
     youtube(url) {
