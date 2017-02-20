@@ -1,6 +1,8 @@
 FROM node:7.5-alpine
 LABEL maintainer Wolke "wolke@ram.moe"
-RUN mkdir /usr/src/rem
+WORKDIR /usr/src
+RUN mkdir rem
+WORKDIR /
 COPY . /usr/src/rem
 WORKDIR /usr/src/rem
 RUN apk update
