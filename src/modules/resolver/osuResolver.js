@@ -79,7 +79,7 @@ class OsuImporter extends BasicImporter {
 
     downloadOsuMap(map) {
         return new Promise((resolve, reject) => {
-            let loader = child_process.fork('./modules/worker/osu.js');
+            let loader = child_process.fork('./modules/worker/osu.js', [], {env: process.env});
             loader.send({type: 'info', map: map});
             loader.once('message', (m) => {
                 if (m.type === 'result') {

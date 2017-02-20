@@ -13,16 +13,18 @@ class SetPrefix extends Command {
         this.g = mod.getMod('gm');
     }
 
-    run(msg) {
+    async run(msg) {
         let msgSplit = msg.content.split(' ');
         if (typeof (msgSplit[1]) !== 'undefined' && msg.mentions.length === 0) {
-            this.g.changePrefix(msg.channel.guild.id, msgSplit[1], (err) => {
-                if (err) return msg.channel.createMessage(this.t('generic.error', {lngs: msg.lang}));
+            try {
+                await this.g.changePrefix(msg.channel.guild.id, msgSplit[1]);
                 msg.channel.createMessage(`${msg.author.mention}, ${this.t('prefix.success', {
                     lngs: msg.lang,
                     prefix: msgSplit[1]
                 })}`);
-            });
+            } catch (e) {
+                return msg.channel.createMessage(this.t('generic.error', {lngs: msg.lang}));
+            }
         } else {
             msg.channel.createMessage(`${msg.author.mention}, ${this.t('prefix.no-prefix', {lngs: msg.lang})}`);
         }

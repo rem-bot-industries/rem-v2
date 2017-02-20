@@ -10,6 +10,7 @@ class Worker extends EventEmitter {
         this.connectionAttempts = 0;
         this.ws = null;
         this.shardId = null;
+        this.shardCount = null;
         this.state = {ready: false, connected: false, hearbeat: -1};
         this.hearbeatInterval = null;
         this.hearbeatTimeout = null;
@@ -75,7 +76,11 @@ class Worker extends EventEmitter {
         switch (msg.op) {
             case OPCODE.identify: {
                 // console.log(msg);
-                this.ws.send(JSON.stringify({op: OPCODE.identify, shardToken: remConfig.shard_token}));
+                let message = {op: OPCODE.identify, shardToken: remConfig.shard_token};
+                if (this.shardCount && this.shardId) {
+                    message.d = {sc: this.shardCount, sid: this.shardId};
+                }
+                this.ws.send(JSON.stringify(message));
                 return;
             }
             case OPCODE.ready: {
@@ -84,7 +89,11 @@ class Worker extends EventEmitter {
                 this.state.ready = true;
                 this.setupHeartbeat(msg.d.heartbeat);
                 this.shardId = msg.d.sid;
+                this.shardCount = msg.d.sc;
                 this.emit('ws_ready', (msg.d));
+                if (msg.d.reshard) {
+                    this.emit('ws_reshard', (msg.d));
+                }
                 return;
             }
             case OPCODE.message: {
@@ -115,6 +124,7 @@ class Worker extends EventEmitter {
                 }));
                 this.hearbeatTimeout = setTimeout(() => {
                     console.error('Master did not respond!');
+                    this.reconnect();
                 }, beat + 5000);
             } catch (e) {
                 console.error(e);

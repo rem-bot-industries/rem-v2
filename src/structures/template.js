@@ -65,5 +65,14 @@ module.exports = {
     },
     master_hostname: {
         required: true
+    },
+    redis_enabled: {
+        required: true
+    },
+    redis_hostname: {
+        required: false
+    },
+    redis_database: {
+        required: false
     }
 };

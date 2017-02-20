@@ -24,6 +24,7 @@ mongoose.Promise = Promise;
 mongoose.connect(url, (err) => {
     if (err) return winston.error('Failed to connect to the database!');
 });
+let redis = require("redis");
 let stat = `rem_${remConfig.environment}`;
 let blocked = require('blocked');
 
@@ -55,7 +56,22 @@ class Shard extends EventEmitter {
         this.UM = null;
         this.interval = null;
         this.Raven = raven;
-        this.init();
+        this.Redis = null;
+        if (remConfig.redis_enabled) {
+            Promise.promisifyAll(redis.RedisClient.prototype);
+            Promise.promisifyAll(redis.Multi.prototype);
+            let redisClient = redis.createClient({port: 6379, host: remConfig.redis_hostname});
+            redisClient.select(remConfig.redis_database);
+            redisClient.on("error", (err) => {
+                console.log("Error " + err);
+            });
+            redisClient.on("ready", () => {
+                this.init();
+            });
+            this.Redis = redisClient;
+        } else {
+            this.init();
+        }
     }
 
     /**
@@ -136,7 +152,7 @@ class Shard extends EventEmitter {
      * 6. A Interval gets created to update data every 5 mins
      */
     clientReady() {
-        this.MOD.init(this.HUB, this.Raven).then(() => {
+        this.MOD.init(this.HUB, this.Raven, this.Redis).then(() => {
             this.ready = true;
             this.MSG = this.MOD.getMod('mm');
             this.GM = this.MOD.getMod('gm');
@@ -218,12 +234,45 @@ class Shard extends EventEmitter {
         this.sendStats();
     }
 
-    guildMemberAdd(member) {
-
+    async guildMemberAdd(Guild, Member) {
+        if (this.ready) {
+            try {
+                let greeting = await this.SM.get(Guild.id, 'guild', 'greeting.text');
+                let greetingChannel = await this.SM.get(Guild.id, 'guild', 'greeting.channel');
+                if (greeting && greetingChannel) {
+                    let channel = Guild.channels.find(c => c.id === greetingChannel.value);
+                    if (channel) {
+                        let msg = greeting.value;
+                        msg = msg.replace('%USER%', Member.mention);
+                        msg = msg.replace('%USER_NO_MENTION%', Member.username ? Member.username : Member.user.username);
+                        msg = msg.replace('%GUILD%', Guild.name);
+                        await channel.createMessage(msg);
+                    }
+                }
+            } catch (e) {
+                winston.error(e);
+            }
+        }
     }
 
-    guildMemberRemove(member) {
-
+    async guildMemberRemove(Guild, Member) {
+        if (this.ready) {
+            try {
+                let farewell = await this.SM.get(Guild.id, 'guild', 'farewell.text');
+                let farewellChannel = await this.SM.get(Guild.id, 'guild', 'farewell.channel');
+                if (farewell && farewellChannel) {
+                    let channel = Guild.channels.find(c => c.id === farewellChannel.value);
+                    if (channel) {
+                        let msg = farewell.value;
+                        msg = msg.replace('%USER%', Member.username ? Member.username : Member.user.username);
+                        msg = msg.replace('%GUILD%', Guild.name);
+                        await channel.createMessage(msg);
+                    }
+                }
+            } catch (e) {
+                winston.error(e);
+            }
+        }
     }
 
     voiceUpdate(member, channel, leave) {
@@ -249,6 +298,9 @@ class Shard extends EventEmitter {
     shutdown() {
         clearInterval(this.interval);
         mongoose.connection.close();
+        if (remConfig.redis_enabled) {
+            this.Redis.quit();
+        }
         try {
             this.bot.disconnect();
         } catch (e) {
@@ -262,7 +314,18 @@ class Shard extends EventEmitter {
         }, 1000 * 60);
     }
 
-    sendStats() {
+    async sendStats() {
+        if (remConfig.redis_enabled) {
+            await this.Redis.set(`guild_size_${this.id}`, this.bot.guilds.size);
+            await this.Redis.set(`user_size_${this.id}`, this.bot.guilds.map(g => g.memberCount).reduce((a, b) => a + b));
+            await this.Redis.set(`shard_stats_${this.id}`, JSON.stringify({
+                users: this.bot.guilds.map(g => g.memberCount).reduce((a, b) => a + b),
+                guilds: this.bot.guilds.size,
+                channels: this.bot.guilds.map(g => g.channels.size).reduce((a, b) => a + b),
+                voice: Object.keys(this.bot.voiceConnections.guilds).length,
+                voice_playing: Object.values(this.bot.voiceConnections.guilds).filter(conn => conn.playing).length
+            }))
+        }
         if (this.SHARDED) {
             this.HUB.emitRemote('_guild_update', {sid: this.id, data: this.bot.guilds.size});
             this.HUB.emitRemote('_user_update', {
