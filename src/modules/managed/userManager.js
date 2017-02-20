@@ -4,13 +4,13 @@
 let Manager = require('../../structures/manager');
 let userModel = require('../../DB/user');
 let Cache;
+let userCache;
 if (remConfig.redis_enabled) {
     Cache = require('./../../structures/redisCache');
 } else {
     Cache = require('./../../structures/cache');
     userCache = Cache;
 }
-let userCache;
 let _ = require('lodash');
 class UserManager extends Manager {
     constructor({mod}) {

@@ -60,7 +60,7 @@ class Shard extends EventEmitter {
         if (remConfig.redis_enabled) {
             Promise.promisifyAll(redis.RedisClient.prototype);
             Promise.promisifyAll(redis.Multi.prototype);
-            let redisClient = redis.createClient();
+            let redisClient = redis.createClient({port: 6379, host: remConfig.redis_hostname});
             redisClient.select(remConfig.redis_database);
             redisClient.on("error", (err) => {
                 console.log("Error " + err);

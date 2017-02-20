@@ -13,10 +13,11 @@ let PlaylistResolver = require('../resolver/playlistResolver');
 let shortid = require('shortid');
 let shuffle = require('knuth-shuffle').knuthShuffle;
 class VoiceManager extends Manager {
-    constructor() {
+    constructor({mod}) {
         super();
         this.setMaxListeners(200);
         this.players = {};
+        this.redis = mod.getMod('redis');
     }
 
     join(msg, cb) {
@@ -138,7 +139,7 @@ class VoiceManager extends Manager {
         return new Promise(function (resolve, reject) {
             that.join(msg, (err, conn) => {
                 if (err) return reject({type: 'error', event: `${msg.id}_error`, err: err});
-                let importer = new SongImporter(msg, true);
+                let importer = new SongImporter(msg, true, that.redis);
                 importer.once('search-result', (results) => {
                     importer.removeAllListeners();
                     that.emit(`${msg.id}_search-result`, results);

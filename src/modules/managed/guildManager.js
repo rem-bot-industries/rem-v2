@@ -4,13 +4,13 @@
 let Manager = require('../../structures/manager');
 let guildModel = require('../../DB/guild');
 let Cache;
+let guildCache;
 if (remConfig.redis_enabled) {
     Cache = require('./../../structures/redisCache');
 } else {
     Cache = require('./../../structures/cache');
     guildCache = Cache;
 }
-let guildCache;
 class GuildManager extends Manager {
     constructor({mod}) {
         super();

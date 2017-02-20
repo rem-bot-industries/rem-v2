@@ -7,6 +7,15 @@ let SoundcloudReg = /(?:http?s?:\/\/)?(?:www\.)?(?:soundcloud\.com|snd\.sc)\/(?:
 let osuRegex = /(?:http(?:s|):\/\/osu.ppy.sh\/(s|b)\/([0-9]*)((\?|\&)m=[0-9]|))/;
 let winston = require('winston');
 let keys;
+let crypto = require('crypto');
+let Cache;
+let searchCache;
+if (remConfig.redis_enabled) {
+    Cache = require('./../../structures/redisCache');
+} else {
+    Cache = require('./../../structures/cache');
+    searchCache = Cache;
+}
 try {
     if (process.env.secret_keys_name) {
         keys = require(`/run/secrets/${process.env.secret_keys_name}`).keys;
@@ -37,12 +46,15 @@ let opts = {
  *
  */
 class SongImporter extends EventEmitter {
-    constructor(msg, instant) {
+    constructor(msg, instant, redis) {
         super();
         this.setMaxListeners(10);
         this.msg = msg;
         this.messageSplit = msg.content.split(' ');
         this.ytdl = ytdl;
+        if (remConfig.redis_enabled) {
+            searchCache = new Cache(redis);
+        }
         if (instant) {
             this.resolveSong();
         }
@@ -71,8 +83,14 @@ class SongImporter extends EventEmitter {
         }
     }
 
-    search(search) {
-        youtubesearch(search, opts, (err, results) => {
+    async search(search) {
+        let searchHash = crypto.createHash('md5').update('search').digest('hex');
+        // console.log(searchHash);
+        let results = await searchCache.get(`youtube_search_${searchHash}`);
+        if (results) {
+            return this.emit('search-result', results);
+        }
+        youtubesearch(search, opts, async(err, results) => {
             if (err) {
                 winston.error(err);
                 winston.info('Switching Keys!');
@@ -82,6 +100,7 @@ class SongImporter extends EventEmitter {
                     this.search(search);
                 }, 50);
             } else if (results.length > 0) {
+                await searchCache.set(`youtube_search_${searchHash}`, results);
                 this.emit('search-result', results);
             } else {
                 this.emit('error', 'generic.error');
