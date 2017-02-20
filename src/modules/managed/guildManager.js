@@ -15,6 +15,7 @@ class GuildManager extends Manager {
     constructor({mod}) {
         super();
         this.mod = mod;
+        this.Raven = mod.getMod('raven');
         if (remConfig.redis_enabled) {
             let redis = this.mod.getMod('redis');
             guildCache = new Cache(redis);
@@ -37,9 +38,15 @@ class GuildManager extends Manager {
     }
 
     async loadGuild(id) {
-        let Guild = await guildCache.get(`guild_${id}`);
-        if (Guild) {
-            return Guild;
+        let Guild;
+        try {
+            Guild = await guildCache.get(`guild_${id}`);
+            if (Guild) {
+                return Guild;
+            }
+        } catch (e) {
+            this.Raven.captureException(e);
+            console.error(e);
         }
         Guild = await guildModel.findOne({id: id});
         if (Guild) {

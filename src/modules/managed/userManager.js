@@ -19,6 +19,7 @@ class UserManager extends Manager {
         this.name = 'Usermanager';
         this.shortcode = 'um';
         this.mod = mod;
+        this.Raven = mod.getMod('raven');
         if (remConfig.redis_enabled) {
             userCache = new Cache(this.mod.getMod('redis'));
         }
@@ -47,9 +48,15 @@ class UserManager extends Manager {
     }
 
     async loadUser(user) {
-        let User = await userCache.get(`user_${user.id}`);
-        if (User) {
-            return User;
+        let User;
+        try {
+            User = await userCache.get(`user_${user.id}`);
+            if (User) {
+                return User;
+            }
+        } catch (e) {
+            this.Raven.captureException(e);
+            console.error(e);
         }
         User = await userModel.findOne({id: user.id});
         if (!User) {
