@@ -84,7 +84,7 @@ class SongImporter extends EventEmitter {
     }
 
     async search(search) {
-        let searchHash = crypto.createHash('md5').update('search').digest('hex');
+        let searchHash = crypto.createHash('md5').update(search).digest('hex');
         // console.log(searchHash);
         let results = await searchCache.get(`youtube_search_${searchHash}`);
         if (results) {
