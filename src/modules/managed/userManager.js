@@ -62,7 +62,12 @@ class UserManager extends Manager {
         if (!User) {
             User = await this.createUser(user);
         }
-        await userCache.set(`user_${user.id}`, User);
+        try {
+            await userCache.set(`user_${user.id}`, User);
+        } catch (e) {
+            this.Raven.captureException(e);
+            console.error(e);
+        }
         return User;
         //     if (err) return cb(err);
         //     if (User) {

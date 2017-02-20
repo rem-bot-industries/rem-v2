@@ -50,7 +50,12 @@ class GuildManager extends Manager {
         }
         Guild = await guildModel.findOne({id: id});
         if (Guild) {
-            await guildCache.set(`guild_${Guild.id}`, Guild);
+            try {
+                await guildCache.set(`guild_${Guild.id}`, Guild);
+            } catch (e) {
+                this.Raven.captureException(e);
+                console.error(e);
+            }
             return Guild;
         } else {
             return this.createGuild(id);
