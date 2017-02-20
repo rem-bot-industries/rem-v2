@@ -1,6 +1,7 @@
 /**
  * Created by Julian/Wolke on 07.11.2016.
  */
+//owo
 let Manager = require('../../structures/manager');
 const winston = require('winston');
 const recursive = require('recursive-readdir');
