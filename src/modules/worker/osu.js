@@ -39,7 +39,7 @@ function downloadOsuMap(url) {
                     }
                 }, (err, res, body) => {
                     if (err) reject(err);
-                    let url = 'http://osu.ppy.sh/d/' + beatmap.beatmapSetId;
+                    let url = `http://osu.ppy.sh/d/${beatmap.beatmapSetId}n`;//No video version
                     let stream = fs.createWriteStream(`../temp/${beatmap.beatmapSetId}.zip`);
                     request.get(url, (err, res, body) => {
                         if (err) {
