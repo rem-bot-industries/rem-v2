@@ -48,7 +48,7 @@ class Player extends EventEmitter {
      */
     play(Song) {
         clearTimeout(this.autoLeaveTimeout);
-        if (this.connection && this.connection.ready || this.connection && rem.options.crystal) {
+        if ((this.connection && this.connection.ready || this.connection && rem.options.crystal) && Song) {
             let link;
             let options = {};
             if (Song.type === SongTypes.youtube) {

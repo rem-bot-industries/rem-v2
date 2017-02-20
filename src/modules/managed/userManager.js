@@ -5,11 +5,14 @@ let Manager = require('../../structures/manager');
 let userModel = require('../../DB/user');
 let Cache;
 let userCache;
+const winston = require('winston');
 if (remConfig.redis_enabled) {
     Cache = require('./../../structures/redisCache');
+    winston.debug('Using Redis Cache for Users!');
 } else {
     Cache = require('./../../structures/cache');
     userCache = Cache;
+    winston.debug('Using Map Cache for Users!');
 }
 let _ = require('lodash');
 class UserManager extends Manager {
@@ -52,6 +55,7 @@ class UserManager extends Manager {
         try {
             User = await userCache.get(`user_${user.id}`);
             if (User) {
+                winston.debug(`Loaded User ${user.id}|${user.username}#${user.discriminator} from Cache!`);
                 return User;
             }
         } catch (e) {
@@ -60,10 +64,14 @@ class UserManager extends Manager {
         }
         User = await userModel.findOne({id: user.id});
         if (!User) {
+            winston.debug(`Creating User ${user.id}|${user.username}#${user.discriminator} in Database!`);
             User = await this.createUser(user);
+        } else {
+            winston.debug(`Loading User ${user.id}|${user.username}#${user.discriminator} from Database!`);
         }
         try {
             await userCache.set(`user_${user.id}`, User);
+            winston.debug(`Loading User ${user.id}|${user.username}#${user.discriminator} into Cache!`);
         } catch (e) {
             this.Raven.captureException(e);
             console.error(e);

@@ -5,11 +5,14 @@ let Manager = require('../../structures/manager');
 let guildModel = require('../../DB/guild');
 let Cache;
 let guildCache;
+const winston = require('winston');
 if (remConfig.redis_enabled) {
     Cache = require('./../../structures/redisCache');
+    winston.debug('Using Redis Cache for Guilds!');
 } else {
     Cache = require('./../../structures/cache');
     guildCache = Cache;
+    winston.debug('Using Map Cache for Guilds!');
 }
 class GuildManager extends Manager {
     constructor({mod}) {
@@ -42,22 +45,26 @@ class GuildManager extends Manager {
         try {
             Guild = await guildCache.get(`guild_${id}`);
             if (Guild) {
+                winston.debug(`Loaded Guild ${id} from Cache!`);
                 return Guild;
             }
         } catch (e) {
             this.Raven.captureException(e);
-            console.error(e);
+            winston.error(e);
         }
         Guild = await guildModel.findOne({id: id});
         if (Guild) {
+            winston.debug(`Loaded Guild ${id} from Database!`);
             try {
                 await guildCache.set(`guild_${Guild.id}`, Guild);
+                winston.debug(`Added Guild ${id} to the Cache!`);
             } catch (e) {
                 this.Raven.captureException(e);
                 console.error(e);
             }
             return Guild;
         } else {
+            winston.info(`Creating Guild ${id} in Database!`);
             return this.createGuild(id);
         }
     }

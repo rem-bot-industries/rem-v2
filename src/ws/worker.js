@@ -53,7 +53,7 @@ class Worker extends EventEmitter {
     }
 
     reconnect() {
-        this.ws.close(8000, 'Reconnect on User Wish!');
+        this.ws.close(1006, 'Reconnect on User Wish!');
     }
 
     generateInterval(k) {

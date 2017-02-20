@@ -160,23 +160,29 @@ class MessageManager extends Manager {
 
     async loadGuild(msg) {
         if (msg.channel.guild) {
+            winston.debug(`Loading Guild ${msg.channel.guild.id}|${msg.channel.guild.name} via Message Manager!`);
             let Guild = await this.g.loadGuild(msg.channel.guild.id);
             if (typeof (Guild) === 'undefined') {
                 Guild = {};
+                winston.debug(`Guild:${msg.channel.guild.id}|${msg.channel.guild.name} was not found!`);
             }
             if (typeof (Guild.lng) === 'undefined') {
                 Guild.lng = 'en';
+                winston.debug(`Guild:${msg.channel.guild.id}|${msg.channel.guild.name} setting lang to en`);
             }
             if (typeof (Guild.prefix) === 'undefined') {
                 Guild.prefix = '!w.';
+                winston.debug(`Guild:${msg.channel.guild.id}|${msg.channel.guild.name} setting prefix to !w.`);
             }
             return Guild;
         } else {
+            winston.debug(`There was no Guild attached to the msg, using default settings!`);
             return {prefix: '!w.', lng: 'en'};
         }
     }
 
     async loadUser(msg) {
+        winston.debug(`Loading User ${msg.author.id}|${msg.author.username}#${msg.author.discriminator} via Message Manager`);
         return this.u.loadUser(msg.author);
     }
 }

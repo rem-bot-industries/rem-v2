@@ -5,16 +5,18 @@ let EventEmitter = require('eventemitter3');
 let YoutubeReg = /(?:http?s?:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=)?([a-zA-Z0-9_-]+)(&.*|)/;
 let SoundcloudReg = /(?:http?s?:\/\/)?(?:www\.)?(?:soundcloud\.com|snd\.sc)\/(?:.*)/;
 let osuRegex = /(?:http(?:s|):\/\/osu.ppy.sh\/(s|b)\/([0-9]*)((\?|\&)m=[0-9]|))/;
-let winston = require('winston');
+const winston = require('winston');
 let keys;
 let crypto = require('crypto');
 let Cache;
 let searchCache;
 if (remConfig.redis_enabled) {
     Cache = require('./../../structures/redisCache');
+    winston.debug('Using Redis Cache for Searches!');
 } else {
     Cache = require('./../../structures/cache');
     searchCache = Cache;
+    winston.debug('Using Map Cache for Searches!');
 }
 try {
     if (process.env.secret_keys_name) {
@@ -85,9 +87,12 @@ class SongImporter extends EventEmitter {
 
     async search(search) {
         let searchHash = crypto.createHash('md5').update(search).digest('hex');
+        winston.debug(`Generated Hash ${searchHash} for search term: ${search}`);
         // console.log(searchHash);
         let results = await searchCache.get(`youtube_search_${searchHash}`);
         if (results) {
+            winston.debug(`Found Search with hash ${searchHash} in Cache!`);
+            winston.debug(`Results: ${results}`);
             this.emit('search-result', results);
         } else {
             youtubesearch(search, opts, async(err, results) => {
@@ -100,7 +105,9 @@ class SongImporter extends EventEmitter {
                         this.search(search);
                     }, 50);
                 } else if (results.length > 0) {
+                    winston.debug(`Ran Search with hash ${searchHash}!`);
                     await searchCache.set(`youtube_search_${searchHash}`, results);
+                    winston.debug(`Cached Search with hash ${searchHash}!`);
                     this.emit('search-result', results);
                 } else {
                     this.emit('error', 'generic.error');
