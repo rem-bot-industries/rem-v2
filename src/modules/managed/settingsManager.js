@@ -4,13 +4,13 @@
 let Manager = require('../../structures/manager');
 let settingsModel = require('../../DB/setting');
 let Cache;
+let settingsCache;
 if (remConfig.redis_enabled) {
     Cache = require('./../../structures/redisCache');
 } else {
     Cache = require('./../../structures/cache');
     settingsCache = Cache;
 }
-let settingsCache;
 class SettingsManager extends Manager {
     constructor({mod}) {
         super();
@@ -26,13 +26,14 @@ class SettingsManager extends Manager {
     async get(discordId, type, key) {
         let setting = await settingsCache.get(`${discordId}_${type}_${key}`);
         if (setting) {
-            return Promise.resolve(setting);
+            return setting;
         }
         let id = `${discordId}_${type}_${key}`;
         setting = await settingsModel.findOne({id: id, type: type, key: key});
         if (setting) {
             await settingsCache.set(setting.id, setting);
         }
+        return setting;
     }
 
     async getOldSetting(oldSetting) {

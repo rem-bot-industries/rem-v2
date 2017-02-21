@@ -48,7 +48,7 @@ if (!process.env.statsd_host && !remConfig.statsd_host) {
 }
 for (let key in configTemplate) {
     if (configTemplate.hasOwnProperty(key)) {
-        if (!remConfig[key]) {
+        if (typeof (remConfig[key]) === 'undefined') {
             if (configTemplate[key].required) {
                 throw new Error(`The required config key ${key} is missing!`);
             } else {
