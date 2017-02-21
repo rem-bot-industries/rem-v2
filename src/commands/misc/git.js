@@ -13,7 +13,7 @@ class Git extends Command {
     }
 
     run(msg) {
-        msg.channel.createMessage('https://github.com/DasWolke/rem-v2');
+        msg.channel.createMessage('https://github.com/rem-bot-industries/rem-v2');
     }
 }
 module.exports = Git;

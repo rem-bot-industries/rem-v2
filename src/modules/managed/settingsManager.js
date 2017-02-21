@@ -3,75 +3,73 @@
  */
 let Manager = require('../../structures/manager');
 let settingsModel = require('../../DB/setting');
-let guildSettingCache = require('../../structures/cache');
-let channelSettingCache = require('../../structures/cache');
-let userSettingCache = require('../../structures/cache');
-let validKeys = {
-    guild: {
-        'language': {type: 'String', args: 1, t: ''}
-    }, user: {
-        'language': {type: 'String', args: 1}
-    }, channel: {
-        'language': {type: 'String', args: 1}
-    }
-};
+let Cache;
+let settingsCache;
+if (remConfig.redis_enabled) {
+    Cache = require('./../../structures/redisCache');
+} else {
+    Cache = require('./../../structures/cache');
+    settingsCache = Cache;
+}
 class SettingsManager extends Manager {
     constructor({mod}) {
         super();
-        this.t = mod.getMod('lm').getT();
-    }
-
-    updateCache(data) {
-        switch (data.type) {
-            case 'guild': {
-                if (guildSettingCache.get(data.id)) {
-                    guildSettingCache.set(data.id, data);
-                }
-                return;
-            }
-            case 'channel': {
-                if (channelSettingCache.get(data.id)) {
-                    channelSettingCache.set(data.id, data);
-                }
-                return;
-            }
-            case 'user': {
-                if (userSettingCache.get(data.id)) {
-                    userSettingCache.set(data.id, data);
-                }
-                return;
-            }
+        this.version = '1.0.0';
+        this.name = 'Settingsmanager';
+        this.shortcode = 'sm';
+        this.mod = mod;
+        if (remConfig.redis_enabled) {
+            settingsCache = new Cache(this.mod.getMod('redis'));
         }
     }
 
-    loadSettings(id, type) {
-        return new Promise(function () {
-            return settingsModel.find({id, type});
-        });
-    }
-
-    getSetting(id, type, key) {
-        return new Promise(function () {
-            return settingsModel.find({id, type, key});
-        });
-    }
-
-    get(key, id) {
-
-    }
-
-    set(key, id) {
-
-    }
-
-    findKey(key) {
-        if (validKeys[key]) {
-
+    async get(discordId, type, key) {
+        let setting = await settingsCache.get(`${discordId}_${type}_${key}`);
+        if (setting) {
+            return setting;
         }
+        let id = `${discordId}_${type}_${key}`;
+        setting = await settingsModel.findOne({id: id, type: type, key: key});
+        if (setting) {
+            await settingsCache.set(setting.id, setting);
+        }
+        return setting;
     }
 
-    getValidKeys() {
-        return validKeys;
+    async getOldSetting(oldSetting) {
+        let setting = await settingsCache.get(oldSetting.id);
+        if (setting) {
+            return Promise.resolve(setting);
+        }
+        return settingsModel.findOne({id: oldSetting.id, type: oldSetting.type, key: oldSetting.key});
+    }
+
+    async set(newSetting) {
+        let oldSetting = await this.getOldSetting(newSetting);
+        if (oldSetting.key === newSetting.key && oldSetting.value === newSetting.value) return Promise.resolve(oldSetting);
+        await settingsModel.update({id: newSetting.id}, {$set: {value: newSetting.value}});
+        await settingsCache.set(newSetting.id, newSetting);
+        if (!remConfig.redis_enabled) {
+            this.emitCacheUpdate(newSetting);
+        }
+        return Promise.resolve(newSetting);
+    }
+
+    async create(discordId, type, key, value) {
+        let setting = new settingsModel({
+            id: `${discordId}_${type}_${key}`,
+            type,
+            key,
+            value
+        });
+        await setting.save();
+        await settingsCache.set(setting.id, setting);
+        return Promise.resolve(setting);
+    }
+
+    async remove(setting) {
+        await settingsCache.remove(setting.id);
+        return settingsModel.remove({id: setting.id, type: setting.type, key: setting.key});
     }
 
     emitCacheUpdate(data) {
@@ -79,4 +77,4 @@ class SettingsManager extends Manager {
     }
 
 }
-module.exports = {class: SettingsManager, deps: ['lm'], async: false, shortcode: 'sm'};
+module.exports = {class: SettingsManager, deps: [], async: false, shortcode: 'sm'};

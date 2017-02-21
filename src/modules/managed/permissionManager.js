@@ -1,11 +1,10 @@
 /**
  * Created by Julian/Wolke on 13.11.2016.
  */
-let Manager = require('../../structures/manager');
 let permModel = require('../../DB/permission');
 let winston = require('winston');
 let async = require('async');
-let config = require('../../../config/main.json');
+let config = remConfig;
 let util = require('util');
 let _ = require('lodash');
 /**
@@ -296,7 +295,7 @@ class PermissionManager {
 
     resetDbPerm(id, cb) {
         permModel.findOne({id}, (err, Perms) => {
-            if (err) return cb(err);
+            if (err) return cb({err: err, t: 'generic.error'});
             if (Perms) {
                 permModel.remove({id}, cb);
             } else {
@@ -344,10 +343,12 @@ class PermissionManager {
     }
 
     checkRoleExistId(msg, id) {
-        let roles = msg.member.roles;
-        for (let i = 0; i < roles.length; i++) {
-            if (id === roles[i]) {
-                return roles[i];
+        if (msg.member) {
+            let roles = msg.member.roles;
+            for (let i = 0; i < roles.length; i++) {
+                if (id === roles[i]) {
+                    return roles[i];
+                }
             }
         }
         return false;

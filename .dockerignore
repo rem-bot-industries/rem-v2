@@ -1,0 +1,11 @@
+node_modules/
+logs/
+audio/
+dist/
+docs/
+fonts/
+cmd.bat
+LICENSE
+README.md
+.jsdoc.json
+config/

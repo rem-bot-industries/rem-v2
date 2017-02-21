@@ -29,12 +29,12 @@ class UserInfo extends Command {
         }
     }
 
-    buildReply(msg, user, member) {
-        let avatar = user.avatar ? (user.avatar.startsWith('a_') ? `​https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.gif` : user.avatarURL) : user.defaultAvatarURL;
+    async buildReply(msg, user, member) {
+        let avatar = user.avatar ? (user.avatar.startsWith('a_') ? `​https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.gif` : `​https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.webp`) : user.defaultAvatarURL;
         avatar = avatar.replace(/[^a-zA-Z0-9_\-./:]/, '');
         avatar += '?size=1024';
-        this.u.loadUser(user, (err, dbUser) => {
-            if (err) return winston.error(err);
+        try {
+            let dbUser = await this.u.loadUser(user);
             let reply = {
                 embed: {
                     author: {
@@ -47,9 +47,12 @@ class UserInfo extends Command {
                 }
             };
             msg.channel.createMessage(reply).then().catch(err => {
-                // console.error(err);
+                console.error(err);
             });
-        });
+        } catch (e) {
+            return winston.error(e);
+        }
+
     }
 
     buildUserInfo(msg, user, member, dbUser) {

@@ -3,13 +3,29 @@
  */
 let Manager = require('../../structures/manager');
 let guildModel = require('../../DB/guild');
-let guildCache = require('./../../structures/cache');
+let Cache;
+let guildCache;
+const winston = require('winston');
+if (remConfig.redis_enabled) {
+    Cache = require('./../../structures/redisCache');
+    winston.debug('Using Redis Cache for Guilds!');
+} else {
+    Cache = require('./../../structures/cache');
+    guildCache = Cache;
+    winston.debug('Using Map Cache for Guilds!');
+}
 class GuildManager extends Manager {
-    constructor() {
+    constructor({mod}) {
         super();
+        this.mod = mod;
+        this.Raven = mod.getMod('raven');
+        if (remConfig.redis_enabled) {
+            let redis = this.mod.getMod('redis');
+            guildCache = new Cache(redis);
+        }
     }
 
-    createGuild(id, cb) {
+    async createGuild(id) {
         let guild = new guildModel({
             id: id,
             nsfwChannels: [],
@@ -21,42 +37,56 @@ class GuildManager extends Manager {
             prefix: '!w.',
             lng: 'en'
         });
-        guild.save((err) => {
-            if (err) return cb(err);
-            cb(null, guild);
-        });
+        return guild.save();
     }
 
-    loadGuild(id, cb) {
-        let Guild = guildCache.get(id);
-        if (Guild) {
-            return cb(null, Guild);
-        }
-        guildModel.findOne({id: id}, (err, Guild) => {
-            if (err) return cb(err);
+    async loadGuild(id) {
+        let Guild;
+        try {
+            Guild = await guildCache.get(`guild_${id}`);
             if (Guild) {
-                guildCache.set(Guild.id, Guild);
-                cb(null, Guild);
-            } else {
-                this.createGuild(id, cb);
+                winston.debug(`Loaded Guild ${id} from Cache!`);
+                return Guild;
             }
-        });
+        } catch (e) {
+            this.Raven.captureException(e);
+            winston.error(e);
+        }
+        Guild = await guildModel.findOne({id: id});
+        if (Guild) {
+            winston.debug(`Loaded Guild ${id} from Database!`);
+            try {
+                await guildCache.set(`guild_${Guild.id}`, Guild);
+                winston.debug(`Added Guild ${id} to the Cache!`);
+            } catch (e) {
+                this.Raven.captureException(e);
+                console.error(e);
+            }
+            return Guild;
+        } else {
+            winston.info(`Creating Guild ${id} in Database!`);
+            return this.createGuild(id);
+        }
     }
 
-    changeLanguage(id, lng, cb) {
-        let Guild = guildCache.get(id);
+    async changeLanguage(id, lng) {
+        let Guild = await guildCache.get(`guild_${id}`);
         Guild.lng = lng;
-        guildCache.set(id, Guild);
-        this.sendCacheUpdate(Guild);
-        guildModel.update({id: id}, {$set: {lng: lng}}, cb);
+        await guildCache.set(`guild_${Guild.id}`, Guild);
+        if (!remConfig.redis_enabled) {
+            this.sendCacheUpdate(Guild);
+        }
+        return guildModel.update({id: id}, {$set: {lng: lng}});
     }
 
-    changePrefix(id, prefix, cb) {
-        let Guild = guildCache.get(id);
+    async changePrefix(id, prefix, cb) {
+        let Guild = await guildCache.get(`guild_${id}`);
         Guild.prefix = prefix;
-        guildCache.set(id, Guild);
-        this.sendCacheUpdate(Guild);
-        guildModel.update({id: id}, {$set: {prefix: prefix}}, cb);
+        await guildCache.set(`guild_${Guild.id}`, Guild);
+        if (!remConfig.redis_enabled) {
+            this.sendCacheUpdate(Guild);
+        }
+        return guildModel.update({id: id}, {$set: {prefix: prefix}}, cb);
     }
 
     updateCache(data) {
@@ -68,7 +98,6 @@ class GuildManager extends Manager {
     sendCacheUpdate(data) {
         this.emit('_cache_update', {type: 'guild', data});
     }
-
 
 }
 module.exports = {class: GuildManager, deps: [], async: false, shortcode: 'gm'};

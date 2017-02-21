@@ -3,7 +3,7 @@
  */
 let Command = require('../../structures/command');
 let axios = require('axios');
-let key = require('../../../config/main.json').mashape_key;
+let key = remConfig.mashape_key;
 let winston = require('winston');
 class AnimeSearch extends Command {
     constructor({t}) {

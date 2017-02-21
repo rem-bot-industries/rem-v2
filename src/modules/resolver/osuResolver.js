@@ -13,7 +13,7 @@ let path = require('path');
 let child_process = require('child_process');
 const types = require('../../structures/constants').SONG_TYPES;
 const Song = require('../../structures/song');
-let config = require('../../../config/main.json');
+let config = remConfig;
 const osu = require('node-osu');
 let osuApi = new osu.Api(config.osu_token);
 let setRegex = /.*http(s|):\/\/osu.ppy.sh\/(s|b)\/([0-9]*)((\?|\&)m=[0-9]|)/;
@@ -79,7 +79,7 @@ class OsuImporter extends BasicImporter {
 
     downloadOsuMap(map) {
         return new Promise((resolve, reject) => {
-            let loader = child_process.fork('./modules/worker/osu.js');
+            let loader = child_process.fork('./modules/worker/osu.js', [], {env: process.env});
             loader.send({type: 'info', map: map});
             loader.once('message', (m) => {
                 if (m.type === 'result') {

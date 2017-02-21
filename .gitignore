@@ -1,6 +1,5 @@
 # Created by .ignore support plugin (hsz.mobi)
 /node_modules
-yarn.lock
 cmd.bat
 /.idea
 /config
@@ -10,3 +9,4 @@ cmd.bat
 /logs
 .env
 /dist
+.env-safe

@@ -1,9 +1,11 @@
 /**
  * Created by Julian/Wolke on 07.11.2016.
+ *
  */
 let Manager = require('../../structures/manager');
 const winston = require('winston');
 let fs = require('fs');
+Promise.promisifyAll(fs);
 let path = require('path');
 let util = require('util');
 let i18next = require('i18next');
@@ -18,69 +20,58 @@ class LangManager extends Manager {
         this.list = null;
     }
 
-    init() {
-        let that = this;
-        return new Promise(function (resolve, reject) {
-            that.load().then(t => {
-                resolve(t);
-            }).catch(err => reject(err));
-        });
+    async init() {
+        return this.load();
     }
 
-    load() {
+    async load() {
         let that = this;
+        let backendOptions = {
+            loadPath: '../rem_translate/{{lng}}/{{ns}}.json',
+            addPath: '../rem_translate/{{lng}}/{{ns}}.missing.json',
+            jsonIndent: 2
+        };
+        let dirs = await this.getDirs('rem_translate/');
+        this.list = dirs;
         return new Promise(function (resolve, reject) {
-            let backendOptions = {
-                loadPath: '../locales/{{lng}}/{{ns}}.json',
-                addPath: '../locales/{{lng}}/{{ns}}.missing.json',
-                jsonIndent: 2
-            };
-            that.getDirs('locales/', (list) => {
-                that.list = list;
-                i18next.use(Backend).init({
-                    backend: backendOptions,
-                    lng: 'en',
-                    fallbacklngs: false,
-                    preload: list,
-                    load: 'all'
-                }, (err, t) => {
-                    if (err) {
-                        winston.error('Error at i18n' + err);
-                        reject(err);
-                    } else {
-                        that.t = t;
-                        resolve(t);
-                    }
-                });
+            i18next.use(Backend).init({
+                backend: backendOptions,
+                lng: 'en',
+                fallbacklngs: false,
+                preload: dirs,
+                load: 'all'
+            }, (err, t) => {
+                if (err) {
+                    winston.error('Error at i18n' + err);
+                    reject(err);
+                } else {
+                    that.t = t;
+                    resolve(t);
+                }
             });
         });
     }
 
-    getDirs(rootDir, cb) {
+    async getDirs(rootDir) {
         let langPath = path.join(__dirname, `../../../${rootDir}`);
         // console.log(langPath);
-        fs.readdir(langPath, function (err, files) {
-            if (err) {
-                winston.error(err);
-                return cb(err);
-            }
-            let dirs = [];
-            // console.log(files);
-            for (let index = 0; index < files.length; ++index) {
-                let file = files[index];
-                if (file[0] !== '.') {
-                    let filePath = langPath + '/' + file;
-                    fs.stat(filePath, function (err, stat) {
-                        if (stat.isDirectory()) {
-                            dirs.push(this.file);
-                        }
-                        if (files.length === (this.index + 1)) {
-                            return cb(dirs);
-                        }
-                    }.bind({index: index, file: file}));
+        let files = await fs.readdirAsync(langPath);
+        // if (err) {
+        //     winston.error(err);
+        //     return cb(err);
+        // }
+        let dirs = [];
+        for (let index = 0; index < files.length; ++index) {
+            let file = files[index];
+            if (!file.startsWith('.')) {
+                let filePath = langPath + '/' + file;
+                let stat = await fs.statAsync(filePath);
+                if (stat.isDirectory()) {
+                    dirs.push(file);
                 }
             }
-        });
+        }
+        return dirs;
     }
 
     getT() {
@@ -88,14 +79,14 @@ class LangManager extends Manager {
     }
 
     getList() {
-        return this.list();
+        return this.list;
     }
 
     reload() {
         this.i18next.reloadResources();
         this.i18next.on('loaded', () => {
             console.log('reloaded!');
-        })
+        });
         this.i18next.on('failedLoading', () => {
             console.log('failed reload!');
         })

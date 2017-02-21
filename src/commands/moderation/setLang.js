@@ -14,14 +14,16 @@ class SetLanguage extends Command {
         this.g = mod.getMod('gm');
     }
 
-    run(msg) {
+    async run(msg) {
         let msgSplit = msg.content.split(' ');
         if (typeof (msgSplit[1]) !== 'undefined') {
             if (this.checkLang(msgSplit[1], msg.lngs)) {
-                this.g.changeLanguage(msg.channel.guild.id, msgSplit[1], (err) => {
-                    if (err) return msg.channel.createMessage(this.t('generic.error', {lngs: msg.lang}));
+                try {
+                    await this.g.changeLanguage(msg.channel.guild.id, msgSplit[1]);
                     msg.channel.createMessage(this.t('set-lang.success', {lng: msgSplit[1], language: msgSplit[1]}));
-                });
+                } catch (e) {
+                    return msg.channel.createMessage(this.t('generic.error', {lngs: msg.lang}));
+                }
             } else {
                 msg.channel.createMessage(this.t('set-lang.unsupported', {lngs: msg.lang, languages: msg.lngs}));
             }

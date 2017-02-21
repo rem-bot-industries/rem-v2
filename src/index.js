@@ -1,170 +1,128 @@
 /**Require the dependencies*/
 //uwu
-const cluster = require('cluster');
+global.Promise = require('bluebird');
+require('source-map-support').install({
+    handleUncaughtExceptions: false
+});
+//require the logger and modify it, to look cool
 const winston = require('winston');
-const config = require('../config/main.json');
-let ipc = require('./ipc/index');
-let StatTrack = require('./modules/statTrack');
-let _ = require('lodash');
-require('longjohn');
+winston.remove(winston.transports.Console);
+winston.add(winston.transports.Console, {
+    'timestamp': true,
+    'colorize': true
+});
+let version = require('./../package.json').version;
 const util = require('util');
-let Shard = require('./shard');
+const configTemplate = require('./structures/template.js');
+let wsWorker;
 /**
- * Check if the Cluster process is master
+ * Use different configs based on the environment (used for easy docker run)
  */
-if (cluster.isMaster) {
-    let ipcMaster = new ipc.master();
-    const tracker = new StatTrack(60);
-    let workers = [];
-    let shards = {};
-    winston.remove(winston.transports.Console);
-    winston.add(winston.transports.Console, {
-        'timestamp': true,
-        'colorize': true
-    });
-    cluster.on('exit', (worker, code, signal) => {
-        winston.error(`worker ${worker.process.pid} died`);
-        restartWorker(worker.process.pid);
-    });
-    ipcMaster.on('_guild_update', (data) => {
-        shards[data.sid].guilds = data.data;
-    });
-    ipcMaster.on('_cache_update', (data) => {
-        ipcMaster.broadcast('_cache_update', data)
-    });
-    ipcMaster.on('_user_update', (data) => {
-        shards[data.sid].users = data.data;
-    });
-    ipcMaster.on('_heartbeat_fail', (shardID) => {
-        let Shard = findWorkerByShardId(shardID, workers);
-        if (Shard) {
-            Shard.worker.kill('SIGINT');
-        }
-    });
-    ipcMaster.on('shard_restart_request', (data) => {
-        let Shard = findWorkerByShardId(data.sid, workers);
-        if (Shard) {
-            Shard.worker.kill('SIGINT');
-        } else {
-            console.error(`Invalid Shard Restart Request: ${data}`);
-        }
-    });
-    /**
-     * If a shard requests data
-     */
-    ipcMaster.on('request_data', (event) => {
-        /**
-         * send a request_data_master event to all shards
-         */
-        // console.log(event);
-        ipcMaster.broadcast('request_data_master', event);
-        let shardData = {};
-        let responses = 0;
-        /**
-         * set up a timeout
-         */
-        let time = setTimeout(() => {
-            returnData({err: 'Timeout!'});
-        }, 3000);
-        /**
-         * Called once a shard received the request and submitted data
-         */
-        ipcMaster.on(`resolve_data_master_${event.id}`, (data) => {
-            if (shardData[data.sid]) return;
-            shardData[data.sid] = data;
-            responses++;
-            if (responses === config.shards) {
-                clearTimeout(time);
-                ipcMaster.removeListener(`resolve_data_master_${event.id}`);
-                returnData(shardData);
-            }
-        });
-        /**
-         * Resolves the data request
-         * @param data
-         */
-        function returnData(data) {
-            ipcMaster.broadcast(`resolved_data_${event.id}`, data);
-        }
-    });
-    tracker.on('error', (err) => {
-        console.error(err);
-    });
-    tracker.on('fetch', () => {
-        let guilds = 0;
-        let users = 0;
-        _.forIn(shards, (value, key) => {
-            guilds += value.guilds;
-            users += value.users;
-
-        });
-        console.log(`Total Guilds: ${guilds}, Total Users: ${users}`);
-        tracker.update(guilds, users);
-    });
-    process.on('SIGINT', () => {
-        winston.error('Received SIGINT');
-        for (let i = 0; i < workers.length; i++) {
-            workers[i].worker.kill('SIGINT');
-        }
-        process.exit(0);
-    });
-    for (let i = 0; i < config.shards; i++) {
-        shards[i] = {guilds: 0, users: 0};
-        let worker = cluster.fork({id: i, count: config.shards});
-        let workerobject = {worker: worker, shard_id: i, pid: worker.process.pid, id: worker.id};
-        workers.push(workerobject);
+let config;
+try {
+    if (process.env.secret_name) {
+        config = require(`/run/secrets/${process.env.secret_name}`);
+        winston.info(`Using docker secrets!`);
+    } else {
+        config = require('../config/main.json');
+        winston.info(`Using local secrets!`);
     }
-    winston.info('Spawned Shards!');
-    /**
-     * Restarts a Worker if it died
-     * @param pid Process ID
-     */
-    function restartWorker(pid) {
-        for (let i = 0; i < workers.length; i++) {
-            if (pid === workers[i].pid) {
-                let index = workers.indexOf(workers[i]);
-                if (index > -1) {
-                    spawnWorker({id: workers[i].shard_id, count: config.shards});
-                    workers.splice(index, 1);
-                }
+
+} catch (e) {
+    winston.error(e);
+    winston.error('Failed to require config!');
+    process.exit(1);
+}
+global.remConfig = config;
+if (remConfig.use_ws) {
+    wsWorker = require('./ws/worker');
+}
+require('longjohn');
+if (!process.env.environment && !remConfig.environment) {
+    winston.warn('No environment config was found, setting the environment config to development!');
+    remConfig.environment = 'development';
+}
+if (!process.env.statsd_host && !remConfig.statsd_host) {
+    winston.warn('No environment/config setting named statsdhost was found, setting the statsdhost config to localhost!');
+    remConfig.statsdhost = 'localhost';
+}
+for (let key in configTemplate) {
+    if (configTemplate.hasOwnProperty(key)) {
+        if (typeof (remConfig[key]) === 'undefined') {
+            if (configTemplate[key].required) {
+                throw new Error(`The required config key ${key} is missing!`);
+            } else {
+                winston.warn(`The optional config key ${key} is missing!`)
             }
         }
     }
-
-    /**
-     * Spawns a worker and saves it in a list
-     * @param env
-     */
-    function spawnWorker(env) {
-        let worker = cluster.fork(env);
-        let workerobject = {worker: worker, shard_id: env.id, pid: worker.process.pid};
-        workers.push(workerobject);
-    }
+}
+let Raven = require('raven');
+if (!remConfig.no_error_tracking) {
+    Raven.config(remConfig.sentry_token, {
+        release: version,
+        environment: remConfig.environment
+    }).install(() => {
+        winston.error('Oh no I died because of an unhandled error!');
+        process.exit(1);
+    });
+    winston.info('Initializing error tracking!');
 } else {
-    winston.remove(winston.transports.Console);
-    winston.add(winston.transports.Console, {
-        'timestamp': true,
-        'colorize': true
-    });
-    let ipcWorker = new ipc.worker(cluster, process.env.id);
-    let client = new Shard(process.env.id, process.env.count, ipcWorker);
-    winston.info(`Worker started ${process.env.id}/${process.env.count}`);
-
+    winston.warn('No error tracking is used!');
 }
-function findWorkerByShardId(id, workers) {
-    for (let i = 0; i < workers.length; i++) {
-        if (workers[i].shard_id === id) {
-            return workers[i];
+let Shard = require('./shard');
+let client;
+if (remConfig.use_ws) {
+    let wsService = new wsWorker();
+    wsService.on('ws_ready', (data) => {
+        if (client && !data.reshard) {
+            console.log('nice!');
         }
-    }
-    return null;
+    });
+    wsService.on('ws_reshard', (data) => {
+        if (client) {
+            try {
+                client.shutdown();
+            } catch (e) {
+                console.error(e);
+            }
+            console.log(`Restarting Client for Resharding!`);
+        }
+        setTimeout(() => {
+            client = new Shard(data.sid, data.shards, wsService, Raven);
+        }, 500);
+    });
+    wsService.on('shutdown_client', () => {
+        if (client) {
+            try {
+                client.shutdown();
+            } catch (e) {
+                console.error(e);
+            }
+            process.exit(1);
+        }
+    })
+} else {
+    client = new Shard(0, 1, null, Raven);
 }
+winston.info(`Client Started!`);
+process.on('SIGINT', () => {
+    winston.error('Received SIGINT');
+    if (client) {
+        try {
+            client.shutdown();
+        } catch (e) {
+            console.error(e);
+        }
+
+    }
+    process.exit(0);
+});
+winston.cli();
 process.on('unhandledRejection', (reason, promise) => {
     if (typeof reason === 'undefined') return;
     winston.error(`Unhandled rejection: ${reason} - ${util.inspect(promise)}`);
 });
-winston.cli();
-
 // Now look at this net
 function net() { // that I just found!
     // When I say go,

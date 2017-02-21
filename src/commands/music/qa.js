@@ -3,7 +3,7 @@
  */
 let Command = require('../../structures/command');
 let Selector = require('../../structures/selector');
-let track_error = !require('../../../config/main.json').no_error_tracking;
+let track_error = !remConfig.no_error_tracking;
 /**
  * The addToQueueCommand
  * @extends Command
@@ -44,7 +44,7 @@ class AddToQueue extends Command {
                 if (typeof(err) === 'object') {
                     err = err.err;
                 }
-                if (err !== 'joinVoice.no-voice' || err !== 'joinVoice.error' || err !== 'generic.error') {
+                if (err !== 'joinVoice.no-voice' && err !== 'joinVoice.error' && err !== 'generic.error') {
                     this.r.captureException(err, {
                         extra: {
                             userId: msg.author.id,

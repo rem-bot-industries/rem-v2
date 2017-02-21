@@ -2,52 +2,64 @@
  * Created by Julian/Wolke on 27.11.2016.
  */
 let Manager = require('../../structures/manager');
-let clever = require('cleverbot-node');
+let Clever = require('cleverbot.io');
 let re = /<@[0-9].*>/g;
-let cleverbotKey = require('../../../config/main.json').cleverbot_api_key;
+let cleverbotKey = remConfig.cleverbot_api_key;
+let cleverbotUser = remConfig.cleverbot_api_user;
 class CleverBotManager extends Manager {
     constructor() {
         super();
         this.cleverbots = {};
-        this.ready = false;
     }
 
-    init() {
-        let that = this;
-        return new Promise(function (resolve, reject) {
-            clever.prepare(() => {
-                that.ready = true;
-                resolve();
-            });
-        });
-    }
 
     talk(msg) {
-        if (this.ready) {
-            if (this.cleverbots[msg.channel.guild.id]) {
-                this.cleverbots[msg.channel.guild.id].talk(msg, (reply) => {
+        if (this.cleverbots[msg.channel.guild.id]) {
+            this.cleverbots[msg.channel.guild.id].talk(msg, (err, reply) => {
+                if (err) return msg.channel.createMessage(':x: An error with cleverbot occured!');
+                msg.channel.createMessage(':pencil: ' + reply);
+            });
+        } else {
+            this.cleverbots[msg.channel.guild.id] = new CleverBot(cleverbotUser, cleverbotKey);
+            this.cleverbots[msg.channel.guild.id].createSession(msg.channel.guild.id, (err) => {
+                if (err) return msg.channel.createMessage(':x: An error with cleverbot occured!');
+                this.cleverbots[msg.channel.guild.id].talk(msg, (err, reply) => {
+                    if (err) return msg.channel.createMessage(':x: An error with cleverbot occured!');
                     msg.channel.createMessage(':pencil: ' + reply);
                 });
-            } else {
-                this.cleverbots[msg.channel.guild.id] = new CleverBot();
-                this.cleverbots[msg.channel.guild.id].talk(msg, (reply) => {
-                    msg.channel.createMessage(':pencil: ' + reply);
-                });
-            }
+            });
+
         }
     }
 }
 class CleverBot {
-    constructor() {
-        this.clever = new clever();
-        this.clever.configure({botapi: cleverbotKey});
+    constructor(cleverbotUser, cleverbotKey) {
+        this.clever = new Clever(cleverbotUser, cleverbotKey);
     }
 
     talk(msg, cb) {
         let msgClean = msg.content.replace(re, '');
-        this.clever.write(msgClean, (res) => {
-            cb(res.message);
-        });
+        this.clever.setNick(`wolke_rem_discordbot_${msg.channel.guild.id}`);
+        try {
+            this.clever.ask(msgClean, (err, res) => {
+                if (err) return cb(err);
+                cb(null, res);
+            });
+        } catch (e) {
+            return cb(e);
+        }
+    }
+
+    createSession(name, cb) {
+        this.clever.setNick(`wolke_rem_discordbot_${name}`);
+        try {
+            this.clever.create((err, session) => {
+                if (err) return cb(err);
+                cb();
+            });
+        } catch (e) {
+            return cb(e);
+        }
     }
 }
-module.exports = {class: CleverBotManager, deps: [], async: true, shortcode: 'cm'};
+module.exports = {class: CleverBotManager, deps: [], async: false, shortcode: 'cm'};

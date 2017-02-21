@@ -13,10 +13,11 @@ let PlaylistResolver = require('../resolver/playlistResolver');
 let shortid = require('shortid');
 let shuffle = require('knuth-shuffle').knuthShuffle;
 class VoiceManager extends Manager {
-    constructor() {
+    constructor({mod}) {
         super();
         this.setMaxListeners(200);
         this.players = {};
+        this.redis = mod.getMod('redis');
     }
 
     join(msg, cb) {
@@ -48,8 +49,10 @@ class VoiceManager extends Manager {
         if (msg.channel.guild) {
             let conn = rem.voiceConnections.get(msg.channel.guild.id);
             if (conn) {
-                this.players[msg.channel.guild.id].setQueueSongs([]);
-                this.players[msg.channel.guild.id].endSong();
+                if (this.players[msg.channel.guild.id]) {
+                    this.players[msg.channel.guild.id].setQueueSongs([]);
+                    this.players[msg.channel.guild.id].endSong();
+                }
                 rem.voiceConnections.leave(msg.channel.guild.id);
                 cb();
             } else {
@@ -136,7 +139,7 @@ class VoiceManager extends Manager {
         return new Promise(function (resolve, reject) {
             that.join(msg, (err, conn) => {
                 if (err) return reject({type: 'error', event: `${msg.id}_error`, err: err});
-                let importer = new SongImporter(msg, true);
+                let importer = new SongImporter(msg, true, that.redis);
                 importer.once('search-result', (results) => {
                     importer.removeAllListeners();
                     that.emit(`${msg.id}_search-result`, results);
@@ -245,7 +248,7 @@ class VoiceManager extends Manager {
         let vm = this;
         return new Promise(function (resolve, reject) {
             if (typeof (vm.players[msg.channel.guild.id]) !== 'undefined') {
-                vm.players[msg.channel.guild.id].toggleRepeatSingle('off');
+                vm.players[msg.channel.guild.id].toggleRepeat('off');
                 let queue = vm.players[msg.channel.guild.id].getQueue(msg);
                 if (args === 'all') {
                     let current = queue.songs.shift();

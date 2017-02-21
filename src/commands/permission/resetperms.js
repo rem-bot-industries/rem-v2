@@ -25,7 +25,7 @@ class ResetPermissions extends Command {
             switch (msg.content) {
                 case 'yes': {
                     this.p.resetDbPerm(msg.channel.guild.id, (err) => {
-                        if (err) return msg.channel.createMessage(this.t(err, {lngs: msg.lang}));
+                        if (err) return msg.channel.createMessage(this.t(err.t, {lngs: msg.lang}));
                         msg.channel.createMessage(this.t('reset-perms.success', {lngs: msg.lang}));
                     });
                     return;

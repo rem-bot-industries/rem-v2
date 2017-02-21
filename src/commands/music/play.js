@@ -5,7 +5,7 @@ let Command = require('../../structures/command');
 let winston = require('winston');
 let Selector = require('../../structures/selector');
 let _ = require('lodash');
-let track_error = !require('../../../config/main.json').no_error_tracking;
+let track_error = !remConfig.no_error_tracking;
 /**
  * The play command
  * plays a song duh.
@@ -36,7 +36,7 @@ class Play extends Command {
         let uwu = this.checkNext(msgSplit);
         let next = uwu.next;
         msgSplit = uwu.msgSplit;
-        msg.content = msgSplit.join(' ');
+        msg.content = msgSplit.join(' ').trim();
         this.v.addToQueue(msg, !next, next).then(result => {
             switch (result.type) {
                 case 'added':
@@ -57,7 +57,7 @@ class Play extends Command {
                 if (typeof(err) === 'object') {
                     err = err.err;
                 }
-                if (err !== 'joinVoice.no-voice' || err !== 'joinVoice.error' || err !== 'generic.error') {
+                if (err !== 'joinVoice.no-voice' && err !== 'joinVoice.error' && err !== 'generic.error') {
                     this.r.captureException(err, {
                         extra: {
                             userId: msg.author.id,

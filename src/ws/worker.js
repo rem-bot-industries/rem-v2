@@ -2,18 +2,15 @@
  * Created by julia on 24.01.2017.
  */
 let EventEmitter = require('eventemitter3');
-let uws = require('ws');
-let ws_port = require('../../config/main.json').ws_port;
+let websocket = require('ws');
 let OPCODE = require('../structures/constants').MESSAGE_TYPES;
 class Worker extends EventEmitter {
-    constructor(cluster, id) {
+    constructor() {
         super();
-        if (!cluster) throw new Error('No cluster given.');
-        if (!cluster.isWorker) throw new Error('This process is not a worker!');
-        this.cluster = cluster;
         this.connectionAttempts = 0;
         this.ws = null;
-        this.shardId = id;
+        this.shardId = null;
+        this.shardCount = null;
         this.state = {ready: false, connected: false, hearbeat: -1};
         this.hearbeatInterval = null;
         this.hearbeatTimeout = null;
@@ -21,7 +18,7 @@ class Worker extends EventEmitter {
     }
 
     connect() {
-        this.ws = new uws(`ws://127.0.0.1:${ws_port}`);
+        this.ws = new websocket(`ws://${remConfig.master_hostname}`);
         this.ws.on('open', () => {
             this.connectionAttempts = 1;
             this.onConnection();
@@ -37,6 +34,7 @@ class Worker extends EventEmitter {
 
     onError(err) {
         console.error(err);
+        console.log(`ws error!`);
         this.reconnect();
     }
 
@@ -55,7 +53,7 @@ class Worker extends EventEmitter {
     }
 
     reconnect() {
-        this.ws.close(8000, 'Reconnect on User Wish!');
+        this.ws.close(1006, 'Reconnect on User Wish!');
     }
 
     generateInterval(k) {
@@ -78,14 +76,24 @@ class Worker extends EventEmitter {
         switch (msg.op) {
             case OPCODE.identify: {
                 // console.log(msg);
-                this.ws.send(JSON.stringify({op: OPCODE.identify, shardID: this.shardId}));
+                let message = {op: OPCODE.identify, shardToken: remConfig.shard_token};
+                if (this.shardCount && this.shardId) {
+                    message.d = {sc: this.shardCount, sid: this.shardId};
+                }
+                this.ws.send(JSON.stringify(message));
                 return;
             }
             case OPCODE.ready: {
                 // console.log(msg);
-                this.state.hearbeat = msg.hearbeat;
+                this.state.hearbeat = msg.d.heartbeat;
                 this.state.ready = true;
-                this.setupHeartbeat(msg.hearbeat);
+                this.setupHeartbeat(msg.d.heartbeat);
+                this.shardId = msg.d.sid;
+                this.shardCount = msg.d.sc;
+                this.emit('ws_ready', (msg.d));
+                if (msg.d.reshard) {
+                    this.emit('ws_reshard', (msg.d));
+                }
                 return;
             }
             case OPCODE.message: {
@@ -97,6 +105,10 @@ class Worker extends EventEmitter {
                 // console.log(msg);
                 return;
             }
+            case OPCODE.unauthorized: {
+                console.error('The token was not accepted!');
+                return;
+            }
             default:
                 return console.error(`Unkown Message ${JSON.stringify(msg)}`);
         }
@@ -104,19 +116,31 @@ class Worker extends EventEmitter {
 
     setupHeartbeat(beat) {
         this.hearbeatInterval = setInterval(() => {
-            this.ws.send(JSON.stringify({op: OPCODE.hearbeat, shardID: this.shardId}));
-            this.hearbeatTimeout = setTimeout(() => {
-                console.error('Master did not respond!');
-            }, beat + 5000);
+            try {
+                this.ws.send(JSON.stringify({
+                    op: OPCODE.hearbeat,
+                    shardID: this.shardId,
+                    shardToken: remConfig.shard_token
+                }));
+                this.hearbeatTimeout = setTimeout(() => {
+                    console.error('Master did not respond!');
+                    this.reconnect();
+                }, beat + 5000);
+            } catch (e) {
+                console.error(e);
+                this.reconnect();
+            }
         }, beat - 3000);
     }
 
     send(event, msg) {
         this.ws.send(JSON.stringify({
-            op: OPCODE.message, d: {
+            op: OPCODE.message,
+            shardToken: remConfig.shard_token,
+            shardID: this.shardId, d: {
                 event: event,
                 uwu: 'uwu',
-                origin: `worker-${process.pid}-${this.cluster.worker.id}-${this.shardId}`,
+                origin: `worker-${process.pid}-${this.shardId}`,
                 data: msg,
                 sendedAt: Date.now(),
                 shardID: this.shardId
@@ -126,9 +150,12 @@ class Worker extends EventEmitter {
 
     emitRemote(event, msg) {
         this.ws.send(JSON.stringify({
-            op: OPCODE.message, d: {
+            op: OPCODE.message,
+            shardToken: remConfig.shard_token,
+            shardID: this.shardId, d: {
                 event: event,
-                origin: `worker-${process.pid}-${this.cluster.worker.id}-${this.shardId}`,
+                origin: `worker-${process.pid}
+                -${this.shardId}`,
                 shardID: this.shardId,
                 data: msg,
                 sendedAt: Date.now()

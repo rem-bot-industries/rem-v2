@@ -3,17 +3,32 @@
  */
 let Manager = require('../../structures/manager');
 let userModel = require('../../DB/user');
-let userCache = require('./../../structures/cache');
+let Cache;
+let userCache;
+const winston = require('winston');
+if (remConfig.redis_enabled) {
+    Cache = require('./../../structures/redisCache');
+    winston.debug('Using Redis Cache for Users!');
+} else {
+    Cache = require('./../../structures/cache');
+    userCache = Cache;
+    winston.debug('Using Map Cache for Users!');
+}
 let _ = require('lodash');
 class UserManager extends Manager {
-    constructor() {
+    constructor({mod}) {
         super();
         this.version = '1.0.0';
         this.name = 'Usermanager';
         this.shortcode = 'um';
+        this.mod = mod;
+        this.Raven = mod.getMod('raven');
+        if (remConfig.redis_enabled) {
+            userCache = new Cache(this.mod.getMod('redis'));
+        }
     }
 
-    createUser(user, cb) {
+    async createUser(user) {
         let User = new userModel({
             id: user.id,
             name: user.username,
@@ -31,39 +46,55 @@ class UserManager extends Manager {
             creditCooldown: new Date(),
             reps: []
         });
-        User.save((err) => {
-            if (err) return cb(err);
-            cb(null, User);
-        });
+        await User.save();
+        return User;
     }
 
-    loadUser(user, cb) {
-        let User = userCache.get(user.id);
-        if (User) {
-            return cb(null, User);
-        }
-        userModel.findOne({id: user.id}, (err, User) => {
-            if (err) return cb(err);
+    async loadUser(user) {
+        let User;
+        try {
+            User = await userCache.get(`user_${user.id}`);
             if (User) {
-                userCache.set(user.id, User);
-                cb(null, User);
-            } else {
-                this.createUser(user, cb);
+                winston.debug(`Loaded User ${user.id}|${user.username}#${user.discriminator} from Cache!`);
+                return User;
             }
-        });
+        } catch (e) {
+            this.Raven.captureException(e);
+            console.error(e);
+        }
+        User = await userModel.findOne({id: user.id});
+        if (!User) {
+            winston.debug(`Creating User ${user.id}|${user.username}#${user.discriminator} in Database!`);
+            User = await this.createUser(user);
+        } else {
+            winston.debug(`Loading User ${user.id}|${user.username}#${user.discriminator} from Database!`);
+        }
+        try {
+            await userCache.set(`user_${user.id}`, User);
+            winston.debug(`Loading User ${user.id}|${user.username}#${user.discriminator} into Cache!`);
+        } catch (e) {
+            this.Raven.captureException(e);
+            console.error(e);
+        }
+        return User;
+        //     if (err) return cb(err);
+        //     if (User) {
+        //
+        //         return Promise.resolve(User);
+        //     } else {
+        //         return this.createUser(user);
+        //     }
+        // });
     }
 
-    love(target, rep, cb) {
-        this.loadUser(target, (err, user) => {
-            if (err) return cb(err);
-            user.rep += rep;
-            userCache.set(user.id, user);
+    async love(target, rep) {
+        let user = await this.loadUser(target);
+        user.rep += rep;
+        await userCache.set(`user_${user.id}`, user);
+        if (!remConfig.redis_enabled) {
             this.sendCacheUpdate(user);
-            userModel.update({id: user.id}, {$set: {rep: user.rep}}, (err) => {
-                if (err) return cb(err);
-                cb();
-            });
-        });
+        }
+        return userModel.update({id: user.id}, {$set: {rep: user.rep}});
     }
 
     checkLoveCD(user) {
@@ -78,7 +109,7 @@ class UserManager extends Manager {
         return false;
     }
 
-    addLoveCd(user, cb) {
+    async addLoveCd(user) {
         let reps = [];
         for (let i = 0; i < user.reps.length; i++) {
             if (user.reps[i] > Date.now()) {
@@ -87,12 +118,12 @@ class UserManager extends Manager {
         }
         reps.push(Date.now() + 1000 * 60 * 60 * 24);
         user.reps = reps;
-        userCache.set(user.id, user);
-        this.sendCacheUpdate(user);
-        userModel.update({id: user.id}, {$set: {reps: reps}}, (err) => {
-            if (err) return cb(err);
-            cb(null, reps);
-        });
+        await userCache.set(`user_${user.id}`, user);
+        if (!remConfig.redis_enabled) {
+            this.sendCacheUpdate(user);
+        }
+        await userModel.update({id: user.id}, {$set: {reps: reps}});
+        return Promise.resolve(reps);
     }
 
     calcLevelXp(level) {
@@ -105,78 +136,70 @@ class UserManager extends Manager {
         return 5 + bonus;
     }
 
-    increaseExperience(msg) {
-        return new Promise((resolve, reject) => {
-            this.getServerData(msg.dbUser, msg.channel.guild.id).then(data => {
-                if (data.cooldown < Date.now()) {
-                    data.id = data.id ? data.id : data.serverId;
-                    data.xp += this.calcXp(msg);
-                    data.totalXp += this.calcXp(msg);
-                    data.cooldown = Date.now() + 10000;
-                    if (data.xp >= this.calcLevelXp(data.level)) {
-                        data.level += 1;
-                        data.xp = 0;
-                    }
-                    this.updateServerData(msg.dbUser, data).then(resolve).catch(reject);
-                }
-            }).catch(reject);
-        });
-    }
-
-    addServerData(user, data) {
-        return new Promise((resolve, reject) => {
-            user.servers.push(data);
-            userCache.set(user.id, user);
-            this.sendCacheUpdate(user);
-            userModel.update({id: user.id}, {$addToSet: {servers: data}}).then(resolve).catch(reject);
-        });
-    }
-
-    getServerData(user, guildId) {
-        return new Promise((resolve, reject) => {
-            let found = false;
-            for (let i = 0; i < user.servers.length; i++) {
-                if (user.servers[i].serverId === guildId) {
-                    found = true;
-                    resolve(user.servers[i]);
-                    break;
-                }
+    async increaseExperience(msg) {
+        let serverData = await this.getServerData(msg.dbUser, msg.channel.guild.id);
+        if (serverData.cooldown < Date.now()) {
+            serverData.id = serverData.id ? serverData.id : serverData.serverId;
+            serverData.xp += this.calcXp(msg);
+            serverData.totalXp += this.calcXp(msg);
+            serverData.cooldown = Date.now() + 10000;
+            if (serverData.xp >= this.calcLevelXp(serverData.level)) {
+                serverData.level += 1;
+                serverData.xp = 0;
             }
-            if (!found) {
-                let data = {
-                    id: guildId,
-                    serverId: guildId,
-                    pm: true,
-                    level: 1,
-                    xp: 5,
-                    totalXp: 5,
-                    cooldown: Date.now() + 10000,
-                    muted: false,
-                    mutedCd: Date.now(),
-                    credits: 0,
-                    inventory: [],
-                    modCases: []
-                };
-                this.addServerData(user, data).then(resolve).catch(reject);
-            }
-        });
+            return this.updateServerData(msg.dbUser, data);
+        }
     }
 
-    updateServerData(user, data) {
-        return new Promise((reject, resolve) => {
-            let i = _.findIndex(user.servers, (s) => {
-                return s.id === data.id;
-            });
-            user.servers[i] = data;
-            userCache.set(user.id, user);
+    async addServerData(user, data) {
+        user.servers.push(data);
+        await userCache.set(`user_${user.id}`, User);
+        if (!remConfig.redis_enabled) {
             this.sendCacheUpdate(user);
-            userModel.update({id: user.id, 'servers.serverId': data.serverId}, {
-                $set: {
-                    'servers.$.cooldown': data.cooldown,
-                    'servers.$.xp': data.xp,
-                    'servers.$.totalXp': data.totalXp
-                }
-            }).then(resolve).catch(reject);
+        }
+        return userModel.update({id: user.id}, {$addToSet: {servers: data}});
+    }
+
+    async getServerData(user, guildId) {
+        let found = false;
+        for (let i = 0; i < user.servers.length; i++) {
+            if (user.servers[i].serverId === guildId) {
+                found = true;
+                return Promise.resolve(user.servers[i]);
+            }
+        }
+        let data = {
+            id: guildId,
+            serverId: guildId,
+            pm: true,
+            level: 1,
+            xp: 5,
+            totalXp: 5,
+            cooldown: Date.now() + 10000,
+            muted: false,
+            mutedCd: Date.now(),
+            credits: 0,
+            inventory: [],
+            modCases: []
+        };
+        return this.addServerData(user, data);
+    }
+
+    async updateServerData(user, data) {
+        let i = _.findIndex(user.servers, (s) => {
+            return s.id === data.id;
+        });
+        user.servers[i] = data;
+        await userCache.set(`user_${user.id}`, user);
+        if (!remConfig.redis_enabled) {
+            this.sendCacheUpdate(user);
+        }
+        return userModel.update({id: user.id, 'servers.serverId': data.serverId}, {
+            $set: {
+                'servers.$.cooldown': data.cooldown,
+                'servers.$.xp': data.xp,
+                'servers.$.totalXp': data.totalXp
+            }
         });
     }
 

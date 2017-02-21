@@ -1,5 +1,5 @@
 /**
- * Created by Julian/Wolke on 07.11.2016.
+ * Created by Julian/Wolke on 07.11.2016. owo
  */
 let EventEmitter = require('eventemitter3');
 let shortid = require('shortid');
@@ -11,6 +11,7 @@ let SongTypes = require('../../structures/constants').SONG_TYPES;
 let mergeJSON = require('merge-json');
 let YtResolver = require('../resolver/youtubeResolver');
 let ytr = new YtResolver();
+let icy = require('icy');
 /**
  * The audio player
  * @extends EventEmitter
@@ -34,6 +35,7 @@ class Player extends EventEmitter {
         this.song = null;
         this.channel = '';
         this.started = false;
+        this.autoLeaveTimeout = null;
         this.autoplay();
         // setInterval(() => {
         //     this.emit('sync', this.queue);
@@ -45,8 +47,8 @@ class Player extends EventEmitter {
      * @param {Song} Song - the song to play
      */
     play(Song) {
-        if (this.connection && this.connection.ready || this.connection && rem.options.crystal) {
-            let stream;
+        clearTimeout(this.autoLeaveTimeout);
+        if ((this.connection && this.connection.ready || this.connection && rem.options.crystal) && Song) {
             let link;
             let options = {};
             if (Song.type === SongTypes.youtube) {
@@ -97,6 +99,8 @@ class Player extends EventEmitter {
                 } else {
                     return this.nextSong();
                 }
+            } else if (Song.type === SongTypes.radio) {
+
             } else {
                 return this.nextSong();
             }
@@ -287,6 +291,17 @@ class Player extends EventEmitter {
             console.error(e);
             this.emit('debug', e);
         }
+        clearTimeout(this.autoLeaveTimeout);
+        this.autoLeaveTimeout = setTimeout(() => {
+            try {
+                let conn = rem.voiceConnections.get(this.connection.id);
+                if (conn) {
+                    rem.voiceConnections.leave(this.connection.id);
+                }
+            } catch (e) {
+                console.error(e);
+            }
+        }, 1000 * 60 * 10); // 10 Minutes
     }
 
     /**
