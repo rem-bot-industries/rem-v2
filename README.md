@@ -26,9 +26,10 @@ There could be some errors while installing the dependencies as the optional dep
 If the installation fails, due to not being able to clone the git repo of it, remove it from the dependencies in the package.json.
 9. Create the following directories within the root: `temp`,`audio`,`config`
 10. Create 2 files within the config directory: `main.json` and `keys.json`. An Example can be found down below.
-11. Run `npm run build` in your terminal.
-12. Start the MongoDB Server
-13. Start Rem by going into the dist folder and typing the following:  `node index.js`.
+11. Run `git submodule init` and `git submodule update` to fetch the newest translations
+12. Run `npm run build` in your terminal.
+13. Start the MongoDB Server
+14. Start Rem by going into the dist folder and typing the following:  `node index.js`.
 
 ## Example main.json
 ```json
