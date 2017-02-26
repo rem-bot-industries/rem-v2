@@ -22,18 +22,7 @@ class YoutubeImporter extends BasicImporter {
                     this.emit('error', err);
                 } else {
                     if (info.live_playback === '1') {
-                        let song = new Song({
-                            id: info.video_id,
-                            title: info.title,
-                            duration: 'Live',
-                            type: types.youtube,
-                            url: info.loaderUrl,
-                            streamUrl: "http://127.0.0.1:26981/",
-                            isOpus: false,
-                            isResolved: true,
-                            local: false
-                        });
-                        this.emit('done', song);
+                        this.emit('error', 'uwu');
                     } else {
                         info.loaderUrl = `https://www.youtube.com/watch?v=${info.video_id}`;
                         let isOpus = this.filterOpus(info.formats);
