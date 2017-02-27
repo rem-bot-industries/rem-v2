@@ -360,6 +360,7 @@ class Shard extends EventEmitter {
     hubAction(event) {
         switch (event.action) {
             case 'bot_info': {
+                //Thanks abal
                 let data = {
                     users: this.bot.guilds.map(g => g.memberCount).reduce((a, b) => a + b),
                     guilds: this.bot.guilds.size,
