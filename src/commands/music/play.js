@@ -47,7 +47,7 @@ class Play extends Command {
                     msg.channel.createMessage(this.t('play.success', {song: result.data.title, lngs: msg.lang}));
                     return;
                 case 'search_result':
-                    this.searchResult(msg, result.data);
+                    this.searchResult(msg, result.data, next);
                     return;
 
             }
@@ -83,12 +83,15 @@ class Play extends Command {
         return {next, msgSplit};
     }
 
-    searchResult(msg, results) {
+    searchResult(msg, results, next) {
         let selector = new Selector(msg, results, this.t, (err, number) => {
             if (err) {
                 return msg.channel.createMessage(this.t(err, {lngs: msg.lang}));
             }
             msg.content = `!w.play https://youtube.com/watch?v=${results[number - 1].id}`;
+            if (next) {
+                msg.content += ' -next';
+            }
             this.run(msg);
         });
     }
