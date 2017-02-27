@@ -172,7 +172,9 @@ class Player extends EventEmitter {
      * @param next - if the song should be enqueued to the 2nd position
      */
     addToQueue(Song, immediate, next) {
-        this.toggleRepeat('off');
+        if (this.queue.repeat !== 'queue') {
+            this.toggleRepeat('off');
+        }
         if (immediate) {
             this.queue.songs.unshift(Song);
             if (this.started) {
