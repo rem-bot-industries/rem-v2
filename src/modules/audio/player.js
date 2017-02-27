@@ -127,8 +127,8 @@ class Player extends EventEmitter {
             //     winston.info(`Debug: ${information}`);
             // });
             this.connection.on('error', (err) => {
-                console.log('connection error');
-                winston.info(`Error: ${err}`);
+                winston.error(`Connection error: ${err}`);
+                this.toggleRepeat('off');
                 this.nextSong(Song);
             });
         }
