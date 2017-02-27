@@ -17,19 +17,36 @@ class GetPermission extends Command {
 
     run(msg) {
         let messageSplit = msg.content.split(' ').splice(1);
-        let args = minimist(messageSplit);
+        let args = minimist(messageSplit, {boolean: ['r', 'c', 'u']});
+        let start = this.parseStart(args);
         if (args.r) {
-            this.getPerms(msg, 'role');
+            this.getPerms(msg, 'role', start);
         } else if (args.c) {
-            this.getPerms(msg, 'channel');
+            this.getPerms(msg, 'channel', start);
         } else if (args.u) {
-            this.getPerms(msg, 'user');
+            this.getPerms(msg, 'user', start);
         } else {
-            this.getPerms(msg, 'guild');
+            this.getPerms(msg, 'guild', start);
         }
     }
 
-    getPerms(msg, type) {
+    parseStart(args) {
+        if (args._.length > 0) {
+            try {
+                let start = parseInt(args._[0]);
+                if (isNaN(start) || start < 1) {
+                    return 0;
+                }
+                return start - 1;
+            } catch (e) {
+                return 0;
+            }
+        } else {
+            return 0;
+        }
+    }
+
+    getPerms(msg, type, start) {
         this.p.getPermDB(msg, (err, Perms) => {
             if (err) return msg.channel.createMessage(this.t('gp.no-perms', {lngs: msg.lang}));
             let table = new AsciiTable();
@@ -43,32 +60,33 @@ class GetPermission extends Command {
                 this.t('gp.table.cat', {lngs: msg.lang}),
                 this.t('gp.table.perm', {lngs: msg.lang}),
                 this.t('gp.table.use', {lngs: msg.lang}));
-            let added = 0;
-            for (let i = 0; i < Perms.length; i++) {
-                if (Perms[i].type === type) {
-                    if (Perms[i].type === 'channel') {
-                        let channel = rem.getChannel(Perms[i].id);
-                        table.addRow(added + 1, Perms[i].id, channel ? channel.name : 'deleted', Perms[i].type, Perms[i].cat, Perms[i].perm, Perms[i].use);
-                        added += 1;
-                    } else if (Perms[i].type === 'user') {
-                        let user = rem.users.find(u => u.id === Perms[i].id);
-                        table.addRow(added + 1, Perms[i].id, user ? `${user.username}#${user.discriminator}` : 'deleted', Perms[i].type, Perms[i].cat, Perms[i].perm, Perms[i].use);
-                        added += 1;
-                    } else if (Perms[i].type === 'role') {
-                        let role = msg.channel.guild.roles.find(r => r.id === Perms[i].id);
-                        table.addRow(added + 1, Perms[i].id, role ? role.name : 'deleted', Perms[i].type, Perms[i].cat, Perms[i].perm, Perms[i].use);
-                        added += 1;
-                    } else {
-                        table.addRow(added + 1, Perms[i].id, 'Guild', Perms[i].type, Perms[i].cat, Perms[i].perm, Perms[i].use);
-                        added += 1;
-                    }
+            let filteredPerms = Perms.filter((val) => val.type === type);
+            if (filteredPerms.length === 0) {
+                return msg.channel.createMessage(this.t('gp.no-cat', {lngs: msg.lang, cat: type}));
+            }
+            if (filteredPerms.length / 8 < start) {
+                return msg.channel.createMessage(this.t('gp.page-does-not-exist', {lngs: msg.lang}));
+            }
+            for (let i = start * 8; i < filteredPerms.length; i++) {
+                if (filteredPerms[i].type === 'channel') {
+                    let channel = rem.getChannel(filteredPerms[i].id);
+                    let name = channel ? channel.name : 'deleted';
+                    name = name.length > 50 ? name.substring(0, 50) + '...' : name;
+                    table.addRow(i + 1, filteredPerms[i].id, name, filteredPerms[i].type, filteredPerms[i].cat, filteredPerms[i].perm, filteredPerms[i].use);
+                } else if (filteredPerms[i].type === 'user') {
+                    let user = rem.users.find(u => u.id === filteredPerms[i].id);
+                    table.addRow(i + 1, filteredPerms[i].id, user ? `${user.username}#${user.discriminator}` : 'deleted', filteredPerms[i].type, filteredPerms[i].cat, filteredPerms[i].perm, filteredPerms[i].use);
+                } else if (filteredPerms[i].type === 'role') {
+                    let role = msg.channel.guild.roles.find(r => r.id === filteredPerms[i].id);
+                    table.addRow(i + 1, filteredPerms[i].id, role ? role.name : 'deleted', filteredPerms[i].type, filteredPerms[i].cat, filteredPerms[i].perm, filteredPerms[i].use);
+                } else {
+                    table.addRow(i + 1, filteredPerms[i].id, 'Guild', filteredPerms[i].type, filteredPerms[i].cat, filteredPerms[i].perm, filteredPerms[i].use);
                 }
+                if (i === 7) break;
             }
-            if (added > 0) {
-                msg.channel.createMessage('```' + table.toString() + '```');
-            } else {
-                msg.channel.createMessage(this.t('gp.no-cat', {lngs: msg.lang, cat: type}));
-            }
+            let tableString = '```' + table.toString() + '```';
+            tableString = (filteredPerms.length > 8 ? `${this.t('generic.page', {lngs: msg.lang})}: [${start + 1}/${Math.floor(filteredPerms.length / 8 + 1)}]` : '') + tableString;
+            msg.channel.createMessage(tableString);
         });
     }
 }

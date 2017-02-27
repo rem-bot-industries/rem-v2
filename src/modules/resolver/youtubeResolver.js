@@ -21,21 +21,25 @@ class YoutubeImporter extends BasicImporter {
                 if (err) {
                     this.emit('error', err);
                 } else {
-                    info.loaderUrl = `https://www.youtube.com/watch?v=${info.video_id}`;
-                    let isOpus = this.filterOpus(info.formats);
-                    let directUrl = this.filterStreams(info.formats);
-                    let song = new Song({
-                        id: info.video_id,
-                        title: info.title,
-                        duration: this.convertDuration(info),
-                        type: types.youtube,
-                        url: info.loaderUrl,
-                        streamUrl: directUrl,
-                        isOpus: isOpus,
-                        isResolved: true,
-                        local: false
-                    });
-                    this.emit('done', song);
+                    if (info.live_playback === '1') {
+                        this.emit('error', 'uwu');
+                    } else {
+                        info.loaderUrl = `https://www.youtube.com/watch?v=${info.video_id}`;
+                        let isOpus = this.filterOpus(info.formats);
+                        let directUrl = this.filterStreams(info.formats);
+                        let song = new Song({
+                            id: info.video_id,
+                            title: info.title,
+                            duration: this.convertDuration(info),
+                            type: types.youtube,
+                            url: info.loaderUrl,
+                            streamUrl: directUrl,
+                            isOpus: isOpus,
+                            isResolved: true,
+                            local: false
+                        });
+                        this.emit('done', song);
+                    }
                 }
             });
         } catch (e) {

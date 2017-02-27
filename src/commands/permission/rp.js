@@ -18,19 +18,36 @@ class GetPermission extends Command {
 
     run(msg) {
         let messageSplit = msg.content.split(' ').splice(1);
-        let args = minimist(messageSplit);
+        let args = minimist(messageSplit, {boolean: ['r', 'c', 'u']});
+        let start = this.parseStart(args);
         if (args.r) {
-            this.getPerms(msg, 'role');
+            this.getPerms(msg, 'role', start);
         } else if (args.c) {
-            this.getPerms(msg, 'channel');
+            this.getPerms(msg, 'channel', start);
         } else if (args.u) {
-            this.getPerms(msg, 'user');
+            this.getPerms(msg, 'user', start);
         } else {
-            this.getPerms(msg, 'guild');
+            this.getPerms(msg, 'guild', start);
         }
     }
 
-    getPerms(msg, type) {
+    parseStart(args) {
+        if (args._.length > 0) {
+            try {
+                let start = parseInt(args._[0]);
+                if (isNaN(start) || start < 1) {
+                    return 0;
+                }
+                return start - 1;
+            } catch (e) {
+                return 0;
+            }
+        } else {
+            return 0;
+        }
+    }
+
+    getPerms(msg, type, start) {
         this.p.getPermDB(msg, (err, Perms) => {
             if (err) return msg.channel.createMessage(this.t('gp.no-perms', {lngs: msg.lang}));
             let table = new AsciiTable();
@@ -45,32 +62,41 @@ class GetPermission extends Command {
                 this.t('gp.table.perm', {lngs: msg.lang}),
                 this.t('gp.table.use', {lngs: msg.lang}));
             let added = [];
-            async.eachSeries(Perms, (Perm, cb) => {
-                if (Perm.type === type) {
-                    if (type === 'channel') {
-                        let channel = rem.getChannel(Perm.id);
-                        table.addRow(added.length + 1, Perm.id, channel ? channel.name : 'deleted', Perm.type, Perm.cat, Perm.perm, Perm.use);
-                    } else {
-                        table.addRow(added.length + 1, Perm.id, '-', Perm.type, Perm.cat, Perm.perm, Perm.use);
-                    }
-                    added.push(Perm);
-                }
-                async.setImmediate(() => {
-                    cb();
-                });
-            }, (err) => {
-                if (added.length > 0) {
-                    table.addRow('c', this.t('generic.cancel'));
-                    msg.channel.createMessage('```' + table.toString() + '```');
-                    this.startCollector(msg, added);
+            let filteredPerms = Perms.filter((val) => val.type === type);
+            if (filteredPerms.length === 0) {
+                return msg.channel.createMessage(this.t('gp.no-cat', {lngs: msg.lang, cat: type}));
+            }
+            if (filteredPerms.length / 8 < start) {
+                return msg.channel.createMessage(this.t('gp.page-does-not-exist', {lngs: msg.lang}));
+            }
+            for (let i = start * 8; i < filteredPerms.length; i++) {
+                if (filteredPerms[i].type === 'channel') {
+                    let channel = rem.getChannel(filteredPerms[i].id);
+                    let name = channel ? channel.name : 'deleted';
+                    name = name.length > 50 ? name.substring(0, 50) + '...' : name;
+                    table.addRow(i + 1, filteredPerms[i].id, name, filteredPerms[i].type, filteredPerms[i].cat, filteredPerms[i].perm, filteredPerms[i].use);
+                } else if (filteredPerms[i].type === 'user') {
+                    let user = rem.users.find(u => u.id === filteredPerms[i].id);
+                    table.addRow(i + 1, filteredPerms[i].id, user ? `${user.username}#${user.discriminator}` : 'deleted', filteredPerms[i].type, filteredPerms[i].cat, filteredPerms[i].perm, filteredPerms[i].use);
+                } else if (filteredPerms[i].type === 'role') {
+                    let role = msg.channel.guild.roles.find(r => r.id === filteredPerms[i].id);
+                    table.addRow(i + 1, filteredPerms[i].id, role ? role.name : 'deleted', filteredPerms[i].type, filteredPerms[i].cat, filteredPerms[i].perm, filteredPerms[i].use);
                 } else {
-                    msg.channel.createMessage(this.t('gp.no-cat', {lngs: msg.lang, cat: type}));
+                    table.addRow(i + 1, filteredPerms[i].id, 'Guild', filteredPerms[i].type, filteredPerms[i].cat, filteredPerms[i].perm, filteredPerms[i].use);
                 }
-            });
+                added.push(filteredPerms[i]);
+                if (i === 7) break;
+            }
+            table.addRow('c', this.t('generic.cancel'));
+            let tableString = '```' + table.toString() + '```';
+            tableString = (filteredPerms.length > 8 ? `${this.t('generic.page', {lngs: msg.lang})}: [${start + 1}/${Math.floor(filteredPerms.length / 8 + 1)}]` : '') + tableString;
+            msg.channel.createMessage(tableString);
+            this.startCollector(msg, added, start);
         });
+
     }
 
-    startCollector(msg, added) {
+    startCollector(msg, added, start) {
         let collector = msg.CON.addCollector(msg.channel.id, {
             filter: (newMSG) => {
                 return msg.author.id === newMSG.author.id;
@@ -81,17 +107,18 @@ class GetPermission extends Command {
             try {
                 number = parseInt(collMsg.content);
             } catch (e) {
-
+                number = -200;
             }
-            if (msg.content.startsWith(msg.prefix)) {
+            if (collMsg.content.startsWith(msg.prefix)) {
+                collMsg.channel.createMessage(this.t('generic.abort', {lngs: msg.lang}));
                 collector.stop();
             }
             if (collMsg.content === 'c') {
                 collMsg.channel.createMessage(this.t('generic.abort', {lngs: msg.lang}));
                 collector.stop();
             }
-            if (number > 0 && number - 1 < added.length) {
-                let perm = added[number - 1];
+            if (number > start * 8 && number - 1 < start * 8 + 8) {
+                let perm = added[number - (start * 8) - 1];
                 this.p.removePermission(msg.channel.guild.id, perm, (err) => {
                     if (err) return msg.channel.createMessage(this.t(err, {lngs: msg.lang}));
                     msg.channel.createMessage(this.t('rp.success', {

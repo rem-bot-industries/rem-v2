@@ -127,8 +127,8 @@ class Player extends EventEmitter {
             //     winston.info(`Debug: ${information}`);
             // });
             this.connection.on('error', (err) => {
-                console.log('connection error');
-                winston.info(`Error: ${err}`);
+                winston.error(`Connection error: ${err}`);
+                this.toggleRepeat('off');
                 this.nextSong(Song);
             });
         }
@@ -172,7 +172,9 @@ class Player extends EventEmitter {
      * @param next - if the song should be enqueued to the 2nd position
      */
     addToQueue(Song, immediate, next) {
-        this.toggleRepeat('off');
+        if (this.queue.repeat !== 'queue') {
+            this.toggleRepeat('off');
+        }
         if (immediate) {
             this.queue.songs.unshift(Song);
             if (this.started) {

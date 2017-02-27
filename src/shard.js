@@ -322,8 +322,8 @@ class Shard extends EventEmitter {
                 users: this.bot.guilds.map(g => g.memberCount).reduce((a, b) => a + b),
                 guilds: this.bot.guilds.size,
                 channels: this.bot.guilds.map(g => g.channels.size).reduce((a, b) => a + b),
-                voice: Object.keys(this.bot.voiceConnections.guilds).length,
-                voice_playing: Object.values(this.bot.voiceConnections.guilds).filter(conn => conn.playing).length
+                voice: this.bot.voiceConnections.guilds ? Object.keys(this.bot.voiceConnections.guilds).length : 0,
+                voice_playing: this.bot.voiceConnections.guilds ? Object.values(this.bot.voiceConnections.guilds).filter(conn => conn.playing).length : 0
             }))
         }
         if (this.SHARDED) {

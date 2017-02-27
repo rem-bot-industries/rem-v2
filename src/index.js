@@ -103,7 +103,7 @@ if (remConfig.use_ws) {
         }
     })
 } else {
-    client = new Shard(0, 1, null, Raven);
+    client = new Shard(0, 1, undefined, Raven);
 }
 winston.info(`Client Started!`);
 process.on('SIGINT', () => {
