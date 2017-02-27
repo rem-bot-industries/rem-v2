@@ -410,10 +410,11 @@ class VoiceManager extends Manager {
     }
 
     getVoiceConnections(playing) {
+        //ABAL!!!!!!!!!!!!!!!
         if (playing) {
-            return Object.values(rem.voiceConnections.guilds).filter(conn => conn.playing).length; //I love @NoobLance™#3500 for giving me this code
+            return rem.voiceConnections.guilds ? Object.values(rem.voiceConnections.guilds).filter(conn => conn.playing).length : 0; //I love @NoobLance™#3500 for giving me this code
         }
-        return Object.keys(rem.voiceConnections.guilds).length;
+        return rem.voiceConnections.guilds ? Object.keys(rem.voiceConnections.guilds).length : 0;
     }
 }
 module.exports = {class: VoiceManager, deps: [], async: false, shortcode: 'vm'};

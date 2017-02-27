@@ -1,5 +1,5 @@
 /**
- * Created by Julian/Wolke on 07.11.2016. owo
+ * Created by Julian/Wolke on 07.11.2016.
  */
 let EventEmitter = require('eventemitter3');
 let shortid = require('shortid');
