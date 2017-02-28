@@ -5,6 +5,7 @@ let EventEmitter = require('eventemitter3');
 let YoutubeReg = /(?:http?s?:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=)?([a-zA-Z0-9_-]+)(&.*|)/;
 let SoundcloudReg = /(?:http?s?:\/\/)?(?:www\.)?(?:soundcloud\.com|snd\.sc)\/(?:.*)/;
 let osuRegex = /(?:http(?:s|):\/\/osu.ppy.sh\/(s|b)\/([0-9]*)((\?|\&)m=[0-9]|))/;
+let twitchRegex = /(?:http(?:s|):\/\/|)?(?:www\.)?twitch\.tv\/([a-zA-Z0-9_-].+)/;
 const winston = require('winston');
 let keys;
 let crypto = require('crypto');
@@ -28,6 +29,7 @@ try {
     winston.error(e);
     winston.error('The file with the youtube keys could not be loaded!');
 }
+let TwitchResolver = require('./twitchResolver');
 let sc = require('./soundCloudResolver');
 let yt = require('./youtubeResolver');
 let pl = require('./playlistResolver');
@@ -36,6 +38,8 @@ let ytdl = require('ytdl-core');
 let youtubesearch = require('youtube-search');
 let KeyManager = require('../keyManager');
 let km = new KeyManager(keys);
+let Song = require('../../structures/song');
+let SongTypes = require('../../structures/constants').SONG_TYPES;
 let opts = {
     maxResults: 10,
     key: km.getKey(),
@@ -76,6 +80,8 @@ class SongImporter extends EventEmitter {
             this.osu(messageSearch);
         } else if (SoundcloudReg.test(messageSearch)) {
             this.soundcloud(messageSearch);
+        } else if (twitchRegex.test(messageSearch)) {
+            this.twitch(messageSearch);
         } else {
             if (messageSearch !== '') {
                 this.search(messageSearch);
@@ -113,6 +119,17 @@ class SongImporter extends EventEmitter {
                     this.emit('error', 'generic.error');
                 }
             });
+        }
+    }
+
+    async twitch(url) {
+        let twitch = new TwitchResolver(url);
+        try {
+            let song = await twitch.resolve(url);
+            this.emit('done', song);
+        } catch (e) {
+            winston.error(e);
+            this.emit('error', 'generic.error')
         }
     }
 
