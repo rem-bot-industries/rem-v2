@@ -25,15 +25,20 @@ class YoutubeImporter extends BasicImporter {
                         this.emit('error', 'uwu');
                     } else {
                         info.loaderUrl = `https://www.youtube.com/watch?v=${info.video_id}`;
-                        let isOpus = this.filterOpus(info.formats);
-                        let directUrl = this.filterStreams(info.formats);
+                        let directUrl = this.filterOpus(info.formats);
+                        let isOpus = false;
+                        if (directUrl) {
+                            isOpus = true;
+                        } else {
+                            directUrl = this.filterStreams(info.formats);
+                        }
                         let song = new Song({
                             id: info.video_id,
                             title: info.title,
                             duration: this.convertDuration(info),
                             type: types.youtube,
                             url: info.loaderUrl,
-                            streamUrl: directUrl,
+                            streamUrl: directUrl += '&ratebypass=yes',
                             isOpus: isOpus,
                             isResolved: true,
                             local: false
@@ -55,15 +60,22 @@ class YoutubeImporter extends BasicImporter {
                     reject(err);
                 } else {
                     info.loaderUrl = `https://www.youtube.com/watch?v=${info.video_id}`;
-                    let directUrl = that.filterStreams(info.formats);
+                    let directUrl = this.filterOpus(info.formats);
+                    let isOpus = false;
+                    if (directUrl) {
+                        isOpus = true;
+                    } else {
+                        directUrl = that.filterStreams(info.formats);
+                    }
                     let song = new Song({
                         id: info.video_id,
                         title: info.title,
                         duration: that.convertDuration(info),
                         type: types.youtube,
                         url: info.loaderUrl,
-                        streamUrl: directUrl,
+                        streamUrl: directUrl += '&ratebypass=yes',
                         needsYtdl: !directUrl,
+                        isOpus: isOpus,
                         isResolved: true,
                         local: false
                     });
@@ -77,7 +89,6 @@ class YoutubeImporter extends BasicImporter {
         for (let i = 0; i < formats.length; i++) {
             // console.log(formats[i].itag);
             if (formats[i].itag === '250' || formats[i].itag === '251' || formats[i].itag === '249') {
-                // console.log(formats[i]);
                 return formats[i].url;
             }
         }

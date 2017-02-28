@@ -3,7 +3,7 @@
  */
 let shortid = require('shortid');
 class Song {
-    constructor({id, type, title, url, needsResolve, local, duration, streamUrl, needsYtdl}) {
+    constructor({id, type, title, url, needsResolve, local, duration, streamUrl, needsYtdl, isOpus}) {
         this.id = id;
         this.type = type;
         this.url = url;
@@ -12,6 +12,7 @@ class Song {
         this.needsYtdl = needsYtdl;
         this.needsResolve = needsResolve;
         this.isResolved = !this.needsResolve;
+        this.isOpus = isOpus;
         this.streamUrl = streamUrl;
         this.title = title ? title : 'unresolved';
         this.qid = shortid.generate();

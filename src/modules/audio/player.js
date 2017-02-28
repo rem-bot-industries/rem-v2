@@ -61,6 +61,7 @@ class Player extends EventEmitter {
                     } else {
                         link = Song.streamUrl;
                     }
+                    console.log('OPUS');
                     options.format = 'webm';
                     options.frameDuration = 20;
                 } else {
