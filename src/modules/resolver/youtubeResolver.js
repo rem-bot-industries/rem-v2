@@ -18,18 +18,19 @@ class YoutubeImporter extends BasicImporter {
     }
 
     async loadSong(url) {
+        var that = this;
         try {
             ytdl.getInfo(url, async(err, info) => {
                 if (err) {
-                    this.emit('error', err);
+                    that.emit('error', err);
                 } else {
                     if (info.live_playback === '1') {
                         try {
-                            let info = await this.resolveLiveStream(url);
+                            let info = await that.resolveLiveStream(url);
                             info.loaderUrl = `https://www.youtube.com/watch?v=${info.video_id}`;
-                            let streamUrl = this.filterLiveStreams(info.formats);
+                            let streamUrl = that.filterLiveStreams(info.formats);
                             if (!streamUrl) {
-                                this.emit('error', 'No suitable format found!');
+                                that.emit('error', 'No suitable format found!');
                             } else {
                                 let song = new Song({
                                     id: info.video_id,
@@ -43,24 +44,24 @@ class YoutubeImporter extends BasicImporter {
                                     live: true,
                                     isOpus: false
                                 });
-                                this.emit('done', song);
+                                that.emit('done', song);
                             }
                         } catch (e) {
-                            this.emit('error', e);
+                            that.emit('error', e);
                         }
                     } else {
                         info.loaderUrl = `https://www.youtube.com/watch?v=${info.video_id}`;
-                        let directUrl = this.filterOpus(info.formats);
+                        let directUrl = that.filterOpus(info.formats);
                         let isOpus = false;
                         if (directUrl) {
                             isOpus = true;
                         } else {
-                            directUrl = this.filterStreams(info.formats);
+                            directUrl = that.filterStreams(info.formats);
                         }
                         let song = new Song({
                             id: info.video_id,
                             title: info.title,
-                            duration: this.convertDuration(info),
+                            duration: that.convertDuration(info),
                             type: types.youtube,
                             url: info.loaderUrl,
                             streamUrl: directUrl += '&ratebypass=yes',
@@ -68,12 +69,12 @@ class YoutubeImporter extends BasicImporter {
                             isResolved: true,
                             local: false
                         });
-                        this.emit('done', song);
+                        that.emit('done', song);
                     }
                 }
             });
         } catch (e) {
-            this.emit('error', e);
+            that.emit('error', e);
         }
     }
 
