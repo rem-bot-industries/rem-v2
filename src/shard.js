@@ -360,12 +360,13 @@ class Shard extends EventEmitter {
     hubAction(event) {
         switch (event.action) {
             case 'bot_info': {
+                //Thanks abal
                 let data = {
                     users: this.bot.guilds.map(g => g.memberCount).reduce((a, b) => a + b),
                     guilds: this.bot.guilds.size,
                     channels: this.bot.guilds.map(g => g.channels.size).reduce((a, b) => a + b),
-                    voice: this.bot.voiceConnections.guilds ? Object.keys(this.bot.voiceConnections.guilds).length : 0,
-                    voice_playing: this.bot.voiceConnections.guilds ? Object.values(this.bot.voiceConnections.guilds).filter(conn => conn.playing).length : 0
+                    voice: this.bot.voiceConnections.size,
+                    voice_playing: this.bot.voiceConnections.filter((vc) => vc.playing).length
                 };
                 this.resolveAction(event, data);
                 return;

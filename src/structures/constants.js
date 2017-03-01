@@ -6,7 +6,9 @@ module.exports = {
         youtube: 1,
         soundcloud: 2,
         osu: 3,
-        radio: 4
+        radio: 4,
+        twitch: 5,
+        youtube_live: 6
     },
     MESSAGE_TYPES: {
         identify: 1,

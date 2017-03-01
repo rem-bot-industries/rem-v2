@@ -51,8 +51,9 @@
     "unzip2": "^0.2.5",
     "winston": "^2.3.1",
     "winston-daily-rotate-file": "^1.4.4",
-    "ws": "^2.1.0",
+    "ws": "^2.2.0",
     "youtube-api": "^2.0.6",
+    "youtube-dl": "latest",
     "youtube-search": "^1.0.8",
     "ytdl-core": "^0.8.1"
   },

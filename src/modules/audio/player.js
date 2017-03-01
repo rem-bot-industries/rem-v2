@@ -61,6 +61,7 @@ class Player extends EventEmitter {
                     } else {
                         link = Song.streamUrl;
                     }
+                    console.log('OPUS');
                     options.format = 'webm';
                     options.frameDuration = 20;
                 } else {
@@ -101,6 +102,10 @@ class Player extends EventEmitter {
                 }
             } else if (Song.type === SongTypes.radio) {
 
+            } else if (Song.type === SongTypes.twitch) {
+                link = Song.streamUrl;
+            } else if (Song.type === SongTypes.youtube_live) {
+                link = Song.streamUrl;
             } else {
                 return this.nextSong();
             }
@@ -118,7 +123,7 @@ class Player extends EventEmitter {
             // }));
             this.announce(Song);
             this.connection.once('end', () => {
-                // winston.info("File ended!");
+                winston.info("File ended!");
                 setTimeout(() => {
                     this.nextSong(Song);
                 }, 100);
