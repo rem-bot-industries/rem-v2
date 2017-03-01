@@ -17,15 +17,15 @@ class TwitchResolver extends BasicImporter {
         if (!info.is_live) {
             throw new Error('Channel is not Live!');
         }
-        let url = this.filterFormats(info);
-        if (!url) {
+        let streamUrl = this.filterFormats(info);
+        if (!streamUrl) {
             throw new Error('No suitable format found!');
         }
         let song = new Song({
             id: info.id,
             type: SongTypes.twitch,
             title: info.uploader_id,
-            streamUrl: url,
+            streamUrl: streamUrl,
             url: info.webpage_url,
             duration: "live",
             needsResolve: false,
