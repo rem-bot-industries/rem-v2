@@ -14,6 +14,7 @@
 
 ## Installation instructions
 **Optional** Rem uses Redis for Caching, which can be found here: https://redis.io/download, you dont need it though, as you can disable redis via config.
+
 1. Install MongoDB with the [guide](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows/).
 2. Install git, Here is the [link](https://git-scm.com/downloads) to get it.
 3. Install node, Here is the [link](https://nodejs.org/en/download/current/) to get it.
