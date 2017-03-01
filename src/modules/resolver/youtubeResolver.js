@@ -25,9 +25,9 @@ class YoutubeImporter extends BasicImporter {
                 } else {
                     if (info.live_playback === '1') {
                         try {
-                            let info = await that.resolveLiveStream(url);
+                            let info = await this.resolveLiveStream(url);
                             info.loaderUrl = `https://www.youtube.com/watch?v=${info.video_id}`;
-                            let streamUrl = that.filterLiveStreams(info.formats);
+                            let streamUrl = this.filterLiveStreams(info.formats);
                             if (!streamUrl) {
                                 this.emit('error', 'No suitable format found!');
                             } else {
