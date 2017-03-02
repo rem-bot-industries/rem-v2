@@ -64,7 +64,7 @@ class YoutubeImporter extends BasicImporter {
                             duration: that.convertDuration(info),
                             type: types.youtube,
                             url: info.loaderUrl,
-                            streamUrl: directUrl += '&ratebypass=yes',
+                            streamUrl: directUrl,
                             isOpus: isOpus,
                             isResolved: true,
                             local: false
@@ -102,7 +102,7 @@ class YoutubeImporter extends BasicImporter {
                             duration: that.convertDuration(info),
                             type: types.youtube,
                             url: info.loaderUrl,
-                            streamUrl: directUrl += '&ratebypass=yes',
+                            streamUrl: directUrl,
                             needsYtdl: !directUrl,
                             isOpus: isOpus,
                             isResolved: true,
