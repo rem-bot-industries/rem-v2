@@ -65,14 +65,7 @@ class Player extends EventEmitter {
                     options.format = 'webm';
                     options.frameDuration = 20;
                 } else {
-                    if (!rem.options.crystal) {
-                        link = request(Song.streamUrl);
-                        link.on('error', (err) => {
-                            winston.error(err);
-                        });
-                    } else {
-                        link = Song.streamUrl;
-                    }
+                    link = Song.streamUrl;
                 }
             } else if (Song.type === SongTypes.soundcloud) {
                 if (Song.streamUrl) {
