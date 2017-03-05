@@ -93,9 +93,9 @@ class Shard extends EventEmitter {
         let options = {
             autoreconnect: true,
             compress: true,
-            messageLimit: 200,
+            messageLimit: 100,
             disableEveryone: true,
-            getAllUsers: true,
+            getAllUsers: false,
             firstShardID: parseInt(this.id),
             lastShardID: parseInt(this.id),
             maxShards: parseInt(this.count),
