@@ -117,7 +117,8 @@ class GetPermission extends Command {
                 collMsg.channel.createMessage(this.t('generic.abort', {lngs: msg.lang}));
                 collector.stop();
             }
-            if (number > start * 8 && number - 1 < start * 8 + 8) {
+            if (number > start * 8 && number - 1 < start * 8 + 8 && number - 1 < added.length) {
+                collector.stop();
                 let perm = added[number - (start * 8) - 1];
                 this.p.removePermission(msg.channel.guild.id, perm, (err) => {
                     if (err) return msg.channel.createMessage(this.t(err, {lngs: msg.lang}));
