@@ -21,7 +21,7 @@ let wsWorker;
 let loader = require('docker-config-loader');
 let config;
 try {
-    config = loader({secretName: process.env.secret_name, localPath: './config/main.json'});
+    config = loader({secretName: 'secret_name', localPath: './config/main.json'});
 } catch (e) {
     winston.error(e);
     winston.error('Failed to require config!');
