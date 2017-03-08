@@ -13,14 +13,16 @@ class AddPlaylistToQueue extends Command {
      * Create the command
      * @param {Function} t - the translation module
      * @param {Object} v - the voice manager
+     * @param {Object} mod - the module manager
      */
-    constructor({t, v}) {
+    constructor({t, v, mod}) {
         super();
         this.cmd = 'apq';
         this.cat = 'playlist';
         this.needGuild = true;
         this.t = t;
         this.v = v;
+        this.r = mod.getMod('raven');
         this.accessLevel = 0;
     }
 
@@ -29,11 +31,12 @@ class AddPlaylistToQueue extends Command {
             let Playlist = result.data;
             msg.channel.createMessage(`Added Playlist \`${Playlist.title}\` from the channel \`${Playlist.author}\` with \`${Playlist.songs.length}\` songs to the queue!`);
         }).catch(err => {
-            if (track_error) {
-                if (typeof(err) === 'object') {
-                    err = err.err;
-                }
-                if (err !== 'joinVoice.no-voice' && err !== 'joinVoice.error' && err !== 'generic.error') {
+            console.error(err);
+            if (typeof(err) === 'object') {
+                err = err.err;
+            }
+            if (err !== 'joinVoice.no-voice' && err !== 'joinVoice.error' && err !== 'generic.error') {
+                if (track_error) {
                     this.r.captureException(err, {
                         extra: {
                             userId: msg.author.id,
@@ -43,8 +46,10 @@ class AddPlaylistToQueue extends Command {
                         }
                     });
                 }
+                // console.error(err);
+            } else {
+                return msg.channel.createMessage(this.t(err, {lngs: msg.lang}));
             }
-            console.error(err);
             msg.channel.createMessage(this.t('generic.error', {lngs: msg.lang}));
         });
     }

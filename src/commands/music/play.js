@@ -53,11 +53,11 @@ class Play extends Command {
             }
         }).catch(err => {
             console.error(err);
-            if (track_error) {
-                if (typeof(err) === 'object') {
-                    err = err.err;
-                }
-                if (err !== 'joinVoice.no-voice' && err !== 'joinVoice.error' && err !== 'generic.error') {
+            if (typeof(err) === 'object') {
+                err = err.err;
+            }
+            if (err !== 'joinVoice.no-voice' && err !== 'joinVoice.error' && err !== 'generic.error') {
+                if (track_error) {
                     this.r.captureException(err, {
                         extra: {
                             userId: msg.author.id,
@@ -67,7 +67,9 @@ class Play extends Command {
                         }
                     });
                 }
-
+                // console.error(err);
+            } else {
+                return msg.channel.createMessage(this.t(err, {lngs: msg.lang}));
             }
             msg.channel.createMessage(this.t('generic.error', {lngs: msg.lang}));
         });

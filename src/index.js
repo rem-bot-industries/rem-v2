@@ -18,16 +18,10 @@ let wsWorker;
 /**
  * Use different configs based on the environment (used for easy docker run)
  */
+let loader = require('docker-config-loader');
 let config;
 try {
-    if (process.env.secret_name) {
-        config = require(`/run/secrets/${process.env.secret_name}`);
-        winston.info(`Using docker secrets!`);
-    } else {
-        config = require('../config/main.json');
-        winston.info(`Using local secrets!`);
-    }
-
+    config = loader({secretName: process.env.secret_name, localPath: './config/main.json'});
 } catch (e) {
     winston.error(e);
     winston.error('Failed to require config!');
@@ -120,7 +114,7 @@ process.on('SIGINT', () => {
 });
 winston.cli();
 process.on('unhandledRejection', (reason, promise) => {
-    if (typeof reason === 'undefined') return;
+    if (!reason) return;
     winston.error(`Unhandled rejection: ${reason} - ${util.inspect(promise)}`);
 });
 // Now look at this net
