@@ -1,7 +1,7 @@
 {
   "name": "rem-v2",
-  "version": "2.1.0",
-  "description": "",
+  "version": "2.1.1",
+  "description": "uwu",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 0",
@@ -11,7 +11,8 @@
     "major": "npm --no-git-tag-version version major",
     "build": "./node_modules/.bin/babel src --source-maps --out-dir dist/",
     "watch": "babel src --watch --source-maps --out-dir dist/",
-    "doit": "npm install && npm rebuild && npm run build"
+    "doit": "npm install && npm rebuild && npm run build",
+    "rebuild": "npm rebuild && npm run build"
   },
   "author": "Wolke <wolke@ram.moe>",
   "license": "ISC",
