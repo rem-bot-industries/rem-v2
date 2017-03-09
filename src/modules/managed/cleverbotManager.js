@@ -16,15 +16,24 @@ class CleverBotManager extends Manager {
     talk(msg) {
         if (this.cleverbots[msg.channel.guild.id]) {
             this.cleverbots[msg.channel.guild.id].talk(msg, (err, reply) => {
-                if (err) return msg.channel.createMessage(':x: An error with cleverbot occured!');
+                if (err) {
+                    console.error(err);
+                    return msg.channel.createMessage(':x: An error with cleverbot occured!');
+                }
                 msg.channel.createMessage(':pencil: ' + reply);
             });
         } else {
             this.cleverbots[msg.channel.guild.id] = new CleverBot(cleverbotUser, cleverbotKey, `wolke_rem_discordbot_${msg.channel.guild.id}`);
             this.cleverbots[msg.channel.guild.id].createSession(msg.channel.guild.id, (err) => {
-                if (err) return msg.channel.createMessage(':x: An error with cleverbot occured!');
+                if (err) {
+                    console.error(err);
+                    return msg.channel.createMessage(':x: An error with cleverbot occured!');
+                }
                 this.cleverbots[msg.channel.guild.id].talk(msg, (err, reply) => {
-                    if (err) return msg.channel.createMessage(':x: An error with cleverbot occured!');
+                    if (err) {
+                        console.error(err);
+                        return msg.channel.createMessage(':x: An error with cleverbot occured!');
+                    }
                     msg.channel.createMessage(':pencil: ' + reply);
                 });
             });
