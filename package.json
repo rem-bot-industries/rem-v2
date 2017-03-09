@@ -21,7 +21,7 @@
     "async": "^2.1.5",
     "axios": "^0.15.3",
     "babel-cli": "^6.23.0",
-    "better-cleverbot-io": "^1.0.1",
+    "better-cleverbot-io": "^1.0.2",
     "blocked": "^1.2.1",
     "bluebird": "^3.5.0",
     "docker-config-loader": "^1.0.0",
