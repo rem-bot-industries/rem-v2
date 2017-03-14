@@ -12,21 +12,22 @@ class UwUBuffer extends EventEmitter {
         this.dataAdded = 0;
         this.sourceEnded = false;
         // this.interval = setInterval(() => {
-        // console.log(`Buffer Length: ${this.buf.length}`);
+        //     console.log(`Buffer Length: ${this.buf.length}`);
         // }, 1000);
-        sourceStream.on('data', (data) => {
+        this.sourceStream = sourceStream;
+        this.sourceStream.on('data', (data) => {
             // console.log(Buffer.byteLength(data));
             this.buf.push(data);
             this.dataAdded++;
         });
-        sourceStream.on('error', (err) => {
+        this.sourceStream.on('error', (err) => {
             winston.error(err);
             this.sourceEnded = true;
             // clearInterval(this.interval);
             this.emit('error', err);
             this.emit('end');
         });
-        sourceStream.on('end', () => {
+        this.sourceStream.on('end', () => {
             // console.log('sourcestream ended!');
             this.sourceEnded = true;
             // this.emit('end');
@@ -65,6 +66,18 @@ class UwUBuffer extends EventEmitter {
     readStop() {
         this.allowReading = false;
     }
+
+    close() {
+        this.buf = [];
+        this.sourceStream.removeAllListeners();
+        if (typeof this.sourceStream.destroy === "function") {
+            this.sourceStream.destroy();
+        } else {
+            this.sourceStream.unpipe();
+        }
+        this.removeAllListeners();
+        // clearInterval(this.interval);
+    }
 }
 class BufferStream extends Readable {
     constructor(options, _source) {
@@ -73,6 +86,7 @@ class BufferStream extends Readable {
         this._uwuBuffer.on('data', (chunk) => {
             // console.log('got data from buffer!');
             if (!this.push(chunk)) {
+                // console.log('stopping buffer read!');
                 this._uwuBuffer.readStop();
             }
         });
@@ -80,6 +94,10 @@ class BufferStream extends Readable {
             // console.log('Buffer ended!');
             this.push(null);
         });
+    }
+
+    rip() {
+        this._uwuBuffer.close();
     }
 
     _read(size) {

@@ -78,8 +78,7 @@ class Player extends EventEmitter {
             } else if (Song.type === SongTypes.soundcloud) {
                 if (Song.streamUrl) {
                     if (!rem.options.crystal) {
-                        let secondStream = request(Song.streamUrl);
-                        link = this.processStream(secondStream);
+                        link = request(Song.streamUrl);
                         link.on('error', (err) => {
                             winston.error(err);
                         });
@@ -127,6 +126,11 @@ class Player extends EventEmitter {
             this.announce(Song);
             this.connection.once('end', () => {
                 winston.info("File ended!");
+                try {
+                    link.rip()
+                } catch (e) {
+
+                }
                 setTimeout(() => {
                     this.nextSong(Song);
                 }, 100);

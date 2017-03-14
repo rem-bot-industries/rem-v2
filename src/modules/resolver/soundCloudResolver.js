@@ -21,6 +21,7 @@ class SoundcloudImporter extends BasicImporter {
         for (let format in req2.data) {
             if (req2.data.hasOwnProperty(format)) {
                 if (format.indexOf('http') > -1) {
+                    console.log(req.data);
                     return new Song({
                         id: req.data.id,
                         type: types.soundcloud,
@@ -28,7 +29,7 @@ class SoundcloudImporter extends BasicImporter {
                         needsResolve: false,
                         url: url,
                         needsYtdl: true,
-                        duration: this.convertDuration({length_seconds: req.data.duration}),
+                        duration: this.convertDuration({length_seconds: req.data.duration / 1000}),
                         streamUrl: req2.data[format]
                     });
                 }
