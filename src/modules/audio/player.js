@@ -12,6 +12,7 @@ let mergeJSON = require('merge-json');
 let YtResolver = require('../resolver/youtubeResolver');
 let ytr = new YtResolver();
 let icy = require('icy');
+let BufferStream = require('./BufferStream');
 /**
  * The audio player
  * @extends EventEmitter
@@ -42,6 +43,10 @@ class Player extends EventEmitter {
         // }, 1000 * 30);
     }
 
+    processStream(stream) {
+        return new BufferStream({}, stream);
+    }
+
     /**
      * Plays a Song
      * @param {Song} Song - the song to play
@@ -54,7 +59,10 @@ class Player extends EventEmitter {
             if (Song.type === SongTypes.youtube) {
                 if (Song.isOpus) {
                     if (!rem.options.crystal) {
-                        link = request(Song.streamUrl);
+                        // console.log('OPUS');
+                        // link = request(Song.streamUrl);
+                        let secondStream = request(Song.streamUrl);
+                        link = this.processStream(secondStream);
                         link.on('error', (err) => {
                             winston.error(err);
                         });
@@ -64,7 +72,8 @@ class Player extends EventEmitter {
                     options.format = 'webm';
                     options.frameDuration = 20;
                 } else {
-                    link = Song.streamUrl;
+                    let secondStream = request(Song.streamUrl);
+                    link = this.processStream(secondStream);
                 }
             } else if (Song.type === SongTypes.soundcloud) {
                 if (Song.streamUrl) {
@@ -101,6 +110,7 @@ class Player extends EventEmitter {
             } else {
                 return this.nextSong();
             }
+
             this.connection.play(link, options);
             // winston.info(path.resolve(Song.path));
             // updatePlays(Song.id).then(() => {
@@ -116,6 +126,11 @@ class Player extends EventEmitter {
             this.announce(Song);
             this.connection.once('end', () => {
                 winston.info("File ended!");
+                try {
+                    link.rip()
+                } catch (e) {
+
+                }
                 setTimeout(() => {
                     this.nextSong(Song);
                 }, 100);

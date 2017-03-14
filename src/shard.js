@@ -134,7 +134,7 @@ class Shard extends EventEmitter {
             this.guildMemberRemove(g, m);
         });
         // bot.on('debug', this.debug);
-        // bot.on('warn', this.warn);
+        bot.on('warn', this.warn);
         bot.on('error', this.error);
         process.on('SIGINT', () => {
             this.shutdown();
