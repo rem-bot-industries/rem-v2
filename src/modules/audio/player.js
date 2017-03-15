@@ -72,8 +72,8 @@ class Player extends EventEmitter {
                     options.format = 'webm';
                     options.frameDuration = 20;
                 } else {
-                    let secondStream = request(Song.streamUrl);
-                    link = this.processStream(secondStream);
+                    link = Song.streamUrl;
+                    // link = this.processStream(secondStream);
                 }
             } else if (Song.type === SongTypes.soundcloud) {
                 if (Song.streamUrl) {
