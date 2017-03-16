@@ -16,6 +16,8 @@ class Love extends Command {
     }
 
     async run(msg) {
+        let time = moment();
+        time.locale(msg.lang[0]);
         if (this.u.checkLoveCD(msg.dbUser)) {
             if (msg.mentions.length > 0) {
                 if (msg.mentions[0].id === msg.author.id) {
@@ -45,7 +47,7 @@ class Love extends Command {
                         });
                     }
                     if (reps.length === 2) {
-                        reply += this.t('love.next', {lngs: msg.lang, time: moment().to(lowest)});
+                        reply += this.t('love.next', {lngs: msg.lang, time: time.to(lowest)});
                     }
                     msg.channel.createMessage(reply);
                 } catch (e) {
@@ -58,7 +60,7 @@ class Love extends Command {
             }
         } else {
             let lowest = Math.min(...msg.dbUser.reps);
-            msg.channel.createMessage(this.t('love.error-cd', {lngs: msg.lang, time: moment().to(lowest)}));
+            msg.channel.createMessage(this.t('love.error-cd', {lngs: msg.lang, time: time.to(lowest)}));
         }
     }
 
