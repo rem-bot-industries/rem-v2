@@ -12,7 +12,8 @@ let mergeJSON = require('merge-json');
 let YtResolver = require('../resolver/youtubeResolver');
 let ytr = new YtResolver();
 let icy = require('icy');
-let BufferStream = require('./BufferStream');
+let smartStream = require('./smartStream');
+Promise.promisifyAll(smartStream);
 /**
  * The audio player
  * @extends EventEmitter
@@ -43,29 +44,25 @@ class Player extends EventEmitter {
         // }, 1000 * 30);
     }
 
-    processStream(stream) {
-        return new BufferStream({}, stream);
-    }
-
     /**
      * Plays a Song
      * @param {Song} Song - the song to play
      */
-    play(Song) {
+    async play(Song) {
         clearTimeout(this.autoLeaveTimeout);
         if ((this.connection && this.connection.ready || this.connection && rem.options.crystal) && Song) {
             let link;
-            let options = {};
+            let options = {inputArgs: ["-reconnect", "1", "-reconnect_streamed", "1", "-reconnect_delay_max", "2"]};
             if (Song.type === SongTypes.youtube) {
                 if (Song.isOpus) {
                     if (!rem.options.crystal) {
                         // console.log('OPUS');
                         // link = request(Song.streamUrl);
-                        let secondStream = request(Song.streamUrl);
-                        link = this.processStream(secondStream);
-                        link.on('error', (err) => {
-                            winston.error(err);
-                        });
+                        try {
+                            link = await smartStream.requestAsync(Song.streamUrl);
+                        } catch (e) {
+                            winston.error(e);
+                        }
                     } else {
                         link = Song.streamUrl;
                     }
