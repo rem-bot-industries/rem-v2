@@ -25,13 +25,13 @@ class Pause extends Command {
     }
 
     run(msg) {
-        this.v.once('error', (err) => {
-            msg.channel.createMessage(this.t(err, {lngs: msg.lang}));
-        });
-        this.v.once('success', () => {
+        try {
+            this.v.pause(msg);
             msg.channel.createMessage(':pause_button: ');
-        });
-        this.v.pause(msg);
+        } catch (err) {
+            console.error(err);
+            msg.channel.createMessage(this.t(err instanceof TranslatableError ? err.t : 'generic.error', {lngs: msg.lang}));
+        }
     }
 }
 module.exports = Pause;

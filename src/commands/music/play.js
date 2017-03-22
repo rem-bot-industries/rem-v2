@@ -30,33 +30,29 @@ class Play extends Command {
         this.accessLevel = 0;
     }
 
-    run(msg) {
+    async run(msg) {
         let msgSplit = msg.content.split(' ').splice(1);
         if (msgSplit.length === 0) return msg.channel.createMessage(this.t('qa.empty-search', {lngs: msg.lang}));
         let uwu = this.checkNext(msgSplit);
         let next = uwu.next;
         msgSplit = uwu.msgSplit;
         msg.content = msgSplit.join(' ').trim();
-        this.v.addToQueue(msg, !next, next).then(result => {
-            switch (result.type) {
-                case 'added':
-                    if (next) return msg.channel.createMessage(this.t('play.next', {
-                        song: result.data.title,
-                        lngs: msg.lang
-                    }));
-                    msg.channel.createMessage(this.t('play.success', {song: result.data.title, lngs: msg.lang}));
-                    return;
-                case 'search_result':
-                    this.searchResult(msg, result.data, next);
-                    return;
-
+        try {
+            let res = await this.v.addToQueue(msg, !next, next);
+            if (Object.prototype.toString.call(res) === '[object Array]') {
+                return this.searchResult(msg, res);
+            } else {
+                if (next) return msg.channel.createMessage(this.t('play.next', {
+                    song: res.title,
+                    lngs: msg.lang
+                }));
+                msg.channel.createMessage(this.t('play.success', {song: res.title, lngs: msg.lang}));
             }
-        }).catch(err => {
-            console.error(err);
-            if (typeof(err) === 'object') {
-                err = err.err;
-            }
-            if (err !== 'joinVoice.no-voice' && err !== 'joinVoice.error' && err !== 'generic.error') {
+        } catch (err) {
+            if (err instanceof TranslatableError) {
+                console.error(err);
+                msg.channel.createMessage(this.t(err instanceof TranslatableError ? err.t : 'generic.error', {lngs: msg.lang}));
+            } else {
                 if (track_error) {
                     this.r.captureException(err, {
                         extra: {
@@ -67,12 +63,9 @@ class Play extends Command {
                         }
                     });
                 }
-                // console.error(err);
-            } else {
-                return msg.channel.createMessage(this.t(err, {lngs: msg.lang}));
+                msg.channel.createMessage(this.t('generic.error', {lngs: msg.lang}));
             }
-            msg.channel.createMessage(this.t('generic.error', {lngs: msg.lang}));
-        });
+        }
     }
 
     checkNext(msgSplit) {

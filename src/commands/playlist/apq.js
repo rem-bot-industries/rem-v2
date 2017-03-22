@@ -26,16 +26,19 @@ class AddPlaylistToQueue extends Command {
         this.accessLevel = 0;
     }
 
-    run(msg) {
+    async run(msg) {
+        msg.content = msg.content.split(' ').splice(1).join(' ');
+        if (msg.content === '') {
+            return msg.channel.createMessage(this.t('generic.empty-search', {lngs: msg.lang}));
+        }
         this.v.addPlaylistToQueue(msg).then(result => {
-            let Playlist = result.data;
-            msg.channel.createMessage(`Added Playlist \`${Playlist.title}\` from the channel \`${Playlist.author}\` with \`${Playlist.songs.length}\` songs to the queue!`);
+            msg.channel.createMessage(`Added Playlist \`${result.title}\` from the channel \`${result.author}\` with \`${result.songs.length}\` songs to the queue!`);
         }).catch(err => {
             console.error(err);
-            if (typeof(err) === 'object') {
-                err = err.err;
-            }
-            if (err !== 'joinVoice.no-voice' && err !== 'joinVoice.error' && err !== 'generic.error') {
+            if (err instanceof TranslatableError) {
+                console.error(err);
+                msg.channel.createMessage(this.t(err instanceof TranslatableError ? err.t : 'generic.error', {lngs: msg.lang}));
+            } else {
                 if (track_error) {
                     this.r.captureException(err, {
                         extra: {
@@ -47,10 +50,9 @@ class AddPlaylistToQueue extends Command {
                     });
                 }
                 // console.error(err);
-            } else {
-                return msg.channel.createMessage(this.t(err, {lngs: msg.lang}));
+                console.error(err);
+                msg.channel.createMessage(this.t('generic.error', {lngs: msg.lang}));
             }
-            msg.channel.createMessage(this.t('generic.error', {lngs: msg.lang}));
         });
     }
 }

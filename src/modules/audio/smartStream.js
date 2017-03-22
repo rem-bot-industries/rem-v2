@@ -121,13 +121,13 @@ streamResume.request = function (options, callback) {
         requestOptions.headers = {};
     }
     if (!requestOptions.hasOwnProperty("maxRequests")) {
-        requestOptions.maxRetries = 3;
+        requestOptions.maxRetries = 10;
     }
     requestOptions.method = "GET";
     let outputStream = new OutputStream({}, requestOptions);
     // console.log(requestOptions);
     let newCallback = (res) => {
-        console.log(`HEADERS: ${res.headers["content-length"]}`);
+        // console.log(`HEADERS: ${res.headers["content-length"]}`);
         outputStream.insertRes(res, res.headers["content-length"]);
         callback(null, outputStream);
     };

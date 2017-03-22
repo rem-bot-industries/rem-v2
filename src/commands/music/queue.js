@@ -30,15 +30,13 @@ class Queue extends Command {
      * @param msg
      */
     run(msg) {
-        this.v.once(`${msg.id}_error`, (err) => {
-            msg.channel.createMessage(this.t(err));
-            this.v.removeListener('queue');
-        });
-        this.v.once(`${msg.id}_queue`, (queue) => {
+        try {
+            let queue = this.v.getQueue(msg.channel.guild.id);
             msg.channel.createMessage(this.buildReply(queue, msg));
-            this.v.removeListener('error');
-        });
-        this.v.getQueue(msg);
+        } catch (err) {
+            console.error(err);
+            msg.channel.createMessage(this.t(err instanceof TranslatableError ? err.t : 'generic.error', {lngs: msg.lang}));
+        }
     }
 
     /**
@@ -48,18 +46,19 @@ class Queue extends Command {
      */
     buildReply(Queue, msg) {
         let reply;
+        // console.log(Queue);
         let repeat = Queue.repeat !== 'off' ? this.t(`np.repeat-${Queue.repeat}`, {lngs: msg.lang}) : '';
-        if (Queue.songs[0] && Queue.songs[0].duration && Queue.songs[0].duration !== '') {
+        if (Queue.songs[0].duration && Queue.songs[0].duration !== '') {
             reply = `${this.t('np.song-duration', {
                 lngs: msg.lang,
                 title: Queue.songs[0].title,
                 repeat: repeat,
                 duration: Queue.songs[0].duration,
                 current: Queue.time,
-                interpolation: { escape: false }
+                interpolation: {escape: false}
             })} \n`;
-        }  else {
-            reply += `${this.t('np.song', {
+        } else {
+            reply = `${this.t('np.song', {
                 lngs: msg.lang,
                 title: Queue.songs[0].title,
                 repeat: repeat,

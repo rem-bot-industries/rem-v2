@@ -17,21 +17,19 @@ let config = remConfig;
 const osu = require('node-osu');
 let osuApi = new osu.Api(config.osu_token);
 let setRegex = /.*http(s|):\/\/osu.ppy.sh\/(s|b)\/([0-9]*)((\?|\&)m=[0-9]|)/;
+let regex = /(?:http(?:s|):\/\/osu.ppy.sh\/(s|b)\/([0-9]*)((\?|\&)m=[0-9]|))/;
 let notAvailableRegex = /This download is no longer available/i;
 class OsuImporter extends BasicImporter {
-    constructor(url) {
+    constructor() {
         super();
-        this.url = url;
-        this.loadSong();
     }
 
-    loadSong() {
-        this.osuMapDownload(this.url).then(Song => {
-            this.emit('done', Song);
-        }).catch(err => {
-            console.error(err);
-            this.emit('error', 'generic.error');
-        });
+    canResolve(url) {
+        return regex.test(url);
+    }
+
+    async resolve(url) {
+        return await this.osuMapDownload(url);
     }
 
     resolveBeatmap(url) {
@@ -126,4 +124,4 @@ class OsuImporter extends BasicImporter {
         });
     }
 }
-module.exports = OsuImporter;
+module.exports = new OsuImporter();

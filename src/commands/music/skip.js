@@ -45,12 +45,14 @@ class ForceSkip extends Command {
         }
     }
 
-    skip(msg) {
-        this.v.forceSkip(msg).then(res => {
-            msg.channel.createMessage(this.t(res.t, {lngs: msg.lang, title: res.title}));
-        }).catch(err => {
-            msg.channel.createMessage(this.t(err, {lngs: msg.lang}));
-        });
+    async skip(msg) {
+        try {
+            let res = await this.v.forceSkip(msg);
+            msg.channel.createMessage(this.t(res.t, {lngs: msg.lang, title: res.title, amount: res.amount}));
+        } catch (err) {
+            console.error(err);
+            msg.channel.createMessage(this.t(err.t ? err.t : 'generic.error', {lngs: msg.lang}));
+        }
     }
 
     startVoteskip(msg, channel) {
@@ -69,8 +71,15 @@ class ForceSkip extends Command {
         })).then(voteMsg => {
             let collector = msg.CON.addCollector(msg.channel.id, {});
             setTimeout(() => {
-                delete this.inprogress[msg.channel.id];
-            }, 1000 * 60);
+                try {
+                    collector.stop();
+                    voteMsg.delete();
+                    delete this.inprogress[msg.channel.id];
+                    this.v.removeAllListeners();
+                } catch (e) {
+
+                }
+            }, 1000 * 120);
             collector.on('message', (msg) => {
                 if (msg.content !== `${this.msg.prefix}yes` && (msg.content === `${this.msg.prefix}fskip` || msg.content === `${this.msg.prefix}play`)) {
                     collector.stop();

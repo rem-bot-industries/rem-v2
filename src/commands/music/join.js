@@ -23,11 +23,14 @@ class Join extends Command {
         this.accessLevel = 0;
     }
 
-    run(msg) {
-        this.v.join(msg, (err) => {
-            if (err) return msg.channel.createMessage(`${msg.author.mention},${this.t(err, {lngs: msg.lang})}`);
+    async run(msg) {
+        try {
+            await this.v.join(msg);
             msg.channel.createMessage(`${msg.author.mention}, ${this.t('joinVoice.join', {lngs: msg.lang})}`);
-        });
+        } catch (err) {
+            console.error(err);
+            msg.channel.createMessage(this.t(err instanceof TranslatableError ? err.t : 'generic.error', {lngs: msg.lang}));
+        }
     }
 }
 module.exports = Join;
