@@ -24,7 +24,7 @@ class YoutubeImporter extends BasicImporter {
     }
 
     async resolve(url) {
-        console.log(url);
+        // console.log(url);
         let info = await ytdl.getInfoAsync(url);
         if (info.live_playback === '1') {
             try {

@@ -254,19 +254,20 @@ class Player extends EventEmitter {
                 }
                 if (this.queue.songs[0]) {
                     if (this.queue.songs[0].needsResolve) {
-                        let song = this.queue.songs[0];
+                        let newSong = this.queue.songs[0];
                         try {
-                            this.queue.songs[0] = await ytr.resolve(song.url);
+                            this.queue.songs[0] = await ytr.resolve(newSong.url);
                             this.endSong();
                             this.play(this.queue.songs[0]);
                             return song;
                         } catch (e) {
                             winston.error(e);
-                            this.nextSong(song);
+                            this.nextSong(newSong);
                         }
                     } else {
                         this.endSong();
                         this.play(this.queue.songs[0]);
+                        return song;
                     }
                 } else {
                     this.endSong();

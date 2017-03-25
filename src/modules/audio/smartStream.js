@@ -121,7 +121,7 @@ streamResume.request = function (options, callback) {
         requestOptions.headers = {};
     }
     if (!requestOptions.hasOwnProperty("maxRequests")) {
-        requestOptions.maxRetries = 10;
+        requestOptions.maxRetries = 20;
     }
     requestOptions.method = "GET";
     let outputStream = new OutputStream({}, requestOptions);

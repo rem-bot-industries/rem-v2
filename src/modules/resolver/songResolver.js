@@ -83,6 +83,7 @@ class SongResolver {
     }
 
     async resolvePlaylist(url) {
+        url = this.removeBracket(url);
         for (let resolver in this.playlistResolvers) {
             if (this.playlistResolvers.hasOwnProperty(resolver)) {
                 if (this.playlistResolvers[resolver].canResolve(url)) {
@@ -90,7 +91,7 @@ class SongResolver {
                 }
             }
         }
-        throw new Error('something ripped!');
+        throw new TranslatableError({t: 'generic.error', message: 'This playlist is not supported.'});
     }
 
     async search(search) {
@@ -126,7 +127,7 @@ class SongResolver {
                 await searchCache.set(`youtube_search_${searchHash}`, actualResult);
                 return actualResult;
             } else {
-                throw new Error({t: 'generic.error', message: 'empty search returned!'});
+                throw new TranslatableError({t: 'generic.error', message: 'empty search returned!'});
             }
         }
     }
@@ -137,6 +138,7 @@ class SongResolver {
             method: 'get',
             params: {
                 part: 'snippet',
+                type: 'video',
                 maxResults: opts.maxResults,
                 key: opts.key,
                 order: opts.order,

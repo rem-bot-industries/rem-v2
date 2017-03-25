@@ -4,6 +4,7 @@
 let AudioPlayer = require('../audio/player');
 let SongResolver = require('../resolver/songResolver');
 const winston = require('winston');
+const shuffle = require('knuth-shuffle').knuthShuffle;
 class VoiceManager {
     constructor({mod}) {
         this.players = {};
@@ -17,6 +18,10 @@ class VoiceManager {
         let player = this.getPlayer(msg.channel.guild.id);
         if (!connection) {
             player = await this.join(msg);
+        }
+        if (!player) {
+            let queue = await this.loadQueueFromCache(msg.channel.guild.id);
+            player = await this.createPlayer(msg, connection, queue);
         }
         if (this.resolver.checkUrl(msg.content)) {
             let song = await this.resolver.resolve(msg.content);
