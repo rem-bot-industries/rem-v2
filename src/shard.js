@@ -3,7 +3,7 @@
  */
 //uwu
 let useCrystal = false;
-let Crystal;
+// let Crystal;
 // try {
 //     Crystal = require("eris-crystal");
 //     useCrystal = true;
@@ -104,6 +104,9 @@ class Shard extends EventEmitter {
         };
         winston.info(options);
         let bot = new Eris(remConfig.token, options);
+        if (useCrystal) {
+            bot.voiceConnections = new Crystal.ErisClient();
+        }
         this.bot = bot;
         global.rem = bot;
         bot.on('ready', () => {

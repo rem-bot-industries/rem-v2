@@ -204,6 +204,9 @@ class VoiceManager {
                 }
                 try {
                     connection = await rem.joinVoiceChannel(msg.member.voiceState.channelID);
+                    connection.on('ready', () => {
+                        console.log('connection ready');
+                    });
                     let queue = await this.loadQueueFromCache(msg.channel.guild.id);
                     let player = this.createPlayer(msg, connection, queue);
                     return Promise.resolve(player);

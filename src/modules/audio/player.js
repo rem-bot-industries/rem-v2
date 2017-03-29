@@ -10,8 +10,9 @@ let fs = require('fs');
 let SongTypes = require('../../structures/constants').SONG_TYPES;
 let ytr = require('../resolver/youtubeResolver');
 let icy = require('icy');
-let smartStream = require('./smartStream');
-Promise.promisifyAll(smartStream);
+// let smartStream = require('./smartStream');
+let BufferedStream = require("buffered2").BufferedStream;
+// Promise.promisifyAll(smartStream);
 /**
  * The audio player
  * @extends EventEmitter
@@ -55,7 +56,8 @@ class Player extends EventEmitter {
                         // console.log('OPUS');
                         // link = request(Song.streamUrl);
                         try {
-                            link = await smartStream.requestAsync(Song.streamUrl);
+                            link = new BufferedStream();
+                            request(Song.streamUrl).pipe(link);
                         } catch (e) {
                             winston.error(e);
                         }
