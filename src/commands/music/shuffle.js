@@ -27,8 +27,8 @@ class Shuffle extends Command {
         this.v.shuffle(msg).then(res => {
             msg.channel.createMessage(this.t(res.t, {lngs: msg.lang}));
         }).catch(err => {
-            console.log(err);
-            msg.channel.createMessage(this.t(err.t, {lngs: msg.lang}));
+            console.error(err);
+            msg.channel.createMessage(this.t(err instanceof TranslatableError ? err.t : 'generic.error', {lngs: msg.lang}));
         });
     }
 }

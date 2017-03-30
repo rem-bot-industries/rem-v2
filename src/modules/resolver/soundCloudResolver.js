@@ -5,12 +5,17 @@ let BasicImporter = require('../../structures/basicImporter');
 const types = require('../../structures/constants').SONG_TYPES;
 const Song = require('../../structures/song');
 let axios = require('axios');
+let regex = /(?:http?s?:\/\/)?(?:www\.)?(?:soundcloud\.com|snd\.sc)\/(?:.*)/;
 class SoundcloudImporter extends BasicImporter {
     constructor() {
         super();
     }
 
-    async loadSong(url) {
+    canResolve(url) {
+        return regex.test(url);
+    }
+
+    async resolve(url) {
         let req = await axios.get('https://api.soundcloud.com/resolve.json', {
             params: {
                 url: url,
@@ -38,4 +43,4 @@ class SoundcloudImporter extends BasicImporter {
         throw new Error('No suitable format found!');
     }
 }
-module.exports = SoundcloudImporter;
+module.exports = new SoundcloudImporter();

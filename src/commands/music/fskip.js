@@ -23,21 +23,14 @@ class ForceSkip extends Command {
         this.accessLevel = 0;
     }
 
-    run(msg) {
+    async run(msg) {
         let args = msg.content.split(' ').splice(1);
-        if (args[0]) {
-            this.v.forceSkip(msg, args[0]).then(res => {
-                msg.channel.createMessage(this.t(res.t, {lngs: msg.lang, title: res.title, amount: res.amount}));
-            }).catch(err => {
-                console.log(err);
-                msg.channel.createMessage(this.t(err.t ? err.t : 'generic.error', {lngs: msg.lang}));
-            });
-        } else {
-            this.v.forceSkip(msg).then(res => {
-                msg.channel.createMessage(this.t(res.t, {lngs: msg.lang, title: res.title}));
-            }).catch(err => {
-                msg.channel.createMessage(this.t(err.t, {lngs: msg.lang}));
-            });
+        try {
+            let res = await this.v.forceSkip(msg, args[0]);
+            msg.channel.createMessage(this.t(res.t, {lngs: msg.lang, title: res.title, amount: res.amount}));
+        } catch (err) {
+            console.error(err);
+            msg.channel.createMessage(this.t(err instanceof TranslatableError ? err.t : 'generic.error', {lngs: msg.lang}));
         }
     }
 }

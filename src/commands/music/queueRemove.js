@@ -29,7 +29,8 @@ class QueueRemove extends Command {
             this.v.queueRemove(msg, args[0]).then(res => {
                 msg.channel.createMessage(this.t(res.t, {lngs: msg.lang, number: res.number, title: res.title}));
             }).catch(err => {
-                msg.channel.createMessage(this.t(err.t ? err.t : 'generic.error', {lngs: msg.lang}));
+                console.error(err);
+                msg.channel.createMessage(this.t(err instanceof TranslatableError ? err.t : 'generic.error', {lngs: msg.lang}));
             });
         } else {
             msg.channel.createMessage(this.t('qra.no-number', {lngs: msg.lang}));

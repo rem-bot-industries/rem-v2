@@ -30,15 +30,13 @@ class NowPlaying extends Command {
      * @param msg
      */
     run(msg) {
-        this.v.once(`${msg.id}error`, (err) => {
-            msg.channel.createMessage(this.t(err));
-            this.v.removeListener('queue');
-        });
-        this.v.once(`${msg.id}_queue`, (queue) => {
+        try {
+            let queue = this.v.getQueue(msg.channel.guild.id);
             msg.channel.createMessage(this.buildReply(queue, msg));
-            this.v.removeListener('error');
-        });
-        this.v.getQueue(msg);
+        } catch (err) {
+            console.error(err);
+            msg.channel.createMessage(this.t(err instanceof TranslatableError ? err.t : 'generic.error', {lngs: msg.lang}));
+        }
     }
 
     /**

@@ -1,421 +1,385 @@
 /**
- * Created by Julian/Wolke on 07.11.2016.
+ * Created by Julian on 17.03.2017.
  */
-let Manager = require('../../structures/manager');
-let Player = require('./../audio/player');
-let ytdl = require('ytdl-core');
-let winston = require('winston');
-let SongImporter = require('./../resolver/songResolver');
-let queueModel = require('../../DB/queue');
-// let Selector = require('./selector');
-let async = require('async');
-let PlaylistResolver = require('../resolver/playlistResolver');
-let shortid = require('shortid');
-let shuffle = require('knuth-shuffle').knuthShuffle;
-class VoiceManager extends Manager {
+let AudioPlayer = require('../audio/player');
+let SongResolver = require('../resolver/songResolver');
+const winston = require('winston');
+const shuffle = require('knuth-shuffle').knuthShuffle;
+class VoiceManager {
     constructor({mod}) {
-        super();
-        this.setMaxListeners(200);
         this.players = {};
         this.redis = mod.getMod('redis');
+        this.sm = mod.getMod('sm');
+        this.resolver = new SongResolver(this.redis);
     }
 
-    join(msg, cb) {
-        if (msg.channel.guild) {
-            let conn = rem.voiceConnections.get(msg.channel.guild.id);
-            if (!conn) {
-                if (msg.member.voiceState.channelID) {
-                    rem.joinVoiceChannel(msg.member.voiceState.channelID).then((connection) => {
-                        if (typeof (this.players[msg.channel.guild.id]) === 'undefined') {
-                            this.createPlayer(msg, connection, ytdl).then(player => {
-                                cb(null, connection);
-                            }).catch(err => cb(err));
-                        }
-                    }).catch(err => {
-                        console.log(err);
-                        return cb('joinVoice.error');
-                    });
-                } else {
-                    cb('joinVoice.no-voice');
-                }
-            } else {
-                console.log('Found Connection!');
-                cb(null, conn);
-            }
+    async addToQueue(msg, immediate, next) {
+        let connection = rem.voiceConnections.get(msg.channel.guild.id);
+        let player = this.getPlayer(msg.channel.guild.id);
+        if (!connection) {
+            player = await this.join(msg);
         }
-    }
-
-    leave(msg, cb) {
-        if (msg.channel.guild) {
-            let conn = rem.voiceConnections.get(msg.channel.guild.id);
-            if (conn) {
-                if (this.players[msg.channel.guild.id]) {
-                    this.players[msg.channel.guild.id].setQueueSongs([]);
-                    this.players[msg.channel.guild.id].endSong();
-                }
-                rem.voiceConnections.leave(msg.channel.guild.id);
-                cb();
-            } else {
-                cb('generic.no-voice');
-            }
+        if (!player) {
+            let queue = await this.loadQueueFromCache(msg.channel.guild.id);
+            player = await this.createPlayer(msg, connection, queue);
         }
-    }
-
-    pause(msg) {
-        try {
-            this.players[msg.channel.guild.id].pause();
-            this.emit(`${msg.id}_success`);
-        } catch (e) {
-            this.emit(`${msg.id}_error`);
+        if (this.resolver.checkUrl(msg.content)) {
+            let song = await this.resolver.resolve(msg.content);
+            let queue = player.addToQueue(song, immediate, next);
+            // console.log(queue);
+            await this.writeQueueToCache(msg.channel.guild.id, queue);
+            return Promise.resolve(song);
         }
-    }
-
-    shuffle(msg) {
-        let vm = this;
-        return new Promise(function (resolve, reject) {
-            let conn = rem.voiceConnections.get(msg.channel.guild.id);
-            if (!conn) {
-                reject({err: 'Rem is not connected to a voice channel.', t: 'generic.no-voice'});
-            }
-            if (vm.players[msg.channel.guild.id]) {
-                let queue = vm.players[msg.channel.guild.id].getQueue();
-                if (queue.songs.length < 3) {
-                    reject({
-                        err: 'There are not enough songs in the queue to shuffle it.',
-                        t: 'shuffle.not-enough-shuffle'
-                    });
-                }
-                let currentSong = queue.songs.shift();
-                let shuffledQueue = shuffle(queue.songs.splice(0));
-                shuffledQueue.unshift(currentSong);
-                vm.players[msg.channel.guild.id].setQueueSongs(shuffledQueue);
-                resolve({t: 'shuffle.success'});
-            } else {
-                reject({err: 'There is no player object atm.', t: 'generic.no-voice'});
-            }
-        });
+        return this.resolver.search(msg.content);
 
     }
 
-    resume(msg) {
-        try {
-            this.players[msg.channel.guild.id].resume();
-            this.emit(`${msg.id}_success`);
-        } catch (e) {
-            this.emit(`${msg.id}_error`);
+    async addPlaylistToQueue(msg) {
+        let connection = rem.voiceConnections.get(msg.channel.guild.id);
+        let player = this.getPlayer(msg.channel.guild.id);
+        if (!connection) {
+            player = await this.join(msg);
         }
-    }
-
-    addPlaylistToQueue(msg) {
-        let that = this;
-        return new Promise(function (resolve, reject) {
-            that.join(msg, (err, conn) => {
-                if (err) {
-                    reject({type: 'error', event: `${msg.id}_error`, err: err});
-                } else {
-                    let id = msg.content.split(' ').splice(1);
-                    let pl = new PlaylistResolver(id);
-                    pl.loadPlaylist(id, (err, playlist) => {
-                        if (err) {
-                            reject({type: 'error', event: `${msg.id}_error`, err: err});
-                        } else {
-                            that.players[msg.channel.guild.id].updateConnection(conn);
-                            that.players[msg.channel.guild.id].addToQueue(playlist.songs[0]);
-                            for (let i = 1; i < playlist.songs.length; i++) {
-                                that.players[msg.channel.guild.id].pushQueue(playlist.songs[i]);
-                            }
-                            resolve({type: 'pl_added', event: `${msg.id}_pl_added`, data: playlist});
-                        }
-                    });
-                }
-            });
-
-        });
-
-    }
-
-    addToQueue(msg, immediate, next) {
-        let that = this;
-        return new Promise(function (resolve, reject) {
-            that.join(msg, (err, conn) => {
-                if (err) return reject({type: 'error', event: `${msg.id}_error`, err: err});
-                let importer = new SongImporter(msg, true, that.redis);
-                importer.once('search-result', (results) => {
-                    importer.removeAllListeners();
-                    that.emit(`${msg.id}_search-result`, results);
-                    resolve({type: 'search_result', event: `${msg.id}_search-result`, data: results});
-                });
-                importer.once('error', (err) => {
-                    importer.removeAllListeners();
-                    reject({type: 'error', event: `${msg.id}_error`, err: err});
-                });
-                importer.once('done', (Song) => {
-                    importer.removeAllListeners();
-                    that.emit(`${msg.id}_added`, Song);
-                    if (typeof (that.players[msg.channel.guild.id]) !== 'undefined') {
-                        that.players[msg.channel.guild.id].updateConnection(conn);
-                        that.players[msg.channel.guild.id].addToQueue(Song, immediate, next);
-                        resolve({type: 'added', event: `${msg.id}_added`, data: Song});
-                    } else {
-                        that.createPlayer(msg, conn, ytdl).then(player => {
-                            that.players[msg.channel.guild.id].addToQueue(Song, immediate, next);
-                            resolve({type: 'added', event: `${msg.id}_added`, data: Song});
-                        }).catch(err => {
-                            winston.error(err);
-                            reject({type: 'error', event: `${msg.id}_error`, err: err});
-                        });
-                    }
-                });
-            });
-        });
-
-    }
-
-    getQueue(msg) {
-        if (typeof (this.players[msg.channel.guild.id]) !== 'undefined') {
-            let queue = this.players[msg.channel.guild.id].getQueue();
-            if (queue.songs.length > 0) {
-                this.emit(`${msg.id}_queue`, queue);
-            } else {
-                this.emit(`${msg.id}_error`, 'generic.no-song-in-queue');
+        if (this.resolver.checkUrlPlaylist(msg.content)) {
+            let playlist = await this.resolver.resolvePlaylist(msg.content);
+            player.addToQueue(playlist.songs[0]);
+            for (let i = 1; i < playlist.songs.length; i++) {
+                player.pushQueue(playlist.songs[i]);
             }
+            let queue = player.getQueue(msg.channel.guild.id);
+            await this.writeQueueToCache(msg.channel.guild.id, queue);
+            return Promise.resolve(playlist);
         } else {
-            this.emit(`${msg.id}_error`, 'generic.no-song-in-queue');
+            throw new TranslatableError({message: 'This Playlist is not supported!', t: 'apq.unsupported'});
         }
     }
 
-    getCurrentSong(msg) {
-        if (typeof (this.players[msg.channel.guild.id]) !== 'undefined') {
-            let queue = this.players[msg.channel.guild.id].getQueue();
-            if (queue.songs.length > 0) {
-                this.emit(`${msg.id}_queue`, queue);
-            } else {
-                this.emit(`${msg.id}_error`, 'generic.no-song-in-queue');
-            }
-        } else {
-            this.emit(`${msg.id}_error`, 'generic.no-song-in-queue');
-        }
-    }
-
-    forceSkip(msg, howMany) {
-        let vm = this;
-        return new Promise(function (resolve, reject) {
-            if (typeof (vm.players[msg.channel.guild.id]) !== 'undefined') {
-                vm.players[msg.channel.guild.id].toggleRepeat('off');
-                if (howMany) {
-                    let queue = vm.players[msg.channel.guild.id].getQueue(msg);
-                        let current = queue.songs.shift();
-                    if (howMany === 'all') {
-                        queue.songs = [current];
-                        vm.players[msg.channel.guild.id].setQueueSongs(queue.songs);
-                        vm.players[msg.channel.guild.id].nextSong();
-                        resolve({t: 'skip.all'});
-                    } else {
-                        let songsToSkip = 0;
-                        try {
-                            songsToSkip = parseInt(howMany);
-                        } catch (e) {
-                            reject({err: e, t: 'generic.nan'});
-                        }
-                        if (isNaN(songsToSkip) || songsToSkip <= 0) {
-                            reject({t: 'generic.nan'});
-                        }
-                        if (songsToSkip > queue.songs.length) {
-                            reject({t: 'generic.nan'});
-                        }
-                        for (let i = 0; i < songsToSkip - 1; i++) {
-                            queue.songs.shift();
-                        }
-                        queue.songs.unshift(current);
-                        vm.players[msg.channel.guild.id].setQueueSongs(queue.songs);
-                        let song = vm.players[msg.channel.guild.id].nextSong();
-                        resolve({t: 'skip.some', amount: songsToSkip});
-                    }
-                } else {
-                    let song = vm.players[msg.channel.guild.id].nextSong();
-                    if (song) {
-                        resolve({title: song.title, t: 'skip.success'});
-                    }
-                }
-            } else {
-                reject({t: 'generic.no-song-in-queue'});
-            }
-            }
-        );
-    }
-
-    queueRemove(msg, args) {
-        let vm = this;
-        return new Promise(function (resolve, reject) {
-            if (typeof (vm.players[msg.channel.guild.id]) !== 'undefined') {
-                vm.players[msg.channel.guild.id].toggleRepeat('off');
-                let queue = vm.players[msg.channel.guild.id].getQueue(msg);
-                if (args === 'all') {
-                    let current = queue.songs.shift();
-                    let length = queue.songs.length;
+    async forceSkip(msg, howMany) {
+        let player = this.getPlayer(msg.channel.guild.id);
+        if (typeof (player) !== 'undefined') {
+            player.toggleRepeat('off');
+            if (howMany) {
+                let queue = player.getQueue(msg);
+                let current = queue.songs.shift();
+                if (howMany === 'all') {
                     queue.songs = [current];
-                    vm.players[msg.channel.guild.id].setQueueSongs(queue.songs);
-                    resolve({t: 'qra.success', number: length});
+                    player.setQueueSongs(queue.songs);
+                    await player.nextSong();
+                    return Promise.resolve({t: 'skip.all'});
                 } else {
-                    let range = args.split('-');
-                    let range2 = args.split(',');
-                    if (range.length > 1) {
-                        let start = 0;
-                        let end = 0;
-                        try {
-                            start = parseInt(range[0]);
-                            end = parseInt(range[1]);
-                        } catch (e) {
-                            reject({err: e, t: 'generic.nan'});
-                        }
-                        if (start >= 1 && start <= queue.songs.length && end >= 2 && end <= queue.songs.length) {
-                            let counter = start > end ? end : start;
-                            let secondCounter = start > end ? start : end;
-                            for (let i = counter - 1; i < secondCounter; i++) {
-                                queue.songs.splice(counter - 1, 1);
-                            }
-                            vm.players[msg.channel.guild.id].setQueueSongs(queue.songs);
-                            resolve({t: 'qra.success', number: secondCounter - counter});
-                        } else {
-                            console.log(start);
-                            console.log(end);
-                            console.log(queue.songs.length);
-                        }
-                    } else if (range2.length > 1) {
-                        let ids = [];
-                        for (let i = 0; i < range2.length; i++) {
-                            let id = 0;
-                            try {
-                                id = parseInt(range2[i]);
-                            } catch (e) {
-                                reject({err: e, t: 'generic.nan'});
-                            }
-                            if (id <= queue.songs.length && id >= 1) {
-                                ids.push(id);
-                            } else {
-                                reject({err: e, t: 'generic.nan'});
-                            }
-                        }
-                        ids.sort((a, b) => {
-                            return b - a;
+                    let songsToSkip = 0;
+                    try {
+                        songsToSkip = parseInt(howMany);
+                    } catch (e) {
+                        throw new TranslatableError({
+                            err: e,
+                            t: 'generic.nan',
+                            message: 'The passed argument could not be parsed as a number!'
                         });
-                        for (let i = 0; i < ids.length; i++) {
-                            queue.songs.splice(ids[i] - 1, 1);
-                        }
-                        resolve({t: 'qra.success', number: ids.length});
-                    } else {
-                        let songIndex = 0;
-                        try {
-                            songIndex = parseInt(args);
-                        } catch (e) {
-                            reject({err: e, t: 'generic.nan'});
-                        }
-                        console.log(songIndex);
-                        console.log(queue.songs.length);
-
-                        if (isNaN(songIndex) || songIndex <= 1 || songIndex > queue.songs.length) {
-                            console.log(songIndex);
-                            reject({t: 'generic.nan'});
-                        }
-                        let songToSkip = queue.songs[songIndex - 1];
-                        if (songIndex > -1) {
-                            queue.songs.splice(songIndex - 1, 1);
-                        }
-                        vm.players[msg.channel.guild.id].setQueueSongs(queue.songs);
-                        resolve({t: 'qra.removed', title: songToSkip.title});
                     }
+                    if (isNaN(songsToSkip) || songsToSkip <= 0) {
+                        throw new TranslatableError({
+                            t: 'generic.nan',
+                            message: 'The passed argument is 0 or smaller!'
+                        });
+                    }
+                    if (songsToSkip > queue.songs.length) {
+                        throw new TranslatableError({
+                            t: 'generic.nan',
+                            message: 'The passed argument is bigger than the songs in the queue!'
+                        });
+                    }
+                    for (let i = 0; i < songsToSkip - 1; i++) {
+                        queue.songs.shift();
+                    }
+                    queue.songs.unshift(current);
+                    player.setQueueSongs(queue.songs);
+                    let song = await player.nextSong();
+                    return Promise.resolve({t: 'skip.some', amount: songsToSkip});
                 }
             } else {
-                reject({t: 'generic.no-song-in-queue'});
+                let song = await player.nextSong();
+                if (song) {
+                    return Promise.resolve({title: song.title, t: 'skip.success'});
+                } else {
+                    throw new TranslatableError({t: 'generic.no-song-playing'});
+                }
             }
-        });
+        } else {
+            throw new TranslatableError({message: 'There was no player created yet.', t: 'generic.no-song-in-queue'});
+        }
+    }
+
+    async queueRemove(msg, args) {
+        let player = this.getPlayer(msg.channel.guild.id);
+        if (typeof (player) !== 'undefined') {
+            player.toggleRepeat('off');
+            let queue = player.getQueue(msg);
+            if (args === 'all') {
+                let current = queue.songs.shift();
+                let length = queue.songs.length;
+                queue.songs = [current];
+                player.setQueueSongs(queue.songs);
+                return Promise.resolve({t: 'qra.success', number: length});
+            } else {
+                let range = args.split('-');
+                let range2 = args.split(',');
+                if (range.length > 1) {
+                    let start = 0;
+                    let end = 0;
+                    try {
+                        start = parseInt(range[0]);
+                        end = parseInt(range[1]);
+                    } catch (e) {
+                        throw new TranslatableError({err: e, t: 'generic.nan'});
+                    }
+                    if (start >= 1 && start <= queue.songs.length && end >= 2 && end <= queue.songs.length) {
+                        let counter = start > end ? end : start;
+                        let secondCounter = start > end ? start : end;
+                        for (let i = counter - 1; i < secondCounter; i++) {
+                            queue.songs.splice(counter - 1, 1);
+                        }
+                        player.setQueueSongs(queue.songs);
+                        return Promise.resolve({t: 'qra.success', number: secondCounter - counter});
+                    } else {
+                        throw new TranslatableError({t: 'generic.nan'});
+                    }
+                } else if (range2.length > 1) {
+                    let ids = [];
+                    for (let i = 0; i < range2.length; i++) {
+                        let id = 0;
+                        try {
+                            id = parseInt(range2[i]);
+                        } catch (e) {
+                            throw new TranslatableError({err: e, t: 'generic.nan'});
+                        }
+                        if (id <= queue.songs.length && id >= 1) {
+                            ids.push(id);
+                        } else {
+                            throw new TranslatableError({err: e, t: 'generic.nan'});
+                        }
+                    }
+                    ids.sort((a, b) => {
+                        return b - a;
+                    });
+                    for (let i = 0; i < ids.length; i++) {
+                        queue.songs.splice(ids[i] - 1, 1);
+                    }
+                    return ({t: 'qra.success', number: ids.length});
+                } else {
+                    let songIndex = 0;
+                    try {
+                        songIndex = parseInt(args);
+                    } catch (e) {
+                        throw new TranslatableError({err: e, t: 'generic.nan'});
+                    }
+                    // console.log(songIndex);
+                    // console.log(queue.songs.length);
+                    if (isNaN(songIndex) || songIndex <= 1 || songIndex > queue.songs.length) {
+                        // console.log(songIndex);
+                        throw new TranslatableError({t: 'generic.nan'});
+                    }
+                    let songToSkip = queue.songs[songIndex - 1];
+                    if (songIndex > -1) {
+                        queue.songs.splice(songIndex - 1, 1);
+                    }
+                    player.setQueueSongs(queue.songs);
+                    return Promise.resolve({t: 'qra.removed', title: songToSkip.title});
+                }
+            }
+        } else {
+            throw new TranslatableError({t: 'generic.no-song-in-queue'});
+        }
+    }
+
+    async join(msg) {
+        if (msg.channel.guild) {
+            let connection = rem.voiceConnections.get(msg.channel.guild.id);
+            if (!connection) {
+                if (!msg.member.voiceState.channelID) {
+                    throw new TranslatableError({
+                        message: 'The user issuing the command is not in a voicechannel.',
+                        t: 'joinVoice.no-voice'
+                    });
+                }
+                try {
+                    connection = await rem.joinVoiceChannel(msg.member.voiceState.channelID);
+                    connection.on('ready', () => {
+                        console.log('connection ready');
+                    });
+                    let queue = await this.loadQueueFromCache(msg.channel.guild.id);
+                    let player = this.createPlayer(msg, connection, queue);
+                    return Promise.resolve(player);
+                } catch (e) {
+                    winston.error(e);
+                    throw new TranslatableError({
+                        message: 'Error while trying to join channel!',
+                        t: 'joinVoice.error',
+                        origError: e
+                    });
+                }
+
+            } else {
+                return this.getPlayer(msg.channel.guild.id);
+            }
+        }
     }
 
     repeat(msg, type) {
-        if (typeof (this.players[msg.channel.guild.id]) !== 'undefined') {
+        let player = this.getPlayer(msg.channel.guild.id);
+        if (typeof (player) !== 'undefined') {
             if (type) {
-                return this.players[msg.channel.guild.id].toggleRepeat(type);
+                return player.toggleRepeat(type);
             } else {
-                return this.players[msg.channel.guild.id].toggleRepeatSingle();
+                return player.toggleRepeatSingle();
             }
         } else {
             return 'off';
         }
     }
 
-    bind(msg, cb) {
-        if (typeof (this.players[msg.channel.guild.id]) !== 'undefined') {
-            let res = this.players[msg.channel.guild.id].bind(msg.channel.id);
-            this.players[msg.channel.guild.id].on('announce', (song, channel) => {
-                rem.createMessage(channel, `:arrow_forward: **${song.title}** \<${song.url}\>`);
-            });
-            cb(res);
-        } else {
-            cb(null);
+    async leave(msg) {
+        if (msg.channel.guild) {
+            let conn = rem.voiceConnections.get(msg.channel.guild.id);
+            if (conn) {
+                let player = this.getPlayer(msg.channel.guild.id);
+                if (player) {
+                    await this.writeQueueToCache(msg.channel.guild.id, player.getQueue());
+                    player.setQueueSongs([]);
+                    player.endSong(true);
+                }
+                rem.voiceConnections.leave(msg.channel.guild.id);
+                return Promise.resolve();
+            } else {
+                throw new TranslatableError({
+                    message: 'Rem is not connected to a voice channel.',
+                    t: 'generic.no-voice'
+                });
+            }
         }
     }
 
-    createPlayer(msg, conn, ytdl) {
-        return new Promise((resolve, reject) => {
-            this.loadQueue(msg.channel.guild.id, (err, queue) => {
-                if (err) {
-                    winston.error(err);
-                    reject(err);
-                } else {
-                    if (!this.players[msg.channel.guild.id]) {
-                        this.players[msg.channel.guild.id] = new Player(msg, conn, ytdl, queue);
-                        this.players[msg.channel.guild.id].on('sync', (queue) => {
-                            this.syncQueue(queue);
-                        });
-                    }
-                    this.players[msg.channel.guild.id].updateConnection(conn);
-                    resolve(this.players[msg.channel.guild.id]);
-                }
-            });
-
-        });
-
-    }
-
-    syncQueue(queue) {
-        this.loadQueue(queue.id, (err, dbQueue) => {
-            if (err) return winston.error(err);
-            queueModel.update({id: queue.id}, {$set: queue}, (err) => {
-                if (err) return winston.error(err);
-                console.log('synced Queue');
-            });
-        });
-    }
-
-    loadQueue(id, cb) {
-        queueModel.findOne({id: id}, (err, Queue) => {
-            if (err) return cb(err);
-            if (Queue) {
-                cb(null, Queue);
-            } else {
-                this.createQueue(id, cb);
+    async shuffle(msg) {
+        let conn = rem.voiceConnections.get(msg.channel.guild.id);
+        if (!conn) {
+            throw new TranslatableError({message: 'Rem is not connected to a voice channel.', t: 'generic.no-voice'});
+        }
+        let player = this.getPlayer(msg.channel.guild.id);
+        if (player) {
+            let queue = player.getQueue();
+            if (queue.songs.length < 3) {
+                throw new TranslatableError({
+                    message: 'There are not enough songs in the queue to shuffle it.',
+                    t: 'shuffle.not-enough-shuffle'
+                });
             }
-        });
+            let currentSong = queue.songs.shift();
+            let shuffledQueue = shuffle(queue.songs.splice(0));
+            shuffledQueue.unshift(currentSong);
+            player.setQueueSongs(shuffledQueue);
+            return Promise.resolve({t: 'shuffle.success'});
+        } else {
+            throw new TranslatableError({err: 'There is no player object atm.', t: 'generic.no-voice'});
+        }
+
     }
 
-    createQueue(id, cb) {
-        let Queue = new queueModel({
-            id: id
-        });
-        Queue.save(cb);
+    async resume(msg) {
+        let conn = rem.voiceConnections.get(msg.channel.guild.id);
+        if (!conn) {
+            throw new TranslatableError({message: 'Rem is not connected to a voice channel.', t: 'generic.no-voice'});
+        }
+        try {
+            this.players[msg.channel.guild.id].resume();
+            return Promise.resolve();
+        } catch (e) {
+            throw new TranslatableError({
+                message: 'Something went wrong while resuming the stream!',
+                origError: e,
+                t: 'generic.error'
+            });
+        }
+    }
+
+    async pause(msg) {
+        let conn = rem.voiceConnections.get(msg.channel.guild.id);
+        if (!conn) {
+            throw new TranslatableError({message: 'Rem is not connected to a voice channel.', t: 'generic.no-voice'});
+        }
+        try {
+            this.players[msg.channel.guild.id].pause();
+            return Promise.resolve();
+        } catch (e) {
+            throw new TranslatableError({
+                message: 'Something went wrong while pausing the stream!',
+                origError: e,
+                t: 'generic.error'
+            });
+        }
+    }
+
+    createPlayer(msg, connection, queue) {
+        let player = this.getPlayer(msg.channel.guild.id);
+        if (typeof (player) !== 'undefined') {
+            if (queue) {
+                player.setQueue(queue);
+            }
+            player.updateConnection(connection);
+            player.autoplay();
+            return player;
+        } else {
+            player = new AudioPlayer(msg, connection, queue);
+            this.players[msg.channel.guild.id] = player;
+            return player;
+        }
+    }
+
+    getVoiceConnections(playing) {
+        //ABAL!!!!!!!!!!!!!!!
+        if (playing) {
+            // console.log(rem.voiceConnections.filter((vc) => vc.playing).length);
+            return rem.voiceConnections.filter((vc) => vc.playing).length;
+        }
+        return rem.voiceConnections.size
+    }
+
+    async loadQueueFromCache(guildId) {
+        let queue = await this.redis.getAsync(`queue_${guildId}`);
+        try {
+            return JSON.parse(queue);
+        } catch (e) {
+
+        }
+        return Promise.resolve();
+    }
+
+    async writeQueueToCache(guildId, queue) {
+        await this.redis.setAsync(`queue_${guildId}`, JSON.stringify(queue));
+        return this.redis.expireAsync(`queue_${guildId}`, 60 * 60 * 4);
     }
 
     getPlayer(id) {
         return this.players[id];
     }
 
-    getVoiceConnections(playing) {
-        //ABAL!!!!!!!!!!!!!!!
-        if (playing) {
-            console.log(rem.voiceConnections.filter((vc) => vc.playing).length);
-            return rem.voiceConnections.filter((vc) => vc.playing).length;
+    getQueue(id) {
+        let player = this.getPlayer(id);
+        if (typeof (player) !== 'undefined') {
+            let queue = player.getQueue();
+            if (queue.songs.length > 0) {
+                return queue;
+            } else {
+                throw new TranslatableError({
+                    t: 'generic.no-song-in-queue',
+                    message: 'There are no songs in the queue!'
+                });
+            }
+        } else {
+            throw new TranslatableError({
+                t: 'generic.no-song-in-queue',
+                message: 'There are no songs in the queue!'
+            });
         }
-        return rem.voiceConnections.size
     }
 }
-module.exports = {class: VoiceManager, deps: [], async: false, shortcode: 'vm'};
+module.exports = {class: VoiceManager, deps: ['sm'], async: false, shortcode: 'vm'};

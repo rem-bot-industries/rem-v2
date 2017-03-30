@@ -3,116 +3,77 @@
  */
 /**
  * The youtube importer
- * @extends EventEmitter
+ * @extends BasicImporter
  *
  */
+let regex = /(?:http?s?:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=)?([a-zA-Z0-9_-]+)(&.*|)/;
 let BasicImporter = require('../../structures/basicImporter');
 const types = require('../../structures/constants').SONG_TYPES;
 let Song = require('../../structures/song');
 let ytdl = require('ytdl-core');
 let youtube_dl = require('youtube-dl');
 Promise.promisifyAll(youtube_dl);
+Promise.promisifyAll(ytdl);
 class YoutubeImporter extends BasicImporter {
     constructor() {
         super();
     }
 
-    async loadSong(url) {
-        let that = this;
-        try {
-            ytdl.getInfo(url, async(err, info) => {
-                if (err) {
-                    this.emit('error', err);
-                } else {
-                    if (info.live_playback === '1') {
-                        try {
-                            let info = await that.resolveLiveStream(url);
-                            info.loaderUrl = `https://www.youtube.com/watch?v=${info.video_id}`;
-                            let streamUrl = that.filterLiveStreams(info.formats);
-                            if (!streamUrl) {
-                                this.emit('error', 'No suitable format found!');
-                            } else {
-                                let song = new Song({
-                                    id: info.video_id,
-                                    title: info.title,
-                                    duration: 'live',
-                                    type: types.youtube_live,
-                                    url: info.loaderUrl,
-                                    streamUrl: streamUrl,
-                                    isResolved: true,
-                                    local: false,
-                                    live: true,
-                                    isOpus: false
-                                });
-                                that.emit('done', song);
-                            }
-                        } catch (e) {
-                            that.emit('error', e);
-                        }
-                    } else {
-                        info.loaderUrl = `https://www.youtube.com/watch?v=${info.video_id}`;
-                        let directUrl = this.filterOpus(info.formats);
-                        let isOpus = false;
-                        if (directUrl) {
-                            isOpus = true;
-                        } else {
-                            directUrl = that.filterStreams(info.formats);
-                        }
-                        let song = new Song({
-                            id: info.video_id,
-                            title: info.title,
-                            duration: that.convertDuration(info),
-                            type: types.youtube,
-                            url: info.loaderUrl,
-                            streamUrl: directUrl,
-                            isOpus: isOpus,
-                            isResolved: true,
-                            local: false
-                        });
-                        that.emit('done', song);
-                    }
-                }
-            });
-        } catch (e) {
-            that.emit('error', e);
-        }
+    canResolve(url) {
+        return regex.test(url);
     }
 
-    resolveSong(song) {
-        let that = this;
-        return new Promise(function (resolve, reject) {
-            ytdl.getInfo(song.url, (err, info) => {
-                if (err) {
-                    reject(err);
+    async resolve(url) {
+        // console.log(url);
+        let info = await ytdl.getInfoAsync(url);
+        if (info.live_playback === '1') {
+            try {
+                let info = await this.resolveLiveStream(url);
+                info.loaderUrl = `https://www.youtube.com/watch?v=${info.video_id}`;
+                let streamUrl = this.filterLiveStreams(info.formats);
+                if (!streamUrl) {
+                    return Promise.reject({message: 'No suitable format found!'});
                 } else {
-                    if (info.live_playback === '1') {
-                        reject(err)
-                    } else {
-                        info.loaderUrl = `https://www.youtube.com/watch?v=${info.video_id}`;
-                        let directUrl = that.filterOpus(info.formats);
-                        let isOpus = false;
-                        if (directUrl) {
-                            isOpus = true;
-                        } else {
-                            directUrl = that.filterStreams(info.formats);
-                        }
-                        let song = new Song({
-                            id: info.video_id,
-                            title: info.title,
-                            duration: that.convertDuration(info),
-                            type: types.youtube,
-                            url: info.loaderUrl,
-                            streamUrl: directUrl,
-                            needsYtdl: !directUrl,
-                            isOpus: isOpus,
-                            isResolved: true,
-                            local: false
-                        });
-                        resolve(song);
-                    }
+                    return new Song({
+                        id: info.video_id,
+                        title: info.title,
+                        duration: 'live',
+                        type: types.youtube_live,
+                        url: info.loaderUrl,
+                        streamUrl: streamUrl,
+                        isResolved: true,
+                        local: false,
+                        live: true,
+                        isOpus: false
+                    });
                 }
+            } catch (e) {
+                return Promise.reject({
+                    message: 'Something went wrong while trying to resolve the livestream',
+                    origError: e
+                });
+            }
+        } else {
+            info.loaderUrl = `https://www.youtube.com/watch?v=${info.video_id}`;
+            let directUrl = this.filterOpus(info.formats);
+            let isOpus = false;
+            if (directUrl) {
+                isOpus = true;
+            } else {
+                directUrl = this.filterStreams(info.formats);
+            }
+            return new Song({
+                id: info.video_id,
+                title: info.title,
+                duration: this.convertDuration(info),
+                type: types.youtube,
+                url: info.loaderUrl,
+                streamUrl: directUrl,
+                isOpus: isOpus,
+                isResolved: true,
+                local: false
             });
-        });
+        }
     }
 
     async resolveLiveStream(url) {
@@ -157,7 +118,7 @@ class YoutubeImporter extends BasicImporter {
                 return formats[i].url;
             }
         }
-        return null;
+        return formats[0].url;
     }
 }
-module.exports = YoutubeImporter;
+module.exports = new YoutubeImporter();

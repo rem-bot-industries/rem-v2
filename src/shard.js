@@ -3,7 +3,7 @@
  */
 //uwu
 let useCrystal = false;
-let Crystal;
+// let Crystal;
 // try {
 //     Crystal = require("eris-crystal");
 //     useCrystal = true;
@@ -93,17 +93,20 @@ class Shard extends EventEmitter {
         let options = {
             autoreconnect: true,
             compress: true,
-            messageLimit: 100,
+            messageLimit: 0,
             disableEveryone: true,
             getAllUsers: false,
             firstShardID: parseInt(this.id),
             lastShardID: parseInt(this.id),
             maxShards: parseInt(this.count),
             crystal: useCrystal,
-            disableEvents: ['typingStart', 'typingStop', 'guildMemberSpeaking', 'messageUpdate']
+            disableEvents: ['TYPING_START', 'TYPING_STOP', 'GUILD_MEMBER_SPEAKING', 'MESSAGE_UPDATE', 'MESSAGE_DELETE']
         };
         winston.info(options);
         let bot = new Eris(remConfig.token, options);
+        if (useCrystal) {
+            bot.voiceConnections = new Crystal.ErisClient();
+        }
         this.bot = bot;
         global.rem = bot;
         bot.on('ready', () => {

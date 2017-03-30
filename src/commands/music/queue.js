@@ -30,15 +30,13 @@ class Queue extends Command {
      * @param msg
      */
     run(msg) {
-        this.v.once(`${msg.id}_error`, (err) => {
-            msg.channel.createMessage(this.t(err));
-            this.v.removeListener('queue');
-        });
-        this.v.once(`${msg.id}_queue`, (queue) => {
+        try {
+            let queue = this.v.getQueue(msg.channel.guild.id);
             msg.channel.createMessage(this.buildReply(queue, msg));
-            this.v.removeListener('error');
-        });
-        this.v.getQueue(msg);
+        } catch (err) {
+            console.error(err);
+            msg.channel.createMessage(this.t(err instanceof TranslatableError ? err.t : 'generic.error', {lngs: msg.lang}));
+        }
     }
 
     /**
@@ -47,53 +45,42 @@ class Queue extends Command {
      * @param msg - the message that triggered the command
      */
     buildReply(Queue, msg) {
-        let reply = '';
-        let iteration = Queue.songs.length > 20 ? 20 : Queue.songs.length;
-        for (let q = 0; q < iteration; q++) {
-            if (q === 0) {
-                let repeat = Queue.repeat !== 'off' ? this.t(`np.repeat-${Queue.repeat}`, {lngs: msg.lang}) : '';
-                if (Queue.songs[0] && Queue.songs[0].duration && Queue.songs[0].duration !== '') {
-                    reply = reply + `${this.t('np.song-duration', {
-                            lngs: msg.lang,
-                            title: Queue.songs[0].title,
-                            repeat: repeat,
-                            duration: Queue.songs[0].duration,
-                            current: Queue.time,
-                            interpolation: {escape: false}
-                        })} \n`;
-                } else {
-                    reply = reply + `${this.t('np.song', {
-                            lngs: msg.lang,
-                            title: Queue.songs[0].title,
-                            repeat: repeat,
-                            interpolation: {escape: false}
-                        })}\n`;
-                }
-                if (Queue.songs.length > 1) {
-                    reply = `${reply}${this.t('queue.queued', {lngs: msg.lang})}\n\`\`\``;
-                }
-            } else {
-                let end = '\n';
-                if (q === Queue.songs.length - 1) {
-                    end = '```';
-                }
-                if (Queue.songs[q]) {
-                    if (Queue.songs[q].duration) {
-                        reply = reply + `${parseInt(q + 1)}. ${Queue.songs[q].title} ${Queue.songs[q].duration}${end}`;
-                    } else {
-                        reply = reply + `${parseInt(q + 1)}. ${Queue.songs[q].title}${end}`;
-                    }
-                }
+        let reply;
+        // console.log(Queue);
+        let repeat = Queue.repeat !== 'off' ? this.t(`np.repeat-${Queue.repeat}`, {lngs: msg.lang}) : '';
+        if (Queue.songs[0].duration && Queue.songs[0].duration !== '') {
+            reply = `${this.t('np.song-duration', {
+                lngs: msg.lang,
+                title: Queue.songs[0].title,
+                repeat: repeat,
+                duration: Queue.songs[0].duration,
+                current: Queue.time,
+                interpolation: {escape: false}
+            })} \n`;
+        } else {
+            reply = `${this.t('np.song', {
+                lngs: msg.lang,
+                title: Queue.songs[0].title,
+                repeat: repeat,
+                interpolation: {escape: false}
+            })}\n`;
+        }
+        if (Queue.songs.length > 1) {
+            reply += `${this.t('queue.queued', {lngs: msg.lang})}\n\`\`\``;
+        }
+        for (let q = 1; q < Queue.songs.length; q++) {
+            if (!Queue.songs[q]) continue;
+            if ((reply.length + Queue.songs[q].title.length) > 1970) { // Discord 2000 char limit
+                reply += `... +${Queue.songs.length - q}`;
+                break;
             }
-
+            reply += `${q + 1}. ${Queue.songs[q].title}`;
+            if (Queue.songs[q].duration) reply += ` ${Queue.songs[q].duration}`;
+            reply += '\n';
         }
-        if (Queue.songs.length > 20) {
-            reply = reply + `${parseInt(21)}. ${this.t('generic.more', {
-                    lngs: msg.lang,
-                    number: Queue.songs.length - 20
-                })}...\`\`\``;
-        }
+        if (Queue.songs.length > 1) reply += '```';
         return reply;
     }
 }
+
 module.exports = Queue;

@@ -24,16 +24,14 @@ class Resume extends Command {
         this.accessLevel = 0;
     }
 
-    run(msg) {
-        this.v.once('error', (err) => {
-            this.v.removeAllListeners();
-            msg.channel.createMessage(err);
-        });
-        this.v.once('success', () => {
-            this.v.removeAllListeners();
+    async run(msg) {
+        try {
+            this.v.resume(msg);
             msg.channel.createMessage(':arrow_forward: ');
-        });
-        this.v.resume(msg);
+        } catch (err) {
+            console.error(err);
+            msg.channel.createMessage(this.t(err instanceof TranslatableError ? err.t : 'generic.error', {lngs: msg.lang}));
+        }
     }
 }
 module.exports = Resume;

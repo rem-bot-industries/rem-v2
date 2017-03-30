@@ -1,6 +1,7 @@
 /**Require the dependencies*/
 //uwu
 global.Promise = require('bluebird');
+global.TranslatableError = require('./structures/TranslatableError');
 require('source-map-support').install({
     handleUncaughtExceptions: false
 });

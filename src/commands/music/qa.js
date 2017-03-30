@@ -27,23 +27,23 @@ class AddToQueue extends Command {
         this.accessLevel = 0;
     }
 
-    run(msg) {
-        this.v.addToQueue(msg, false).then(result => {
-            switch (result.type) {
-                case 'added':
-                    msg.channel.createMessage(this.t('qa.success', {song: result.data.title, lngs: msg.lang}));
-                    return;
-                case 'search_result':
-                    this.searchResult(msg, result.data);
-                    return;
-
+    async run(msg) {
+        msg.content = msg.content.split(' ').splice(1).join(' ');
+        if (msg.content === '') {
+            return msg.channel.createMessage(this.t('generic.empty-search', {lngs: msg.lang}));
+        }
+        try {
+            let res = await this.v.addToQueue(msg, false);
+            if (Object.prototype.toString.call(res) === '[object Array]') {
+                return this.searchResult(msg, res);
+            } else {
+                msg.channel.createMessage(this.t('qa.success', {song: res.title, lngs: msg.lang}));
             }
-        }).catch(err => {
-            console.error(err);
-            if (typeof(err) === 'object') {
-                err = err.err;
-            }
-            if (err !== 'joinVoice.no-voice' && err !== 'joinVoice.error' && err !== 'generic.error') {
+        } catch (err) {
+            if (err instanceof TranslatableError) {
+                console.error(err);
+                msg.channel.createMessage(this.t(err instanceof TranslatableError ? err.t : 'generic.error', {lngs: msg.lang}));
+            } else {
                 if (track_error) {
                     this.r.captureException(err, {
                         extra: {
@@ -55,11 +55,10 @@ class AddToQueue extends Command {
                     });
                 }
                 // console.error(err);
-            } else {
-                return msg.channel.createMessage(this.t(err, {lngs: msg.lang}));
+                console.error(err);
+                msg.channel.createMessage(this.t('generic.error', {lngs: msg.lang}));
             }
-            msg.channel.createMessage(this.t('generic.error', {lngs: msg.lang}));
-        });
+        }
     }
 
     searchResult(msg, results) {
@@ -67,7 +66,7 @@ class AddToQueue extends Command {
             if (err) {
                 return msg.channel.createMessage(this.t(err, {lngs: msg.lang}));
             }
-            msg.content = `https://youtube.com/watch?v=${results[number - 1].id}`;
+            msg.content = `!w.qa ${results[number - 1].url}`;
             this.run(msg);
         });
     }
