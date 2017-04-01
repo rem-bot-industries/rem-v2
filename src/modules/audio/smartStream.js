@@ -59,16 +59,12 @@ class OutputStream extends Readable {
         } catch (e) {
             this.emit('error', e);
         }
-        if (this._retries + 1 > this._maxRetries) {
-            return this._endListener();
-        }
         let resolveRes;
         this._resDead = new Promise((resolve, reject) => {
             resolveRes = resolve;
         });
         this._httpOptions.headers.Range = `bytes=${this._bytesSoFar + this._initialOffset}-`;
-        // console.log("re-requesting", this._httpOptions);
-        this._retries += 1;
+        console.log("re-requesting", this._httpOptions.headers.Range);
         this._currentRequest = https.get(this._httpOptions,
             (res) => {
                 this.res = res;

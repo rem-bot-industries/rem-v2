@@ -148,6 +148,8 @@ class MessageManager extends Manager {
             } catch (e) {
                 winston.error(e);
             }
+        } else {
+            winston.error('Not ready!');
         }
     }
 
@@ -162,6 +164,7 @@ class MessageManager extends Manager {
         if (msg.channel.guild) {
             winston.debug(`Loading Guild ${msg.channel.guild.id}|${msg.channel.guild.name} via Message Manager!`);
             let Guild = await this.g.loadGuild(msg.channel.guild.id);
+            winston.debug(`Loaded Guild ${msg.channel.guild.id}|${msg.channel.guild.name} via Message Manager!`);
             if (typeof (Guild) === 'undefined') {
                 Guild = {};
                 winston.debug(`Guild:${msg.channel.guild.id}|${msg.channel.guild.name} was not found!`);
