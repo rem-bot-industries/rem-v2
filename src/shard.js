@@ -80,6 +80,9 @@ class Shard extends EventEmitter {
      */
     init() {
         blocked((ms) => {
+            if (ms > 100) {
+                dogstatsd.increment(`${stat}.blocks`);
+            }
             console.log('Shard:' + this.id + ' BLOCKED FOR %sms', ms | 0);
         });
         this.initClient();

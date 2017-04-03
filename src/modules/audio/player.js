@@ -54,6 +54,7 @@ class Player extends EventEmitter {
                 if (Song.isOpus) {
                     if (!rem.options.crystal) {
                         // console.log('OPUS');
+                        // Song.streamUrl = Song.streamUrl.replace('ratebypass=yes', '');
                         // console.log(Song);
                         // link = request(Song.streamUrl);
                         try {
@@ -96,7 +97,8 @@ class Player extends EventEmitter {
                     return this.nextSong();
                 }
             } else if (Song.type === SongTypes.radio) {
-
+                link = Song.streamUrl;
+                options.inputArgs = ["-reconnect", "1", "-reconnect_streamed", "1", "-reconnect_delay_max", "2"];
             } else if (Song.type === SongTypes.twitch) {
                 link = Song.streamUrl;
                 options.inputArgs = ["-reconnect", "1", "-reconnect_streamed", "1", "-reconnect_delay_max", "2"];

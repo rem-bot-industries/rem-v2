@@ -13,6 +13,20 @@ class VoiceManager {
         this.resolver = new SongResolver(this.redis);
     }
 
+    async addRadioToQueue(msg, radio, immediate, next) {
+        let connection = rem.voiceConnections.get(msg.channel.guild.id);
+        let player = this.getPlayer(msg.channel.guild.id);
+        if (!connection) {
+            player = await this.join(msg);
+        }
+        if (!player) {
+            let queue = await this.loadQueueFromCache(msg.channel.guild.id);
+            player = await this.createPlayer(msg, connection, queue);
+        }
+        let queue = player.addToQueue(radio, immediate, next);
+        return Promise.resolve(radio);
+    }
+
     async addToQueue(msg, immediate, next) {
         let connection = rem.voiceConnections.get(msg.channel.guild.id);
         let player = this.getPlayer(msg.channel.guild.id);

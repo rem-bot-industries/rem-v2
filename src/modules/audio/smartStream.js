@@ -53,10 +53,11 @@ class OutputStream extends Readable {
     }
 
     _errorListener(error) {
-        // console.error("Caught", error);
+        console.error("Caught", error);
         try {
             this._removeListeners();
         } catch (e) {
+            // console.error(e);
             this.emit('error', e);
         }
         let resolveRes;
@@ -64,7 +65,7 @@ class OutputStream extends Readable {
             resolveRes = resolve;
         });
         this._httpOptions.headers.Range = `bytes=${this._bytesSoFar + this._initialOffset}-`;
-        console.log("re-requesting", this._httpOptions.headers.Range);
+        // console.log("re-requesting", this._httpOptions.headers.Range);
         this._currentRequest = https.get(this._httpOptions,
             (res) => {
                 this.res = res;
@@ -86,7 +87,7 @@ class OutputStream extends Readable {
     _dataListener(data) {
         if (this._resDead) return;
         this._bytesSoFar += data.length;
-        // console.log(this._bytesSoFar, data);
+        // console.log(this._bytesSoFar);
         if (!this.push(data)) {
             // console.log("Paused data input");
             this.res.pause();
@@ -120,14 +121,24 @@ streamResume.request = function (options, callback) {
         requestOptions.maxRetries = 20;
     }
     requestOptions.method = "GET";
-    let outputStream = new OutputStream({}, requestOptions);
+    let outputStream = new OutputStream({highWaterMark: 4096}, requestOptions);
     // console.log(requestOptions);
     let newCallback = (res) => {
-        // console.log(`HEADERS: ${res.headers["content-length"]}`);
+        // console.log(`HEADERS: ${res.headers}`);
         outputStream.insertRes(res, res.headers["content-length"]);
         callback(null, outputStream);
     };
-    return https.get(options, newCallback).once("error", outputStream._errorListener);
+    https.get(requestOptions, (res) => {
+        // console.log(res.statusCode);
+        // console.log(res.headers);
+        // console.log(res);
+        let contentLength = parseInt(res.headers['content-length']);
+        // console.log(requestOptions);
+        requestOptions.headers = {"content-length": `bytes 0-${contentLength - 1}/${contentLength}`};
+        // console.log(requestOptions);
+        return https.get(requestOptions, newCallback).once("error", outputStream._errorListener);
+    });
+
 };
 
 function parseRange(text) {
