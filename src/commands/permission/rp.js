@@ -120,6 +120,7 @@ class GetPermission extends Command {
                 collector.stop();
             }
             if (number > start * 8 && number < start * 8 + 8 && number - 1 - (start * 8) < added.length) {
+
                 collector.stop();
                 let perm = added[number - (start * 8) - 1];
                 this.p.removePermission(msg.channel.guild.id, perm, (err) => {
