@@ -91,8 +91,6 @@ class GetPermission extends Command {
 
             table.addRow('c', this.t('generic.cancel'));
             let tableString = '```' + table.toString() + '```';
-            console.log(tableString.length);
-
             tableString = (filteredPerms.length > 8 ? `${this.t('generic.page', {lngs: msg.lang})}: [${start + 1}/${Math.floor(filteredPerms.length / 8 + 1)}]` : '') + tableString;
             msg.channel.createMessage(tableString);
             this.startCollector(msg, added, start);
@@ -121,14 +119,6 @@ class GetPermission extends Command {
                 collMsg.channel.createMessage(this.t('generic.abort', {lngs: msg.lang}));
                 collector.stop();
             }
-            console.log(number);
-            console.log(start);
-            console.log(added.length);
-            console.log(start * 8);
-            console.log(start * 8 + 8);
-            console.log(number > start * 8);
-            console.log(number < start * 8 + 8);
-            console.log(number - 1 < added.length);
             if (number > start * 8 && number < start * 8 + 8 && number - 1 - (start * 8) < added.length) {
                 collector.stop();
                 let perm = added[number - (start * 8) - 1];
