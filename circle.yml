@@ -9,8 +9,7 @@ checkout:
     - git submodule update --init # use submodules
 dependencies:
   override:
-    - docker info
-    - docker build --rm=false -t remindustries/rem_shard_ci .
+    - docker build --rm=false -t remindustries/rem_shard_ci:$CIRCLE_BRANCH .
 deployment:
   hub:
     branch: [indev, master]
