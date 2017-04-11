@@ -290,7 +290,8 @@ class VoiceManager {
             let shuffledQueue = shuffle(queue.songs.splice(0));
             shuffledQueue.unshift(currentSong);
             player.setQueueSongs(shuffledQueue);
-            await this.writeQueueToCache(msg.channel.guild.id, shuffledQueue);
+            queue.songs = shuffledQueue;
+            await this.writeQueueToCache(msg.channel.guild.id, queue);
             return Promise.resolve({t: 'shuffle.success'});
         } else {
             throw new TranslatableError({err: 'There is no player object atm.', t: 'generic.no-voice'});
@@ -377,16 +378,19 @@ class VoiceManager {
 
     async writeQueueToCache (guildId, queue) {
         queue.songs = queue.songs.map((song) => {
-            if (song.type === SongTypes.radio) {
-                try {
-                    song.end()
-                } catch (e) {
+            if (song) {
+                if (song.type === SongTypes.radio) {
+                    try {
+                        song.end()
+                    } catch (e) {
 
+                    }
+                    return song;
+                } else {
+                    return song;
                 }
-                return song;
-            } else {
-                return song;
             }
+            return song;
         });
         await this.redis.setAsync(`queue_${guildId}`, JSON.stringify(queue));
         return this.redis.expireAsync(`queue_${guildId}`, 60 * 60 * 4);

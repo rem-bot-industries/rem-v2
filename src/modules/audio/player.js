@@ -11,6 +11,7 @@ let SongTypes = require('../../structures/constants').SONG_TYPES;
 let ytr = require('../resolver/youtubeResolver');
 let icy = require('icy');
 let smartStream = require('./smartStream');
+let ytdl = require('ytdl-core');
 // let BufferedStream = require("buffered2").BufferedStream;
 Promise.promisifyAll(smartStream);
 /**
@@ -58,15 +59,8 @@ class Player extends EventEmitter {
                             // Song.streamUrl = Song.streamUrl.replace('ratebypass=yes', '');
                             // console.log(Song);
                             // link = request(Song.streamUrl);
-                            try {
-                                link = await smartStream.requestAsync(Song.streamUrl);
-                                // console.log(Song.streamUrl);
-                            } catch (e) {
-                                winston.error(e);
-                            }
-                            link.on('error', (e) => {
-                                winston.error(e);
-                            })
+                            // link = await smartStream.requestAsync(Song.streamUrl);
+                            link = ytdl(Song.url, {quality: ['250', '251', '249']})
                         } else {
                             link = Song.streamUrl;
                         }
