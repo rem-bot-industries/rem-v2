@@ -38,11 +38,15 @@ class OutputStream extends Readable {
     }
 
     _removeListeners() {
-        this.res.removeListener("data", this._dataListener);
-        this.res.removeListener("end", this._endListener);
-        this.res.removeListener("error", this._errorListener);
-        if (this._currentRequest) {
-            this._currentRequest.removeListener("error", this._errorListener);
+        try {
+            this.res.removeListener("data", this._dataListener);
+            this.res.removeListener("end", this._endListener);
+            this.res.removeListener("error", this._errorListener);
+            if (this._currentRequest) {
+                this._currentRequest.removeListener("error", this._errorListener);
+            }
+        } catch (e) {
+
         }
     }
 
@@ -98,7 +102,7 @@ class OutputStream extends Readable {
         // console.log(size);
         if (this._resDead) {
             this._resDead.then(() => {
-                this.res.read(size);
+                // this.res.read(size);
             }).catch(() => {
             });
         } else {
@@ -137,7 +141,7 @@ streamResume.request = function (options, callback) {
         requestOptions.headers = {"content-length": `bytes 0-${contentLength - 1}/${contentLength}`};
         // console.log(requestOptions);
         return https.get(requestOptions, newCallback).once("error", outputStream._errorListener);
-    });
+    }).once("error", outputStream._errorListener);
 
 };
 

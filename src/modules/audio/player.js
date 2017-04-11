@@ -25,7 +25,7 @@ class Player extends EventEmitter {
      * @param {Object} connection the voice connection
      * @param {Object} queue The queue
      */
-    constructor(msg, connection, queue) {
+    constructor (msg, connection, queue) {
         super();
         this.setMaxListeners(20);
         this.msg = msg;
@@ -45,70 +45,88 @@ class Player extends EventEmitter {
      * Plays a Song
      * @param {Song} Song - the song to play
      */
-    async play(Song) {
+    async play (Song) {
         clearTimeout(this.autoLeaveTimeout);
         if ((this.connection && this.connection.ready || this.connection && rem.options.crystal) && Song) {
             let link;
             let options = {};
-            if (Song.type === SongTypes.youtube) {
-                if (Song.isOpus) {
-                    if (!rem.options.crystal) {
-                        // console.log('OPUS');
-                        // Song.streamUrl = Song.streamUrl.replace('ratebypass=yes', '');
-                        // console.log(Song);
-                        // link = request(Song.streamUrl);
-                        try {
-                            link = await smartStream.requestAsync(Song.streamUrl);
-                            // console.log(link);
-                        } catch (e) {
-                            winston.error(e);
+            switch (Song.type) {
+                case SongTypes.youtube: {
+                    if (Song.isOpus) {
+                        if (!rem.options.crystal) {
+                            // console.log('OPUS');
+                            // Song.streamUrl = Song.streamUrl.replace('ratebypass=yes', '');
+                            // console.log(Song);
+                            // link = request(Song.streamUrl);
+                            try {
+                                link = await smartStream.requestAsync(Song.streamUrl);
+                                // console.log(Song.streamUrl);
+                            } catch (e) {
+                                winston.error(e);
+                            }
+                            link.on('error', (e) => {
+                                winston.error(e);
+                            })
+                        } else {
+                            link = Song.streamUrl;
                         }
-                        link.on('error', (e) => {
-                            winston.error(e);
-                        })
+                        options.format = 'webm';
+                        options.frameDuration = 20;
                     } else {
                         link = Song.streamUrl;
+                        options.inputArgs = ["-reconnect", "1", "-reconnect_streamed", "1", "-reconnect_delay_max", "2"];
+                        // link = this.processStream(secondStream);
                     }
-                    options.format = 'webm';
-                    options.frameDuration = 20;
-                } else {
+                    break;
+                }
+                case SongTypes.youtube_live: {
                     link = Song.streamUrl;
                     options.inputArgs = ["-reconnect", "1", "-reconnect_streamed", "1", "-reconnect_delay_max", "2"];
-                    // link = this.processStream(secondStream);
+                    break;
                 }
-            } else if (Song.type === SongTypes.soundcloud) {
-                if (Song.streamUrl) {
+                case SongTypes.soundcloud: {
+                    if (Song.streamUrl) {
+                        link = Song.streamUrl;
+                        options.inputArgs = ["-reconnect", "1", "-reconnect_streamed", "1", "-reconnect_delay_max", "2"];
+                    } else {
+                        return this.nextSong();
+                    }
+                    break;
+                }
+                case SongTypes.osu: {
+                    if (!rem.options.crystal) {
+                        try {
+                            link = fs.createReadStream(Song.url);
+                        } catch (e) {
+                            this.emit('error', e);
+                        }
+                        link.on('error', (err) => {
+                            winston.error(err);
+                        });
+                    } else {
+                        return this.nextSong();
+                    }
+                    break;
+                }
+                case SongTypes.twitch: {
                     link = Song.streamUrl;
                     options.inputArgs = ["-reconnect", "1", "-reconnect_streamed", "1", "-reconnect_delay_max", "2"];
-                } else {
-                    return this.nextSong();
+                    break;
                 }
-            } else if (Song.type === SongTypes.osu) {
-                if (!rem.options.crystal) {
+                case SongTypes.radio: {
                     try {
-                        link = fs.createReadStream(Song.url);
+                        Song.connect();
                     } catch (e) {
-                        this.emit('error', e);
+                        console.error(e);
                     }
-                    link.on('error', (err) => {
-                        winston.error(err);
-                    });
-                } else {
-                    return this.nextSong();
+                    link = Song.streamUrl;
+                    options.inputArgs = ["-reconnect", "1", "-reconnect_streamed", "1", "-reconnect_delay_max", "2"];
+                    break;
                 }
-            } else if (Song.type === SongTypes.radio) {
-                link = Song.streamUrl;
-                options.inputArgs = ["-reconnect", "1", "-reconnect_streamed", "1", "-reconnect_delay_max", "2"];
-            } else if (Song.type === SongTypes.twitch) {
-                link = Song.streamUrl;
-                options.inputArgs = ["-reconnect", "1", "-reconnect_streamed", "1", "-reconnect_delay_max", "2"];
-            } else if (Song.type === SongTypes.youtube_live) {
-                link = Song.streamUrl;
-                options.inputArgs = ["-reconnect", "1", "-reconnect_streamed", "1", "-reconnect_delay_max", "2"];
-            } else {
-                return this.nextSong();
+                default:
+                    return this.nextSong();
+                    break;
             }
-
             this.connection.play(link, options);
             this.announce(Song);
             this.connection.once('end', () => {
@@ -138,7 +156,7 @@ class Player extends EventEmitter {
     /**
      * Pauses the song
      */
-    pause() {
+    pause () {
         try {
             this.connection.pause();
             this.emit('pause');
@@ -150,7 +168,7 @@ class Player extends EventEmitter {
     /**
      * Resumes the song
      */
-    resume() {
+    resume () {
         try {
             this.connection.resume();
             this.emit('resume');
@@ -165,7 +183,7 @@ class Player extends EventEmitter {
      * @param immediate - if the song should be played immediately
      * @param next - if the song should be enqueued to the 2nd position
      */
-    addToQueue(Song, immediate, next) {
+    addToQueue (Song, immediate, next) {
         if (this.queue.repeat !== 'queue') {
             this.toggleRepeat('off');
         }
@@ -204,7 +222,7 @@ class Player extends EventEmitter {
         return this.queue;
     }
 
-    autoplay() {
+    autoplay () {
         // console.log(this.queue);
         if (this.queue.songs.length > 0 && !this.started) {
             this.started = true;
@@ -216,7 +234,7 @@ class Player extends EventEmitter {
      * Plays the next song, can be used to skip songs
      * @param Song - the song that is skipped (optional)
      */
-    async nextSong(Song) {
+    async nextSong (Song) {
         if (this.queue.songs.length > 0) {
             if (typeof (Song) !== 'undefined') {
                 if (this.queue.songs[0] && Song.qid === this.queue.songs[0].qid) {
@@ -286,7 +304,7 @@ class Player extends EventEmitter {
         }
     }
 
-    endSong(leave) {
+    endSong (leave) {
         try {
             this.connection.stopPlaying();
         } catch (e) {
@@ -313,28 +331,28 @@ class Player extends EventEmitter {
      * Get the current queue of the player
      * @returns {{repeat: boolean, repeatId: string, voteskips: Array, songs: Array, time: string}}
      */
-    getQueue() {
+    getQueue () {
         if (this.connection.current) {
             this.queue.time = this.convertSeconds(Math.floor(this.connection.current.playTime / 1000));
         }
         return this.queue;
     }
 
-    setQueue(queue) {
+    setQueue (queue) {
         this.queue = queue;
     }
 
-    setQueueSongs(songs) {
+    setQueueSongs (songs) {
         this.queue.songs = songs;
     }
 
-    announce(Song) {
+    announce (Song) {
         if (this.channel !== '') {
             this.emit('announce', Song, this.channel);
         }
     }
 
-    bind(id) {
+    bind (id) {
         if (this.channel !== '') {
             this.channel = '';
             return false;
@@ -344,7 +362,7 @@ class Player extends EventEmitter {
         }
     }
 
-    toggleRepeat(toggle) {
+    toggleRepeat (toggle) {
         switch (toggle) {
             case 'off':
                 this.queue.repeat = toggle;
@@ -358,7 +376,7 @@ class Player extends EventEmitter {
         }
     }
 
-    toggleRepeatSingle() {
+    toggleRepeatSingle () {
         if (this.queue.repeat === 'off') {
             this.queue.repeat = 'single';
             return 'single';
@@ -371,27 +389,27 @@ class Player extends EventEmitter {
         }
     }
 
-    startQueue(msg) {
+    startQueue (msg) {
 
     }
 
-    syncQueue() {
+    syncQueue () {
 
     }
 
-    removeFromQueue(index) {
+    removeFromQueue (index) {
 
     }
 
-    moveInQueue(oldIndex, newIndex) {
+    moveInQueue (oldIndex, newIndex) {
 
     }
 
-    updateConnection(conn) {
+    updateConnection (conn) {
         this.connection = conn;
     }
 
-    pushQueue(Song) {
+    pushQueue (Song) {
         this.queue.songs.push(Song);
     }
 
@@ -400,7 +418,7 @@ class Player extends EventEmitter {
      * @param time - the seconds the song has been playing for
      * @returns {string} - the converted string
      */
-    convertSeconds(time) {
+    convertSeconds (time) {
         let d = Number(time);
         let h = Math.floor(d / 3600);
         let m = Math.floor(d % 3600 / 60);

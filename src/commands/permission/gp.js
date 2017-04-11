@@ -5,7 +5,7 @@ let Command = require('../../structures/command');
 let minimist = require('minimist');
 let AsciiTable = require('ascii-table');
 class GetPermission extends Command {
-    constructor({t, mod}) {
+    constructor ({t, mod}) {
         super();
         this.cmd = 'gp';
         this.cat = 'permission';
@@ -15,7 +15,7 @@ class GetPermission extends Command {
         this.p = mod.getMod('pm');
     }
 
-    run(msg) {
+    run (msg) {
         let messageSplit = msg.content.split(' ').splice(1);
         let args = minimist(messageSplit, {boolean: ['r', 'c', 'u']});
         let start = this.parseStart(args);
@@ -30,7 +30,7 @@ class GetPermission extends Command {
         }
     }
 
-    parseStart(args) {
+    parseStart (args) {
         if (args._.length > 0) {
             try {
                 let start = parseInt(args._[0]);
@@ -46,7 +46,8 @@ class GetPermission extends Command {
         }
     }
 
-    getPerms(msg, type, start) {
+    getPerms (msg, type, start) {
+        console.log(start);
         this.p.getPermDB(msg, (err, Perms) => {
             if (err) return msg.channel.createMessage(this.t('gp.no-perms', {lngs: msg.lang}));
             let table = new AsciiTable();
@@ -82,9 +83,11 @@ class GetPermission extends Command {
                 } else {
                     table.addRow(i + 1, filteredPerms[i].id, 'Guild', filteredPerms[i].type, filteredPerms[i].cat, filteredPerms[i].perm, filteredPerms[i].use);
                 }
-                if (i === 7) break;
+                if (i === start * 8 + 8) break;
             }
             let tableString = '```' + table.toString() + '```';
+            console.log(tableString.length);
+            console.log(tableString);
             tableString = (filteredPerms.length > 8 ? `${this.t('generic.page', {lngs: msg.lang})}: [${start + 1}/${Math.floor(filteredPerms.length / 8 + 1)}]` : '') + tableString;
             msg.channel.createMessage(tableString);
         });
