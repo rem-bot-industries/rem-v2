@@ -366,16 +366,23 @@ class PermissionManager {
 
     loadUserRoles(msg) {
         let member = msg.member;
+        if (!member) {
+            member = msg.channel.guild.members.find((m) => {
+                return m.id === msg.author.id
+            });
+        }
         let guild = msg.channel.guild;
         let roles = [];
-        member.roles.forEach((mRole) => {
-            let role = guild.roles.find((r) => {
-                return r.id === mRole;
+        if (member) {
+            member.roles.forEach((mRole) => {
+                let role = guild.roles.find((r) => {
+                    return r.id === mRole;
+                });
+                if (role) {
+                    roles.push(role);
+                }
             });
-            if (role) {
-                roles.push(role);
-            }
-        });
+        }
         return roles;
     }
 

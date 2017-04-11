@@ -5,15 +5,31 @@ let AudioPlayer = require('../audio/player');
 let SongResolver = require('../resolver/songResolver');
 const winston = require('winston');
 const shuffle = require('knuth-shuffle').knuthShuffle;
+let Radio = require('../../structures/radio');
+let SongTypes = require('../../structures/constants').SONG_TYPES;
 class VoiceManager {
-    constructor({mod}) {
+    constructor ({mod}) {
         this.players = {};
         this.redis = mod.getMod('redis');
         this.sm = mod.getMod('sm');
         this.resolver = new SongResolver(this.redis);
     }
 
-    async addToQueue(msg, immediate, next) {
+    async addRadioToQueue (msg, radio, immediate, next) {
+        let connection = rem.voiceConnections.get(msg.channel.guild.id);
+        let player = this.getPlayer(msg.channel.guild.id);
+        if (!connection) {
+            player = await this.join(msg);
+        }
+        if (!player) {
+            let queue = await this.loadQueueFromCache(msg.channel.guild.id);
+            player = await this.createPlayer(msg, connection, queue);
+        }
+        let queue = player.addToQueue(radio, immediate, next);
+        return Promise.resolve(radio);
+    }
+
+    async addToQueue (msg, immediate, next) {
         let connection = rem.voiceConnections.get(msg.channel.guild.id);
         let player = this.getPlayer(msg.channel.guild.id);
         if (!connection) {
@@ -34,7 +50,7 @@ class VoiceManager {
 
     }
 
-    async addPlaylistToQueue(msg) {
+    async addPlaylistToQueue (msg) {
         let connection = rem.voiceConnections.get(msg.channel.guild.id);
         let player = this.getPlayer(msg.channel.guild.id);
         if (!connection) {
@@ -54,7 +70,7 @@ class VoiceManager {
         }
     }
 
-    async forceSkip(msg, howMany) {
+    async forceSkip (msg, howMany) {
         let player = this.getPlayer(msg.channel.guild.id);
         if (typeof (player) !== 'undefined') {
             player.toggleRepeat('off');
@@ -64,6 +80,7 @@ class VoiceManager {
                 if (howMany === 'all') {
                     queue.songs = [current];
                     player.setQueueSongs(queue.songs);
+                    await this.writeQueueToCache(msg.channel.guild.id, queue);
                     await player.nextSong();
                     return Promise.resolve({t: 'skip.all'});
                 } else {
@@ -94,6 +111,7 @@ class VoiceManager {
                     }
                     queue.songs.unshift(current);
                     player.setQueueSongs(queue.songs);
+                    await this.writeQueueToCache(msg.channel.guild.id, queue);
                     let song = await player.nextSong();
                     return Promise.resolve({t: 'skip.some', amount: songsToSkip});
                 }
@@ -110,7 +128,7 @@ class VoiceManager {
         }
     }
 
-    async queueRemove(msg, args) {
+    async queueRemove (msg, args) {
         let player = this.getPlayer(msg.channel.guild.id);
         if (typeof (player) !== 'undefined') {
             player.toggleRepeat('off');
@@ -120,6 +138,7 @@ class VoiceManager {
                 let length = queue.songs.length;
                 queue.songs = [current];
                 player.setQueueSongs(queue.songs);
+                await this.writeQueueToCache(msg.channel.guild.id, queue);
                 return Promise.resolve({t: 'qra.success', number: length});
             } else {
                 let range = args.split('-');
@@ -140,6 +159,7 @@ class VoiceManager {
                             queue.songs.splice(counter - 1, 1);
                         }
                         player.setQueueSongs(queue.songs);
+                        await this.writeQueueToCache(msg.channel.guild.id, queue);
                         return Promise.resolve({t: 'qra.success', number: secondCounter - counter});
                     } else {
                         throw new TranslatableError({t: 'generic.nan'});
@@ -184,6 +204,7 @@ class VoiceManager {
                         queue.songs.splice(songIndex - 1, 1);
                     }
                     player.setQueueSongs(queue.songs);
+                    await this.writeQueueToCache(msg.channel.guild.id, queue);
                     return Promise.resolve({t: 'qra.removed', title: songToSkip.title});
                 }
             }
@@ -192,7 +213,7 @@ class VoiceManager {
         }
     }
 
-    async join(msg) {
+    async join (msg) {
         if (msg.channel.guild) {
             let connection = rem.voiceConnections.get(msg.channel.guild.id);
             if (!connection) {
@@ -205,7 +226,7 @@ class VoiceManager {
                 try {
                     connection = await rem.joinVoiceChannel(msg.member.voiceState.channelID);
                     connection.on('ready', () => {
-                        console.log('connection ready');
+                        // console.log('connection ready');
                     });
                     let queue = await this.loadQueueFromCache(msg.channel.guild.id);
                     let player = this.createPlayer(msg, connection, queue);
@@ -225,7 +246,7 @@ class VoiceManager {
         }
     }
 
-    repeat(msg, type) {
+    repeat (msg, type) {
         let player = this.getPlayer(msg.channel.guild.id);
         if (typeof (player) !== 'undefined') {
             if (type) {
@@ -238,28 +259,20 @@ class VoiceManager {
         }
     }
 
-    async leave(msg) {
+    async leave (msg) {
         if (msg.channel.guild) {
-            let conn = rem.voiceConnections.get(msg.channel.guild.id);
-            if (conn) {
-                let player = this.getPlayer(msg.channel.guild.id);
-                if (player) {
-                    await this.writeQueueToCache(msg.channel.guild.id, player.getQueue());
-                    player.setQueueSongs([]);
-                    player.endSong(true);
-                }
-                rem.voiceConnections.leave(msg.channel.guild.id);
-                return Promise.resolve();
-            } else {
-                throw new TranslatableError({
-                    message: 'Rem is not connected to a voice channel.',
-                    t: 'generic.no-voice'
-                });
+            let player = this.getPlayer(msg.channel.guild.id);
+            if (player) {
+                await this.writeQueueToCache(msg.channel.guild.id, player.getQueue());
+                player.setQueueSongs([]);
+                player.endSong(true);
             }
+            rem.voiceConnections.leave(msg.channel.guild.id);
+            return Promise.resolve();
         }
     }
 
-    async shuffle(msg) {
+    async shuffle (msg) {
         let conn = rem.voiceConnections.get(msg.channel.guild.id);
         if (!conn) {
             throw new TranslatableError({message: 'Rem is not connected to a voice channel.', t: 'generic.no-voice'});
@@ -277,6 +290,7 @@ class VoiceManager {
             let shuffledQueue = shuffle(queue.songs.splice(0));
             shuffledQueue.unshift(currentSong);
             player.setQueueSongs(shuffledQueue);
+            await this.writeQueueToCache(msg.channel.guild.id, shuffledQueue);
             return Promise.resolve({t: 'shuffle.success'});
         } else {
             throw new TranslatableError({err: 'There is no player object atm.', t: 'generic.no-voice'});
@@ -284,7 +298,7 @@ class VoiceManager {
 
     }
 
-    async resume(msg) {
+    async resume (msg) {
         let conn = rem.voiceConnections.get(msg.channel.guild.id);
         if (!conn) {
             throw new TranslatableError({message: 'Rem is not connected to a voice channel.', t: 'generic.no-voice'});
@@ -301,7 +315,7 @@ class VoiceManager {
         }
     }
 
-    async pause(msg) {
+    async pause (msg) {
         let conn = rem.voiceConnections.get(msg.channel.guild.id);
         if (!conn) {
             throw new TranslatableError({message: 'Rem is not connected to a voice channel.', t: 'generic.no-voice'});
@@ -318,7 +332,7 @@ class VoiceManager {
         }
     }
 
-    createPlayer(msg, connection, queue) {
+    createPlayer (msg, connection, queue) {
         let player = this.getPlayer(msg.channel.guild.id);
         if (typeof (player) !== 'undefined') {
             if (queue) {
@@ -334,7 +348,7 @@ class VoiceManager {
         }
     }
 
-    getVoiceConnections(playing) {
+    getVoiceConnections (playing) {
         //ABAL!!!!!!!!!!!!!!!
         if (playing) {
             // console.log(rem.voiceConnections.filter((vc) => vc.playing).length);
@@ -343,26 +357,46 @@ class VoiceManager {
         return rem.voiceConnections.size
     }
 
-    async loadQueueFromCache(guildId) {
+    async loadQueueFromCache (guildId) {
         let queue = await this.redis.getAsync(`queue_${guildId}`);
         try {
-            return JSON.parse(queue);
+            queue = JSON.parse(queue);
+            queue.songs = queue.songs.map((song) => {
+                if (song.type === SongTypes.radio) {
+                    return new Radio(song.options);
+                } else {
+                    return song;
+                }
+            });
+            return queue;
         } catch (e) {
 
         }
         return Promise.resolve();
     }
 
-    async writeQueueToCache(guildId, queue) {
+    async writeQueueToCache (guildId, queue) {
+        queue.songs = queue.songs.map((song) => {
+            if (song.type === SongTypes.radio) {
+                try {
+                    song.end()
+                } catch (e) {
+
+                }
+                return song;
+            } else {
+                return song;
+            }
+        });
         await this.redis.setAsync(`queue_${guildId}`, JSON.stringify(queue));
         return this.redis.expireAsync(`queue_${guildId}`, 60 * 60 * 4);
     }
 
-    getPlayer(id) {
+    getPlayer (id) {
         return this.players[id];
     }
 
-    getQueue(id) {
+    getQueue (id) {
         let player = this.getPlayer(id);
         if (typeof (player) !== 'undefined') {
             let queue = player.getQueue();

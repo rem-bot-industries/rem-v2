@@ -11,7 +11,7 @@ let winston = require("winston");
  *
  */
 class Command extends EventEmitter {
-    constructor() {
+    constructor () {
         super();
         this.setMaxListeners(50);
     }
@@ -20,10 +20,11 @@ class Command extends EventEmitter {
      * The main function of the command
      * @param {Object} msg
      */
-    async run(msg) {
+    async run (msg) {
         try {
             let res = await axios.get('https://rra.ram.moe/i/r', {params: {"type": this.cmd}});
-            msg.channel.createMessage(`https://rra.ram.moe${res.data.path}`);
+            let path = res.data.path.replace('/i/', '');
+            msg.channel.createMessage(`https://wia.ram.moe/${path}`);
         } catch (e) {
             return winston.error(e);
         }

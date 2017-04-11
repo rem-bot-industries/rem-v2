@@ -6,7 +6,7 @@ let minimist = require('minimist');
 let AsciiTable = require('ascii-table');
 let async = require('async');
 class GetPermission extends Command {
-    constructor({t, mod}) {
+    constructor ({t, mod}) {
         super();
         this.cmd = 'rp';
         this.cat = 'permission';
@@ -16,7 +16,7 @@ class GetPermission extends Command {
         this.p = mod.getMod('pm');
     }
 
-    run(msg) {
+    run (msg) {
         let messageSplit = msg.content.split(' ').splice(1);
         let args = minimist(messageSplit, {boolean: ['r', 'c', 'u']});
         let start = this.parseStart(args);
@@ -31,7 +31,7 @@ class GetPermission extends Command {
         }
     }
 
-    parseStart(args) {
+    parseStart (args) {
         if (args._.length > 0) {
             try {
                 let start = parseInt(args._[0]);
@@ -47,7 +47,8 @@ class GetPermission extends Command {
         }
     }
 
-    getPerms(msg, type, start) {
+    getPerms (msg, type, start) {
+        console.log(start);
         this.p.getPermDB(msg, (err, Perms) => {
             if (err) return msg.channel.createMessage(this.t('gp.no-perms', {lngs: msg.lang}));
             let table = new AsciiTable();
@@ -85,8 +86,9 @@ class GetPermission extends Command {
                     table.addRow(i + 1, filteredPerms[i].id, 'Guild', filteredPerms[i].type, filteredPerms[i].cat, filteredPerms[i].perm, filteredPerms[i].use);
                 }
                 added.push(filteredPerms[i]);
-                if (i === 7) break;
+                if (i === start * 8 + 8) break;
             }
+
             table.addRow('c', this.t('generic.cancel'));
             let tableString = '```' + table.toString() + '```';
             tableString = (filteredPerms.length > 8 ? `${this.t('generic.page', {lngs: msg.lang})}: [${start + 1}/${Math.floor(filteredPerms.length / 8 + 1)}]` : '') + tableString;
@@ -96,7 +98,7 @@ class GetPermission extends Command {
 
     }
 
-    startCollector(msg, added, start) {
+    startCollector (msg, added, start) {
         let collector = msg.CON.addCollector(msg.channel.id, {
             filter: (newMSG) => {
                 return msg.author.id === newMSG.author.id;
@@ -117,7 +119,8 @@ class GetPermission extends Command {
                 collMsg.channel.createMessage(this.t('generic.abort', {lngs: msg.lang}));
                 collector.stop();
             }
-            if (number > start * 8 && number - 1 < start * 8 + 8 && number - 1 < added.length + start * 8) {
+            if (number > start * 8 && number < start * 8 + 8 && number - 1 - (start * 8) < added.length) {
+
                 collector.stop();
                 let perm = added[number - (start * 8) - 1];
                 this.p.removePermission(msg.channel.guild.id, perm, (err) => {
