@@ -48,7 +48,7 @@ class GetPermission extends Command {
     }
 
     getPerms (msg, type, start) {
-        console.log(start);
+        // console.log(start);
         this.p.getPermDB(msg, (err, Perms) => {
             if (err) return msg.channel.createMessage(this.t('gp.no-perms', {lngs: msg.lang}));
             let table = new AsciiTable();
@@ -86,12 +86,12 @@ class GetPermission extends Command {
                     table.addRow(i + 1, filteredPerms[i].id, 'Guild', filteredPerms[i].type, filteredPerms[i].cat, filteredPerms[i].perm, filteredPerms[i].use);
                 }
                 added.push(filteredPerms[i]);
-                if (i === start * 8 + 8) break;
+                if (i === start * 8 + 7) break;
             }
 
             table.addRow('c', this.t('generic.cancel'));
             let tableString = '```' + table.toString() + '```';
-            tableString = (filteredPerms.length > 8 ? `${this.t('generic.page', {lngs: msg.lang})}: [${start + 1}/${Math.floor(filteredPerms.length / 8 + 1)}]` : '') + tableString;
+            tableString = (filteredPerms.length > 8 ? `${this.t('generic.page', {lngs: msg.lang})}: [${start + 1}/${Math.floor((filteredPerms.length / 8) - 0.01) + 1}]` : '') + tableString;
             msg.channel.createMessage(tableString);
             this.startCollector(msg, added, start);
         });
@@ -119,8 +119,15 @@ class GetPermission extends Command {
                 collMsg.channel.createMessage(this.t('generic.abort', {lngs: msg.lang}));
                 collector.stop();
             }
-            if (number > start * 8 && number < start * 8 + 8 && number - 1 - (start * 8) < added.length) {
-
+            // console.log(added.length);
+            // console.log(number);
+            // console.log(start);
+            // console.log(start*8);
+            // console.log(start * 8 + 8);
+            // console.log(number > start * 8);
+            // console.log(number <= start * 8 + 8);
+            // console.log(number - 1 - (start * 8) < added.length);
+            if (number > start * 8 && number <= start * 8 + 8 && number - 1 - (start * 8) < added.length) {
                 collector.stop();
                 let perm = added[number - (start * 8) - 1];
                 this.p.removePermission(msg.channel.guild.id, perm, (err) => {
