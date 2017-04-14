@@ -25,7 +25,7 @@ class VoiceManager {
             let queue = await this.loadQueueFromCache(msg.channel.guild.id);
             player = await this.createPlayer(msg, connection, queue);
         }
-        let queue = player.addToQueue(radio, immediate, next);
+        player.addToQueue(radio, immediate, next);
         return Promise.resolve(radio);
     }
 
@@ -400,7 +400,7 @@ class VoiceManager {
         return this.players[id];
     }
 
-    getQueue (id) {
+    async getQueue (id) {
         let player = this.getPlayer(id);
         if (typeof (player) !== 'undefined') {
             let queue = player.getQueue();
@@ -413,10 +413,15 @@ class VoiceManager {
                 });
             }
         } else {
-            throw new TranslatableError({
-                t: 'generic.no-song-in-queue',
-                message: 'There are no songs in the queue!'
-            });
+            let queue = await this.loadQueueFromCache(id);
+            if (!queue) {
+                throw new TranslatableError({
+                    t: 'generic.no-song-in-queue',
+                    message: 'There are no songs in the queue!'
+                });
+            }
+            queue.time = '-';
+            return queue;
         }
     }
 }

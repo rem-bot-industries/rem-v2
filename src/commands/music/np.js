@@ -29,9 +29,9 @@ class NowPlaying extends Command {
      * The main function of the command
      * @param msg
      */
-    run(msg) {
+    async run (msg) {
         try {
-            let queue = this.v.getQueue(msg.channel.guild.id);
+            let queue = await this.v.getQueue(msg.channel.guild.id);
             msg.channel.createMessage(this.buildReply(queue, msg));
         } catch (err) {
             console.error(err);

@@ -5,7 +5,7 @@ let EventEmitter = require('eventemitter3');
 let websocket = require('ws');
 let OPCODE = require('../structures/constants').MESSAGE_TYPES;
 class Worker extends EventEmitter {
-    constructor() {
+    constructor () {
         super();
         this.connectionAttempts = 0;
         this.ws = null;
@@ -17,7 +17,7 @@ class Worker extends EventEmitter {
         this.connect();
     }
 
-    connect() {
+    connect () {
         this.ws = new websocket(`ws://${remConfig.master_hostname}`);
         this.ws.on('open', () => {
             this.connectionAttempts = 1;
@@ -27,18 +27,18 @@ class Worker extends EventEmitter {
         this.ws.on('close', (code, number) => this.onDisconnect(code, number));
     }
 
-    onConnection() {
+    onConnection () {
         this.state.connected = true;
         this.ws.on('message', (msg, flags) => this.onMessage(msg, flags));
     }
 
-    onError(err) {
+    onError (err) {
         console.error(err);
         console.log(`ws error!`);
         this.reconnect();
     }
 
-    onDisconnect(code, number) {
+    onDisconnect (code, number) {
         console.error(code);
         console.error(number);
         this.state.connected = false;
@@ -52,11 +52,11 @@ class Worker extends EventEmitter {
         }, time);
     }
 
-    reconnect() {
+    reconnect () {
         this.ws.close(4000, 'Reconnect on User Wish!');
     }
 
-    generateInterval(k) {
+    generateInterval (k) {
         let maxInterval = (Math.pow(2, k) - 1) * 1000;
 
         if (maxInterval > 30 * 1000) {
@@ -65,20 +65,22 @@ class Worker extends EventEmitter {
         return Math.random() * maxInterval;
     }
 
-    onMessage(msg, flags) {
+    onMessage (msg, flags) {
         try {
             msg = JSON.parse(msg);
         } catch (e) {
             console.error(msg);
             return console.error(e);
         }
-        // console.log(msg);
+        console.log(msg);
         switch (msg.op) {
             case OPCODE.identify: {
                 // console.log(msg);
-                let message = {op: OPCODE.identify, shardToken: remConfig.shard_token};
+                let host = process.env.HOSTNAME ? process.env.HOSTNAME : process.pid;
+                let pid = !!process.env.HOSTNAME;
+                let message = {op: OPCODE.identify, shardToken: remConfig.shard_token, d: {host: host, pid: !pid}};
                 if (this.shardCount && this.shardId) {
-                    message.d = {sc: this.shardCount, sid: this.shardId};
+                    Object.assign(message.d, {sc: this.shardCount, sid: this.shardId});
                 }
                 this.ws.send(JSON.stringify(message));
                 return;
@@ -114,7 +116,7 @@ class Worker extends EventEmitter {
         }
     }
 
-    setupHeartbeat(beat) {
+    setupHeartbeat (beat) {
         this.hearbeatInterval = setInterval(() => {
             try {
                 this.ws.send(JSON.stringify({
@@ -133,7 +135,7 @@ class Worker extends EventEmitter {
         }, beat - 3000);
     }
 
-    send(event, msg) {
+    send (event, msg) {
         this.ws.send(JSON.stringify({
             op: OPCODE.message,
             shardToken: remConfig.shard_token,
@@ -148,7 +150,7 @@ class Worker extends EventEmitter {
         }));
     }
 
-    emitRemote(event, msg) {
+    emitRemote (event, msg) {
         this.ws.send(JSON.stringify({
             op: OPCODE.message,
             shardToken: remConfig.shard_token,

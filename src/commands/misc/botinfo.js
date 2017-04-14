@@ -23,9 +23,10 @@ class BotInfo extends Command {
         this.fetchData(msg).then(data => {
             // console.log(data);
             this.buildReply(msg, user, data);
-        }).catch(err => {
-            console.error(err);
-            let res = err === 'Timeout!' ? err : 'kyaa >_<';
+        }).catch(data => {
+            console.error(data);
+            // console.error(data.badShards);
+            let res = data.err === `Timeout!` ? `Timeout! Only ${Object.keys(data.shardData).length} Shards have responded! Missing Shards: ${Object.keys(data.badShards).join(', ')}` : 'kyaa >_<';
             msg.channel.createMessage(`:x: \`${res}\``);
         });
     }
@@ -35,7 +36,7 @@ class BotInfo extends Command {
         return new Promise(function (resolve, reject) {
             that.hub.emitRemote('request_data', {sid: rem.options.firstShardID, id: msg.id, action: 'bot_info'});
             that.hub.on(`resolved_data_${msg.id}`, (data) => {
-                if (data.err) reject(data.err);
+                if (data.err) reject(data);
                 resolve(data);
             });
         });
