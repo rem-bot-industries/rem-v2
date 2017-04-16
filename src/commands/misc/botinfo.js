@@ -6,11 +6,13 @@ let moment = require('moment');
 let winston = require('winston');
 let _ = require('lodash');
 let version = require('../../../package.json').version;
+let erisVersion = require('../../../node_modules/eris/package.json').version;
 class BotInfo extends Command {
-    constructor({t, mod}) {
+    constructor ({t, mod}) {
         super();
         this.cmd = 'bot';
         this.cat = 'misc';
+        this.aliases = ['info', 'stats'];
         this.needGuild = false;
         this.t = t;
         this.accessLevel = 0;
@@ -18,7 +20,7 @@ class BotInfo extends Command {
         this.v = mod.getMod('vm');
     }
 
-    run(msg) {
+    run (msg) {
         let user = rem.user;
         this.fetchData(msg).then(data => {
             // console.log(data);
@@ -31,7 +33,7 @@ class BotInfo extends Command {
         });
     }
 
-    fetchData(msg) {
+    fetchData (msg) {
         let that = this;
         return new Promise(function (resolve, reject) {
             that.hub.emitRemote('request_data', {sid: rem.options.firstShardID, id: msg.id, action: 'bot_info'});
@@ -43,7 +45,7 @@ class BotInfo extends Command {
 
     }
 
-    buildReply(msg, user, data) {
+    buildReply (msg, user, data) {
         let reply = {
             embed: {
                 author: {
@@ -59,7 +61,7 @@ class BotInfo extends Command {
         });
     }
 
-    buildBotInfo(msg, data) {
+    buildBotInfo (msg, data) {
         let fields = [];
         let guilds = 0;
         let users = 0;
@@ -85,7 +87,7 @@ class BotInfo extends Command {
         });
         fields.push({name: this.t('generic.version', {lngs: msg.lang}), value: version, inline: true});
         fields.push({name: this.t('bot-info.made', {lngs: msg.lang}), value: 'Wolke#6746', inline: true});
-        fields.push({name: this.t('bot-info.lib', {lngs: msg.lang}), value: 'Eris V0.5.2', inline: true});
+        fields.push({name: this.t('bot-info.lib', {lngs: msg.lang}), value: `Eris ${erisVersion}`, inline: true});
         fields.push({name: this.t('bot-info.guilds', {lngs: msg.lang}), value: guilds, inline: true});
         fields.push({name: this.t('bot-info.users', {lngs: msg.lang}), value: users, inline: true});
         fields.push({name: this.t('bot-info.channels', {lngs: msg.lang}), value: channels, inline: true});

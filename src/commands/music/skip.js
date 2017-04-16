@@ -24,6 +24,7 @@ class ForceSkip extends Command {
         this.msg = null;
         this.accessLevel = 0;
         this.inprogress = {};
+        this.aliases = ['voteskip'];
     }
 
     run(msg) {

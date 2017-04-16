@@ -12,7 +12,7 @@ winston.add(winston.transports.Console, {
     'timestamp': true,
     'colorize': true
 });
-let version = require('./../package.json').version;
+const version = require('./../package.json').version;
 const util = require('util');
 const configTemplate = require('./structures/template.js');
 let wsWorker;
@@ -68,7 +68,7 @@ if (!remConfig.no_error_tracking) {
 let Shard = require('./shard');
 let client;
 if (remConfig.use_ws) {
-    let wsService = new wsWorker();
+    let wsService = new wsWorker({connectionUrl: `ws://${remConfig.master_hostname}`});
     wsService.on('ws_ready', (data) => {
         if (client && !data.reshard) {
             console.log('nice!');
@@ -109,7 +109,6 @@ process.on('SIGINT', () => {
         } catch (e) {
             console.error(e);
         }
-
     }
     process.exit(0);
 });
@@ -119,7 +118,7 @@ process.on('unhandledRejection', (reason, promise) => {
     winston.error(`Unhandled rejection: ${reason} - ${util.inspect(promise)}`);
 });
 // Now look at this net
-function net() { // that I just found!
+function net () { // that I just found!
     // When I say go,
     // be ready to throw!
 

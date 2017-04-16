@@ -5,8 +5,12 @@ let EventEmitter = require('eventemitter3');
 let websocket = require('ws');
 let OPCODE = require('../structures/constants').MESSAGE_TYPES;
 class Worker extends EventEmitter {
-    constructor () {
+    constructor (options) {
         super();
+        if (!options.connectionUrl) {
+            throw new Error('No Connection Url passed!');
+        }
+        this.options = options;
         this.connectionAttempts = 0;
         this.ws = null;
         this.shardId = null;
@@ -18,7 +22,7 @@ class Worker extends EventEmitter {
     }
 
     connect () {
-        this.ws = new websocket(`ws://${remConfig.master_hostname}`);
+        this.ws = new websocket(this.options.connectionUrl);
         this.ws.on('open', () => {
             this.connectionAttempts = 1;
             this.onConnection();

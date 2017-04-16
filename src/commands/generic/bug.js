@@ -10,16 +10,17 @@ class Bug extends Command {
         this.needGuild = false;
         this.t = t;
         this.accessLevel = 0;
+        this.aliases = ['support'];
     }
 
     run(msg) {
         if (msg.channel.type !== 1) {
             msg.author.getDMChannel().then(channel => {
-                channel.createMessage('https://discord.gg/yuTxmYn');
+                channel.createMessage('https://discord.gg/rem');
             }).catch(e => console.error);
             msg.channel.createMessage(':ok_hand: ');
         } else {
-            msg.channel.createMessage('https://discord.gg/yuTxmYn');
+            msg.channel.createMessage('https://discord.gg/rem');
         }
 
     }

@@ -6,7 +6,7 @@ let minimist = require('minimist');
 let winston = require('winston');
 let async = require('async');
 class RemoveMessages extends Command {
-    constructor({t}) {
+    constructor ({t}) {
         super();
         this.cmd = 'rm';
         this.cat = 'moderation';
@@ -15,9 +15,10 @@ class RemoveMessages extends Command {
         this.accessLevel = 0;
         this.msg = null;
         this.example = '!w.rm 100 -cr';
+        this.aliases = ['purge', 'prune'];
     }
 
-    run(msg) {
+    run (msg) {
         let messageSplit = msg.content.split(' ').splice(1);
         let args = minimist(messageSplit, {boolean: ['b', 'r', 'c', 'd', 'u', 'p'], string: ['i']});
         this.msg = msg;
@@ -58,7 +59,7 @@ class RemoveMessages extends Command {
         }
     }
 
-    filterMessages(msgs, args, cb) {
+    filterMessages (msgs, args, cb) {
         let filtered = [];
         async.each(msgs, (msg, cb) => {
             let done = false;
@@ -130,7 +131,7 @@ class RemoveMessages extends Command {
         });
     }
 
-    getMessages(msg, limit, cb) {
+    getMessages (msg, limit, cb) {
         if (limit < 2 || limit > 100) {
             return cb('rm.over-limit');
         }
@@ -142,7 +143,7 @@ class RemoveMessages extends Command {
         });
     }
 
-    deleteMessages(msgs, cb) {
+    deleteMessages (msgs, cb) {
         rem.deleteMessages(this.msg.channel.id, msgs).then(() => {
             cb();
         }).catch(err => {

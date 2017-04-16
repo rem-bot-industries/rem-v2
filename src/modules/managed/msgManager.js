@@ -11,7 +11,7 @@ let StatsD = require('hot-shots');
 let dogstatsd = new StatsD({host: remConfig.statsd_host});
 let stat = `rem_${remConfig.environment}`;
 class MessageManager extends Manager {
-    constructor({cm, lm, gm, vm, um, pm, rm, sm, stm, mod}) {
+    constructor ({cm, lm, gm, vm, um, pm, rm, sm, stm, mod}) {
         super();
         this.setMaxListeners(20);
         this.l = lm;
@@ -27,10 +27,11 @@ class MessageManager extends Manager {
         this.r = rm;
         this.mod = mod;
         this.commands = {};
+        this.aliases = {};
         this.ready = false;
     }
 
-    init() {
+    init () {
         let that = this;
         return new Promise(function (resolve, reject) {
             that.load(that.mod).then(() => {
@@ -39,9 +40,9 @@ class MessageManager extends Manager {
         });
     }
 
-    load(mod) {
+    load (mod) {
         let that = this;
-        return new Promise(function (resolve, reject) {
+        return new Promise((resolve, reject) => {
             recursive(path.join(__dirname, '../../commands'), (err, files) => {
                 if (err) {
                     console.error(err);
@@ -53,6 +54,11 @@ class MessageManager extends Manager {
                         let command = require(file);
                         let cmd = new command({t: that.t, v: that.v, mod});
                         commands[cmd.cmd] = cmd;
+                        if (cmd.aliases && cmd.aliases.length > 0) {
+                            cmd.aliases.forEach((alias) => {
+                                this.aliases[alias] = cmd.cmd;
+                            });
+                        }
                     }
                 }
                 that.commands = commands;
@@ -63,15 +69,15 @@ class MessageManager extends Manager {
         });
     }
 
-    reload() {
+    reload () {
 
     }
 
-    unload() {
+    unload () {
 
     }
 
-    async check(msg) {
+    async check (msg) {
         if (this.ready) {
             try {
                 let Data = await this.loadData(msg);
@@ -84,7 +90,12 @@ class MessageManager extends Manager {
                     try {
                         let cmd = msg.content.substr(Guild.prefix.length).split(' ')[0];
                         let command = this.commands[cmd];
-                        if (command !== undefined) {
+                        if (typeof (command) === 'undefined') {
+                            if (typeof (this.aliases[cmd]) !== 'undefined') {
+                                command = this.commands[this.aliases[cmd]];
+                            }
+                        }
+                        if (typeof (command) !== 'undefined') {
                             dogstatsd.increment(`${stat}.commands`);
                             msg.lang = [Guild.lng, 'en'];
                             msg.lngs = this.lngs;
@@ -153,14 +164,14 @@ class MessageManager extends Manager {
         }
     }
 
-    async loadData(msg) {
+    async loadData (msg) {
         let results = {};
         results.guild = await this.loadGuild(msg);
         results.user = await this.loadUser(msg);
         return Promise.resolve(results);
     }
 
-    async loadGuild(msg) {
+    async loadGuild (msg) {
         if (msg.channel.guild) {
             winston.debug(`Loading Guild ${msg.channel.guild.id}|${msg.channel.guild.name} via Message Manager!`);
             let Guild = await this.g.loadGuild(msg.channel.guild.id);
@@ -184,7 +195,7 @@ class MessageManager extends Manager {
         }
     }
 
-    async loadUser(msg) {
+    async loadUser (msg) {
         winston.debug(`Loading User ${msg.author.id}|${msg.author.username}#${msg.author.discriminator} via Message Manager`);
         return this.u.loadUser(msg.author);
     }

@@ -3,11 +3,11 @@
  */
 let Command = require('../../structures/command');
 /**
- * The join command
+ * The join voice command
  * @extends Command
  *
  */
-class Join extends Command {
+class Voice extends Command {
     /**
      * Create the command
      * @param {Function} t - the translation module
@@ -21,6 +21,7 @@ class Join extends Command {
         this.t = t;
         this.v = v;
         this.accessLevel = 0;
+        this.aliases = ['join']
     }
 
     async run(msg) {
@@ -33,4 +34,4 @@ class Join extends Command {
         }
     }
 }
-module.exports = Join;
+module.exports = Voice;

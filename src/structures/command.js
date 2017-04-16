@@ -8,15 +8,16 @@ let EventEmitter = require('eventemitter3');
  *
  */
 class Command extends EventEmitter {
-    constructor() {
+    constructor () {
         super();
-        this.setMaxListeners(50);
+        this.aliases = [];
     }
+
     /**
      * The main function of the command
      * @param {Object} msg
      */
-    run(msg) {
+    run (msg) {
 
     }
 }

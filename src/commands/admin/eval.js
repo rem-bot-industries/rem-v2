@@ -1,10 +1,11 @@
 /**
  * Created by Julian/Wolke on 07.11.2016.
  */
-let Command = require('../../structures/command');
-let adminId = remConfig.owner_id;
+const Command = require('../../structures/command');
+const adminId = remConfig.owner_id;
+const util = require('util');
 class EvalCode extends Command {
-    constructor({t, mod}) {
+    constructor ({t, mod}) {
         super();
         this.cmd = 'eval';
         this.cat = 'admin';
@@ -16,13 +17,17 @@ class EvalCode extends Command {
         this.mod = mod;
     }
 
-    run(msg) {
+    async run (msg) {
         if (msg.author.id === adminId) {
             let content = msg.content.substring(`${msg.prefix}eval`.length);
             if (content) {
                 try {
                     let result = eval(content);
-                    msg.channel.createMessage(`\`\`\`javascript\n${result}\`\`\``);
+                    result = await result;
+                    if (result.toString() === '[object Object]') {
+                        result = util.inspect(result);
+                    }
+                    await msg.channel.createMessage(`\`\`\`javascript\n${result.toString().replace(remConfig.token, 'nice try')}\`\`\``);
                 } catch (e) {
                     msg.channel.createMessage(`\`\`\`javascript\n${e}\`\`\``);
                 }

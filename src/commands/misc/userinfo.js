@@ -13,6 +13,7 @@ class UserInfo extends Command {
         this.t = t;
         this.accessLevel = 0;
         this.u = mod.getMod('um');
+        this.aliases = ['userinfo'];
     }
 
     run(msg) {
