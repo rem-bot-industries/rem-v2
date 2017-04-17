@@ -57,6 +57,9 @@ class Shard extends EventEmitter {
         this.interval = null;
         this.Raven = raven;
         this.Redis = null;
+        if (this.SHARDED) {
+            this.HUB.updateState('init');
+        }
         if (remConfig.redis_enabled) {
             Promise.promisifyAll(redis.RedisClient.prototype);
             Promise.promisifyAll(redis.Multi.prototype);
@@ -113,6 +116,9 @@ class Shard extends EventEmitter {
         this.bot = bot;
         global.rem = bot;
         bot.on('ready', () => {
+            if (this.SHARDED) {
+                this.HUB.updateState('discord_ready');
+            }
             bot.editStatus('online', {name: '!w.help for commands'});
             this.clientReady();
         });
@@ -146,6 +152,9 @@ class Shard extends EventEmitter {
             this.shutdown();
         });
         bot.connect();
+        if (this.SHARDED) {
+            this.HUB.updateState('connecting');
+        }
     }
 
     /**
@@ -159,6 +168,9 @@ class Shard extends EventEmitter {
      */
     clientReady () {
         this.MOD.init(this.HUB, this.Raven, this.Redis).then(() => {
+            if (this.SHARDED) {
+                this.HUB.updateState('bot_ready');
+            }
             this.ready = true;
             this.MSG = this.MOD.getMod('mm');
             this.GM = this.MOD.getMod('gm');
@@ -316,7 +328,9 @@ class Shard extends EventEmitter {
 
     createInterval () {
         this.interval = setInterval(() => {
-            this.sendStats();
+            this.sendStats().then().catch(e => {
+                console.error(e);
+            });
         }, 1000 * 60);
     }
 
@@ -328,15 +342,17 @@ class Shard extends EventEmitter {
                 users: this.bot.guilds.map(g => g.memberCount).reduce((a, b) => a + b),
                 guilds: this.bot.guilds.size,
                 channels: this.bot.guilds.map(g => g.channels.size).reduce((a, b) => a + b),
-                voice: this.bot.voiceConnections.guilds ? Object.keys(this.bot.voiceConnections.guilds).length : 0,
-                voice_playing: this.bot.voiceConnections.guilds ? Object.values(this.bot.voiceConnections.guilds).filter(conn => conn.playing).length : 0
+                voice: this.bot.voiceConnections.size,
+                voice_active: rem.voiceConnections.filter((vc) => vc.playing).length
             }))
         }
         if (this.SHARDED) {
-            this.HUB.emitRemote('_guild_update', {sid: this.id, data: this.bot.guilds.size});
-            this.HUB.emitRemote('_user_update', {
-                sid: this.id,
-                data: this.bot.guilds.map(g => g.memberCount).reduce((a, b) => a + b)
+            this.HUB.updateStats({
+                guilds: this.bot.guilds.size,
+                users: this.bot.guilds.map(g => g.memberCount).reduce((a, b) => a + b),
+                channels: this.bot.guilds.map(g => g.channels.size).reduce((a, b) => a + b),
+                voice: this.bot.voiceConnections.size,
+                voice_active: rem.voiceConnections.filter((vc) => vc.playing).length
             });
         }
     }

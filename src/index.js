@@ -70,8 +70,8 @@ let client;
 if (remConfig.use_ws) {
     let wsService = new wsWorker({connectionUrl: `ws://${remConfig.master_hostname}`});
     wsService.on('ws_ready', (data) => {
-        if (client && !data.reshard) {
-            console.log('nice!');
+        if (client) {
+            console.log(data);
         }
     });
     wsService.on('ws_reshard', (data) => {
@@ -84,7 +84,7 @@ if (remConfig.use_ws) {
             console.log(`Restarting Client for Resharding!`);
         }
         setTimeout(() => {
-            client = new Shard(data.sid, data.shards, wsService, Raven);
+            client = new Shard(data.sid, data.sc, wsService, Raven);
         }, 500);
     });
     wsService.on('shutdown_client', () => {
@@ -101,7 +101,7 @@ if (remConfig.use_ws) {
     client = new Shard(0, 1, undefined, Raven);
 }
 winston.info(`Client Started!`);
-process.on('SIGINT', () => {
+process.once('SIGINT', () => {
     winston.error('Received SIGINT');
     if (client) {
         try {

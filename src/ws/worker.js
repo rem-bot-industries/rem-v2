@@ -78,45 +78,48 @@ class Worker extends EventEmitter {
         }
         console.log(msg);
         switch (msg.op) {
-            case OPCODE.identify: {
+            case OPCODE.IDENTIFY: {
                 // console.log(msg);
                 let host = process.env.HOSTNAME ? process.env.HOSTNAME : process.pid;
                 let pid = !!process.env.HOSTNAME;
-                let message = {op: OPCODE.identify, shardToken: remConfig.shard_token, d: {host: host, pid: !pid}};
-                if (this.shardCount && this.shardId) {
-                    Object.assign(message.d, {sc: this.shardCount, sid: this.shardId});
-                }
+                let message = {
+                    op: OPCODE.IDENTIFY,
+                    d: {host: host, pid: !pid, token: remConfig.shard_token, sc: this.shardCount, sid: this.shardId}
+                };
                 this.ws.send(JSON.stringify(message));
                 return;
             }
-            case OPCODE.ready: {
+            case OPCODE.READY: {
                 // console.log(msg);
                 this.state.hearbeat = msg.d.heartbeat;
                 this.state.ready = true;
+                clearInterval(this.hearbeatInterval);
+                clearTimeout(this.hearbeatTimeout);
                 this.setupHeartbeat(msg.d.heartbeat);
+                if (this.shardId !== msg.d.sid || this.shardCount !== msg.d.sc) {
+                    this.emit('ws_reshard', (msg.d));
+                }
                 this.shardId = msg.d.sid;
                 this.shardCount = msg.d.sc;
                 this.emit('ws_ready', (msg.d));
-                if (msg.d.reshard) {
-                    this.emit('ws_reshard', (msg.d));
+                return;
+            }
+            case OPCODE.MESSAGE: {
+                if (!msg.d.actionId) {
+                    this.emit(msg.d.action, msg.d.data);
+                } else {
+                    console.log(`${msg.d.action}_${msg.d.actionId}`);
+                    this.emit(`${msg.d.action}_${msg.d.actionId}`, msg.d);
                 }
                 return;
             }
-            case OPCODE.message: {
-                this.emit(msg.d.event, msg.d.data);
-                return;
-            }
-            case OPCODE.hearbeat: {
+            case OPCODE.HEARTBEAT: {
                 clearTimeout(this.hearbeatTimeout);
                 // console.log(msg);
                 return;
             }
-            case OPCODE.unauthorized: {
-                console.error('The token was not accepted!');
-                return;
-            }
             default:
-                return console.error(`Unkown Message ${JSON.stringify(msg)}`);
+                return console.error(`Unknown Message ${JSON.stringify(msg)}`);
         }
     }
 
@@ -124,7 +127,7 @@ class Worker extends EventEmitter {
         this.hearbeatInterval = setInterval(() => {
             try {
                 this.ws.send(JSON.stringify({
-                    op: OPCODE.hearbeat,
+                    op: OPCODE.HEARTBEAT,
                     shardID: this.shardId,
                     shardToken: remConfig.shard_token
                 }));
@@ -141,7 +144,7 @@ class Worker extends EventEmitter {
 
     send (event, msg) {
         this.ws.send(JSON.stringify({
-            op: OPCODE.message,
+            op: OPCODE.MESSAGE,
             shardToken: remConfig.shard_token,
             shardID: this.shardId, d: {
                 event: event,
@@ -154,12 +157,34 @@ class Worker extends EventEmitter {
         }));
     }
 
+    updateStats (stats) {
+        this.ws.send(JSON.stringify({
+            op: OPCODE.STATS_UPDATE,
+            shardToken: remConfig.shard_token,
+            shardID: this.shardId, d: stats
+        }));
+    }
+
+    requestData (action, actionId) {
+        this.ws.send(JSON.stringify({
+            op: OPCODE.MESSAGE,
+            shardToken: remConfig.shard_token,
+            d: {
+                actionId,
+                action: action,
+                shardID: this.shardId,
+                sendedAt: Date.now()
+            }
+        }));
+    }
+
     emitRemote (event, msg) {
         this.ws.send(JSON.stringify({
-            op: OPCODE.message,
+            op: OPCODE.MESSAGE,
             shardToken: remConfig.shard_token,
             shardID: this.shardId, d: {
                 event: event,
+                action: msg.action,
                 origin: `worker-${process.pid}
                 -${this.shardId}`,
                 shardID: this.shardId,
@@ -167,6 +192,13 @@ class Worker extends EventEmitter {
                 sendedAt: Date.now()
             }
         }));
+    }
+
+    updateState (state) {
+        this.ws.send(JSON.stringify({
+            op: OPCODE.STATE_UPDATE, shardToken: remConfig.shard_token,
+            shardID: this.shardId, d: {state}
+        }))
     }
 }
 module.exports = Worker;

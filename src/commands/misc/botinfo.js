@@ -34,13 +34,12 @@ class BotInfo extends Command {
     }
 
     fetchData (msg) {
-        let that = this;
-        return new Promise(function (resolve, reject) {
-            that.hub.emitRemote('request_data', {sid: rem.options.firstShardID, id: msg.id, action: 'bot_info'});
-            that.hub.on(`resolved_data_${msg.id}`, (data) => {
+        return new Promise((resolve, reject) => {
+            this.hub.on(`bot_info_data_${msg.id}`, (data) => {
                 if (data.err) reject(data);
                 resolve(data);
             });
+            this.hub.requestData('bot_info', msg.id);
         });
 
     }
@@ -73,12 +72,12 @@ class BotInfo extends Command {
         let shard_channels = rem.guilds.map(g => g.channels.size).reduce((a, b) => a + b);
         let shard_voice = this.v.getVoiceConnections();
         let shard_voice_playing = this.v.getVoiceConnections(true);
-        _.forIn(data, (value, key) => {
-            guilds += value.data.guilds;
-            users += value.data.users;
-            channels += value.data.channels;
-            voice += value.data.voice;
-            voice_playing += value.data.voice_playing;
+        _.forIn(data.shards, (value, key) => {
+            guilds += value.guilds;
+            users += value.users;
+            channels += value.channels;
+            voice += value.voice;
+            voice_playing += value.voice_active;
         });
         fields.push({
             name: this.t('bot-info.uptime', {lngs: msg.lang}),

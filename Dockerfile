@@ -1,4 +1,4 @@
-FROM node:7.7.1-alpine
+FROM node:7.9.0-alpine
 LABEL maintainer Wolke "wolke@ram.moe"
 RUN apk update && apk upgrade && apk add git python alpine-sdk ffmpeg
 WORKDIR /usr/src
