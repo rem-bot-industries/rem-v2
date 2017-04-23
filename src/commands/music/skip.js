@@ -39,7 +39,7 @@ class ForceSkip extends Command {
                 this.msg = msg;
                 this.startVoteskip(msg, channel);
             } else {
-                console.log('Force!');
+                // console.log('Force!');
                 this.skip(msg);
             }
         }
@@ -79,7 +79,7 @@ class ForceSkip extends Command {
                 } catch (e) {
 
                 }
-            }, 1000 * 120);
+            }, 1000 * 60);
             collector.on('message', (msg) => {
                 if (msg.content !== `${this.msg.prefix}yes` && (msg.content === `${this.msg.prefix}fskip` || msg.content === `${this.msg.prefix}play`)) {
                     collector.stop();

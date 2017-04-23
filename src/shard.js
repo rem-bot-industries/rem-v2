@@ -41,7 +41,7 @@ class Shard extends EventEmitter {
      * @param hub the ws_client instance used to send data back and forth between shards
      * @param raven the errortracking rem uses.
      */
-    constructor(SHARD_ID, SHARD_COUNT, hub, raven) {
+    constructor (SHARD_ID, SHARD_COUNT, hub, raven) {
         super();
         this.id = SHARD_ID;
         this.count = SHARD_COUNT;
@@ -78,7 +78,7 @@ class Shard extends EventEmitter {
      * Setup a listener if the eventloop blocks,
      * then call the initClient method
      */
-    init() {
+    init () {
         blocked((ms) => {
             if (ms > 100) {
                 dogstatsd.increment(`${stat}.blocks`);
@@ -92,7 +92,7 @@ class Shard extends EventEmitter {
      * Initiates the Client and Eris
      * In this function Rem sets up listeners for common events, configures eris and starts the lib
      */
-    initClient() {
+    initClient () {
         let options = {
             autoreconnect: true,
             compress: true,
@@ -157,7 +157,7 @@ class Shard extends EventEmitter {
      * 5. Now, Rem sends an initial data update to the main process to update the guild/user counts if necessary.
      * 6. A Interval gets created to update data every 5 mins
      */
-    clientReady() {
+    clientReady () {
         this.MOD.init(this.HUB, this.Raven, this.Redis).then(() => {
             this.ready = true;
             this.MSG = this.MOD.getMod('mm');
@@ -201,14 +201,14 @@ class Shard extends EventEmitter {
         // });
     }
 
-    message(msg) {
+    message (msg) {
         if (this.ready && !msg.author.bot) {
             this.CON.invokeAllCollectors(msg);
             this.MSG.check(msg);
         }
     }
 
-    guildCreate(Guild) {
+    guildCreate (Guild) {
         this.sendStats();
         guildModel.findOne({id: Guild.id}, (err, guild) => {
             if (err) {
@@ -236,11 +236,11 @@ class Shard extends EventEmitter {
         });
     }
 
-    guildDelete(Guild) {
+    guildDelete (Guild) {
         this.sendStats();
     }
 
-    async guildMemberAdd(Guild, Member) {
+    async guildMemberAdd (Guild, Member) {
         if (this.ready) {
             try {
                 let greeting = await this.SM.get(Guild.id, 'guild', 'greeting.text');
@@ -261,7 +261,7 @@ class Shard extends EventEmitter {
         }
     }
 
-    async guildMemberRemove(Guild, Member) {
+    async guildMemberRemove (Guild, Member) {
         if (this.ready) {
             try {
                 let farewell = await this.SM.get(Guild.id, 'guild', 'farewell.text');
@@ -281,7 +281,7 @@ class Shard extends EventEmitter {
         }
     }
 
-    voiceUpdate(member, channel, leave) {
+    voiceUpdate (member, channel, leave) {
         // if (!leave) {
         //     console.log('user joined voice!');
         // } else {
@@ -289,19 +289,19 @@ class Shard extends EventEmitter {
         // }
     }
 
-    debug(info) {
+    debug (info) {
         console.log(info);
     }
 
-    warn(info) {
+    warn (info) {
         winston.warn(info);
     }
 
-    error(err) {
+    error (err) {
         winston.error(err);
     }
 
-    shutdown() {
+    shutdown () {
         clearInterval(this.interval);
         mongoose.connection.close();
         if (remConfig.redis_enabled) {
@@ -314,13 +314,13 @@ class Shard extends EventEmitter {
         }
     }
 
-    createInterval() {
+    createInterval () {
         this.interval = setInterval(() => {
             this.sendStats();
         }, 1000 * 60);
     }
 
-    async sendStats() {
+    async sendStats () {
         if (remConfig.redis_enabled) {
             await this.Redis.set(`guild_size_${this.id}`, this.bot.guilds.size);
             await this.Redis.set(`user_size_${this.id}`, this.bot.guilds.map(g => g.memberCount).reduce((a, b) => a + b));
@@ -341,7 +341,7 @@ class Shard extends EventEmitter {
         }
     }
 
-    updateLocalCache({type, data}) {
+    updateLocalCache ({type, data}) {
         switch (type) {
             case 'user':
                 this.MOD.getMod('um').updateCache(data);
@@ -357,13 +357,13 @@ class Shard extends EventEmitter {
         }
     }
 
-    emitCacheUpdate({type, data}) {
+    emitCacheUpdate ({type, data}) {
         if (this.SHARDED) {
             this.HUB.emitRemote('_cache_update', {shard: this.id, type, data});
         }
     }
 
-    hubAction(event) {
+    hubAction (event) {
         switch (event.action) {
             case 'bot_info': {
                 //Thanks abal
@@ -401,10 +401,12 @@ class Shard extends EventEmitter {
                 this.resolveAction(event, {uwu: 'uwu'});
                 return;
             }
+            default:
+                return;
         }
     }
 
-    simplifyGuildData(guild) {
+    simplifyGuildData (guild) {
         let owner = guild.members.find(m => m.id === guild.ownerID).user;
         return {
             id: guild.id,
@@ -421,7 +423,7 @@ class Shard extends EventEmitter {
         };
     }
 
-    resolveAction(event, data) {
+    resolveAction (event, data) {
         if (this.SHARDED) {
             try {
                 this.HUB.emitRemote(`resolve_data_master_${event.id}`, {

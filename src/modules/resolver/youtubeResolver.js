@@ -106,10 +106,10 @@ class YoutubeImporter extends BasicImporter {
                 // console.log(formats[i]);
                 return formats[i].url;
             }
-            if (formats[i].container === 'mp4' && formats[i].audioEncoding || formats[i].container === 'webm' && formats[i].audioEncoding) {
+            if (formats[i].itag === '141' || formats[i].itag === '140') {
                 return formats[i].url;
             }
-            if (formats[i].audioEncoding) {
+            if (formats[i].container === 'mp4' && formats[i].audioEncoding || formats[i].container === 'webm' && formats[i].audioEncoding) {
                 return formats[i].url;
             }
         }
