@@ -35,11 +35,11 @@ class BotInfo extends Command {
 
     fetchData (msg) {
         return new Promise((resolve, reject) => {
-            this.hub.on(`bot_info_data_${msg.id}`, (data) => {
+            this.hub.on(`action_resolved_${msg.id}`, (data) => {
                 if (data.err) reject(data);
                 resolve(data);
             });
-            this.hub.requestData('bot_info', msg.id);
+            this.hub.executeAction('bot_info', msg.id);
         });
 
     }

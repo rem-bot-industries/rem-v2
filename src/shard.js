@@ -189,14 +189,12 @@ class Shard extends EventEmitter {
                 this.HUB.on('_cache_update', (data) => {
                     this.updateLocalCache(data);
                 });
-                this.HUB.on('request_data_master', (event) => {
+                this.HUB.on('action', (event) => {
                     this.hubAction(event);
                 });
             }
             winston.info('commands are ready!');
-            setTimeout(() => {
-                this.sendStats();
-            }, 10000);
+            this.sendStats();
             this.createInterval();
         });
         // this.LANG = new LanguageManager();
@@ -331,7 +329,7 @@ class Shard extends EventEmitter {
             this.sendStats().then().catch(e => {
                 console.error(e);
             });
-        }, 1000 * 60);
+        }, 1000 * 30);
     }
 
     async sendStats () {
@@ -342,7 +340,7 @@ class Shard extends EventEmitter {
                 users: this.bot.guilds.map(g => g.memberCount).reduce((a, b) => a + b),
                 guilds: this.bot.guilds.size,
                 channels: this.bot.guilds.map(g => g.channels.size).reduce((a, b) => a + b),
-                voice: this.bot.voiceConnections.size,
+                voice: rem.voiceConnections.size,
                 voice_active: rem.voiceConnections.filter((vc) => vc.playing).length
             }))
         }
@@ -351,7 +349,7 @@ class Shard extends EventEmitter {
                 guilds: this.bot.guilds.size,
                 users: this.bot.guilds.map(g => g.memberCount).reduce((a, b) => a + b),
                 channels: this.bot.guilds.map(g => g.channels.size).reduce((a, b) => a + b),
-                voice: this.bot.voiceConnections.size,
+                voice: rem.voiceConnections.size,
                 voice_active: rem.voiceConnections.filter((vc) => vc.playing).length
             });
         }
@@ -381,14 +379,15 @@ class Shard extends EventEmitter {
 
     hubAction (event) {
         switch (event.action) {
-            case 'bot_info': {
+            case 'shard_info': {
                 //Thanks abal
                 let data = {
                     users: this.bot.guilds.map(g => g.memberCount).reduce((a, b) => a + b),
                     guilds: this.bot.guilds.size,
                     channels: this.bot.guilds.map(g => g.channels.size).reduce((a, b) => a + b),
                     voice: this.bot.voiceConnections.size,
-                    voice_playing: this.bot.voiceConnections.filter((vc) => vc.playing).length
+                    voice_active: this.bot.voiceConnections.filter((vc) => vc.playing).length,
+                    ram_usage: process.memoryUsage().rss
                 };
                 this.resolveAction(event, data);
                 return;
@@ -411,10 +410,6 @@ class Shard extends EventEmitter {
                 } else {
                     this.resolveAction(event, {found: false});
                 }
-                return;
-            }
-            case 'shard_info': {
-                this.resolveAction(event, {uwu: 'uwu'});
                 return;
             }
             default:
@@ -442,11 +437,7 @@ class Shard extends EventEmitter {
     resolveAction (event, data) {
         if (this.SHARDED) {
             try {
-                this.HUB.emitRemote(`resolve_data_master_${event.id}`, {
-                    sid: this.id,
-                    responseDate: Date.now(),
-                    data: data
-                });
+                this.HUB.respondAction(event, data);
             } catch (e) {
                 console.log(e);
             }

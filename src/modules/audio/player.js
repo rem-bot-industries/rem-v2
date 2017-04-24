@@ -4,7 +4,6 @@
 let EventEmitter = require('eventemitter3');
 let shortid = require('shortid');
 let winston = require('winston');
-let request = require('request');
 let path = require('path');
 let fs = require('fs');
 let SongTypes = require('../../structures/constants').SONG_TYPES;
@@ -55,12 +54,7 @@ class Player extends EventEmitter {
                 case SongTypes.youtube: {
                     if (Song.isOpus) {
                         if (!rem.options.crystal) {
-                            // console.log('OPUS');
-                            // Song.streamUrl = Song.streamUrl.replace('ratebypass=yes', '');
-                            // console.log(Song);
-                            // link = request(Song.streamUrl);
-                            // link = await smartStream.requestAsync(Song.streamUrl);
-                            link = ytdl(Song.url, {quality: ['250', '251', '249']})
+                            link = ytdl(Song.url, {quality: ['250', '251', '249'], retries: 20, highWaterMark: 65565})
                         } else {
                             link = Song.streamUrl;
                         }

@@ -26,12 +26,9 @@
     "better-cleverbot-io": "^1.0.2",
     "blocked": "^1.2.1",
     "bluebird": "^3.5.0",
-    "buffered2": "^1.0.0",
     "docker-config-loader": "^1.0.0",
-    "dotenv": "^4.0.0",
     "eris": "git+https://github.com/abalabahaha/eris.git#dev",
     "erlpack": "github:hammerandchisel/erlpack",
-    "eslint": "^3.19.0",
     "eventemitter3": "^2.0.3",
     "hot-shots": "^4.4.0",
     "i18next": "^7.2.3",
@@ -43,7 +40,7 @@
     "merge-json": "0.1.0-b.3",
     "minimist": "^1.2.0",
     "moment": "^2.18.1",
-    "mongoose": "^4.9.4",
+    "mongoose": "^4.9.5",
     "node-opus": "^0.2.6",
     "node-osu": "^1.2.0",
     "raven": "^1.2.1",
@@ -55,17 +52,12 @@
     "unzip2": "^0.2.5",
     "winston": "^2.3.1",
     "winston-daily-rotate-file": "^1.4.6",
-    "ws": "^2.2.3",
-    "youtube-api": "^2.0.8",
-    "youtube-dl": "latest",
-    "youtube-search": "^1.0.9",
-    "ytdl-core": "^0.12.1"
+    "ws": "^2.3.1",
+    "youtube-dl": "^1.11.1",
+    "ytdl-core": "^0.13.0"
   },
   "devDependencies": {
-    "babel-cli": "^6.22.2",
-    "babel-plugin-transform-async-to-generator": "^6.16.0",
-    "babel-preset-latest": "^6.16.0",
-    "eslint": "^3.14.1",
+    "eslint": "^3.19.0",
     "minami": "^1.1.1"
   }
 }

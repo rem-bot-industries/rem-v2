@@ -18,6 +18,7 @@ class Worker extends EventEmitter {
         this.state = {ready: false, connected: false, hearbeat: -1};
         this.hearbeatInterval = null;
         this.hearbeatTimeout = null;
+        this.shardState = 'init';
         this.connect();
     }
 
@@ -84,7 +85,14 @@ class Worker extends EventEmitter {
                 let pid = !!process.env.HOSTNAME;
                 let message = {
                     op: OPCODE.IDENTIFY,
-                    d: {host: host, pid: !pid, token: remConfig.shard_token, sc: this.shardCount, sid: this.shardId}
+                    d: {
+                        host: host,
+                        pid: !pid,
+                        token: remConfig.shard_token,
+                        sc: this.shardCount,
+                        sid: this.shardId,
+                        shardState: this.shardState
+                    }
                 };
                 this.ws.send(JSON.stringify(message));
                 return;
@@ -105,12 +113,7 @@ class Worker extends EventEmitter {
                 return;
             }
             case OPCODE.MESSAGE: {
-                if (!msg.d.actionId) {
-                    this.emit(msg.d.action, msg.d.data);
-                } else {
-                    console.log(`${msg.d.action}_${msg.d.actionId}`);
-                    this.emit(`${msg.d.action}_${msg.d.actionId}`, msg.d);
-                }
+                this.checkAction(msg);
                 return;
             }
             case OPCODE.HEARTBEAT: {
@@ -120,6 +123,28 @@ class Worker extends EventEmitter {
             }
             default:
                 return console.error(`Unknown Message ${JSON.stringify(msg)}`);
+        }
+    }
+
+    checkAction (msg) {
+        switch (msg.d.action) {
+            case 'shard_info': {
+                if (msg.d.request) {
+                    this.emit('action', msg.d);
+                } else {
+                    this.emit(`action_resolved_${msg.d.actionId}`, msg.d);
+                }
+                return;
+            }
+            default: {
+                if (!msg.d.actionId) {
+                    this.emit(msg.d.action, msg.d.data);
+                } else {
+                    console.log(`${msg.d.action}_${msg.d.actionId}`);
+                    this.emit(`action_resolved_${msg.d.actionId}`, msg.d);
+                }
+                return;
+            }
         }
     }
 
@@ -165,7 +190,7 @@ class Worker extends EventEmitter {
         }));
     }
 
-    requestData (action, actionId) {
+    executeAction (action, actionId) {
         this.ws.send(JSON.stringify({
             op: OPCODE.MESSAGE,
             shardToken: remConfig.shard_token,
@@ -175,6 +200,20 @@ class Worker extends EventEmitter {
                 shardID: this.shardId,
                 sendedAt: Date.now()
             }
+        }));
+    }
+
+    respondAction (event, data) {
+        let d = Object.assign({
+            actionId: event.actionId,
+            action: event.action,
+            shardID: this.shardId,
+            sendedAt: Date.now()
+        }, data);
+        this.ws.send(JSON.stringify({
+            op: OPCODE.MESSAGE,
+            shardToken: remConfig.shard_token,
+            d
         }));
     }
 
@@ -198,7 +237,8 @@ class Worker extends EventEmitter {
         this.ws.send(JSON.stringify({
             op: OPCODE.STATE_UPDATE, shardToken: remConfig.shard_token,
             shardID: this.shardId, d: {state}
-        }))
+        }));
+        this.shardState = state;
     }
 }
 module.exports = Worker;

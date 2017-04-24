@@ -3,10 +3,10 @@
  */
 let Command = require('../../structures/command');
 let minimist = require('minimist');
-let discordReg = /<?(#|@|@&)[0-9]+>/g;
+let discordReg = /<?(?:#|@|@&|@!)([0-9]+)>/g;
 let Selector = require('../../structures/selector');
 class AddPermission extends Command {
-    constructor({t, mod}) {
+    constructor ({t, mod}) {
         super();
         this.cmd = 'ap';
         this.cat = 'permission';
@@ -16,7 +16,7 @@ class AddPermission extends Command {
         this.p = mod.getMod('pm');
     }
 
-    run(msg) {
+    run (msg) {
         let messageSplit = msg.content.split(' ').splice(1);
         let args = minimist(messageSplit);
         this.parseArgs(args, msg, (err, args) => {
@@ -34,7 +34,7 @@ class AddPermission extends Command {
         });
     }
 
-    addPermission(msg, perm) {
+    addPermission (msg, perm) {
         // console.log(perm);
         this.p.addPermission(msg.channel.guild.id, perm, (err) => {
             if (err) return msg.channel.createMessage(this.t('generic.error', {lngs: msg.lang}));
@@ -78,12 +78,12 @@ class AddPermission extends Command {
         });
     }
 
-    guild(msg, args) {
+    guild (msg, args) {
         let perm = this.p.createPermission(args.node, 'guild', msg.channel.guild.id, args.allow);
         this.addPermission(msg, perm);
     }
 
-    user(msg, args) {
+    user (msg, args) {
         let user;
         if (discordReg.test(args.u)) {
             user = msg.mentions[0];
@@ -117,7 +117,7 @@ class AddPermission extends Command {
         }
     }
 
-    role(msg, args) {
+    role (msg, args) {
         let role;
         if (discordReg.test(args.r)) {
             role = msg.roleMentions[0];
@@ -149,7 +149,7 @@ class AddPermission extends Command {
         }
     }
 
-    channel(msg, args) {
+    channel (msg, args) {
         let channel;
         if (discordReg.test(args.c)) {
             channel = msg.channelMentions[0];
@@ -183,7 +183,7 @@ class AddPermission extends Command {
         }
     }
 
-    parseArgs(args, msg, cb) {
+    parseArgs (args, msg, cb) {
         let node;
         if (args._.length > 0) {
             let nodeSplit = args._[0].split('.');

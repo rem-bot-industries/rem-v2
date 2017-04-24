@@ -32,16 +32,14 @@ class MessageManager extends Manager {
     }
 
     init () {
-        let that = this;
-        return new Promise(function (resolve, reject) {
-            that.load(that.mod).then(() => {
+        return new Promise((resolve, reject) => {
+            this.load(this.mod).then(() => {
                 resolve();
             });
         });
     }
 
     load (mod) {
-        let that = this;
         return new Promise((resolve, reject) => {
             recursive(path.join(__dirname, '../../commands'), (err, files) => {
                 if (err) {
@@ -52,7 +50,7 @@ class MessageManager extends Manager {
                 for (let file of files) {
                     if (file.endsWith('.js')) {
                         let command = require(file);
-                        let cmd = new command({t: that.t, v: that.v, mod});
+                        let cmd = new command({t: this.t, v: this.v, mod});
                         commands[cmd.cmd] = cmd;
                         if (cmd.aliases && cmd.aliases.length > 0) {
                             cmd.aliases.forEach((alias) => {
@@ -61,9 +59,9 @@ class MessageManager extends Manager {
                         }
                     }
                 }
-                that.commands = commands;
-                that.emit('ready', commands);
-                that.ready = true;
+                this.commands = commands;
+                this.emit('ready', commands);
+                this.ready = true;
                 resolve();
             });
         });
