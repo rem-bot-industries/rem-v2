@@ -15,7 +15,7 @@ class AddPlaylistToQueue extends Command {
      * @param {Object} v - the voice manager
      * @param {Object} mod - the module manager
      */
-    constructor({t, v, mod}) {
+    constructor ({t, v, mod}) {
         super();
         this.cmd = 'apq';
         this.cat = 'playlist';
@@ -26,14 +26,15 @@ class AddPlaylistToQueue extends Command {
         this.accessLevel = 0;
     }
 
-    async run(msg) {
+    async run (msg) {
         msg.content = msg.content.split(' ').splice(1).join(' ');
         if (msg.content === '') {
             return msg.channel.createMessage(this.t('generic.empty-search', {lngs: msg.lang}));
         }
-        this.v.addPlaylistToQueue(msg).then(result => {
-            msg.channel.createMessage(`Added Playlist \`${result.title}\` from the channel \`${result.author}\` with \`${result.songs.length}\` songs to the queue!`);
-        }).catch(err => {
+        try {
+            let result = await this.v.addPlaylistToQueue(msg);
+            await msg.channel.createMessage(`Added Playlist \`${result.title}\` from the channel \`${result.author}\` with \`${result.songs.length}\` songs to the queue!`);
+        } catch (err) {
             console.error(err);
             if (err instanceof TranslatableError) {
                 console.error(err);
@@ -53,7 +54,7 @@ class AddPlaylistToQueue extends Command {
                 console.error(err);
                 msg.channel.createMessage(this.t('generic.error', {lngs: msg.lang}));
             }
-        });
+        }
     }
 }
 module.exports = AddPlaylistToQueue;

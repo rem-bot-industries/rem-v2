@@ -77,7 +77,7 @@ class Worker extends EventEmitter {
             console.error(msg);
             return console.error(e);
         }
-        console.log(msg);
+        // console.log(msg);
         switch (msg.op) {
             case OPCODE.IDENTIFY: {
                 // console.log(msg);
