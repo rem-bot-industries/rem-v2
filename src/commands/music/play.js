@@ -49,8 +49,9 @@ class Play extends Command {
                 msg.channel.createMessage(this.t('play.success', {song: res.title, lngs: msg.lang}));
             }
         } catch (err) {
+            console.error(err);
             if (err instanceof TranslatableError) {
-                console.error(err);
+
                 msg.channel.createMessage(this.t(err instanceof TranslatableError ? err.t : 'generic.error', {lngs: msg.lang}));
             } else {
                 if (track_error) {

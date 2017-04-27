@@ -58,7 +58,7 @@ class Konachan extends Command {
             if (error) {
                 return msg.channel.createMessage(this.t('nsfw-images.error-body', {lngs: msg.lang}));
             }
-            if (!error && response.statusCode == 200) {
+            if (!error && response.statusCode === 200) {
                 try {
                     body = JSON.parse(body);
                 } catch (e) {
@@ -79,7 +79,6 @@ class Konachan extends Command {
                     if (body.length > 0) {
                         let random = Math.floor(Math.random() * body.length);
                         if (typeof(body[random]) !== 'undefined' && typeof (body[random].file_url) !== 'undefined') {
-
                             msg.channel.createMessage(`http://${body[random].file_url.substring(2)}`);
                         } else {
                             msg.channel.createMessage(this.t('nsfw-images.error-body', {lngs: msg.lang}));

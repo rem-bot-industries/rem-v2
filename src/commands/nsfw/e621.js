@@ -62,7 +62,7 @@ class E621 extends Command {
             if (error) {
                 return msg.channel.createMessage(this.t('nsfw-images.error-body', {lngs: msg.lang}));
             }
-            if (!error && response.statusCode == 200) {
+            if (!error && response.statusCode === 200) {
                 try {
                     body = JSON.parse(body);
                 } catch (e) {

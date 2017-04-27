@@ -387,7 +387,8 @@ class Shard extends EventEmitter {
                     channels: this.bot.guilds.map(g => g.channels.size).reduce((a, b) => a + b),
                     voice: this.bot.voiceConnections.size,
                     voice_active: this.bot.voiceConnections.filter((vc) => vc.playing).length,
-                    ram_usage: process.memoryUsage().rss
+                    ram_usage: process.memoryUsage().rss,
+                    host: process.env.HOSTNAME ? process.env.HOSTNAME : process.pid
                 };
                 this.resolveAction(event, data);
                 return;

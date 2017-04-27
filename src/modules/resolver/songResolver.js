@@ -4,6 +4,7 @@
 let youtube = require('./youtubeResolver');
 let soundcloud = require('./soundCloudResolver');
 let osu = require('./osuResolver');
+let twitch = require('./twitchResolver');
 let youtubePlaylist = require('./youtubePlaylistResolver');
 const winston = require('winston');
 let crypto = require('crypto');
@@ -40,7 +41,7 @@ let opts = {
 class SongResolver {
     constructor(redis) {
         this.redis = redis;
-        this.resolvers = {youtube, soundcloud, osu};
+        this.resolvers = {youtube, soundcloud, osu, twitch};
         this.playlistResolvers = {youtubePlaylist};
         if (remConfig.redis_enabled) {
             searchCache = new Cache(redis);

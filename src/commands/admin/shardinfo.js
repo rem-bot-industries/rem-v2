@@ -81,7 +81,9 @@ U: ${shard.users}
 C: ${shard.channels}
 V: ${shard.voice}
 VA: ${shard.voice_active}
-R: ${(shard.ram_usage / 1024 / 1024).toFixed(2)} MIB     \n\`\`\`
+R: ${(shard.ram_usage / 1024 / 1024).toFixed(2)} MIB        
+ID: ${shard.host}
+\n\`\`\`
 \n`;
             }
             fields.push({

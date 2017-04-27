@@ -6,10 +6,14 @@ let BasicImporter = require('../../structures/basicImporter');
 let youtube_dl = require('youtube-dl');
 Promise.promisifyAll(youtube_dl);
 let SongTypes = require('../../structures/constants').SONG_TYPES;
+let regex = /(?:http(?:s|):\/\/|)(?:www\.|)twitch\.tv\/.+/;
 class TwitchResolver extends BasicImporter {
-    constructor(url) {
+    constructor() {
         super();
-        this.url = url;
+    }
+
+    canResolve(url) {
+        return regex.test(url);
     }
 
     async resolve(url) {
@@ -38,17 +42,17 @@ class TwitchResolver extends BasicImporter {
     filterFormats(info) {
         for (let i = 0; i < info.formats.length; i++) {
             // console.log(formats[i].itag);
-            if (info.formats[i].format_id === 'Audio_Only') {
+            if (info.formats[i].format_id.toLowerCase() === 'audio_only') {
                 return info.formats[i].url;
             }
         }
         for (let i = 0; i < info.formats.length; i++) {
             // console.log(formats[i].itag);
-            if (info.formats[i].format_id === 'Medium' || info.formats[i].format_id === 'High') {
+            if (info.formats[i].format_id === '480p' || info.formats[i].format_id === '720p') {
                 return info.formats[i].url;
             }
         }
-        return null;
+        return info.formats[0].url;
     }
 }
-module.exports = TwitchResolver;
+module.exports = new TwitchResolver();
