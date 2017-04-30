@@ -11,7 +11,7 @@
     "major": "npm --no-git-tag-version version major",
     "build": "./node_modules/.bin/babel src --source-maps --out-dir dist/",
     "watch": "babel src --watch --source-maps --out-dir dist/",
-    "doit": "npm install && npm rebuild && npm run build",
+    "doit": "npm rebuild",
     "rebuild": "npm rebuild && npm run build"
   },
   "author": "Wolke <wolke@ram.moe>",
