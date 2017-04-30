@@ -143,9 +143,9 @@ class Shard {
         this.bot.on('guildMemberRemove', (g, m) => {
             this.guildMemberRemove(g, m);
         });
-        this.bot.on('debug', (data) => {
-            console.log(data);
-        });
+        // this.bot.on('debug', (data) => {
+        //     console.log(data);
+        // });
         this.bot.on('warn', this.warn);
         this.bot.on('error', this.error);
         process.on('SIGINT', () => {
@@ -172,6 +172,7 @@ class Shard {
             }
             this.ready = true;
             this.MSG = this.MOD.getMod('mm');
+            this.SM = this.MOD.getMod('sm');
             if (this.SHARDED) {
                 this.HUB.on('action', (event) => {
                     this.hubAction(event);

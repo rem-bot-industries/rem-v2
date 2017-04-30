@@ -69,6 +69,11 @@ if (!remConfig.no_error_tracking) {
 let client;
 if (remConfig.use_ws) {
     let wsService = new wsWorker({connectionUrl: `ws://${remConfig.master_hostname}`});
+    wsService.on('message', (msg) => {
+        if (client) {
+            client.send(JSON.stringify(msg))
+        }
+    });
     wsService.on('ws_ready', (data) => {
         if (client) {
             console.log(data);
@@ -77,6 +82,7 @@ if (remConfig.use_ws) {
     wsService.on('ws_reshard', (data) => {
         if (client) {
             try {
+                client.removeAllListeners();
                 client.kill();
             } catch (e) {
                 console.error(e);
@@ -84,16 +90,25 @@ if (remConfig.use_ws) {
             console.log(`Restarting Client for Resharding!`);
         }
         const env = {SHARD_ID: data.sid, SHARD_COUNT: data.sc, CONFIG: JSON.stringify(config)};
-        client = child_process.fork('./shardStarter.js', {options: {env: Object.assign(process.env, env)}}, () => {
-            client.on('exit', (code, status) => {
-                console.log(code, status);
-            })
+        client = child_process.fork('./shardStarter.js', {options: {env: Object.assign(process.env, env)}});
+        client.on('exit', (code, status) => {
+            console.log(code, status);
+            process.exit(code);
         });
+        client.on('message', (msg) => {
+            try {
+                msg = JSON.parse(msg);
+                wsService.processMessage(msg);
+            } catch (e) {
+                console.error(e);
+            }
+        })
 
     });
     wsService.on('shutdown_client', () => {
         if (client) {
             try {
+                client.removeAllListeners();
                 client.kill();
             } catch (e) {
                 console.error(e);
@@ -103,10 +118,9 @@ if (remConfig.use_ws) {
     })
 } else {
     const env = {SHARD_ID: 0, SHARD_COUNT: 1, CONFIG: JSON.stringify(config)};
-    client = child_process.fork('./shardStarter.js', {options: {env: Object.assign(process.env, env)}}, () => {
-        client.on('exit', (code, status) => {
-            console.log(code, status);
-        })
+    client = child_process.fork('./shardStarter.js', {options: {env: Object.assign(process.env, env)}});
+    client.on('exit', (code, status) => {
+        console.log(code, status);
     });
 
 }

@@ -22,6 +22,9 @@ class BotInfo extends Command {
 
     run (msg) {
         let user = rem.user;
+        // let responseTimeout = setTimeout(() => {
+        //
+        // }, 10000);
         this.fetchData(msg).then(data => {
             // console.log(data);
             this.buildReply(msg, user, data);
@@ -61,6 +64,7 @@ class BotInfo extends Command {
     }
 
     buildBotInfo (msg, data) {
+        moment.locale(msg.lang[0]);
         let fields = [];
         let guilds = 0;
         let users = 0;

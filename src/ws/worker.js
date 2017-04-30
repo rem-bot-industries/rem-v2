@@ -5,7 +5,7 @@ let EventEmitter = require('eventemitter3');
 let websocket = require('ws');
 let OPCODE = require('../structures/constants').MESSAGE_TYPES;
 class Worker extends EventEmitter {
-    constructor (options) {
+    constructor(options) {
         super();
         if (!options.connectionUrl) {
             throw new Error('No Connection Url passed!');
@@ -22,7 +22,7 @@ class Worker extends EventEmitter {
         this.connect();
     }
 
-    connect () {
+    connect() {
         this.ws = new websocket(this.options.connectionUrl);
         this.ws.on('open', () => {
             this.connectionAttempts = 1;
@@ -32,18 +32,18 @@ class Worker extends EventEmitter {
         this.ws.on('close', (code, number) => this.onDisconnect(code, number));
     }
 
-    onConnection () {
+    onConnection() {
         this.state.connected = true;
         this.ws.on('message', (msg, flags) => this.onMessage(msg, flags));
     }
 
-    onError (err) {
+    onError(err) {
         console.error(err);
         console.log(`ws error!`);
         this.reconnect();
     }
 
-    onDisconnect (code, number) {
+    onDisconnect(code, number) {
         console.error(code);
         console.error(number);
         this.state.connected = false;
@@ -57,11 +57,11 @@ class Worker extends EventEmitter {
         }, time);
     }
 
-    reconnect () {
+    reconnect() {
         this.ws.close(4000, 'Reconnect on User Wish!');
     }
 
-    generateInterval (k) {
+    generateInterval(k) {
         let maxInterval = (Math.pow(2, k) - 1) * 1000;
 
         if (maxInterval > 30 * 1000) {
@@ -70,7 +70,7 @@ class Worker extends EventEmitter {
         return Math.random() * maxInterval;
     }
 
-    onMessage (msg, flags) {
+    onMessage(msg, flags) {
         try {
             msg = JSON.parse(msg);
         } catch (e) {
@@ -127,7 +127,7 @@ class Worker extends EventEmitter {
         }
     }
 
-    checkAction (msg) {
+    checkAction(msg) {
         switch (msg.d.action) {
             case 'shard_info': {
                 if (msg.d.request) {
@@ -149,7 +149,7 @@ class Worker extends EventEmitter {
         }
     }
 
-    setupHeartbeat (beat) {
+    setupHeartbeat(beat) {
         this.hearbeatInterval = setInterval(() => {
             try {
                 this.ws.send(JSON.stringify({
@@ -168,7 +168,7 @@ class Worker extends EventEmitter {
         }, beat - 3000);
     }
 
-    send (event, msg) {
+    send(event, msg) {
         this.ws.send(JSON.stringify({
             op: OPCODE.MESSAGE,
             shardToken: remConfig.shard_token,
@@ -183,7 +183,7 @@ class Worker extends EventEmitter {
         }));
     }
 
-    updateStats (stats) {
+    updateStats(stats) {
         this.ws.send(JSON.stringify({
             op: OPCODE.STATS_UPDATE,
             shardToken: remConfig.shard_token,
@@ -191,7 +191,7 @@ class Worker extends EventEmitter {
         }));
     }
 
-    executeAction (action, actionId) {
+    executeAction(action, actionId) {
         this.ws.send(JSON.stringify({
             op: OPCODE.MESSAGE,
             shardToken: remConfig.shard_token,
@@ -204,7 +204,7 @@ class Worker extends EventEmitter {
         }));
     }
 
-    respondAction (event, data) {
+    respondAction(event, data) {
         let d = Object.assign({
             actionId: event.actionId,
             action: event.action,
@@ -218,7 +218,7 @@ class Worker extends EventEmitter {
         }));
     }
 
-    emitRemote (event, msg) {
+    emitRemote(event, msg) {
         this.ws.send(JSON.stringify({
             op: OPCODE.MESSAGE,
             shardToken: remConfig.shard_token,
@@ -234,12 +234,32 @@ class Worker extends EventEmitter {
         }));
     }
 
-    updateState (state) {
+    updateState(state) {
         this.ws.send(JSON.stringify({
             op: OPCODE.STATE_UPDATE, shardToken: remConfig.shard_token,
             shardID: this.shardId, d: {state}
         }));
         this.shardState = state;
+    }
+
+    processMessage(msg) {
+        // console.log(msg);
+        switch (msg.d.action) {
+            case 'updateState':
+                this.updateState(msg.d.d.state);
+                break;
+            case 'updateStats':
+                this.updateStats(msg.d.d);
+                break;
+            case 'executeAction':
+                this.executeAction(msg.d.d.action, msg.d.d.actionId);
+                break;
+            case 'respondAction':
+                this.respondAction(msg.d.d.event, msg.d.d.data);
+                break;
+            default:
+                break;
+        }
     }
 }
 module.exports = Worker;

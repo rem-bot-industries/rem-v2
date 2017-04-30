@@ -6,7 +6,7 @@ let moment = require('moment');
 let winston = require('winston');
 let _ = require('lodash');
 class GuildFinder extends Command {
-    constructor ({t, mod}) {
+    constructor({t, mod}) {
         super();
         this.cmd = 'shardinfo';
         this.cat = 'admin';
@@ -17,7 +17,7 @@ class GuildFinder extends Command {
         this.hub = mod.getMod('hub');
     }
 
-    run (msg) {
+    run(msg) {
         let time = Date.now();
         this.fetchData(msg).then(data => {
             // console.log(data);
@@ -28,7 +28,7 @@ class GuildFinder extends Command {
         });
     }
 
-    fetchData (msg) {
+    fetchData(msg) {
         return new Promise((resolve, reject) => {
                 this.hub.on(`action_resolved_${msg.id}`, (data) => {
                     if (data.err) reject(data.err);
@@ -41,7 +41,7 @@ class GuildFinder extends Command {
 
     }
 
-    buildReply (msg, data, time) {
+    buildReply(msg, data, time) {
         let endTime = Date.now();
         let total = endTime - time;
         let reply = {
@@ -61,7 +61,7 @@ class GuildFinder extends Command {
         });
     }
 
-    buildShardData (data) {
+    buildShardData(data) {
         let fields = [];
         let shardArray = this.splitShardsToPairs(data.shards);
         console.log(shardArray);
@@ -92,11 +92,10 @@ ID: ${shard.host}
                 inline: false
             });
         }
-        console.log(fields);
         return fields;
     }
 
-    splitShardsToPairs (shards) {
+    splitShardsToPairs(shards) {
         let pairArray = [];
         let tempPairArray = [];
         let i = 0;
@@ -105,7 +104,7 @@ ID: ${shard.host}
                 let shard = shards[key];
                 tempPairArray.push(shard);
                 i++;
-                if (i % 2 === 0) {
+                if (i % 2 === 0 || Object.keys(shards).length === 1) {
                     pairArray.push(tempPairArray);
                     tempPairArray = [];
                 }
