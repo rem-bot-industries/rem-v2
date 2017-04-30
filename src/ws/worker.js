@@ -114,6 +114,7 @@ class Worker extends EventEmitter {
             }
             case OPCODE.MESSAGE: {
                 this.checkAction(msg);
+                this.emit('message', msg);
                 return;
             }
             case OPCODE.HEARTBEAT: {

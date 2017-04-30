@@ -2,6 +2,7 @@
  * Created by Julian/Wolke on 01.11.2016.
  */
 //uwu
+const winston = require('winston');
 let useCrystal = false;
 // let Crystal;
 // try {
@@ -10,14 +11,12 @@ let useCrystal = false;
 // } catch (e) {
 //
 // }
-const Eris = require('eris');
-let StatsD = require('hot-shots');
-let dogstatsd = new StatsD({host: remConfig.statsd_host});
-const EventEmitter = require('eventemitter3');
+let Eris = require('eris');
+const StatsD = require('hot-shots');
+const dogstatsd = new StatsD({host: remConfig.statsd_host});
 const guildModel = require('./DB/guild');
-let winston = require('winston');
-let mongoose = require('mongoose');
-let url = remConfig.mongo_hostname;
+const mongoose = require('mongoose');
+const url = remConfig.mongo_hostname;
 let Connector = require('./structures/connector');
 let ModuleManager = require('./modules/moduleManager');
 mongoose.Promise = Promise;
@@ -25,26 +24,24 @@ mongoose.connect(url, (err) => {
     if (err) return winston.error('Failed to connect to the database!');
 });
 let redis = require("redis");
-let stat = `rem_${remConfig.environment}`;
-let blocked = require('blocked');
-
+const stat = `rem_${remConfig.environment}`;
+const blocked = require('blocked');
+const procToWs = require('./ws/procToWs');
+const hub = new procToWs();
 /**
  * The base shard class
  * @extends EventEmitter
  */
-class Shard extends EventEmitter {
+class Shard {
     /**
      * The constructor
      * @constructor
-     * @param SHARD_ID The shardid of the bot
-     * @param SHARD_COUNT the max shardcount
-     * @param hub the ws_client instance used to send data back and forth between shards
-     * @param raven the errortracking rem uses.
+     * @param options
+     * @param Raven
      */
-    constructor (SHARD_ID, SHARD_COUNT, hub, raven) {
-        super();
-        this.id = SHARD_ID;
-        this.count = SHARD_COUNT;
+    constructor(options, Raven) {
+        this.id = process.env.SHARD_ID;
+        this.count = process.env.SHARD_COUNT;
         this.bot = null;
         this.ready = false;
         this.CON = new Connector();
@@ -52,51 +49,32 @@ class Shard extends EventEmitter {
         this.HUB = hub;
         this.SHARDED = typeof (hub) !== 'undefined';
         this.MOD = new ModuleManager();
-        this.GM = null;
-        this.UM = null;
         this.interval = null;
-        this.Raven = raven;
+        this.Raven = Raven;
         this.Redis = null;
+        console.log('starting shard');
         if (this.SHARDED) {
             this.HUB.updateState('init');
         }
-        if (remConfig.redis_enabled) {
-            Promise.promisifyAll(redis.RedisClient.prototype);
-            Promise.promisifyAll(redis.Multi.prototype);
-            let redisClient = redis.createClient({port: 6379, host: remConfig.redis_hostname});
-            redisClient.select(remConfig.redis_database);
-            redisClient.on("error", (err) => {
-                console.log("Error " + err);
-            });
-            redisClient.on("ready", () => {
-                this.init();
-            });
-            this.Redis = redisClient;
-        } else {
+        Promise.promisifyAll(redis.RedisClient.prototype);
+        Promise.promisifyAll(redis.Multi.prototype);
+        let redisClient = redis.createClient({port: 6379, host: remConfig.redis_hostname});
+        redisClient.select(remConfig.redis_database);
+        redisClient.on("error", (err) => {
+            console.log("Error " + err);
+        });
+        redisClient.on("ready", () => {
             this.init();
-        }
+        });
+        this.Redis = redisClient;
     }
 
     /**
      * Setup a listener if the eventloop blocks,
      * then call the initClient method
      */
-    init () {
-        blocked((ms) => {
-            if (ms > 100) {
-                dogstatsd.increment(`${stat}.blocks`);
-            }
-            console.log('Shard:' + this.id + ' BLOCKED FOR %sms', ms | 0);
-        });
-        this.initClient();
-    }
-
-    /**
-     * Initiates the Client and Eris
-     * In this function Rem sets up listeners for common events, configures eris and starts the lib
-     */
-    initClient () {
-        let options = {
+    init() {
+        const options = {
             autoreconnect: true,
             compress: true,
             messageLimit: 0,
@@ -105,53 +83,74 @@ class Shard extends EventEmitter {
             firstShardID: parseInt(this.id),
             lastShardID: parseInt(this.id),
             maxShards: parseInt(this.count),
-            crystal: useCrystal,
             disableEvents: ['TYPING_START', 'TYPING_STOP', 'GUILD_MEMBER_SPEAKING', 'MESSAGE_UPDATE', 'MESSAGE_DELETE']
         };
         winston.info(options);
         let bot = new Eris(remConfig.token, options);
-        if (useCrystal) {
-            bot.voiceConnections = new Crystal.ErisClient();
-        }
+        console.log('Created bot');
+        // if (useCrystal) {
+        //     bot.voiceConnections = new Crystal.ErisClient();
+        // }
         this.bot = bot;
         global.rem = bot;
-        bot.on('ready', () => {
-            if (this.SHARDED) {
-                this.HUB.updateState('discord_ready');
+        blocked((ms) => {
+            if (ms > 100) {
+                dogstatsd.increment(`${stat}.blocks`);
             }
-            bot.editStatus('online', {name: '!w.help for commands'});
+            console.log('Shard:' + this.id + ' BLOCKED FOR %sms', ms | 0);
+        });
+        this.initClient();
+        this.bot.connect().then(() => {
+            console.log('connected')
+        }).catch(err => {
+            console.log(err);
+        });
+    }
+
+    /**
+     * Initiates the Client and Eris
+     * In this function Rem sets up listeners for common events, configures eris and starts the lib
+     */
+    initClient() {
+        this.bot.on('ready', () => {
+            if (this.SHARDED) {
+                this.HUB.send({action: 'updateState', d: {state: 'discord_ready'}});
+            }
+            console.log('READY!');
+            this.bot.editStatus('online', {name: '!w.help for commands'});
             this.clientReady();
         });
-        bot.on('messageCreate', (msg) => {
+        this.bot.on('messageCreate', (msg) => {
             dogstatsd.increment(`${stat}.messages`);
             msg.CON = this.CON;
             this.message(msg);
         });
-        bot.on('guildCreate', (Guild) => {
+        this.bot.on('guildCreate', (Guild) => {
             this.guildCreate(Guild);
         });
-        bot.on('guildDelete', (Guild) => {
+        this.bot.on('guildDelete', (Guild) => {
             this.guildDelete(Guild);
         });
-        bot.on('voiceChannelJoin', (m, n) => {
+        this.bot.on('voiceChannelJoin', (m, n) => {
             this.voiceUpdate(m, n, false);
         });
-        bot.on('voiceChannelLeave', (m, o) => {
+        this.bot.on('voiceChannelLeave', (m, o) => {
             this.voiceUpdate(m, o, true);
         });
-        bot.on('guildMemberAdd', (g, m) => {
+        this.bot.on('guildMemberAdd', (g, m) => {
             this.guildMemberAdd(g, m);
         });
-        bot.on('guildMemberRemove', (g, m) => {
+        this.bot.on('guildMemberRemove', (g, m) => {
             this.guildMemberRemove(g, m);
         });
-        // bot.on('debug', this.debug);
-        bot.on('warn', this.warn);
-        bot.on('error', this.error);
+        this.bot.on('debug', (data) => {
+            console.log(data);
+        });
+        this.bot.on('warn', this.warn);
+        this.bot.on('error', this.error);
         process.on('SIGINT', () => {
             this.shutdown();
         });
-        bot.connect();
         if (this.SHARDED) {
             this.HUB.updateState('connecting');
         }
@@ -166,29 +165,14 @@ class Shard extends EventEmitter {
      * 5. Now, Rem sends an initial data update to the main process to update the guild/user counts if necessary.
      * 6. A Interval gets created to update data every 5 mins
      */
-    clientReady () {
+    clientReady() {
         this.MOD.init(this.HUB, this.Raven, this.Redis).then(() => {
             if (this.SHARDED) {
                 this.HUB.updateState('bot_ready');
             }
             this.ready = true;
             this.MSG = this.MOD.getMod('mm');
-            this.GM = this.MOD.getMod('gm');
-            this.UM = this.MOD.getMod('um');
-            this.SM = this.MOD.getMod('sm');
-            this.UM.on('_cache_update', (data) => {
-                this.emitCacheUpdate(data);
-            });
-            this.GM.on('_cache_update', (data) => {
-                this.emitCacheUpdate(data);
-            });
-            this.SM.on('_cache_update', (data) => {
-                this.updateLocalCache(data);
-            });
             if (this.SHARDED) {
-                this.HUB.on('_cache_update', (data) => {
-                    this.updateLocalCache(data);
-                });
                 this.HUB.on('action', (event) => {
                     this.hubAction(event);
                 });
@@ -197,28 +181,16 @@ class Shard extends EventEmitter {
             this.sendStats();
             this.createInterval();
         });
-        // this.LANG = new LanguageManager();
-        // this.VOICE = new VoiceManager();
-        // this.MSG = new MsgManager(this.LANG, this.VOICE);
-        // this.MSG.on('ready', (cmds) => {
-        //     this.ready = true;
-        //     this.HUB.emit('_guild_update', this.id, this.bot.guilds.size);
-        //     this.HUB.emit('_user_update', this.id, this.bot.guilds.map(g => g.memberCount).reduce((a, b) => a + b));
-        //     winston.info('commands are ready!');
-        //     this.sendStats();
-        //     this.createInterval();
-        //     // console.log(cmds);
-        // });
     }
 
-    message (msg) {
+    message(msg) {
         if (this.ready && !msg.author.bot) {
             this.CON.invokeAllCollectors(msg);
             this.MSG.check(msg);
         }
     }
 
-    guildCreate (Guild) {
+    guildCreate(Guild) {
         this.sendStats();
         guildModel.findOne({id: Guild.id}, (err, guild) => {
             if (err) {
@@ -246,11 +218,11 @@ class Shard extends EventEmitter {
         });
     }
 
-    guildDelete (Guild) {
+    guildDelete(Guild) {
         this.sendStats();
     }
 
-    async guildMemberAdd (Guild, Member) {
+    async guildMemberAdd(Guild, Member) {
         if (this.ready) {
             try {
                 let greeting = await this.SM.get(Guild.id, 'guild', 'greeting.text');
@@ -271,7 +243,7 @@ class Shard extends EventEmitter {
         }
     }
 
-    async guildMemberRemove (Guild, Member) {
+    async guildMemberRemove(Guild, Member) {
         if (this.ready) {
             try {
                 let farewell = await this.SM.get(Guild.id, 'guild', 'farewell.text');
@@ -291,7 +263,7 @@ class Shard extends EventEmitter {
         }
     }
 
-    voiceUpdate (member, channel, leave) {
+    voiceUpdate(member, channel, leave) {
         // if (!leave) {
         //     console.log('user joined voice!');
         // } else {
@@ -299,19 +271,19 @@ class Shard extends EventEmitter {
         // }
     }
 
-    debug (info) {
+    debug(info) {
         console.log(info);
     }
 
-    warn (info) {
-        winston.warn(info);
+    warn(info) {
+        console.log(info);
     }
 
-    error (err) {
-        winston.error(err);
+    error(err) {
+        console.log(err);
     }
 
-    shutdown () {
+    shutdown() {
         clearInterval(this.interval);
         mongoose.connection.close();
         if (remConfig.redis_enabled) {
@@ -324,7 +296,7 @@ class Shard extends EventEmitter {
         }
     }
 
-    createInterval () {
+    createInterval() {
         this.interval = setInterval(() => {
             this.sendStats().then().catch(e => {
                 console.error(e);
@@ -332,7 +304,7 @@ class Shard extends EventEmitter {
         }, 1000 * 30);
     }
 
-    async sendStats () {
+    async sendStats() {
         if (remConfig.redis_enabled) {
             await this.Redis.set(`guild_size_${this.id}`, this.bot.guilds.size);
             await this.Redis.set(`user_size_${this.id}`, this.bot.guilds.map(g => g.memberCount).reduce((a, b) => a + b));
@@ -355,29 +327,7 @@ class Shard extends EventEmitter {
         }
     }
 
-    updateLocalCache ({type, data}) {
-        switch (type) {
-            case 'user':
-                this.MOD.getMod('um').updateCache(data);
-                return;
-            case 'guild':
-                this.MOD.getMod('gm').updateCache(data);
-                return;
-            case 'setting':
-                this.MOD.getMod('sm').updateCache(data);
-                return;
-            default:
-                return;
-        }
-    }
-
-    emitCacheUpdate ({type, data}) {
-        if (this.SHARDED) {
-            this.HUB.emitRemote('_cache_update', {shard: this.id, type, data});
-        }
-    }
-
-    hubAction (event) {
+    hubAction(event) {
         switch (event.action) {
             case 'shard_info': {
                 //Thanks abal
@@ -418,7 +368,7 @@ class Shard extends EventEmitter {
         }
     }
 
-    simplifyGuildData (guild) {
+    simplifyGuildData(guild) {
         let owner = guild.members.find(m => m.id === guild.ownerID).user;
         return {
             id: guild.id,
@@ -435,7 +385,7 @@ class Shard extends EventEmitter {
         };
     }
 
-    resolveAction (event, data) {
+    resolveAction(event, data) {
         if (this.SHARDED) {
             try {
                 this.HUB.respondAction(event, data);
@@ -444,6 +394,5 @@ class Shard extends EventEmitter {
             }
         }
     }
-
 }
 module.exports = Shard;
