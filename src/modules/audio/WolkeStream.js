@@ -5,9 +5,8 @@ const Stream = require('stream');
 const https = require('https');
 const http = require('http');
 const URL = require('url');
-class WolkeStream extends Stream.Readable {
+class WolkeStream {
     constructor(url, options) {
-        super();
         this.output = new Stream.PassThrough({highWaterMark: 32768});
         this.total = 0;
         this.done = 0;
@@ -52,10 +51,16 @@ class WolkeStream extends Stream.Readable {
             }
         });
         res.on('data', (chunk) => {
+            // if (!chunk) {
+            //     if (this.done === this.total) {
+            //         return this.output.write(null);
+            //     }
+            // }
             this.done += Buffer.byteLength(chunk);
-            // console.log(Buffer.byteLength(chunk));
+            // this.output.write(chunk);
         });
         res.on('aborted', (err) => {
+            if (!err) return;
             console.error(err);
             this.output.pause();
             res.unpipe();
@@ -75,12 +80,14 @@ class WolkeStream extends Stream.Readable {
             }
         });
         res.on('end', () => {
+            // console.log('res end');
             if (this.done < this.total) {
                 res.unpipe();
                 res.removeAllListeners();
                 req.removeAllListeners();
                 return this.request(this.url, this.done);
             } else {
+
                 this.output.end();
             }
         });
