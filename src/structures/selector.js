@@ -26,7 +26,6 @@ class Selector {
             } else if (typeof (c.snippet) !== 'undefined') {
                 table.addRow(i, c.snippet.title);
             }
-
             i += 1;
         });
         table.addRow('c', this.t('generic.cancel', {lngs: this.msg.lang}));

@@ -18,7 +18,7 @@
   "license": "ISC",
   "dependencies": {
     "ascii-table": "0.0.9",
-    "async": "^2.3.0",
+    "async": "^2.4.0",
     "axios": "^0.16.1",
     "babel-cli": "^6.24.1",
     "babel-plugin-transform-async-to-generator": "^6.24.1",
@@ -41,7 +41,7 @@
     "minami": "^1.2.3",
     "minimist": "^1.2.0",
     "moment": "^2.18.1",
-    "mongoose": "^4.9.6",
+    "mongoose": "^4.9.7",
     "node-opus": "^0.2.6",
     "node-osu": "^1.2.0",
     "raven": "^1.2.1",

@@ -21,19 +21,14 @@ class WolkeStream {
         if (length > 0) {
             options.headers.Range = `bytes=${length}-`;
         }
-        try {
-            if (options.protocol === 'https:') {
-                let req = https.get(options, (res) => {
-                    this.processRes(req, res);
-                });
-            } else {
-                let req = http.get(options, (res) => {
-                    this.processRes(req, res);
-                });
-            }
-        } catch (e) {
-            console.error(e);
-            return this.request(url, length);
+        if (options.protocol === 'https:') {
+            let req = https.get(options, (res) => {
+                this.processRes(req, res);
+            });
+        } else {
+            let req = http.get(options, (res) => {
+                this.processRes(req, res);
+            });
         }
     }
 

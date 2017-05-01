@@ -4,7 +4,7 @@
 let Command = require('../../structures/command');
 let winston = require('winston');
 class Help extends Command {
-    constructor ({t, mod}) {
+    constructor({t, mod}) {
         super();
         this.cmd = 'help';
         this.cat = 'generic';
@@ -16,7 +16,7 @@ class Help extends Command {
         this.r = mod.getMod('raven');
     }
 
-    run (msg) {
+    run(msg) {
         let msgSplit = msg.content.split(' ').splice(1);
         let categoriesData = this.buildHelp(msg);
         this.msg = msg;
@@ -29,12 +29,13 @@ class Help extends Command {
         if (msgSplit.length > 0) {
             return this.exactHelp(msg, msgSplit, categoriesData);
         }
-        categoriesData.categories_name.push({name: 'Support', value: 'https://discord.gg/rem'});
-        categoriesData.categories_name.push({name: 'Donate', value: 'https://www.patreon.com/rem_bot'});
         categoriesData.categories_name.push({
             name: 'How to',
             value: '"Type !w.help name to get the commands of a category. Example: `!w.help music` gives you the help for the music commands.'
         });
+        categoriesData.categories_name.push({name: 'Support', value: 'https://discord.gg/rem'});
+        categoriesData.categories_name.push({name: 'Donate', value: 'https://www.patreon.com/rem_bot'});
+        categoriesData.categories_name.push({name: 'Social', value: 'https://twitter.com/Rem_Bot__'});
         let reply = {
             embed: {
                 author: {name: 'Command categories'},
@@ -55,7 +56,7 @@ class Help extends Command {
         }
     }
 
-    catReply (channel, reply) {
+    catReply(channel, reply) {
         channel.createMessage(reply).then(msg => {
 
         }).catch(err => {
@@ -64,7 +65,7 @@ class Help extends Command {
         });
     }
 
-    buildHelp (msg) {
+    buildHelp(msg) {
         let commands = msg.cmds;
         let categories = [];
         let categories_name = [];
@@ -78,7 +79,7 @@ class Help extends Command {
                     categories = this.pushCat(cmd, categories);
                 } else {
                     categories.push({name: cmd.cat, commands: [cmd]});
-                    categories_name.push({name: i, value: cmd.cat});
+                    categories_name.push({name: i, value: cmd.cat, inline: true});
                     i += 1;
                 }
             }
@@ -86,7 +87,7 @@ class Help extends Command {
         return {categories, categories_name};
     }
 
-    exactHelp (msg, msgSplit, {categories}) {
+    exactHelp(msg, msgSplit, {categories}) {
         let number = 0;
         try {
             number = parseInt(msgSplit[0]);
@@ -115,7 +116,7 @@ class Help extends Command {
         }
     }
 
-    sendReply (msg, data) {
+    sendReply(msg, data) {
         let fields = [];
         for (let i = 0; i < data.commands.length; ++i) {
             fields.push({
@@ -127,7 +128,7 @@ class Help extends Command {
         }
         fields.push({
             name: 'Support',
-            value: 'https://discord.gg/vX96Zz8'
+            value: 'https://discord.gg/rem'
         });
         fields.push({
             name: 'Donate',
@@ -150,7 +151,7 @@ class Help extends Command {
 
     }
 
-    buildLang (list) {
+    buildLang(list) {
         let i = list.length;
         let answer = '';
         while (i--) {
@@ -161,7 +162,7 @@ class Help extends Command {
         return answer;
     }
 
-    checkCat (cat, list) {
+    checkCat(cat, list) {
         let i = list.length;
         while (i--) {
             if (cat === list[i].name) {
@@ -171,7 +172,7 @@ class Help extends Command {
         return false;
     }
 
-    pushCat (cmd, list) {
+    pushCat(cmd, list) {
         let i = list.length;
         while (i--) {
             if (cmd.cat === list[i].name) {

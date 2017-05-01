@@ -89,7 +89,7 @@ class BotInfo extends Command {
             inline: true
         });
         fields.push({name: this.t('generic.version', {lngs: msg.lang}), value: version, inline: true});
-        fields.push({name: this.t('bot-info.made', {lngs: msg.lang}), value: 'Wolke#6746', inline: true});
+        fields.push({name: this.t('bot-info.made', {lngs: msg.lang}), value: 'Wolke#6746 & Dean#9114', inline: true});
         fields.push({name: this.t('bot-info.lib', {lngs: msg.lang}), value: `Eris ${erisVersion}`, inline: true});
         fields.push({name: this.t('bot-info.guilds', {lngs: msg.lang}), value: guilds, inline: true});
         fields.push({name: this.t('bot-info.users', {lngs: msg.lang}), value: users, inline: true});
