@@ -141,7 +141,7 @@ class Worker extends EventEmitter {
                 if (!msg.d.actionId) {
                     this.emit(msg.d.action, msg.d.data);
                 } else {
-                    console.log(`${msg.d.action}_${msg.d.actionId}`);
+                    // console.log(`${msg.d.action}_${msg.d.actionId}`);
                     this.emit(`action_resolved_${msg.d.actionId}`, msg.d);
                 }
                 return;
@@ -150,6 +150,15 @@ class Worker extends EventEmitter {
     }
 
     setupHeartbeat(beat) {
+        try {
+            this.ws.send(JSON.stringify({
+                op: OPCODE.HEARTBEAT,
+                shardID: this.shardId,
+                shardToken: remConfig.shard_token
+            }));
+        } catch (e) {
+
+        }
         this.hearbeatInterval = setInterval(() => {
             try {
                 this.ws.send(JSON.stringify({
@@ -165,7 +174,7 @@ class Worker extends EventEmitter {
                 console.error(e);
                 this.reconnect();
             }
-        }, beat - 3000);
+        }, beat);
     }
 
     send(event, msg) {

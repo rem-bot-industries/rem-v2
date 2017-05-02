@@ -50,7 +50,7 @@ class RemoveMessages extends Command {
                             });
                         });
                     } else {
-                        msg.channel.createMessage(this.t('rm.nothing-found', {lngs: msgs.length}));
+                        msg.channel.createMessage(this.t('rm.nothing-found', {lngs: msg.lang}));
                     }
                 });
             });
