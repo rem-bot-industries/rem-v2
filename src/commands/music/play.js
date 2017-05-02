@@ -51,7 +51,6 @@ class Play extends Command {
         } catch (err) {
             console.error(err);
             if (err instanceof TranslatableError) {
-
                 msg.channel.createMessage(this.t(err instanceof TranslatableError ? err.t : 'generic.error', {lngs: msg.lang}));
             } else {
                 if (track_error) {

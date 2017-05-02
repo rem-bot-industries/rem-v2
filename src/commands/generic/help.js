@@ -60,7 +60,9 @@ class Help extends Command {
         channel.createMessage(reply).then(msg => {
 
         }).catch(err => {
-            this.r.captureException(err, {extra: {channel: channel.id, reply}});
+            if (!remConfig.no_error_tracking) {
+                this.r.captureException(err, {extra: {channel: channel.id, reply}});
+            }
             winston.error(err);
         });
     }

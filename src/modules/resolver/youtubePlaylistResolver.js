@@ -1,7 +1,7 @@
 /**
  * Created by Julian on 22.03.2017.
  */
-let regex = /(?:http(?:s|):\/\/)?(?:www\.|m\.|)?(?:youtube\.com|youtu\.be)\/(?:playlist|watch\?v=[a-zA-Z\-_0-9]+)?(?:&.+|)(?:(?:[&?])list=([a-zA-Z\-_0-9]+)?)/;
+let regex = /(?:http(?:s|):\/\/)?(?:www\.|m\.|)?(?:youtube\.com|youtu\.be)\/(?:playlist|watch\?v=[a-zA-Z\-_0-9]+)?(?:&.+|)(?:(?:[&?])list=([a-zA-Z\-_0-9]+)?)(?:&.+|)/;
 let axios = require('axios');
 let Song = require('../../structures/song');
 let SongTypes = require('../../structures/constants').SONG_TYPES;

@@ -71,6 +71,7 @@ class MangaSearch extends Command {
     buildResponse(msg, data, characters) {
         let description = data.description.replace(/<br>/g, '');
         description = description.replace(/\n|\\n/g, '');
+        description = description.replace(/&mdash;/g, '');
         description = description.split('.').join('.\n\n');
         let mainCharacters = characters.filter((c) => {
             return c.role === 'Main';
