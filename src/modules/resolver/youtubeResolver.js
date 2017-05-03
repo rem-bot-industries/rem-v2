@@ -90,9 +90,6 @@ class YoutubeImporter extends BasicImporter {
             if (formats[i].itag === '250') {
                 return formats[i].url;
             }
-            if (formats[i].itag === '249') {
-                return formats[i].url;
-            }
             if (formats[i].itag === '251') {
                 return formats[i].url;
             }
@@ -103,7 +100,7 @@ class YoutubeImporter extends BasicImporter {
     filterStreams(formats) {
         for (let i = 0; i < formats.length; i++) {
             // console.log(formats[i]);
-            if (formats[i].itag === '250' || formats[i].itag === '251' || formats[i].itag === '249') {
+            if (formats[i].itag === '250' || formats[i].itag === '251') {
                 // console.log(formats[i]);
                 return formats[i].url;
             }
