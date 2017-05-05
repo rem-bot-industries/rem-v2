@@ -118,15 +118,14 @@ class Player extends EventEmitter {
             this.announce(Song);
             this.connection.once('end', () => {
                 winston.info("File ended!");
+                this.connection.removeAllListeners();
                 setTimeout(() => {
                     this.nextSong(Song);
                 }, 100);
             });
-            // this.dispatcher.on("debug", information => {
-            //     winston.info(`Debug: ${information}`);
-            // });
             this.connection.on('error', (err) => {
                 winston.error(`Connection error: ${err}`);
+                this.connection.removeEventListener('error');
                 this.toggleRepeat('off');
                 this.nextSong(Song);
             });

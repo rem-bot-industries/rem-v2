@@ -82,7 +82,6 @@ class WolkeStream {
                 req.removeAllListeners();
                 return this.request(this.url, this.done);
             } else {
-
                 this.output.end();
             }
         });
