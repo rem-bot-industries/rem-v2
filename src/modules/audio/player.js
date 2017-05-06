@@ -123,9 +123,8 @@ class Player extends EventEmitter {
                     this.nextSong(Song);
                 }, 100);
             });
-            this.connection.on('error', (err) => {
+            this.connection.once('error', (err) => {
                 winston.error(`Connection error: ${err}`);
-                this.connection.removeEventListener('error');
                 this.toggleRepeat('off');
                 this.nextSong(Song);
             });
