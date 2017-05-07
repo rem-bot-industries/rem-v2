@@ -29,52 +29,88 @@ class GuildFinder extends Command {
     }
 
     fetchData(msg) {
-        let that = this;
-        return new Promise(function (resolve, reject) {
-            that.hub.emitRemote('request_data', {
-                sid: rem.options.firstShardID,
-                id: msg.id,
-                action: 'shard_info'
-            });
-            that.hub.on(`resolved_data_${msg.id}`, (data) => {
-                if (data.err) reject(data.err);
-                resolve(data);
-            });
-        });
+        return new Promise((resolve, reject) => {
+                this.hub.on(`action_resolved_${msg.id}`, (data) => {
+                    if (data.err) reject(data.err);
+                    resolve(data);
+                });
+                this.hub.executeAction('shard_info', msg.id);
+            }
+        )
+            ;
 
     }
 
     buildReply(msg, data, time) {
+        let endTime = Date.now();
+        let total = endTime - time;
         let reply = {
             embed: {
                 author: {
                     name: 'Shardstatus'
                 },
-                fields: this.buildShardData(msg, data, time),
+                footer: {
+                    text: `Total Latency: ${total}ms`
+                },
+                fields: this.buildShardData(data),
                 color: 0x00ADFF
             }
         };
-        if (data.found) {
-            reply.embed.image = {url: data.iconURL};
-        }
         msg.channel.createMessage(reply).then().catch(err => {
             // console.error(err);
         });
     }
 
-    buildShardData(msg, data, startTime) {
+    buildShardData(data) {
         let fields = [];
-        let endTime = Date.now();
-        let total = endTime - startTime;
-        _.forIn(data, (value, key) => {
-            let shard = endTime - value.responseDate;
+        let shardArray = this.splitShardsToPairs(data.shards);
+        console.log(shardArray);
+        console.log('DATA');
+        for (let i = 0; i < shardArray.length; i++) {
+            let name = ``;
+            let content = ``;
+            for (let x = 0; x < shardArray[i].length; x++) {
+                let shard = shardArray[i][x];
+                if (x === 0) {
+                    name = `Shards ${shard.shardID}-${shard.shardID + shardArray[i].length - 1}`;
+                }
+                content += `\`\`\`
+S: ${shard.shardID}
+G: ${shard.guilds}
+U: ${shard.users}
+C: ${shard.channels}
+V: ${shard.voice}
+VA: ${shard.voice_active}
+R: ${(shard.ram_usage / 1024 / 1024).toFixed(2)} MIB        
+ID: ${shard.host}
+\n\`\`\`
+\n`;
+            }
             fields.push({
-                name: `Shard: ${value.sid}`,
-                value: `Total Diff: ${total}ms\nShard Diff: ${shard}ms`,
+                name,
+                value: content,
                 inline: false
             });
-        });
+        }
         return fields;
+    }
+
+    splitShardsToPairs(shards) {
+        let pairArray = [];
+        let tempPairArray = [];
+        let i = 0;
+        for (let key in shards) {
+            if (shards.hasOwnProperty(key)) {
+                let shard = shards[key];
+                tempPairArray.push(shard);
+                i++;
+                if (i % 2 === 0 || Object.keys(shards).length === 1) {
+                    pairArray.push(tempPairArray);
+                    tempPairArray = [];
+                }
+            }
+        }
+        return pairArray;
     }
 }
 module.exports = GuildFinder;

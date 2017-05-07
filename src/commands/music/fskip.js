@@ -21,6 +21,7 @@ class ForceSkip extends Command {
         this.t = t;
         this.v = v;
         this.accessLevel = 0;
+        this.aliases = ['forceSkip'];
     }
 
     async run(msg) {

@@ -29,12 +29,13 @@ class Help extends Command {
         if (msgSplit.length > 0) {
             return this.exactHelp(msg, msgSplit, categoriesData);
         }
-        categoriesData.categories_name.push({name: 'Support', value: 'https://discord.gg/vX96Zz8'});
-        categoriesData.categories_name.push({name: 'Donate', value: 'https://www.patreon.com/rem_bot'});
         categoriesData.categories_name.push({
             name: 'How to',
             value: '"Type !w.help name to get the commands of a category. Example: `!w.help music` gives you the help for the music commands.'
         });
+        categoriesData.categories_name.push({name: 'Support', value: 'https://discord.gg/rem'});
+        categoriesData.categories_name.push({name: 'Donate', value: 'https://www.patreon.com/rem_bot'});
+        categoriesData.categories_name.push({name: 'Social', value: 'https://twitter.com/Rem_Bot__'});
         let reply = {
             embed: {
                 author: {name: 'Command categories'},
@@ -59,7 +60,9 @@ class Help extends Command {
         channel.createMessage(reply).then(msg => {
 
         }).catch(err => {
-            this.r.captureException(err, {extra: {channel: channel.id, reply}});
+            if (!remConfig.no_error_tracking) {
+                this.r.captureException(err, {extra: {channel: channel.id, reply}});
+            }
             winston.error(err);
         });
     }
@@ -78,7 +81,7 @@ class Help extends Command {
                     categories = this.pushCat(cmd, categories);
                 } else {
                     categories.push({name: cmd.cat, commands: [cmd]});
-                    categories_name.push({name: i, value: cmd.cat});
+                    categories_name.push({name: i, value: cmd.cat, inline: true});
                     i += 1;
                 }
             }
@@ -98,13 +101,7 @@ class Help extends Command {
             if (cat) {
                 this.sendReply(msg, cat);
             } else {
-                if (msg.channel.type !== 1) {
-                    msg.author.getDMChannel().then(channel => {
-                        this.catReply(channel, this.t('generic.cat-nope', {lngs: msg.lang}));
-                    }).catch(e => winston.error);
-                } else {
-                    this.catReply(msg.channel, this.t('generic.cat-nope', {lngs: msg.lang}));
-                }
+                return this.catReply(msg.channel, this.t('generic.cat-nope', {lngs: msg.lang}));
             }
         }
         if (number < 1) {
@@ -133,7 +130,7 @@ class Help extends Command {
         }
         fields.push({
             name: 'Support',
-            value: 'https://discord.gg/vX96Zz8'
+            value: 'https://discord.gg/rem'
         });
         fields.push({
             name: 'Donate',

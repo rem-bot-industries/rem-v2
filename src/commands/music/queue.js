@@ -23,6 +23,7 @@ class Queue extends Command {
         this.t = t;
         this.v = v;
         this.accessLevel = 0;
+        this.aliases = ['q']
     }
 
     /**

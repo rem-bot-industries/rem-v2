@@ -4,7 +4,6 @@
 let Command = require('../../structures/command');
 let minimist = require('minimist');
 let AsciiTable = require('ascii-table');
-let async = require('async');
 class GetPermission extends Command {
     constructor ({t, mod}) {
         super();

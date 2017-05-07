@@ -8,12 +8,12 @@
 * Node and NPM
 * Git
 * MongoDB (follow instructions on how to configure the server at [https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows/](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows/))
+* Redis, which can be found here: https://redis.io/download
 * ffmpeg and youtube-dl
 * Buildtools and Python 2.7
 * Basic understanding of node js
 
 ## Installation instructions
-**Optional** Rem uses Redis for Caching, which can be found here: https://redis.io/download, you dont need it though, as you can disable redis via config.
 
 1. Install MongoDB with the [guide](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows/).
 2. Install git, Here is the [link](https://git-scm.com/downloads) to get it.
@@ -58,7 +58,7 @@ If the installation fails, due to not being able to clone the git repo of it, re
   "master_hostname": "not needed.",
   "mongo_hostname": "The full database adress: e.g. mongodb://host:port/dbname",
   "redis_hostname": "the redis ip, port is automatically set to 6379",
-  "redis_enabled": false,
+  "redis_enabled": true,
   "redis_database": 2,
   "shard_token": "not needed."
 }

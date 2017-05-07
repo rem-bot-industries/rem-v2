@@ -5,10 +5,10 @@ let Command = require('../../structures/command');
 let axios = require('axios');
 let winston = require('winston');
 const Selector = require('../../structures/selector');
-class AnimeSearch extends Command {
+class MangaSearch extends Command {
     constructor({t}) {
         super();
-        this.cmd = 'anime';
+        this.cmd = 'manga';
         this.cat = 'misc';
         this.needGuild = false;
         this.t = t;
@@ -25,30 +25,30 @@ class AnimeSearch extends Command {
                 client_secret: remConfig.anilist_secret
             });
             let accessToken = authRequest.data.access_token;
-            let animeRequest = await axios({
-                url: `https://anilist.co/api/anime/search/${encodeURI(searchQuery)}`,
+            let mangaRequest = await axios({
+                url: `https://anilist.co/api/manga/search/${encodeURI(searchQuery)}`,
                 params: {access_token: accessToken}
             });
-            if (animeRequest.data.error) {
-                if (animeRequest.data.error.messages[0] === 'No Results.') {
+            if (mangaRequest.data.error) {
+                if (mangaRequest.data.error.messages[0] === 'No Results.') {
                     return msg.channel.createMessage(this.t('define.no-result', {lngs: msg.lang, term: searchQuery}));
                 }
             }
-            if (animeRequest.data.length === 1) {
-                let characters = await this.loadCharacters(animeRequest.data[0].id, accessToken);
-                let embed = this.buildResponse(msg, animeRequest.data[0], characters);
+            if (mangaRequest.data.length === 1) {
+                let characters = await this.loadCharacters(mangaRequest.data[0].id, accessToken);
+                let embed = this.buildResponse(msg, mangaRequest.data[0], characters);
                 return msg.channel.createMessage(embed);
-            } else if (animeRequest.data.length > 1) {
-                let selector = new Selector(msg, animeRequest.data.map(a => {
+            } else if (mangaRequest.data.length > 1) {
+                let selector = new Selector(msg, mangaRequest.data.map(a => {
                     return {title: a.title_english !== a.title_romaji ? `${a.title_romaji} | ${a.title_english}` : a.title_romaji}
                 }).slice(0, 8), this.t, (async (err, number) => {
                     if (err) {
                         console.error(err);
                         return msg.channel.createMessage(this.t(err, {lngs: msg.lang}));
                     }
-                    let anime = animeRequest.data[number - 1];
-                    let characters = await this.loadCharacters(anime.id, accessToken);
-                    let embed = this.buildResponse(msg, anime, characters);
+                    let manga = mangaRequest.data[number - 1];
+                    let characters = await this.loadCharacters(manga.id, accessToken);
+                    let embed = this.buildResponse(msg, manga, characters);
                     return msg.channel.createMessage(embed);
                 }));
             } else {
@@ -62,7 +62,7 @@ class AnimeSearch extends Command {
 
     async loadCharacters(id, token) {
         let characterRequest = await axios({
-            url: `https://anilist.co/api/anime/${id}/characters`,
+            url: `https://anilist.co/api/manga/${id}/characters`,
             params: {access_token: token}
         });
         return characterRequest.data.characters;
@@ -85,7 +85,7 @@ class AnimeSearch extends Command {
             embed: {
                 "title": titleString,
                 "description": description,
-                "url": `https://anilist.co/anime/${data.id}/`,
+                "url": `https://anilist.co/manga/${data.id}/`,
                 "color": 0x00ADFF,
                 "footer": {
                     "text": `⭐${this.t('anime.score', {lngs: msg.lang})}: ${data.average_score}/100`
@@ -99,8 +99,8 @@ class AnimeSearch extends Command {
                         "value": `**${data.genres.join(', ')}**`
                     },
                     {
-                        "name": `:1234: ${this.t('anime.episodes', {lngs: msg.lang})}`,
-                        "value": `**${data.total_episodes > 0 ? data.total_episodes : `${this.t('generic.unknown', {lngs: msg.lang})}` }**`
+                        "name": `:1234: ${this.t('manga.chapters', {lngs: msg.lang})}`,
+                        "value": `**${data.total_chapters > 0 ? data.total_chapters : `${this.t('generic.unknown', {lngs: msg.lang})}` }**`
                     },
                     {
                         "name": `:man_dancing: ${this.t('anime.characters', {lngs: msg.lang})}`,
@@ -111,4 +111,4 @@ class AnimeSearch extends Command {
         };
     }
 }
-module.exports = AnimeSearch;
+module.exports = MangaSearch;

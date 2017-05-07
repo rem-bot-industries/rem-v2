@@ -15,15 +15,15 @@ let youtube_dl = require('youtube-dl');
 Promise.promisifyAll(youtube_dl);
 Promise.promisifyAll(ytdl);
 class YoutubeImporter extends BasicImporter {
-    constructor () {
+    constructor() {
         super();
     }
 
-    canResolve (url) {
+    canResolve(url) {
         return regex.test(url);
     }
 
-    async resolve (url) {
+    async resolve(url) {
         // console.log(url);
         let info = await ytdl.getInfoAsync(url);
         if (info.live_playback === '1') {
@@ -76,20 +76,18 @@ class YoutubeImporter extends BasicImporter {
         }
     }
 
-    async resolveLiveStream (url) {
+    async resolveLiveStream(url) {
         return youtube_dl.getInfoAsync(url);
     }
 
-    filterOpus (formats) {
+    filterOpus(formats) {
         formats.sort((a, b) => {
             return parseInt(a.itag) - parseInt(b.itag)
         });
         for (let i = 0; i < formats.length; i++) {
+            // console.log(formats[i]);
             // console.log(formats[i].itag);
             if (formats[i].itag === '250') {
-                return formats[i].url;
-            }
-            if (formats[i].itag === '249') {
                 return formats[i].url;
             }
             if (formats[i].itag === '251') {
@@ -99,24 +97,24 @@ class YoutubeImporter extends BasicImporter {
         return null;
     }
 
-    filterStreams (formats) {
+    filterStreams(formats) {
         for (let i = 0; i < formats.length; i++) {
-            // console.log(formats[i].itag);
-            if (formats[i].itag === '250' || formats[i].itag === '251' || formats[i].itag === '249') {
+            // console.log(formats[i]);
+            if (formats[i].itag === '250' || formats[i].itag === '251') {
                 // console.log(formats[i]);
                 return formats[i].url;
             }
             if (formats[i].itag === '141' || formats[i].itag === '140') {
                 return formats[i].url;
             }
-            if (formats[i].container === 'mp4' && formats[i].audioEncoding || formats[i].container === 'webm' && formats[i].audioEncoding) {
+            if (formats[i].container === 'mp4' && formats[i].audioEncoding || formats[i].container === 'webm' && formats[i].audioEncoding && formats[i].audioBitrate >= 128) {
                 return formats[i].url;
             }
         }
         return null;
     }
 
-    filterLiveStreams (formats) {
+    filterLiveStreams(formats) {
         for (let i = 0; i < formats.length; i++) {
             if (formats[i].format_id === '94') {
                 return formats[i].url;

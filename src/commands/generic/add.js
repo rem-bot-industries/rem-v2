@@ -11,6 +11,7 @@ class Add extends Command {
         this.needGuild = false;
         this.t = t;
         this.accessLevel = 0;
+        this.aliases = ['invite'];
     }
 
     run(msg) {

@@ -11,12 +11,12 @@ module.exports = {
         youtube_live: 6
     },
     MESSAGE_TYPES: {
-        identify: 1,
-        ready: 2,
-        message: 3,
-        hearbeat: 4,
-        cache_update: 5,
-        stat_update: 6,
-        unauthorized: 7
+        "IDENTIFY": 1,
+        "READY": 2,
+        "RESUME": 3,
+        "HEARTBEAT": 4,
+        "MESSAGE": 5,
+        "STATE_UPDATE": 6,
+        "STATS_UPDATE": 7
     }
 };

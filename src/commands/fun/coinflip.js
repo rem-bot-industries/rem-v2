@@ -10,6 +10,7 @@ class FlipCoin extends Command {
         this.needGuild = false;
         this.t = t;
         this.accessLevel = 0;
+        this.aliases = ['coinflip'];
     }
 
     run(msg) {

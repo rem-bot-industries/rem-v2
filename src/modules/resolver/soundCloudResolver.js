@@ -26,7 +26,7 @@ class SoundcloudImporter extends BasicImporter {
         for (let format in req2.data) {
             if (req2.data.hasOwnProperty(format)) {
                 if (format.indexOf('http') > -1) {
-                    console.log(req.data);
+                    // console.log(req.data);
                     return new Song({
                         id: req.data.id,
                         type: types.soundcloud,

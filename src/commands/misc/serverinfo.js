@@ -13,6 +13,7 @@ class ServerInfo extends Command {
         this.t = t;
         this.accessLevel = 0;
         this.g = mod.getMod('gm');
+        this.aliases = ['serverinfo'];
     }
 
     run(msg) {

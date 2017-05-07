@@ -10,6 +10,7 @@ class TableFlip extends Command {
         this.needGuild = false;
         this.t = t;
         this.accessLevel = 0;
+        this.aliases = ['tableflip'];
     }
 
     run(msg) {

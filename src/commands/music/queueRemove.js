@@ -21,6 +21,7 @@ class QueueRemove extends Command {
         this.t = t;
         this.v = v;
         this.accessLevel = 0;
+        this.aliases = ['queueRemove']
     }
 
     run(msg) {
