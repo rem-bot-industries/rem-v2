@@ -24,7 +24,7 @@ class Command extends EventEmitter {
         try {
             let res = await axios.get('https://rra.ram.moe/i/r', {params: {"type": this.cmd}});
             let path = res.data.path.replace('/i/', '');
-            msg.channel.createMessage(`https://wia.ram.moe/${path}`);
+            msg.channel.createMessage(`https://cdn.ram.moe/${path}`);
         } catch (e) {
             return winston.error(e);
         }

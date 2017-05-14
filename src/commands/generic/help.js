@@ -1,5 +1,5 @@
 /**
- * Created by Julian/Wolke on 07.11.2016.
+ * Created by Julian on 10.05.2017.
  */
 let Command = require('../../structures/command');
 let winston = require('winston');
@@ -7,181 +7,194 @@ class Help extends Command {
     constructor({t, mod}) {
         super();
         this.cmd = 'help';
+        this.aliases = ['commands', 'h'];
         this.cat = 'generic';
         this.needGuild = false;
         this.t = t;
         this.accessLevel = 0;
         this.msg = null;
-        this.p = mod.getMod('pm');
         this.r = mod.getMod('raven');
+        this.help = {
+            short: 'help.help.short',
+            usage: 'help.help.usage',
+            example: 'help.help.example'
+        }
     }
 
     run(msg) {
-        let msgSplit = msg.content.split(' ').splice(1);
-        let categoriesData = this.buildHelp(msg);
-        this.msg = msg;
-        if (msg.channel.guild) {
-            msg.channel.createMessage(`${msg.author.mention}, ${this.t('help.helpReply', {
-                lngs: msg.lang,
-                pre: msg.prefix
-            })}`);
-        }
-        if (msgSplit.length > 0) {
-            return this.exactHelp(msg, msgSplit, categoriesData);
-        }
-        categoriesData.categories_name.push({
-            name: 'How to',
-            value: '"Type !w.help name to get the commands of a category. Example: `!w.help music` gives you the help for the music commands.'
-        });
-        categoriesData.categories_name.push({name: 'Support', value: 'https://discord.gg/rem'});
-        categoriesData.categories_name.push({name: 'Donate', value: 'https://www.patreon.com/rem_bot'});
-        categoriesData.categories_name.push({name: 'Social', value: 'https://twitter.com/Rem_Bot__'});
-        let reply = {
-            embed: {
-                author: {name: 'Command categories'},
-                footer: {text: 'Type !w.help name to get the commands of a category.'},
-                fields: categoriesData.categories_name,
-                color: 0x00ADFF
+        let args = msg.content.split(' ').splice(1);
+        if (args.length > 0) {
+            let cmd = args[0].trim();
+            if (cmd.startsWith(msg.prefix)) {
+                cmd = cmd.substring(msg.prefix.length);
             }
-        };
-        if (msg.channel.type !== 1) {
-            msg.author.getDMChannel().then(channel => {
-                this.catReply(channel, reply);
-            }).catch(e => {
-                this.r.captureException(e, {extra: {userid: msg.author.id, reply}});
-                winston.error(e);
-            });
-        } else {
-            this.catReply(msg.channel, reply);
-        }
-    }
-
-    catReply(channel, reply) {
-        channel.createMessage(reply).then(msg => {
-
-        }).catch(err => {
-            if (!remConfig.no_error_tracking) {
-                this.r.captureException(err, {extra: {channel: channel.id, reply}});
-            }
-            winston.error(err);
-        });
-    }
-
-    buildHelp(msg) {
-        let commands = msg.cmds;
-        let categories = [];
-        let categories_name = [];
-        let i = 1;
-        for (let command in commands) {
-            if (commands.hasOwnProperty(command)) {
-                let cmd = commands[command];
-                if (typeof (cmd.hidden) !== 'undefined') {
-
-                } else if (this.checkCat(cmd.cat, categories)) {
-                    categories = this.pushCat(cmd, categories);
+            let command = msg.cmds[cmd];
+            if (command && !command.hidden) {
+                if (command.help) {
+                    return msg.channel.createMessage(this.buildCommandHelp(msg, command));
                 } else {
-                    categories.push({name: cmd.cat, commands: [cmd]});
-                    categories_name.push({name: i, value: cmd.cat, inline: true});
-                    i += 1;
+                    return msg.channel.createMessage(this.t('help.command-no-detail', {
+                        lngs: msg.lang,
+                        legacy_help: this.t(`help.${cmd}`, {lngs: msg.lang})
+                    }));
+                }
+            } else {
+                return msg.channel.createMessage(this.t('help.command-not-exists', {
+                    lngs: msg.lang,
+                    prefix: msg.prefix,
+                    cmd
+                }));
+            }
+        } else {
+            return msg.channel.createMessage(this.buildCategoryHelp(msg, msg.cmds));
+        }
+    }
+
+    /**
+     * Function that builds a help message for the specific command
+     * @param {Object} msg The message that triggered the help
+     * @param {Object} command Command to build the help for
+     * @return {String}
+     */
+    buildCommandHelp(msg, command) {
+        let helpMessage = "";
+        helpMessage += this.t('help.command-help-title', {
+                lngs: msg.lang,
+                command: command.cmd,
+                prefix: msg.prefix
+            }) + '\n';
+        if (command.aliases.length > 0) {
+            command.aliases = command.aliases.map(a => `\`${a}\``);
+            helpMessage += this.t('help.command-aliases', {lngs: msg.lang, aliases: command.aliases.join(', ')}) + '\n';
+        }
+        if (command.help.short) {
+            helpMessage += this.t('help.command-shorthelp', {lngs: msg.lang}) + ' ' + `\`${this.t(command.help.short, {lngs: msg.lang})}\`` + '\n';
+        }
+        if (command.help.long) {
+            helpMessage += this.t('help.command-longhelp', {lngs: msg.lang}) + '\n' + `\`\`\`${this.t(command.help.long, {lngs: msg.lang})}\`\`\`` + '\n';
+        }
+        if (command.help.usage) {
+            helpMessage += this.t('help.command-usage', {lngs: msg.lang}) + ' ' + `\`${this.t(command.help.usage, {
+                    lngs: msg.lang,
+                    prefix: msg.prefix
+                })}\`` + '\n';
+        }
+        if (command.help.example) {
+            helpMessage += this.t('help.command-example', {lngs: msg.lang}) + '\n' + `${this.t(command.help.example, {
+                    lngs: msg.lang,
+                    prefix: msg.prefix
+                })}` + '\n';
+        }
+        return helpMessage;
+    }
+
+    /**
+     * Function that builds a for a list of commands with their categories
+     * @param {Object} msg The message that triggered the help
+     * @param {Object} commands Map of commands with data like category, trigger and so on
+     */
+    buildCategoryHelp(msg, commands) {
+        let categories = {};
+        let helpMessage = "";
+        helpMessage += this.t('help.introduction', {
+                lngs: msg.lang,
+                name: rem.user.username,
+                prefix: msg.prefix
+            }) + '\n';
+        helpMessage += this.t('help.categories.list', {lngs: msg.lang}) + '\n';
+        for (let key in commands) {
+            if (commands.hasOwnProperty(key)) {
+                let command = commands[key];
+                if (!command.hidden) {
+                    if (!categories[command.cat]) {
+                        categories[command.cat] = [command];
+                    } else {
+                        categories[command.cat].push(command);
+                    }
                 }
             }
         }
-        return {categories, categories_name};
-    }
-
-    exactHelp(msg, msgSplit, {categories}) {
-        let number = 0;
-        try {
-            number = parseInt(msgSplit[0]);
-        } catch (e) {
-
-        }
-        if (isNaN(number) || number < 1) {
-            let cat = this.checkCat(msgSplit[0], categories);
-            if (cat) {
-                this.sendReply(msg, cat);
-            } else {
-                return this.catReply(msg.channel, this.t('generic.cat-nope', {lngs: msg.lang}));
+        let sortedCategories = [];
+        for (let key in categories) {
+            if (categories.hasOwnProperty(key)) {
+                let category = categories[key];
+                sortedCategories.push(key);
+                categories[key].sort((a, b) => {
+                    if (a.cmd > b.cmd) {
+                        return 1;
+                    }
+                    if (a.cmd < b.cmd) {
+                        return -1;
+                    }
+                    return 0;
+                })
             }
         }
-        if (number < 1) {
-            if (msg.channel.type !== 1) {
-                msg.author.getDMChannel().then(channel => {
-                    this.catReply(channel, this.t('generic.negative', {number: number}));
-                }).catch(e => winston.error);
-            } else {
-                this.catReply(msg.channel, this.t('generic.negative', {number: number}));
+        sortedCategories.sort((a, b) => {
+            let aCatValue = this.getCategoryRanking(a);
+            let bCatValue = this.getCategoryRanking(b);
+            if (aCatValue > bCatValue) {
+                return 1;
             }
-        }
-        if (!isNaN(number) && number <= categories.length) {
-            this.sendReply(msg, categories[number - 1]);
-        }
-    }
-
-    sendReply(msg, data) {
-        let fields = [];
-        for (let i = 0; i < data.commands.length; ++i) {
-            fields.push({
-                name: `${this.msg.prefix}${data.commands[i].cmd}`,
-                value: `${this.t(`help.${data.commands[i].cmd}`, {
-                    lngs: this.msg.lang
-                })}`
-            });
-        }
-        fields.push({
-            name: 'Support',
-            value: 'https://discord.gg/rem'
+            if (aCatValue < bCatValue) {
+                return -1;
+            }
+            return 0;
         });
-        fields.push({
-            name: 'Donate',
-            value: 'https://www.patreon.com/rem_bot'
-        });
-        let reply = {
-            embed: {
-                author: {name: `${this.t(`help.${data.name}`, {lngs: this.msg.lang})}`},
-                fields: fields,
-                color: 0x00ADFF
+        for (let i = 0; i < sortedCategories.length; i++) {
+            let category = categories[sortedCategories[i]];
+            helpMessage += '**' + this.t(`help.categories.${sortedCategories[i]}`, {lngs: msg.lang}) + '**' + ': ';
+            for (let x = 0; x < category.length; x++) {
+                helpMessage += `\`${category[x].cmd}\``;
+                if (category.length - 1 !== x) {
+                    helpMessage += ', ';
+                }
             }
-        };
-        if (msg.channel.type !== 1) {
-            msg.author.getDMChannel().then(channel => {
-                this.catReply(channel, reply);
-            }).catch(e => winston.error);
-        } else {
-            this.catReply(msg.channel, reply);
+            helpMessage += '\n\n'
         }
-
+        return helpMessage;
     }
 
-    buildLang(list) {
-        let i = list.length;
-        let answer = '';
-        while (i--) {
-            if (list[i] !== 'dev') {
-                answer = answer + `${list[i]} | `;
-            }
+    /**
+     * Returns the sorting number for a ranking in help
+     * @param {String} category Name of the category to be evaluated
+     * @return {Number}
+     */
+    getCategoryRanking(category) {
+        let ranking = 0;
+        switch (category) {
+            case 'generic':
+                ranking = 0;
+                break;
+            case 'fun':
+                ranking = 1;
+                break;
+            case 'image':
+                ranking = 2;
+                break;
+            case 'music':
+                ranking = 3;
+                break;
+            case 'radio':
+                ranking = 4;
+                break;
+            case 'playlist':
+                ranking = 5;
+                break;
+            case 'moderation':
+                ranking = 6;
+                break;
+            case 'permission':
+                ranking = 7;
+                break;
+            case 'misc':
+                ranking = 8;
+                break;
+            case 'nsfw':
+                ranking = 9;
+                break;
         }
-        return answer;
-    }
-
-    checkCat(cat, list) {
-        let i = list.length;
-        while (i--) {
-            if (cat === list[i].name) {
-                return list[i];
-            }
-        }
-        return false;
-    }
-
-    pushCat(cmd, list) {
-        let i = list.length;
-        while (i--) {
-            if (cmd.cat === list[i].name) {
-                list[i].commands.push(cmd);
-            }
-        }
-        return list;
+        return ranking;
     }
 }
 module.exports = Help;

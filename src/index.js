@@ -76,7 +76,7 @@ if (remConfig.use_ws) {
     });
     wsService.on('ws_ready', (data) => {
         if (client) {
-            console.log(data);
+            // console.log(data);
         }
     });
     wsService.on('ws_reshard', (data) => {

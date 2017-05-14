@@ -83,11 +83,17 @@ class Shard {
             firstShardID: parseInt(this.id),
             lastShardID: parseInt(this.id),
             maxShards: parseInt(this.count),
-            disableEvents: ['TYPING_START', 'TYPING_STOP', 'GUILD_MEMBER_SPEAKING', 'MESSAGE_UPDATE', 'MESSAGE_DELETE']
+            disableEvents: {
+                'TYPING_START': true,
+                'TYPING_STOP': true,
+                'GUILD_MEMBER_SPEAKING': true,
+                'MESSAGE_UPDATE': true,
+                'MESSAGE_DELETE': true
+            }
         };
         winston.info(options);
         let bot = new Eris(remConfig.token, options);
-        console.log('Created bot');
+        // console.log('Created bot');
         // if (useCrystal) {
         //     bot.voiceConnections = new Crystal.ErisClient();
         // }
@@ -101,7 +107,7 @@ class Shard {
         });
         this.initClient();
         this.bot.connect().then(() => {
-            console.log('connected')
+            // console.log('connected')
         }).catch(err => {
             console.log(err);
         });
@@ -116,7 +122,7 @@ class Shard {
             if (this.SHARDED) {
                 this.HUB.send({action: 'updateState', d: {state: 'discord_ready'}});
             }
-            console.log('READY!');
+            // console.log('READY!');
             this.bot.editStatus('online', {name: '!w.help for commands'});
             this.clientReady();
         });

@@ -8,7 +8,7 @@
 * Node and NPM
 * Git
 * MongoDB (follow instructions on how to configure the server at [https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows/](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows/))
-* Redis, which can be found here: https://redis.io/download
+* Redis, which can be found here: (https://redis.io/download)[redis]
 * ffmpeg and youtube-dl
 * Buildtools and Python 2.7
 * Basic understanding of node js
@@ -16,11 +16,13 @@
 ## Installation instructions
 
 1. Install MongoDB with the [guide](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows/).
+2. Install redis with the [guide](https://redis.io/topics/quickstart)
 2. Install git, Here is the [link](https://git-scm.com/downloads) to get it.
 3. Install node, Here is the [link](https://nodejs.org/en/download/current/) to get it.
-4. Install ffmpeg and add it to path, it can be found [here](https://ffmpeg.org/download.html)
-5. If you have Windows, open a console with administrator permissions and type `npm install --global windows-build-tools` into it. This will install the neccessary tools, which will be later needed by npm to build Rems dependencies
-6. For Linux environments, you should get `buildtools-essentials` and `python 2.7` installed.
+4. Install ffmpeg and add it to path, it can be found [here](https://ffmpeg.org/download.html), if you are on linux, you might wanna compile it, here is a [guide](https://trac.ffmpeg.org/wiki/CompilationGuide/Ubuntu) for that
+5. If you have Windows, open a console with administrator permissions and type `npm install --global windows-build-tools` into it. 
+This will install the neccessary tools, which will be later needed by npm to build Rems dependencies.
+6. For Linux environments, you should get `build-essential` and `python 2.7` installed.
 7. Clone the source of v2 from git
 8. Go into the just created directory and open a cmd and execute `npm install`.
 There could be some errors while installing the dependencies as the optional depenency of rem links to `eris-crystal`
@@ -28,9 +30,8 @@ If the installation fails, due to not being able to clone the git repo of it, re
 9. Create the following directories within the root: `temp`,`audio`,`config`
 10. Create 2 files within the config directory: `main.json` and `keys.json`. An Example can be found down below.
 11. Run `git submodule init` and `git submodule update` to fetch the newest translations
-12. Run `npm run build` in your terminal.
-13. Start the MongoDB Server
-14. Start Rem by going into the dist folder and typing the following:  `node index.js`.
+13. Start the MongoDB Server and the Redis Server if you did not do that already
+14. Start Rem by going into the src folder and typing the following:  `node index.js`.
 
 ## Example main.json
 ```json

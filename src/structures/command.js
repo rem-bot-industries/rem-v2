@@ -1,15 +1,12 @@
 /**
  * Created by Julian/Wolke on 07.11.2016.
  */
-let EventEmitter = require('eventemitter3');
 /**
  * The base command class
- * @extends EventEmitter
  *
  */
-class Command extends EventEmitter {
+class Command {
     constructor () {
-        super();
         this.aliases = [];
     }
 

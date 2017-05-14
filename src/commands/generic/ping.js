@@ -10,6 +10,12 @@ class Ping extends Command {
         this.needGuild = false;
         this.t = t;
         this.accessLevel = 0;
+        this.help = {
+            short: 'help.ping.short',
+            long: '',
+            usage: 'help.ping.usage',
+            example: ''
+        }
     }
 
     run(msg) {
