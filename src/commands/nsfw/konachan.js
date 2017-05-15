@@ -48,7 +48,7 @@ class Konachan extends Command {
             }
         }
 
-        msgSearch = 'order:score rating:questionableplus ' + searchOrig;
+        msgSearch = 'order:score -rating:safe ' + searchOrig;
         request.get('https://konachan.com/post.json', {
             qs: {
                 limit: 200,
