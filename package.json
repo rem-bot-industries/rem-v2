@@ -55,7 +55,7 @@
     "winston-daily-rotate-file": "^1.4.6",
     "ws": "^2.3.1",
     "youtube-dl": "^1.11.1",
-    "ytdl-core": "^0.13.3"
+    "ytdl-core": "^0.14.1"
   },
   "devDependencies": {
     "eslint": "^3.19.0",
