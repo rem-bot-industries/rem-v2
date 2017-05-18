@@ -27,7 +27,7 @@ class E621 extends Command {
 
     run(msg) {
         // Force commands to only run in NSFW channels
-        if (msg.channel.name.indexOf('nsfw') !== 0) {
+        if (!msg.channel.name.startsWith('nsfw')) {
             return msg.channel.createMessage(this.t('nsfw-images.error-discord-not-nsfw-channel', {lngs: msg.lang}));
         }
 
