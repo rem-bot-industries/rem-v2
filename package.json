@@ -41,11 +41,11 @@
     "minami": "^1.2.3",
     "minimist": "^1.2.0",
     "moment": "^2.18.1",
-    "mongoose": "^4.9.7",
+    "mongoose": "^4.9.10",
     "node-opus": "^0.2.6",
     "node-osu": "^1.2.0",
     "raven": "^1.2.1",
-    "recursive-readdir": "^2.1.1",
+    "recursive-readdir": "^2.2.1",
     "redis": "^2.7.1",
     "request": "^2.81.0",
     "shortid": "^2.2.8",
@@ -55,7 +55,7 @@
     "winston-daily-rotate-file": "^1.4.6",
     "ws": "^2.3.1",
     "youtube-dl": "^1.11.1",
-    "ytdl-core": "^0.13.1"
+    "ytdl-core": "^0.14.1"
   },
   "devDependencies": {
     "eslint": "^3.19.0",
