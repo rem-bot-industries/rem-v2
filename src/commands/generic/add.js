@@ -19,6 +19,7 @@ class Add extends Command {
     }
 
     run(msg) {
+        let inviteLink = 'https://ram.moe/invite';
         msg.channel.createMessage(this.t('add', {lngs: msg.lang, link: inviteLink}))
     }
 }
