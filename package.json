@@ -15,7 +15,10 @@
     "rebuild": "npm rebuild && npm run build"
   },
   "author": "Wolke <wolke@ram.moe>",
-  "license": "ISC",
+  "contributors": [
+    "Dean"
+  ],
+  "license": "MIT",
   "dependencies": {
     "ascii-table": "0.0.9",
     "async": "^2.4.0",
@@ -41,7 +44,7 @@
     "minami": "^1.2.3",
     "minimist": "^1.2.0",
     "moment": "^2.18.1",
-    "mongoose": "^4.9.9",
+    "mongoose": "^4.10.0",
     "node-opus": "^0.2.6",
     "node-osu": "^1.2.0",
     "raven": "^1.2.1",

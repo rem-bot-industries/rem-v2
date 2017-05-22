@@ -1,6 +1,7 @@
 /**
  * Created by Julian/Wolke on 29.04.2017.
  */
+const util = require('util');
 global.Promise = require('bluebird');
 global.TranslatableError = require('./structures/TranslatableError');
 require('source-map-support').install({
@@ -50,3 +51,7 @@ const erisOptions = {
     disableEvents: ['TYPING_START', 'TYPING_STOP', 'GUILD_MEMBER_SPEAKING', 'MESSAGE_UPDATE', 'MESSAGE_DELETE']
 };
 let shardInstance = new Shard(Object.assign({eris: erisOptions}, config), Raven);
+process.on('unhandledRejection', (reason, promise) => {
+    if (!reason) return;
+    winston.error(`Unhandled rejection: ${reason} - ${util.inspect(promise)}`);
+});

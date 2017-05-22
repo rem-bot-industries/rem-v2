@@ -12,7 +12,6 @@ class ServerInfo extends Command {
         this.needGuild = true;
         this.t = t;
         this.accessLevel = 0;
-        this.g = mod.getMod('gm');
         this.aliases = ['serverinfo'];
     }
 
@@ -29,7 +28,6 @@ class ServerInfo extends Command {
         let avatar = msg.channel.guild.iconURL.substring(0, msg.channel.guild.iconURL.length - 3);
         avatar += "webp";
         try {
-            // let dbGuild = await this.g.loadGuild(msg.channel.guild.id);
             let reply = {
                 embed: {
                     author: {
