@@ -44,9 +44,13 @@ class Play extends Command {
             } else {
                 if (next) return msg.channel.createMessage(this.t('play.next', {
                     song: res.title,
-                    lngs: msg.lang
+                    lngs: msg.lang, user: `${msg.author.username}#${msg.author.discriminator}`
                 }));
-                msg.channel.createMessage(this.t('play.success', {song: res.title, lngs: msg.lang}));
+                msg.channel.createMessage(this.t('play.success', {
+                    song: res.title,
+                    lngs: msg.lang,
+                    user: `${msg.author.username}#${msg.author.discriminator}`
+                }));
             }
         } catch (err) {
             console.error(err);

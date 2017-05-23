@@ -30,7 +30,7 @@ class Queue extends Command {
      * The main function of the command
      * @param msg
      */
-    async run (msg) {
+    async run(msg) {
         try {
             let queue = await this.v.getQueue(msg.channel.guild.id);
             msg.channel.createMessage(this.buildReply(queue, msg));
@@ -59,14 +59,16 @@ class Queue extends Command {
                 repeat: repeat,
                 duration: Queue.songs[0].duration,
                 current: Queue.time,
-                interpolation: {escape: false}
+                interpolation: {escape: false},
+                user: `${msg.author.username}#${msg.author.discriminator}`
             })} \n`;
         } else {
             reply = `${this.t('np.song', {
                 lngs: msg.lang,
                 title: Queue.songs[0].title,
                 repeat: repeat,
-                interpolation: {escape: false}
+                interpolation: {escape: false},
+                user: `${msg.author.username}#${msg.author.discriminator}`
             })}\n`;
         }
         if (Queue.songs.length > 1) {
@@ -78,8 +80,17 @@ class Queue extends Command {
                 reply += `... +${Queue.songs.length - q}`;
                 break;
             }
-            reply += `${q + 1}. ${Queue.songs[q].title}`;
-            if (Queue.songs[q].duration) reply += ` ${Queue.songs[q].duration}`;
+            reply += `${q + 1}. ${Queue.songs[q].title})}`;
+            if (Queue.songs[q].duration) {
+                reply += ` ${Queue.songs[q].duration}`;
+            }
+            if (Queue.songs[q].queuedBy) {
+                reply += ' ';
+                reply += this.t('queue.by', {
+                    lngs: msg.lang,
+                    user: `${msg.author.username}#${msg.author.discriminator}`
+                });
+            }
             reply += '\n';
         }
         if (Queue.songs.length > 1) reply += '```';

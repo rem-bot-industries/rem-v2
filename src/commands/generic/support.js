@@ -2,15 +2,15 @@
  * Created by Julian/Wolke on 07.11.2016.
  */
 let Command = require('../../structures/command');
-class Bug extends Command {
+class Support extends Command {
     constructor({t}) {
         super();
-        this.cmd = 'bug';
+        this.cmd = 'support';
         this.cat = 'generic';
         this.needGuild = false;
         this.t = t;
         this.accessLevel = 0;
-        this.aliases = ['support'];
+        this.aliases = ['bug'];
     }
 
     run(msg) {
@@ -25,4 +25,4 @@ class Bug extends Command {
 
     }
 }
-module.exports = Bug;
+module.exports = Support;

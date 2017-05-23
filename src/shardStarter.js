@@ -24,7 +24,6 @@ try {
     process.exit(1);
 }
 global.remConfig = config;
-
 const Raven = require('raven');
 if (!remConfig.no_error_tracking) {
     Raven.config(remConfig.sentry_token, {
@@ -54,4 +53,5 @@ let shardInstance = new Shard(Object.assign({eris: erisOptions}, config), Raven)
 process.on('unhandledRejection', (reason, promise) => {
     if (!reason) return;
     winston.error(`Unhandled rejection: ${reason} - ${util.inspect(promise)}`);
+
 });

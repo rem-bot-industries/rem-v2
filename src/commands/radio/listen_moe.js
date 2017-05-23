@@ -50,10 +50,15 @@ class AddToQueue extends Command {
         let res = await this.v.addRadioToQueue(msg, radio, options.instant, options.next);
         if (options.next) return msg.channel.createMessage(this.t('play.next', {
             song: res.title,
-            lngs: msg.lang
+            lngs: msg.lang,
+            user: `${msg.author.username}#${msg.author.discriminator}`
         }));
         if (options.instant) {
-            return msg.channel.createMessage(this.t('play.success', {song: res.title, lngs: msg.lang}));
+            return msg.channel.createMessage(this.t('play.success', {
+                song: res.title,
+                lngs: msg.lang,
+                user: `${msg.author.username}#${msg.author.discriminator}`
+            }));
         }
         msg.channel.createMessage(this.t('qa.success', {song: res.title, lngs: msg.lang}));
     }

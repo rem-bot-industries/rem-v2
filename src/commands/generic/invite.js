@@ -2,12 +2,11 @@
  * Created by Julian/Wolke on 07.11.2016.
  */
 let Command = require('../../structures/command');
-let winston = require('winston');
 const inviteLink = remConfig.invite_url;
-class Add extends Command {
+class Invite extends Command {
     constructor({t}) {
         super();
-        this.cmd = 'add';
+        this.cmd = 'invite';
         this.cat = 'generic';
         this.needGuild = false;
         this.t = t;
@@ -23,4 +22,4 @@ class Add extends Command {
         msg.channel.createMessage(this.t('add', {lngs: msg.lang, link: inviteLink}))
     }
 }
-module.exports = Add;
+module.exports = Invite;

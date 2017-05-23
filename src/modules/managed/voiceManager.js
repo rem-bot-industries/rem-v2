@@ -25,6 +25,7 @@ class VoiceManager {
             let queue = await this.loadQueueFromCache(msg.channel.guild.id);
             player = await this.createPlayer(msg, connection, queue);
         }
+        radio.queuedBy = `${msg.author.username}#${msg.author.discriminator}`;
         player.addToQueue(radio, immediate, next);
         return Promise.resolve(radio);
     }
@@ -41,6 +42,7 @@ class VoiceManager {
         }
         if (this.resolver.checkUrl(msg.content)) {
             let song = await this.resolver.resolve(msg.content);
+            song.queuedBy = `${msg.author.username}#${msg.author.discriminator}`;
             let queue = player.addToQueue(song, immediate, next);
             // console.log(queue);
             await this.writeQueueToCache(msg.channel.guild.id, queue);
@@ -58,8 +60,10 @@ class VoiceManager {
         }
         if (this.resolver.checkUrlPlaylist(msg.content)) {
             let playlist = await this.resolver.resolvePlaylist(msg.content);
+            playlist.songs[0].queuedBy = `${msg.author.username}#${msg.author.discriminator}`;
             player.addToQueue(playlist.songs[0]);
             for (let i = 1; i < playlist.songs.length; i++) {
+                playlist.songs[i].queuedBy = `${msg.author.username}#${msg.author.discriminator}`;
                 player.pushQueue(playlist.songs[i]);
             }
             let queue = player.getQueue(msg.channel.guild.id);
@@ -269,6 +273,7 @@ class VoiceManager {
                 await this.writeQueueToCache(msg.channel.guild.id, player.getQueue());
                 player.setQueueSongs([]);
                 player.endSong(true);
+                clearInterval(player.syncInterval);
             }
             rem.voiceConnections.leave(msg.channel.guild.id);
             return Promise.resolve();
@@ -344,10 +349,16 @@ class VoiceManager {
             }
             player.updateConnection(connection);
             player.autoplay();
+            player.syncInterval = setInterval(() => {
+                this.writeQueueToCache(msg.channel.guild.id, player.getQueue()).catch()
+            }, 30 * 1000);
             return player;
         } else {
             player = new AudioPlayer(msg, connection, queue);
             this.players[msg.channel.guild.id] = player;
+            player.syncInterval = setInterval(() => {
+                this.writeQueueToCache(msg.channel.guild.id, player.getQueue()).catch()
+            }, 30 * 1000);
             return player;
         }
     }

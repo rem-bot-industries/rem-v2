@@ -299,17 +299,18 @@ class Player extends EventEmitter {
         clearTimeout(this.autoLeaveTimeout);
         if (leave) {
             this.started = false;
-        }
-        this.autoLeaveTimeout = setTimeout(() => {
-            try {
-                let conn = rem.voiceConnections.get(this.connection.id);
-                if (conn) {
-                    rem.voiceConnections.leave(this.connection.id);
+        } else {
+            this.autoLeaveTimeout = setTimeout(() => {
+                try {
+                    let conn = rem.voiceConnections.get(this.connection.id);
+                    if (conn) {
+                        rem.voiceConnections.leave(this.connection.id);
+                    }
+                } catch (e) {
+                    console.error(e);
                 }
-            } catch (e) {
-                console.error(e);
-            }
-        }, 1000 * 60 * 10); // 10 Minutes
+            }, 1000 * 60 * 10); // 10 Minutes
+        }
     }
 
     /**
