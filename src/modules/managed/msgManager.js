@@ -98,6 +98,7 @@ class MessageManager extends Manager {
                             msg.lang = [Guild.lng, 'en'];
                             msg.lngs = this.lngs;
                             msg.prefix = Guild.prefix;
+                            msg.aliases = this.aliases;
                             let node = `${command.cat}.${command.cmd}`;
                             this.p.checkPermission(msg, node, (err) => {
                                 if (err) {

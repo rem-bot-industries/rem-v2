@@ -7,7 +7,7 @@ class Help extends Command {
     constructor({t, mod}) {
         super();
         this.cmd = 'help';
-        this.aliases = ['commands', 'h'];
+        this.aliases = ['commands', 'h', 'cmds'];
         this.cat = 'generic';
         this.needGuild = false;
         this.t = t;
@@ -29,6 +29,11 @@ class Help extends Command {
                 cmd = cmd.substring(msg.prefix.length);
             }
             let command = msg.cmds[cmd];
+            if (!command) {
+                if (msg.aliases[cmd]) {
+                    command = msg.cmds[msg.aliases[cmd]];
+                }
+            }
             if (command && !command.hidden) {
                 if (command.help) {
                     return msg.channel.createMessage(this.buildCommandHelp(msg, command));
