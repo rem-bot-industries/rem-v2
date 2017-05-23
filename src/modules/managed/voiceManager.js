@@ -228,6 +228,9 @@ class VoiceManager {
                     connection.on('ready', () => {
                         // console.log('connection ready');
                     });
+                    connection.on('error', (err) => {
+                        console.error(err);
+                    });
                     let queue = await this.loadQueueFromCache(msg.channel.guild.id);
                     let player = this.createPlayer(msg, connection, queue);
                     return Promise.resolve(player);
