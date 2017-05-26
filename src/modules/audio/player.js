@@ -35,9 +35,6 @@ class Player extends EventEmitter {
         this.started = false;
         this.autoLeaveTimeout = null;
         this.autoplay();
-        // setInterval(() => {
-        //     this.emit('sync', this.queue);
-        // }, 1000 * 30);
     }
 
     /**
@@ -144,9 +141,8 @@ class Player extends EventEmitter {
     pause() {
         try {
             this.connection.pause();
-            this.emit('pause');
         } catch (e) {
-            this.emit('debug', e);
+            console.error(e);
         }
     }
 
@@ -156,9 +152,8 @@ class Player extends EventEmitter {
     resume() {
         try {
             this.connection.resume();
-            this.emit('resume');
         } catch (e) {
-            this.emit('debug', e);
+            console.error(e);
         }
     }
 

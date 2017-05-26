@@ -229,10 +229,7 @@ class VoiceManager {
                 }
                 try {
                     connection = await rem.joinVoiceChannel(msg.member.voiceState.channelID);
-                    connection.on('ready', () => {
-                        // console.log('connection ready');
-                    });
-                    connection.on('error', (err) => {
+                    connection.once('error', (err) => {
                         console.error(err);
                     });
                     let queue = await this.loadQueueFromCache(msg.channel.guild.id);

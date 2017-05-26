@@ -2,11 +2,11 @@
  * Created by Julian/Wolke on 07.11.2016.
  */
 let Command = require('../../structures/command');
-let minimist = require('minimist');
-let discordReg = /<?(?:#|@|@&|@!)([0-9]+)>/g;
+const regs = {user: /<?(?:@|@!)([0-9]+)>/, channel: /<?(?:#)([0-9]+)>/, role: /<?(?:@&)([0-9]+)>/};
 let Selector = require('../../structures/selector');
+let argParser = require('../../structures/argumentParser');
 class AddPermission extends Command {
-    constructor ({t, mod}) {
+    constructor({t, mod}) {
         super();
         this.cmd = 'ap';
         this.cat = 'permission';
@@ -16,9 +16,9 @@ class AddPermission extends Command {
         this.p = mod.getMod('pm');
     }
 
-    run (msg) {
+    run(msg) {
         let messageSplit = msg.content.split(' ').splice(1);
-        let args = minimist(messageSplit);
+        let args = argParser(messageSplit);
         this.parseArgs(args, msg, (err, args) => {
             if (err) return msg.channel.createMessage(err);
             if (args.r) {
@@ -34,7 +34,7 @@ class AddPermission extends Command {
         });
     }
 
-    addPermission (msg, perm) {
+    addPermission(msg, perm) {
         // console.log(perm);
         this.p.addPermission(msg.channel.guild.id, perm, (err) => {
             if (err) return msg.channel.createMessage(this.t('generic.error', {lngs: msg.lang}));
@@ -78,14 +78,14 @@ class AddPermission extends Command {
         });
     }
 
-    guild (msg, args) {
+    guild(msg, args) {
         let perm = this.p.createPermission(args.node, 'guild', msg.channel.guild.id, args.allow);
         this.addPermission(msg, perm);
     }
 
-    user (msg, args) {
+    user(msg, args) {
         let user;
-        if (discordReg.test(args.u)) {
+        if (regs.user.test(args.u)) {
             user = msg.mentions[0];
             if (user) {
                 let perm = this.p.createPermission(args.node, 'user', user.id, args.allow);
@@ -94,9 +94,17 @@ class AddPermission extends Command {
                 return msg.channel.createMessage(this.t('ap.target-not-found', {lngs: msg.lang, target: args.u}));
             }
         } else {
-            let regex = new RegExp(`${args.u}.*`, 'gi');
             let users = msg.channel.guild.members.filter(u => {
-                return regex.test(u.user.username);
+                let userIndex = u.user.username.toLocaleLowerCase().indexOf(args.u);
+                if (userIndex !== -1) {
+                    return true;
+                }
+                if (u.nickname) {
+                    if (u.nickname.toLocaleLowerCase().indexOf(args.u) !== -1) {
+                        return true;
+                    }
+                }
+                return false;
             });
             if (users.length > 1) {
                 let collector = new Selector(msg, users, this.t, (err, number) => {
@@ -117,7 +125,7 @@ class AddPermission extends Command {
         }
     }
 
-    role (msg, args) {
+    role(msg, args) {
         let role;
         if (discordReg.test(args.r)) {
             role = msg.roleMentions[0];
@@ -149,7 +157,7 @@ class AddPermission extends Command {
         }
     }
 
-    channel (msg, args) {
+    channel(msg, args) {
         let channel;
         if (discordReg.test(args.c)) {
             channel = msg.channelMentions[0];
@@ -183,7 +191,7 @@ class AddPermission extends Command {
         }
     }
 
-    parseArgs (args, msg, cb) {
+    parseArgs(args, msg, cb) {
         let node;
         if (args._.length > 0) {
             let nodeSplit = args._[0].split('.');

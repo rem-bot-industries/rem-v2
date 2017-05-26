@@ -17,12 +17,15 @@ class UserInfo extends Command {
     }
 
     run(msg) {
+        let messageSplit = msg.content.split(' ').splice(1);
         let user;
         let member;
         if (msg.mentions.length > 0) {
             user = msg.mentions[0];
             member = msg.channel.guild ? msg.channel.guild.members.find(u => u.id === user.id) : null;
             this.buildReply(msg, user, member);
+        } else if (messageSplit.length > 0) {
+
         } else {
             user = msg.author;
             member = msg.channel.guild ? msg.member : null;

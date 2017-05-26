@@ -2,7 +2,7 @@
  * Created by Julian/Wolke on 07.11.2016.
  */
 let Command = require('../../structures/command');
-let minimist = require('minimist');
+let argParser = require('../../structures/argumentParser');
 let AsciiTable = require('ascii-table');
 class GetPermission extends Command {
     constructor ({t, mod}) {
@@ -17,7 +17,7 @@ class GetPermission extends Command {
 
     run (msg) {
         let messageSplit = msg.content.split(' ').splice(1);
-        let args = minimist(messageSplit, {boolean: ['r', 'c', 'u']});
+        let args = argParser.parse(messageSplit, {boolean: ['r', 'c', 'u']});
         let start = this.parseStart(args);
         if (args.r) {
             this.getPerms(msg, 'role', start);

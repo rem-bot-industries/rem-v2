@@ -238,9 +238,9 @@ class Shard {
                     let channel = Guild.channels.find(c => c.id === greetingChannel.value);
                     if (channel) {
                         let msg = greeting.value;
-                        msg = msg.replace('%USER%', Member.mention);
-                        msg = msg.replace('%USER_NO_MENTION%', Member.username ? Member.username : Member.user.username);
-                        msg = msg.replace('%GUILD%', Guild.name);
+                        msg = msg.replace(/%USER%/g, Member.mention);
+                        msg = msg.replace(/%USER_NO_MENTION%/g, Member.username ? Member.username : Member.user.username);
+                        msg = msg.replace(/%GUILD%/g, Guild.name);
                         await channel.createMessage(msg);
                     }
                 }
@@ -259,8 +259,8 @@ class Shard {
                     let channel = Guild.channels.find(c => c.id === farewellChannel.value);
                     if (channel) {
                         let msg = farewell.value;
-                        msg = msg.replace('%USER%', Member.username ? Member.username : Member.user.username);
-                        msg = msg.replace('%GUILD%', Guild.name);
+                        msg = msg.replace(/%USER%/g, Member.username ? Member.username : Member.user.username);
+                        msg = msg.replace(/%GUILD%/g, Guild.name);
                         await channel.createMessage(msg);
                     }
                 }
