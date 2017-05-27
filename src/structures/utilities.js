@@ -7,7 +7,7 @@
  * @param [lang] Optionally define a markup language to use
  * @param [block=true] Optionally wrap the content in a text block
  */
-const renderList = (contentArray, lang, block = true) => {
+const renderList = (contentArray, lang = '', block = true) => {
     let list = "";
     contentArray.forEach(c => {
         list += c + '\n';
@@ -17,12 +17,22 @@ const renderList = (contentArray, lang, block = true) => {
     }
     return list;
 };
-const wrapBlock = (content, lang) => {
+/**
+ * Wraps a string in a text block and adds syntax highlighting optionally
+ * @param content
+ * @param lang
+ * @returns {string}
+ */
+const wrapBlock = (content, lang = '') => {
     let list = `\`\`\`${lang}\n`;
     list += content;
     list += "```";
     return list;
 };
+/**
+ * Prefixes every item in a string array with it's index in square brackets
+ * @param contentArray Array of strings that should get prefixed
+ */
 const prefixIndex = (contentArray) => {
     let i = 0;
     return contentArray.map(c => {
@@ -30,4 +40,27 @@ const prefixIndex = (contentArray) => {
         return `[${i}] ${c}`;
     });
 };
-module.exports = {renderList, wrapBlock, prefixIndex};
+const searchUser = (memberCollection, username) => {
+    return memberCollection.filter((m => {
+        if (m.nick) {
+            if (m.nick.toLocaleLowerCase().indexOf(username.toLocaleLowerCase()) > -1) {
+                return true;
+            }
+        }
+        return m.user.username.toLocaleLowerCase().indexOf(username.toLocaleLowerCase()) > -1;
+    }));
+};
+const searchChannel = (channelCollection, channelName) => {
+    return channelCollection.filter((m => {
+        return m.name.toLocaleLowerCase().indexOf(channelName.toLocaleLowerCase()) > -1;
+    }))
+};
+const getChannelList = (channelArray) => {
+    return channelArray.map(c => c.name);
+};
+const getMemberListWithNick = (memberArray) => {
+    return memberArray.map(m => {
+        return `${m.user.username}#${m.user.discriminator}` + (m.nick ? `(${m.nick})` : '');
+    });
+};
+module.exports = {renderList, wrapBlock, prefixIndex, searchUser, getMemberListWithNick, searchChannel, getChannelList};

@@ -5,6 +5,8 @@ let Command = require('../../structures/command');
 const regs = {user: /<?(?:@|@!)([0-9]+)>/, channel: /<?(?:#)([0-9]+)>/, role: /<?(?:@&)([0-9]+)>/};
 let Selector = require('../../structures/selector');
 let argParser = require('../../structures/argumentParser');
+const utils = require('../../structures/utilities');
+const searcher = require('../../structures/searcher');
 class AddPermission extends Command {
     constructor({t, mod}) {
         super();
@@ -83,7 +85,7 @@ class AddPermission extends Command {
         this.addPermission(msg, perm);
     }
 
-    user(msg, args) {
+    async user(msg, args) {
         let user;
         if (regs.user.test(args.u)) {
             user = msg.mentions[0];
@@ -94,18 +96,8 @@ class AddPermission extends Command {
                 return msg.channel.createMessage(this.t('ap.target-not-found', {lngs: msg.lang, target: args.u}));
             }
         } else {
-            let users = msg.channel.guild.members.filter(u => {
-                let userIndex = u.user.username.toLocaleLowerCase().indexOf(args.u);
-                if (userIndex !== -1) {
-                    return true;
-                }
-                if (u.nickname) {
-                    if (u.nickname.toLocaleLowerCase().indexOf(args.u) !== -1) {
-                        return true;
-                    }
-                }
-                return false;
-            });
+            let users = utils.searchUser(msg.channel.guild.members, args.u);
+            let pick = await searcher.userSearchMenu(msg, [args.u], this.t);
             if (users.length > 1) {
                 let collector = new Selector(msg, users, this.t, (err, number) => {
                     if (err) return msg.channel.createMessage(this.t(err, {lngs: msg.lang}));
