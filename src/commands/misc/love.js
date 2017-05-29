@@ -21,10 +21,8 @@ class Love extends Command {
         let time = moment();
         time.locale(msg.lang[0]);
         let msgSplit = msg.content.split(' ').splice(1);
-        console.log(msgSplit);
         if (this.u.checkLoveCD(msg.dbUser)) {
             let targetMember;
-            console.log(msgSplit);
             if (msg.mentions.length > 0) {
                 if (msg.mentions[0].id === msg.author.id) {
                     return msg.channel.createMessage(this.t('love.self', {lngs: msg.lang}));

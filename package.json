@@ -44,7 +44,7 @@
     "minami": "^1.2.3",
     "minimist": "^1.2.0",
     "moment": "^2.18.1",
-    "mongoose": "^4.10.2",
+    "mongoose": "^4.10.3",
     "node-opus": "^0.2.6",
     "node-osu": "^1.2.0",
     "raven": "^1.2.1",

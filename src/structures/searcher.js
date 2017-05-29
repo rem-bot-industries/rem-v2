@@ -22,4 +22,15 @@ async function channelSearchMenu(msg, messageSplit, t) {
     let channelList = utils.getChannelList(channels);
     return new Menu(t('search.channel', {lngs: msg.lang}), t('menu.guide', {lngs: msg.lang}), channelList.slice(0, 10), t, msg);
 }
-module.exports = {userSearchMenu};
+async function roleSearchMenu(msg, messageSplit, t) {
+    let roles = utils.searchRoles(msg.channel.guild.roles, messageSplit.join(' '));
+    if (roles.length === 1) {
+        return 0;
+    }
+    if (roles.length === 0) {
+        return -2;
+    }
+    let roleList = utils.getRoleList(roles);
+    return new Menu(t('search.role', {lngs: msg.lang}), t('menu.guide', {lngs: msg.lang}), roleList.slice(0, 10), t, msg);
+}
+module.exports = {userSearchMenu, channelSearchMenu, roleSearchMenu};

@@ -55,12 +55,47 @@ const searchChannel = (channelCollection, channelName) => {
         return m.name.toLocaleLowerCase().indexOf(channelName.toLocaleLowerCase()) > -1;
     }))
 };
+const searchRoles = (roleCollection, roleName) => {
+    return roleCollection.filter(r => {
+        return r.name.toLocaleLowerCase().indexOf(roleName.toLocaleLowerCase()) > -1;
+    })
+};
 const getChannelList = (channelArray) => {
     return channelArray.map(c => c.name);
+};
+const getRoleList = (roleArray) => {
+    return roleArray.map(r => r.name);
 };
 const getMemberListWithNick = (memberArray) => {
     return memberArray.map(m => {
         return `${m.user.username}#${m.user.discriminator}` + (m.nick ? `(${m.nick})` : '');
     });
 };
-module.exports = {renderList, wrapBlock, prefixIndex, searchUser, getMemberListWithNick, searchChannel, getChannelList};
+const getCategoriesFromCommands = (commands, addHidden = false) => {
+    let categories = {};
+    for (let key in commands) {
+        if (commands.hasOwnProperty(key)) {
+            let command = commands[key];
+            if (addHidden || !addHidden && !command.hidden) {
+                if (!categories[command.cat]) {
+                    categories[command.cat] = [command];
+                } else {
+                    categories[command.cat].push(command);
+                }
+            }
+        }
+    }
+    return categories;
+};
+module.exports = {
+    searchUser,
+    searchRoles,
+    searchChannel,
+    renderList,
+    wrapBlock,
+    prefixIndex,
+    getMemberListWithNick,
+    getChannelList,
+    getRoleList,
+    getCategoriesFromCommands
+};
