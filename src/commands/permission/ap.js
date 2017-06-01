@@ -3,10 +3,10 @@
  */
 const Command = require('../../structures/command');
 const regs = {user: /<?(?:@|@!)([0-9]+)>/, channel: /<?(?:#)([0-9]+)>/, role: /<?(?:@&)([0-9]+)>/};
-let Selector = require('../../structures/selector');
 let argParser = require('../../structures/argumentParser');
 const utils = require('../../structures/utilities');
 const searcher = require('../../structures/searcher');
+const winston = require('winston');
 class AddPermission extends Command {
     constructor({t, mod}) {
         super();
@@ -31,7 +31,6 @@ class AddPermission extends Command {
                 let target;
                 if (parsedArgs.args.r) {
                     target = await this.resolveRole(parsedArgs, msg);
-                    console.log(target);
                 } else if (parsedArgs.args.u) {
                     target = await this.resolveUser(parsedArgs, msg);
                 } else if (parsedArgs.args.c) {
@@ -40,16 +39,108 @@ class AddPermission extends Command {
                 if (!target) {
                     target = {type: 'guild', id: msg.channel.guild.id};
                 }
-                // console.log(parsedArgs);
                 // console.log(target);
-                let perm = this.p.createPermission(parsedArgs.permNode, target.type, target.id, args.allow);
-                
-                return msg.channel.createMessage(JSON.stringify(perm));
+                let perm = this.p.createPermission(parsedArgs.permNode, target.type, target.id, parsedArgs.allow);
+                try {
+                    await this.p.addPermission(msg.channel.guild.id, perm);
+                    let targetName = this.getNameForPermId(perm, msg);
+                    return msg.channel.createMessage(this.t('ap.success', {
+                        lngs: msg.lang,
+                        node: `${perm.cat}.${perm.perm}`,
+                        allowed: perm.use,
+                        type: this.t(`ap.type.${perm.type}`, {lngs: msg.lang}),
+                        name: targetName
+                    }));
+                } catch (e) {
+                    if (e.message === 'add_defaults') {
+                        let defaultPerms = this.p.getDefaultPerms();
+                        let permString = defaultPerms.map(p => {
+                            return `${p.cat}.${p.perm}`
+                        }).join('\n');
+                        let permQuestion = this.t('ap.add-defaults', {lngs: msg.lang, perm_list: permString});
+                        permQuestion += '\n' + this.t('menu.yes-no-question', {lngs: msg.lang});
+                        let menuMsg = await msg.channel.createMessage(permQuestion);
+                        this.awaitDefaults(msg, perm, menuMsg);
+                    } else {
+                        winston.error(e);
+                        return msg.channel.createMessage(this.t('generic.error', {lngs: msg.lang}));
+                    }
+
+                }
             } catch (e) {
                 console.log(e);
-                // return msg.channel.createMessage(this.t(e.t, {lngs: msg.lang, node: e.node, prefix:msg.prefix}));
+                return msg.channel.createMessage(this.t(e.t, {lngs: msg.lang, node: e.node, prefix: msg.prefix}));
             }
         }
+    }
+
+    async awaitDefaults(msg, perm, menuMsg) {
+        let collector = msg.CON.addCollector(msg.channel.id, {
+            filter: (filterMsg) => {
+                return filterMsg.author.id === msg.author.id;
+            }
+        });
+        let stopTimeout = setTimeout(() => {
+            collector.end();
+            try {
+                menuMsg.delete();
+            } catch (e) {
+                winston.error(e);
+            }
+        }, 1000 * 60 * 5); //5 mins
+        collector.on('message', async (collMsg) => {
+            collMsg.content = collMsg.content.trim();
+            if (collMsg.content !== 'yes' && collMsg.content !== 'no') {
+                if (collMsg.content.startsWith(msg.prefix) || collMsg.content === 'c') {
+                    collector.end();
+                    try {
+                        menuMsg.delete();
+                    } catch (e) {
+                        winston.error(e);
+                    }
+                    clearTimeout(stopTimeout);
+                    return msg.channel.createMessage(this.t('generic.cancelled-command', {lngs: msg.lang}));
+                }
+            } else {
+                collector.end();
+                try {
+                    menuMsg.delete();
+                } catch (e) {
+                    winston.error(e);
+                }
+                let addDefaults = collMsg.content === 'yes';
+                await this.p.addPermission(msg.channel.guild.id, perm, addDefaults);
+                let tString = addDefaults ? 'ap.success-defaults' : 'ap.success';
+                let targetName = this.getNameForPermId(perm, collMsg);
+                return msg.channel.createMessage(this.t(tString, {
+                    lngs: msg.lang,
+                    node: `${perm.cat}.${perm.perm}`,
+                    allowed: perm.use,
+                    type: this.t(`ap.type.${perm.type}`, {lngs: msg.lang}),
+                    name: targetName
+                }))
+            }
+        });
+    }
+
+    getNameForPermId(perm, msg) {
+        let targetName;
+        switch (perm.type) {
+            case 'guild':
+                targetName = msg.channel.guild.name;
+                break;
+            case 'channel':
+                targetName = msg.channel.guild.channels.find(c => c.id === perm.id).name;
+                break;
+            case 'role':
+                targetName = msg.channel.guild.roles.find(r => r.id === perm.id).name;
+                break;
+            case 'user':
+                let member = msg.channel.guild.members.find(m => m.id === perm.id);
+                targetName = `${member.user.username}#${member.user.discriminator}` + (member.nick ? `(${member.nick})` : '');
+                break;
+        }
+        return targetName;
     }
 
     async resolveRole(parsedArgs, msg) {

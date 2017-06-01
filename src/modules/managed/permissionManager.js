@@ -225,33 +225,62 @@ class PermissionManager {
         return ({type: type, id: id, cat: nodeSplit[0], perm: nodeSplit[1], use: allow});
     }
 
-    async addPermission(id, perm, overwrite = false) {
+    async addPermission(id, perm, addDefaults) {
         let Perms = await permModel.findOne({id: id});
         if (Perms) {
             if (Perms.permissions.length > 0) {
                 if (this.checkExist(perm, Perms.permissions)) {
-                    console.log('overwrite uwu');
-                    if (overwrite) {
-                        //TODO remove any old perms from permmodel which include overwritten perm and add new one
-                    }
-                    throw new Error('overwrite_missing');
+                    await permModel.update({id}, {
+                        $pull: {
+                            permissions: {
+                                id: perm.id,
+                                cat: perm.cat,
+                                perm: perm.perm
+                            }
+                        }
+                    });
+                    return permModel.update({id}, {$push: {permissions: perm}});
                 } else {
                     return permModel.update({id: id}, {$push: {permissions: perm}});
                 }
             } else {
-                return permModel.update({id: id}, {$push: {permissions: perm}});
+                if (typeof (addDefaults) === 'undefined') {
+                    throw new Error('add_defaults');
+                }
+                if (addDefaults) {
+                    let defaults = defaultPerms;
+                    defaults.push(perm);
+                    return permModel.update({id: id}, {$push: {permissions: {$each: defaults}}});
+                } else {
+                    return permModel.update({id: id}, {$push: {permissions: perm}});
+                }
             }
         } else {
-            return this.createDbPerm(id, perm);
+            if (typeof (addDefaults) === 'undefined') {
+                throw new Error('add_defaults');
+            }
+            return this.createDbPerm(id, perm, addDefaults);
         }
     }
 
     async removePermission(id, perm) {
-        let Perms = permModel.findOne({id: id});
+        let Perms = await permModel.findOne({id: id});
         if (Perms) {
             if (Perms.permissions.length > 0) {
-                //TODO Update to not ues _
-                let perms = _.reject(Perms.permissions, perm);
+                let perms = Perms.permissions.filter(p => {
+                    if (perm.cat !== p.cat) {
+                        return true;
+                    }
+                    if (perm.perm !== p.perm) {
+                        return true;
+                    }
+                    if (perm.id !== p.id) {
+                        return true;
+                    }
+                    if (perm.type !== p.type) {
+                        return true;
+                    }
+                });
                 console.log(perms);
                 return permModel.update({id: id}, {$set: {permissions: perms}});
             } else {
@@ -263,7 +292,7 @@ class PermissionManager {
     }
 
     async resetDbPerm(id) {
-        let Perms = permModel.findOne({id});
+        let Perms = await permModel.findOne({id});
         if (Perms) {
             return permModel.remove({id});
         } else {
@@ -274,18 +303,22 @@ class PermissionManager {
         }
     }
 
-    async createDbPerm(id, perm) {
+    async createDbPerm(id, perm, addDefaults) {
+        let permsToBeAdded = [perm];
+        if (addDefaults) {
+            defaultPerms.forEach(p => permsToBeAdded.push(p));
+        }
         let perms = new permModel({
             id: id,
-            permissions: [perm]
+            permissions: permsToBeAdded
         });
         return perms.save();
     }
 
     checkExist(perm, perms) {
         for (let i = 0; i < perms.length; i++) {
-            if (perm === perms[i]) {
-                return perm;
+            if (perm.id === perms[i].id && perm.type === perms[i].type && perm.cat === perms[i].cat && perm.perm === perms[i].perm) {
+                return true;
             }
         }
         return false;
@@ -352,6 +385,10 @@ class PermissionManager {
             });
         }
         return roles;
+    }
+
+    getDefaultPerms() {
+        return defaultPerms;
     }
 
 }

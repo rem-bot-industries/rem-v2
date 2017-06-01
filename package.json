@@ -41,7 +41,6 @@
     "lodash": "^4.17.4",
     "longjohn": "^0.2.12",
     "merge-json": "0.1.0-b.3",
-    "minami": "^1.2.3",
     "minimist": "^1.2.0",
     "moment": "^2.18.1",
     "mongoose": "^4.10.3",
@@ -60,8 +59,5 @@
     "youtube-dl": "^1.11.1",
     "ytdl-core": "^0.14.1"
   },
-  "devDependencies": {
-    "eslint": "^3.19.0",
-    "minami": "^1.1.1"
-  }
+  "devDependencies": {}
 }

@@ -87,6 +87,23 @@ const getCategoriesFromCommands = (commands, addHidden = false) => {
     }
     return categories;
 };
+const getHighestRolePosition = (member, roles) => {
+    let resolvedRoles = [];
+    member.roles.forEach(roleID => {
+        let role = roles.find(r => r.id === roleID);
+        if (role) {
+            resolvedRoles.push(role);
+        }
+    });
+    resolvedRoles = resolvedRoles.sort((a, b) => {
+        return b.position - a.position
+    });
+    if (resolvedRoles.length > 0) {
+        return resolvedRoles[0].position;
+    } else {
+        return 0;
+    }
+};
 module.exports = {
     searchUser,
     searchRoles,
@@ -97,5 +114,6 @@ module.exports = {
     getMemberListWithNick,
     getChannelList,
     getRoleList,
-    getCategoriesFromCommands
+    getCategoriesFromCommands,
+    getHighestRolePosition
 };

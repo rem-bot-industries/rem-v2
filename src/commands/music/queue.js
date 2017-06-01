@@ -80,7 +80,7 @@ class Queue extends Command {
                 reply += `... +${Queue.songs.length - q}`;
                 break;
             }
-            reply += `${q + 1}. ${Queue.songs[q].title})}`;
+            reply += `${q + 1}. ${Queue.songs[q].title}`;
             if (Queue.songs[q].duration) {
                 reply += ` ${Queue.songs[q].duration}`;
             }
