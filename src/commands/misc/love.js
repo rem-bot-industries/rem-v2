@@ -4,6 +4,8 @@
 let Command = require('../../structures/command');
 let winston = require('winston');
 let moment = require('moment');
+const utils = require('../../structures/utilities');
+const searcher = require('../../structures/searcher');
 class Love extends Command {
     constructor({t, mod}) {
         super();
@@ -18,45 +20,59 @@ class Love extends Command {
     async run(msg) {
         let time = moment();
         time.locale(msg.lang[0]);
+        let msgSplit = msg.content.split(' ').splice(1);
         if (this.u.checkLoveCD(msg.dbUser)) {
+            let targetMember;
             if (msg.mentions.length > 0) {
                 if (msg.mentions[0].id === msg.author.id) {
                     return msg.channel.createMessage(this.t('love.self', {lngs: msg.lang}));
                 }
-                let msgSplit = msg.content.split(' ').splice(1);
-                let inc = this.checkMsg(msgSplit) ? 1 : -1;
-                let target = msg.mentions[0];
-                try {
-                    await this.u.love(target, inc);
-                    let reps = await this.u.addLoveCd(msg.dbUser);
-                    let lowest = Math.min(...reps);
-                    let reply;
-                    if (inc === 1) {
-                        reply = this.t('love.success', {
-                            lngs: msg.lang,
-                            target: target.username,
-                            rep: inc,
-                            uses: 2 - reps.length
-                        });
-                    } else {
-                        reply = this.t('love.success-remove', {
-                            lngs: msg.lang,
-                            target: target.username,
-                            rep: inc,
-                            uses: 2 - reps.length
-                        });
-                    }
-                    if (reps.length === 2) {
-                        reply += this.t('love.next', {lngs: msg.lang, time: time.to(lowest)});
-                    }
-                    msg.channel.createMessage(reply);
-                } catch (e) {
-                    winston.error(e);
-                    return msg.channel.createMessage(this.t('generic.error', {lngs: msg.lang}));
+                targetMember = msg.mention[0];
+            } else if (msgSplit.length > 0) {
+                let msgSplitFilter = msgSplit.filter((m) => m !== '-');
+                let users = utils.searchUser(msg.channel.guild.members, msgSplitFilter.join(' '));
+                let pick = await searcher.userSearchMenu(msg, msgSplitFilter, this.t);
+                if (pick === -1) {
+                    return msg.channel.createMessage(this.t('generic.cancelled-command', {lngs: msg.lang}));
                 }
-
+                if (pick === -2) {
+                    return msg.channel.createMessage(this.t('search.no-results', {lngs: msg.lang}));
+                }
+                if (pick > -1) {
+                    targetMember = users[pick];
+                }
             } else {
-                msg.channel.createMessage(this.t('generic.mention', {lngs: msg.lang}));
+                return msg.channel.createMessage(this.t('generic.mention', {lngs: msg.lang}));
+            }
+            let inc = this.checkMsg(msgSplit) ? 1 : -1;
+            let target = targetMember;
+            try {
+                await this.u.love(target, inc);
+                let reps = await this.u.addLoveCd(msg.dbUser);
+                let lowest = Math.min(...reps);
+                let reply;
+                if (inc === 1) {
+                    reply = this.t('love.success', {
+                        lngs: msg.lang,
+                        target: target.username,
+                        rep: inc,
+                        uses: 2 - reps.length
+                    });
+                } else {
+                    reply = this.t('love.success-remove', {
+                        lngs: msg.lang,
+                        target: target.username,
+                        rep: inc,
+                        uses: 2 - reps.length
+                    });
+                }
+                if (reps.length === 2) {
+                    reply += this.t('love.next', {lngs: msg.lang, time: time.to(lowest)});
+                }
+                msg.channel.createMessage(reply);
+            } catch (e) {
+                winston.error(e);
+                return msg.channel.createMessage(this.t('generic.error', {lngs: msg.lang}));
             }
         } else {
             let lowest = Math.min(...msg.dbUser.reps);

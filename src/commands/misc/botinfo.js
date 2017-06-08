@@ -8,7 +8,7 @@ let _ = require('lodash');
 let version = require('../../../package.json').version;
 let erisVersion = require('../../../node_modules/eris/package.json').version;
 class BotInfo extends Command {
-    constructor ({t, mod}) {
+    constructor({t, mod}) {
         super();
         this.cmd = 'bot';
         this.cat = 'misc';
@@ -20,7 +20,7 @@ class BotInfo extends Command {
         this.v = mod.getMod('vm');
     }
 
-    run (msg) {
+    run(msg) {
         let user = rem.user;
         // let responseTimeout = setTimeout(() => {
         //
@@ -36,7 +36,7 @@ class BotInfo extends Command {
         });
     }
 
-    fetchData (msg) {
+    fetchData(msg) {
         return new Promise((resolve, reject) => {
             this.hub.on(`action_resolved_${msg.id}`, (data) => {
                 if (data.err) reject(data);
@@ -47,7 +47,7 @@ class BotInfo extends Command {
 
     }
 
-    buildReply (msg, user, data) {
+    buildReply(msg, user, data) {
         let reply = {
             embed: {
                 author: {
@@ -63,7 +63,7 @@ class BotInfo extends Command {
         });
     }
 
-    buildBotInfo (msg, data) {
+    buildBotInfo(msg, data) {
         moment.locale(msg.lang[0]);
         let fields = [];
         let guilds = 0;
@@ -89,7 +89,7 @@ class BotInfo extends Command {
             inline: true
         });
         fields.push({name: this.t('generic.version', {lngs: msg.lang}), value: version, inline: true});
-        fields.push({name: this.t('bot-info.made', {lngs: msg.lang}), value: 'Wolke#6746 & Dean#9114', inline: true});
+        fields.push({name: this.t('bot-info.made', {lngs: msg.lang}), value: 'Wolke, Dean, Veld', inline: true});
         fields.push({name: this.t('bot-info.lib', {lngs: msg.lang}), value: `Eris ${erisVersion}`, inline: true});
         fields.push({name: this.t('bot-info.guilds', {lngs: msg.lang}), value: guilds, inline: true});
         fields.push({name: this.t('bot-info.users', {lngs: msg.lang}), value: users, inline: true});
@@ -125,6 +125,16 @@ class BotInfo extends Command {
         fields.push({
             name: this.t('bot-info.shard', {lngs: msg.lang}),
             value: `${rem.options.firstShardID + 1}/${rem.options.maxShards}`,
+            inline: true
+        });
+        fields.push({
+            name: 'Twitter',
+            value: '[twitter.com/Rem_Bot__](https://twitter.com/Rem_Bot__)',
+            inline: true
+        });
+        fields.push({
+            name: this.t('bot-info.top_donators', {lngs: msg.lang}),
+            value: `**Karen#3938** 95$/m \n**ResurrectionHQ#3061** 50$\n**Hulkerman#0140** 108€`,
             inline: true
         });
         return fields;

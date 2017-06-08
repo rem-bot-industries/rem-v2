@@ -3,6 +3,7 @@
  */
 let Command = require('../../structures/command');
 let util = require('util');
+const winston = require('winston');
 /**
  * The show queue command,
  * shows the current queue
@@ -47,7 +48,7 @@ class Queue extends Command {
      */
     buildReply(Queue, msg) {
         let reply;
-        // console.log(Queue);
+        winston.debug(Queue);
         let repeat = Queue.repeat !== 'off' ? this.t(`np.repeat-${Queue.repeat}`, {lngs: msg.lang}) : '';
         if (!Queue.songs[0]) {
             msg.channel.createMessage(this.t('generic.no-song-in-queue', {lngs: msg.lang}));
@@ -80,7 +81,7 @@ class Queue extends Command {
                 reply += `... +${Queue.songs.length - q}`;
                 break;
             }
-            reply += `${q + 1}. ${Queue.songs[q].title})}`;
+            reply += `${q + 1}. ${Queue.songs[q].title}`;
             if (Queue.songs[q].duration) {
                 reply += ` ${Queue.songs[q].duration}`;
             }

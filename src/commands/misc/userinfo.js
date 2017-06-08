@@ -4,25 +4,42 @@
 let Command = require('../../structures/command');
 let moment = require('moment');
 let winston = require('winston');
+const utils = require('../../structures/utilities');
+const searcher = require('../../structures/searcher');
 class UserInfo extends Command {
     constructor({t, mod}) {
         super();
         this.cmd = 'uinfo';
         this.cat = 'misc';
-        this.needGuild = false;
+        this.needGuild = true;
         this.t = t;
         this.accessLevel = 0;
         this.u = mod.getMod('um');
         this.aliases = ['userinfo'];
     }
 
-    run(msg) {
+    async run(msg) {
+        let messageSplit = msg.content.split(' ').splice(1);
         let user;
         let member;
         if (msg.mentions.length > 0) {
             user = msg.mentions[0];
             member = msg.channel.guild ? msg.channel.guild.members.find(u => u.id === user.id) : null;
             this.buildReply(msg, user, member);
+        } else if (messageSplit.length > 0) {
+            let users = utils.searchUser(msg.channel.guild.members, messageSplit.join(' '));
+            let pick = await searcher.userSearchMenu(msg, messageSplit, this.t);
+            if (pick === -1) {
+                return msg.channel.createMessage(this.t('generic.cancelled-command', {lngs: msg.lang}));
+            }
+            if (pick === -2) {
+                return msg.channel.createMessage(this.t('search.no-results', {lngs: msg.lang}));
+            }
+            if (pick > -1) {
+                member = users[pick];
+                user = member.user;
+                this.buildReply(msg, user, member);
+            }
         } else {
             user = msg.author;
             member = msg.channel.guild ? msg.member : null;
@@ -57,6 +74,7 @@ class UserInfo extends Command {
     }
 
     buildUserInfo(msg, user, member, dbUser) {
+        moment.locale(msg.lang[0]);
         let fields = [];
         fields.push({name: this.t('user-info.id', {lngs: msg.lang}), value: user.id, inline: true});
         fields.push({name: this.t('user-info.name', {lngs: msg.lang}), value: user.username, inline: true});

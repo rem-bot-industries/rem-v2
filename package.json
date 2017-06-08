@@ -1,6 +1,6 @@
 {
   "name": "rem-v2",
-  "version": "2.5.0",
+  "version": "2.6.0-alpha2",
   "description": "uwu",
   "main": "index.js",
   "scripts": {
@@ -16,13 +16,14 @@
   },
   "author": "Wolke <wolke@ram.moe>",
   "contributors": [
-    "Dean"
+    "Dean",
+    "Veld"
   ],
   "license": "MIT",
   "dependencies": {
     "ascii-table": "0.0.9",
-    "async": "^2.4.0",
-    "axios": "^0.16.1",
+    "async": "^2.4.1",
+    "axios": "^0.16.2",
     "babel-cli": "^6.24.1",
     "babel-plugin-transform-async-to-generator": "^6.24.1",
     "babel-preset-latest": "^6.24.1",
@@ -41,10 +42,9 @@
     "lodash": "^4.17.4",
     "longjohn": "^0.2.12",
     "merge-json": "0.1.0-b.3",
-    "minami": "^1.2.3",
     "minimist": "^1.2.0",
     "moment": "^2.18.1",
-    "mongoose": "^4.10.0",
+    "mongoose": "^4.10.5",
     "node-opus": "^0.2.6",
     "node-osu": "^1.2.0",
     "raven": "^1.2.1",
@@ -60,8 +60,5 @@
     "youtube-dl": "^1.11.1",
     "ytdl-core": "^0.14.1"
   },
-  "devDependencies": {
-    "eslint": "^3.19.0",
-    "minami": "^1.1.1"
-  }
+  "devDependencies": {}
 }

@@ -7,12 +7,11 @@ class Help extends Command {
     constructor({t, mod}) {
         super();
         this.cmd = 'help';
-        this.aliases = ['commands', 'h'];
+        this.aliases = ['commands', 'h', 'cmds'];
         this.cat = 'generic';
         this.needGuild = false;
         this.t = t;
         this.accessLevel = 0;
-        this.msg = null;
         this.r = mod.getMod('raven');
         this.help = {
             short: 'help.help.short',
@@ -29,6 +28,11 @@ class Help extends Command {
                 cmd = cmd.substring(msg.prefix.length);
             }
             let command = msg.cmds[cmd];
+            if (!command) {
+                if (msg.aliases[cmd]) {
+                    command = msg.cmds[msg.aliases[cmd]];
+                }
+            }
             if (command && !command.hidden) {
                 if (command.help) {
                     return msg.channel.createMessage(this.buildCommandHelp(msg, command));
@@ -64,8 +68,8 @@ class Help extends Command {
                 prefix: msg.prefix
             }) + '\n';
         if (command.aliases.length > 0) {
-            command.aliases = command.aliases.map(a => `\`${a}\``);
-            helpMessage += this.t('help.command-aliases', {lngs: msg.lang, aliases: command.aliases.join(', ')}) + '\n';
+            let aliases = command.aliases.map(a => `\`${a}\``);
+            helpMessage += this.t('help.command-aliases', {lngs: msg.lang, aliases: aliases.join(', ')}) + '\n';
         }
         if (command.help.short) {
             helpMessage += this.t('help.command-shorthelp', {lngs: msg.lang}) + ' ' + `\`${this.t(command.help.short, {lngs: msg.lang})}\`` + '\n';
