@@ -22,6 +22,11 @@ class QueueMove extends Command {
         this.t = t;
         this.v = v;
         this.accessLevel = 0;
+        this.help = {
+            short: 'help.qm.short',
+            usage: 'help.qm.usage',
+            example: 'help.qm.example'
+        }
     }
 
     async run(msg) {
