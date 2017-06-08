@@ -10,6 +10,11 @@ class EightBall extends Command {
         this.needGuild = false;
         this.t = t;
         this.accessLevel = 0;
+        this.help = {
+            short: 'help.8ball.short',
+            usage: 'help.8ball.usage',
+            example: 'help.8ball.example'
+        }
     }
 
     run(msg) {

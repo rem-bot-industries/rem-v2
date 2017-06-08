@@ -11,6 +11,10 @@ class Support extends Command {
         this.t = t;
         this.accessLevel = 0;
         this.aliases = ['bug'];
+        this.help = {
+            short: 'help.support.short',
+            usage: 'help.support.usage'
+        }
     }
 
     run(msg) {

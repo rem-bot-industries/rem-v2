@@ -16,7 +16,8 @@
   },
   "author": "Wolke <wolke@ram.moe>",
   "contributors": [
-    "Dean"
+    "Dean",
+    "Veld"
   ],
   "license": "MIT",
   "dependencies": {

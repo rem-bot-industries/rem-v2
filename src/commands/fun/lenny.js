@@ -10,6 +10,11 @@ class Lenny extends Command {
         this.needGuild = false;
         this.t = t;
         this.accessLevel = 0;
+        this.help = {
+            short: 'help.lenny.short',
+            usage: 'help.lenny.usage',
+            example: 'help.lenny.example'
+        }
     }
 
     run(msg) {

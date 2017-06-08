@@ -11,11 +11,16 @@ class OptionsCommand extends Command {
         this.needGuild = true;
         this.t = t;
         this.sm = mod.getMod('sm');
+        this.hidden = true;
         this.help = {
             short: 'help.opts.short',
             usage: 'help.opts.usage',
             example: 'help.opts.example'
         }
+    }
+
+    run(msg) {
+
     }
 }
 module.exports = OptionsCommand;
