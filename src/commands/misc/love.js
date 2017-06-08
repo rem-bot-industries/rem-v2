@@ -27,7 +27,7 @@ class Love extends Command {
                 if (msg.mentions[0].id === msg.author.id) {
                     return msg.channel.createMessage(this.t('love.self', {lngs: msg.lang}));
                 }
-                targetMember = msg.mention[0];
+                targetMember = msg.mentions[0];
             } else if (msgSplit.length > 0) {
                 let msgSplitFilter = msgSplit.filter((m) => m !== '-');
                 let users = utils.searchUser(msg.channel.guild.members, msgSplitFilter.join(' '));
