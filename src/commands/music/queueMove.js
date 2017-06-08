@@ -22,7 +22,6 @@ class QueueMove extends Command {
         this.t = t;
         this.v = v;
         this.accessLevel = 0;
-        this.hidden = true;
     }
 
     async run(msg) {
