@@ -21,7 +21,7 @@ class AddPermission extends Command {
     async run(msg) {
         let messageSplit = msg.content.split(' ').splice(1);
         if (messageSplit.length === 0) {
-            //TODO Write interactive setup and return
+            return msg.channel.createMessage(this.t('ap.missing-args', {lngs: msg.lang, prefix: msg.prefix}));
         } else {
             let categories = utils.getCategoriesFromCommands(msg.cmds, true);
             let args = argParser.parse(messageSplit);
@@ -191,8 +191,8 @@ class AddPermission extends Command {
                 throw new TranslatableError({t: 'search.no-results', message: 'No matching members could be found'})
             }
             if (pick > -1) {
-                let targetRole = users[pick];
-                return {type: 'user', id: targetRole.id};
+                let targetUser = users[pick];
+                return {type: 'user', id: targetUser.id};
             }
         }
     }

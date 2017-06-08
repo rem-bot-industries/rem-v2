@@ -14,7 +14,8 @@ class Shrug extends Command {
 
     run(msg) {
         // this.emit('run');
-        msg.channel.createMessage('\u200B' + '¯\\_(ツ)_/¯');
+        let content = msg.content.split(' ').splice(1).join(' ').trim();
+        msg.channel.createMessage('\u200B' + content + (content !== '' ? ' ' : '') + '¯\\_(ツ)_/¯');
     }
 }
 module.exports = Shrug;

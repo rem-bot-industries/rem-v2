@@ -74,6 +74,7 @@ class UserInfo extends Command {
     }
 
     buildUserInfo(msg, user, member, dbUser) {
+        moment.locale(msg.lang[0]);
         let fields = [];
         fields.push({name: this.t('user-info.id', {lngs: msg.lang}), value: user.id, inline: true});
         fields.push({name: this.t('user-info.name', {lngs: msg.lang}), value: user.username, inline: true});

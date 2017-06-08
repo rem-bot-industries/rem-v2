@@ -11,7 +11,7 @@ class Invite extends Command {
         this.needGuild = false;
         this.t = t;
         this.accessLevel = 0;
-        this.aliases = ['invite'];
+        this.aliases = ['add'];
         this.help = {
             short: 'help.add.short'
         }

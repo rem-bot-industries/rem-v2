@@ -5,6 +5,7 @@ let Command = require('../../structures/command');
 let axios = require('axios');
 let winston = require('winston');
 const Selector = require('../../structures/selector');
+const Menu = require('../../structures/menu');
 class MangaSearch extends Command {
     constructor({t}) {
         super();
@@ -39,18 +40,18 @@ class MangaSearch extends Command {
                 let embed = this.buildResponse(msg, mangaRequest.data[0], characters);
                 return msg.channel.createMessage(embed);
             } else if (mangaRequest.data.length > 1) {
-                let selector = new Selector(msg, mangaRequest.data.map(a => {
-                    return {title: a.title_english !== a.title_romaji ? `${a.title_romaji} | ${a.title_english}` : a.title_romaji}
-                }).slice(0, 8), this.t, (async (err, number) => {
-                    if (err) {
-                        console.error(err);
-                        return msg.channel.createMessage(this.t(err, {lngs: msg.lang}));
-                    }
-                    let manga = mangaRequest.data[number - 1];
+                let pick = await new Menu(this.t('search.anime', {lngs: msg.lang}), this.t('menu.guide', {lngs: msg.lang}), mangaRequest.data.map(m => {
+                    return (m.title_english !== m.title_romaji ? `${m.title_romaji} | ${m.title_english}` : m.title_romaji)
+                }).slice(0, 10), this.t, msg);
+                if (pick === -1) {
+                    return msg.channel.createMessage(this.t('generic.cancelled-command', {lngs: msg.lang}));
+                }
+                if (pick > -1) {
+                    let manga = mangaRequest.data[pick];
                     let characters = await this.loadCharacters(manga.id, accessToken);
                     let embed = this.buildResponse(msg, manga, characters);
                     return msg.channel.createMessage(embed);
-                }));
+                }
             } else {
                 return msg.channel.createMessage(this.t('define.no-result', {lngs: msg.lang, term: searchQuery}));
             }
@@ -73,6 +74,10 @@ class MangaSearch extends Command {
         description = description.replace(/\n|\\n/g, '');
         description = description.replace(/&mdash;/g, '');
         description = description.split('.').join('.\n\n');
+        if (description.length > 1024) {
+            description = description.substring(0, 1020);
+            description += '...';
+        }
         let mainCharacters = characters.filter((c) => {
             return c.role === 'Main';
         });

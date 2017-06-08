@@ -4,7 +4,6 @@
 let Command = require('../../structures/command');
 let winston = require('winston');
 let Selector = require('../../structures/selector');
-let _ = require('lodash');
 let track_error = !remConfig.no_error_tracking;
 /**
  * The play command
@@ -40,7 +39,7 @@ class Play extends Command {
         try {
             let res = await this.v.addToQueue(msg, !next, next);
             if (Object.prototype.toString.call(res) === '[object Array]') {
-                return this.searchResult(msg, res);
+                return this.searchResult(msg, res, next);
             } else {
                 if (next) return msg.channel.createMessage(this.t('play.next', {
                     song: res.title,
@@ -74,9 +73,9 @@ class Play extends Command {
 
     checkNext(msgSplit) {
         let next = false;
-        let index = _.indexOf(msgSplit, '-next');
+        let index = msgSplit.indexOf('-next');
         if (index > -1) {
-            _.pull(msgSplit, '-next');
+            msgSplit.splice(index, 1);
             next = true;
         }
         return {next, msgSplit};

@@ -68,8 +68,8 @@ class Help extends Command {
                 prefix: msg.prefix
             }) + '\n';
         if (command.aliases.length > 0) {
-            command.aliases = command.aliases.map(a => `\`${a}\``);
-            helpMessage += this.t('help.command-aliases', {lngs: msg.lang, aliases: command.aliases.join(', ')}) + '\n';
+            let aliases = command.aliases.map(a => `\`${a}\``);
+            helpMessage += this.t('help.command-aliases', {lngs: msg.lang, aliases: aliases.join(', ')}) + '\n';
         }
         if (command.help.short) {
             helpMessage += this.t('help.command-shorthelp', {lngs: msg.lang}) + ' ' + `\`${this.t(command.help.short, {lngs: msg.lang})}\`` + '\n';

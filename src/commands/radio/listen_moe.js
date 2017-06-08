@@ -47,20 +47,27 @@ class AddToQueue extends Command {
             wsUrl: 'wss://listen.moe/api/v2/socket',
             radio: 'listen.moe'
         });
-        let res = await this.v.addRadioToQueue(msg, radio, options.instant, options.next);
-        if (options.next) return msg.channel.createMessage(this.t('play.next', {
-            song: res.title,
-            lngs: msg.lang,
-            user: `${msg.author.username}#${msg.author.discriminator}`
-        }));
-        if (options.instant) {
-            return msg.channel.createMessage(this.t('play.success', {
+        try {
+            let res = await this.v.addRadioToQueue(msg, radio, options.instant, options.next);
+            if (options.next) return msg.channel.createMessage(this.t('play.next', {
                 song: res.title,
                 lngs: msg.lang,
                 user: `${msg.author.username}#${msg.author.discriminator}`
             }));
+            if (options.instant) {
+                return msg.channel.createMessage(this.t('play.success', {
+                    song: res.title,
+                    lngs: msg.lang,
+                    user: `${msg.author.username}#${msg.author.discriminator}`
+                }));
+            }
+            msg.channel.createMessage(this.t('qa.success', {song: res.title, lngs: msg.lang, user: res.queuedBy}));
+        } catch (e) {
+            if (e.t) {
+                return msg.channel.createMessage(this.t(e.t, {lngs: msg.lang}));
+            }
+            return msg.channel.createMessage(this.t('generic.error', {lngs: msg.lang}))
         }
-        msg.channel.createMessage(this.t('qa.success', {song: res.title, lngs: msg.lang}));
     }
 
     checkOptions(msgSplit) {

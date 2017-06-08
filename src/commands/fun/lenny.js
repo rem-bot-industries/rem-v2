@@ -14,7 +14,8 @@ class Lenny extends Command {
 
     run(msg) {
         // this.emit('run');
-        msg.channel.createMessage('\u200B' + '( ͡° ͜ʖ ͡°)');
+        let content = msg.content.split(' ').splice(1).join(' ').trim();
+        msg.channel.createMessage('\u200B' + content + (content !== '' ? ' ' : '') + '( ͡° ͜ʖ ͡°)');
     }
 }
 module.exports = Lenny;

@@ -50,7 +50,11 @@ class Player extends EventEmitter {
                 case SongTypes.youtube: {
                     if (Song.isOpus) {
                         if (!rem.options.crystal) {
-                            link = new WolkeStream(Song.streamUrl);
+                            try {
+                                link = new WolkeStream(Song.streamUrl);
+                            } catch (e) {
+
+                            }
                         } else {
                             link = Song.streamUrl;
                         }
@@ -164,6 +168,9 @@ class Player extends EventEmitter {
      * @param next - if the song should be enqueued to the 2nd position
      */
     addToQueue(Song, immediate, next) {
+        if (!Song || Song === undefined) {
+            return this.queue;
+        }
         if (this.queue.repeat !== 'queue') {
             this.toggleRepeat('off');
         }
