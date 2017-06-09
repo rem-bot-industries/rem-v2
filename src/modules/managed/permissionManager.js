@@ -6,7 +6,6 @@ let winston = require('winston');
 let async = require('async');
 let config = remConfig;
 let util = require('util');
-let _ = require('lodash');
 const defaultPerms = [
     {type: 'guild', id: '228604101800230912', cat: 'fun', perm: '*', use: true},
     {type: 'guild', id: '228604101800230912', cat: 'eastereggs', perm: '*', use: true},
@@ -52,6 +51,7 @@ class PermissionManager {
             if (!res) {
                 throw new Error('Missing Permissions');
             }
+
         }
     }
 
@@ -76,8 +76,9 @@ class PermissionManager {
      */
     buildPermTree(Perms) {
         let tree = {channel: {}, user: {}, role: {}};
+        // console.log(Perms);
         Perms.forEach(Perm => {
-            switch (Perm) {
+            switch (Perm.type) {
                 case 'guild':
                     if (!tree[Perm.cat]) {
                         tree[Perm.cat] = {};
@@ -134,11 +135,13 @@ class PermissionManager {
     }
 
     checkTree(tree) {
+        // console.log(tree);
         let finalPerms = {user: true, role: true, channel: true, guild: true};
         finalPerms.user = this.uwu(tree.user);
         finalPerms.role = this.uwu(tree.role);
         finalPerms.channel = this.uwu(tree.channel);
         finalPerms.guild = this.uwu(tree);
+        // console.log(finalPerms);
         return this.owo(finalPerms);
     }
 
@@ -179,6 +182,7 @@ class PermissionManager {
     }
 
     uwu(tree) {
+        // console.log(tree);
         // this.msg.channel.sendCode('json', JSON.stringify(tree));
         if (tree[this.cat] || tree['*']) {
             if (tree[this.cat]) {
