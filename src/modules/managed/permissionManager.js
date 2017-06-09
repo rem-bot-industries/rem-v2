@@ -47,7 +47,11 @@ class PermissionManager {
             if (this.checkDiscordRoles(msg)) {
                 return;
             }
-            await this.loadPermission(msg);
+            let res = await this.loadPermission(msg);
+            console.log(res);
+            if (!res) {
+                throw new Error('Missing Permissions');
+            }
         }
     }
 

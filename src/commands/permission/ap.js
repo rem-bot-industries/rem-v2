@@ -55,7 +55,7 @@ class AddPermission extends Command {
                     if (e.message === 'add_defaults') {
                         let defaultPerms = this.p.getDefaultPerms();
                         let permString = defaultPerms.map(p => {
-                            return `${p.cat}.${p.perm}`
+                            return `${p.cat}.${p.perm} (${p.use})`
                         }).join('\n');
                         let permQuestion = this.t('ap.add-defaults', {lngs: msg.lang, perm_list: permString});
                         permQuestion += '\n' + this.t('menu.yes-no-question', {lngs: msg.lang});
@@ -305,11 +305,18 @@ class AddPermission extends Command {
                     res.permNode = `${cmd.cat}.${cmd.cmd}`;
                     return res;
                 }
+                if (nodeSplit[0] === '*' && nodeSplit[1] === '*') {
+                    res.args._.splice(i, 1);
+                    res.permNode = "*.*";
+                    return res;
+                }
             } else {
                 if (nodeSplit.length === 1) {
                     permNode = nodeSplit[0];
                     if (permNode === "*") {
-                        permNode = "*.*";
+                        res.args._.splice(i, 1);
+                        res.permNode = "*.*";
+                        return res;
                     }
                     if (permNode.startsWith(prefix)) {
                         let cmd = cmds[permNode.substring(prefix.length)];
