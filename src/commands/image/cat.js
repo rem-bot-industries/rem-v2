@@ -3,7 +3,7 @@
  */
 let Command = require('../../structures/command');
 let winston = require('winston');
-let request = require('request');
+let axios = require('axios');
 class Cat extends Command {
     constructor({t}) {
         super();
@@ -14,13 +14,15 @@ class Cat extends Command {
         this.accessLevel = 0;
     }
 
-    run(msg) {
-        request.get('http://random.cat/meow', (err, response, body) => {
-            if (err) return winston.info(err);
-            let parsedBody = JSON.parse(body);
-            let url = parsedBody.file.replace('\\', 'g');
+    async run(msg) {
+        try {
+            let req = await axios.get('http://random.cat/meow');
+            let url = req.data.file.replace('\\', 'g');
             msg.channel.createMessage(url);
-        });
+        } catch (e) {
+            winston.error(e);
+            msg.channel.createMessage(this.t('generic.error', {lngs: msg.lang}));
+        }
     }
 }
 module.exports = Cat;

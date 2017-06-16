@@ -70,10 +70,10 @@ class AnimeSearch extends Command {
         let info = data.info.replace(/<br>/g, '');
         info = info.replace(/\n|\\n/g, '');
         info = info.replace(/&mdash;/g, '');
+        info = info.replace(/&#039;/g, '');
         info = info.split('.').join('.\n\n');
         if (info.indexOf('~!') > -1 && info.indexOf('!~') > 1) {
-            let info1 = info.substring(0, info.indexOf('~!') - 1);
-            info = info1.concat(info.substring(info.indexOf('!~') + 2));
+            info = this.filterSpoilers(info);
         }
         if (info.length > 1024) {
             info = info.substring(0, 1020);
@@ -91,6 +91,15 @@ class AnimeSearch extends Command {
                 }
             }
         };
+    }
+
+    filterSpoilers(info) {
+        let info1 = info.substring(0, info.indexOf('~!') - 1);
+        info = info1.concat(info.substring(info.indexOf('!~') + 2));
+        if (info.indexOf('~!') > -1 && info.indexOf('!~') > 1) {
+            return this.filterSpoilers(info);
+        }
+        return info;
     }
 }
 module.exports = AnimeSearch;

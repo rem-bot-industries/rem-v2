@@ -12,6 +12,11 @@ class Ship extends Command {
         this.cmd = 'ship';
         this.needGuild = true;
         this.t = t;
+        this.help = {
+            short: 'help.ship.short',
+            usage: 'help.ship.usage',
+            example: 'help.ship.example'
+        }
     }
 
     async run(msg) {

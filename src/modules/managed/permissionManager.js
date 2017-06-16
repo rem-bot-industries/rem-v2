@@ -13,7 +13,7 @@ const defaultPerms = [
     {type: 'guild', id: '228604101800230912', cat: 'misc', perm: '*', use: true},
     {type: 'guild', id: '228604101800230912', cat: 'image', perm: '*', use: true},
     {type: 'guild', id: '228604101800230912', cat: 'music', perm: '*', use: true},
-    {type: 'guild', id: '228604101800230912', cat: 'music', perm: 'fskip', use: false},
+    {type: 'guild', id: '228604101800230912', cat: 'music', perm: 'fskip', use: false}
 ];
 /**
  * The permission manager, it loads all permissions from the database and builds the permission tree

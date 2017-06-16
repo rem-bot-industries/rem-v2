@@ -13,21 +13,24 @@ class ResetPermissions extends Command {
         this.p = mod.getMod('pm');
     }
 
-    run(msg) {
-        msg.channel.createMessage(this.t('reset-perms.confirmation', {lngs: msg.lang}));
+    async run(msg) {
+        await msg.channel.createMessage(this.t('reset-perms.confirmation', {lngs: msg.lang}));
         let collector = msg.CON.addCollector(msg.channel.id, {
             filter: (conMsg) => {
                 return (msg.author.id === conMsg.author.id);
             }
         });
-        collector.on('message', (msg) => {
+        collector.on('message', async (msg) => {
             collector.stop();
             switch (msg.content) {
                 case 'yes': {
-                    this.p.resetDbPerm(msg.channel.guild.id, (err) => {
-                        if (err) return msg.channel.createMessage(this.t(err.t, {lngs: msg.lang}));
-                        msg.channel.createMessage(this.t('reset-perms.success', {lngs: msg.lang}));
-                    });
+                    try {
+                        await this.p.resetDbPerm(msg.channel.guild.id);
+                    }
+                    catch (e) {
+                        return msg.channel.createMessage(this.t(e.t, {lngs: msg.lang}));
+                    }
+                    msg.channel.createMessage(this.t('reset-perms.success', {lngs: msg.lang}));
                     return;
                 }
                 case 'no': {

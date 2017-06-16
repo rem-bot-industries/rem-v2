@@ -61,7 +61,7 @@ class Queue extends Command {
                 duration: Queue.songs[0].duration,
                 current: Queue.time,
                 interpolation: {escape: false},
-                user: `${msg.author.username}#${msg.author.discriminator}`
+                user: Queue.songs[0].queuedBy ? Queue.songs[0].queuedBy : '-'
             })} \n`;
         } else {
             reply = `${this.t('np.song', {
@@ -69,7 +69,7 @@ class Queue extends Command {
                 title: Queue.songs[0].title,
                 repeat: repeat,
                 interpolation: {escape: false},
-                user: `${msg.author.username}#${msg.author.discriminator}`
+                user: Queue.songs[0].queuedBy ? Queue.songs[0].queuedBy : '-'
             })}\n`;
         }
         if (Queue.songs.length > 1) {
@@ -89,7 +89,7 @@ class Queue extends Command {
                 reply += ' ';
                 reply += this.t('queue.by', {
                     lngs: msg.lang,
-                    user: `${msg.author.username}#${msg.author.discriminator}`
+                    user: Queue.songs[q].queuedBy ? Queue.songs[q].queuedBy : '-'
                 });
             }
             reply += '\n';

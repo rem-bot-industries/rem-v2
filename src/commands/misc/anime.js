@@ -72,6 +72,7 @@ class AnimeSearch extends Command {
         let description = data.description.replace(/<br>/g, '');
         description = description.replace(/\n|\\n/g, '');
         description = description.replace(/&mdash;/g, '');
+        description = description.replace(/&#039;/g, '');
         description = description.split('.').join('.\n\n');
         if (description.length > 1024) {
             description = description.substring(0, 1020);

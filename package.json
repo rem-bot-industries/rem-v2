@@ -1,6 +1,6 @@
 {
   "name": "rem-v2",
-  "version": "2.6.0-alpha2",
+  "version": "2.6.0-beta2",
   "description": "uwu",
   "main": "index.js",
   "scripts": {
@@ -44,7 +44,7 @@
     "merge-json": "0.1.0-b.3",
     "minimist": "^1.2.0",
     "moment": "^2.18.1",
-    "mongoose": "^4.10.5",
+    "mongoose": "^4.10.6",
     "node-opus": "^0.2.6",
     "node-osu": "^1.2.0",
     "raven": "^1.2.1",
@@ -58,7 +58,7 @@
     "winston-daily-rotate-file": "^1.4.6",
     "ws": "^2.3.1",
     "youtube-dl": "^1.11.1",
-    "ytdl-core": "^0.14.1"
+    "ytdl-core": "^0.14.4"
   },
   "devDependencies": {}
 }

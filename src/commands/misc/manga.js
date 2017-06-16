@@ -4,7 +4,6 @@
 let Command = require('../../structures/command');
 let axios = require('axios');
 let winston = require('winston');
-const Selector = require('../../structures/selector');
 const Menu = require('../../structures/menu');
 class MangaSearch extends Command {
     constructor({t}) {
@@ -73,6 +72,7 @@ class MangaSearch extends Command {
         let description = data.description.replace(/<br>/g, '');
         description = description.replace(/\n|\\n/g, '');
         description = description.replace(/&mdash;/g, '');
+        description = description.replace(/&#039;/g, '');
         description = description.split('.').join('.\n\n');
         if (description.length > 1024) {
             description = description.substring(0, 1020);
