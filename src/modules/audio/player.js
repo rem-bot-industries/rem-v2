@@ -330,9 +330,13 @@ class Player extends EventEmitter {
      */
     getQueue() {
         if (this.connection.current || this.connection.timestamp) {
-            let time;
+            let time = 0;
             if (!this.connection.current) {
-                time = this.connection.getTimestamp();
+                try {
+                    time = this.connection.getTimestamp();
+                } catch (e) {
+
+                }
             } else {
                 time = this.connection.current.playTime;
             }

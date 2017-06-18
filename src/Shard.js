@@ -111,7 +111,7 @@ class Shard {
                     host: remConfig.redis_voice_hostname,
                     password: remConfig.redis_voice_auth ? remConfig.redis_voice_auth : ''
                 },
-                userID: remConfig.client_id
+                userID: remConfig.bot_id
             }, parseInt(this.id));
         }
         this.bot = bot;
