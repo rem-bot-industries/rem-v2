@@ -65,9 +65,8 @@ class Shard {
             Promise.promisifyAll(redis.Multi.prototype);
         }
         let redisClient = redis.createClient({
-            port: remConfig.redis_voice_port,
-            host: remConfig.redis_voice_hostname,
-            password: remConfig.redis_voice_auth ? remConfig.redis_voice_auth : ''
+            port: remConfig.redis_port,
+            host: remConfig.redis_hostname
         });
         redisClient.select(remConfig.redis_database);
         redisClient.on("error", (err) => {
@@ -107,10 +106,13 @@ class Shard {
         // console.log('Created bot');
         if (useCrystal) {
             bot.voiceConnections = new VoiceConnectionManager({
-                port: 6379,
-                host: '127.0.0.1',
+                redis: {
+                    port: remConfig.redis_voice_port,
+                    host: remConfig.redis_voice_hostname,
+                    password: remConfig.redis_voice_auth ? remConfig.redis_voice_auth : ''
+                },
                 userID: remConfig.client_id
-            }, 0);
+            }, parseInt(this.id));
         }
         this.bot = bot;
         global.rem = bot;
