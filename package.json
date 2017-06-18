@@ -60,5 +60,8 @@
     "youtube-dl": "^1.11.1",
     "ytdl-core": "^0.14.4"
   },
-  "devDependencies": {}
+  "devDependencies": {},
+  "optionalDependencies": {
+    "eris-novum": "git+https://git.dvguild.tk/briantanner/eris-novum.git"
+  }
 }

@@ -60,8 +60,10 @@ class Shard {
         if (this.SHARDED) {
             this.HUB.updateState('init');
         }
-        Promise.promisifyAll(redis.RedisClient.prototype);
-        Promise.promisifyAll(redis.Multi.prototype);
+        if (!remConfig.use_crystal) {
+            Promise.promisifyAll(redis.RedisClient.prototype);
+            Promise.promisifyAll(redis.Multi.prototype);
+        }
         let redisClient = redis.createClient({
             port: remConfig.redis_voice_port,
             host: remConfig.redis_voice_hostname,
