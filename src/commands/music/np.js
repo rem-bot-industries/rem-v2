@@ -57,7 +57,7 @@ class NowPlaying extends Command {
                     duration: Queue.songs[0].duration,
                     current: Queue.time,
                     interpolation: {escape: false},
-                    user: `${msg.author.username}#${msg.author.discriminator}`
+                    user: Queue.songs[0].queuedBy ? Queue.songs[0].queuedBy : '-'
                 })} \n`;
         } else {
             reply = reply + `${this.t('np.song', {
@@ -65,7 +65,7 @@ class NowPlaying extends Command {
                     title: Queue.songs[0].title,
                     repeat: repeat,
                     interpolation: {escape: false},
-                    user: `${msg.author.username}#${msg.author.discriminator}`
+                    user: Queue.songs[0].queuedBy ? Queue.songs[0].queuedBy : '-'
                 })}\n`;
         }
         return reply;

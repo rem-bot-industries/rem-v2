@@ -26,8 +26,16 @@ class Voice extends Command {
 
     async run(msg) {
         try {
-            await this.v.join(msg);
-            msg.channel.createMessage(`${msg.author.mention}, ${this.t('joinVoice.join', {lngs: msg.lang})}`);
+            let player = await this.v.join(msg);
+            let conn = player.connection;
+            let node = player.connection.region ? `${player.connection.region}:${player.connection.nodeID}` : '';
+            if (node !== '') {
+                return msg.channel.createMessage(this.t('joinVoice.join_region', {
+                    lngs: msg.lang,
+                    node
+                }));
+            }
+            msg.channel.createMessage(this.t('joinVoice.join', {lngs: msg.lang}));
         } catch (err) {
             console.error(err);
             msg.channel.createMessage(this.t(err instanceof TranslatableError ? err.t : 'generic.error', {lngs: msg.lang}));

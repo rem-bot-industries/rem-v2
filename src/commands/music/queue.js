@@ -77,7 +77,7 @@ class Queue extends Command {
         }
         for (let q = 1; q < Queue.songs.length; q++) {
             if (!Queue.songs[q]) continue;
-            if ((reply.length + Queue.songs[q].title.length) > 1970) { // Discord 2000 char limit
+            if ((reply.length + Queue.songs[q].title.length) > 1800) { // Discord 2000 char limit
                 reply += `... +${Queue.songs.length - q}`;
                 break;
             }

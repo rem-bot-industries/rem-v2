@@ -165,7 +165,7 @@ class VoiceManager {
                         }
                         player.setQueueSongs(queue.songs);
                         await this.writeQueueToCache(msg.channel.guild.id, queue);
-                        return Promise.resolve({t: 'qra.success', number: secondCounter - counter});
+                        return Promise.resolve({t: 'qra.success', number: secondCounter + 1 - counter});
                     } else {
                         throw new TranslatableError({t: 'generic.nan'});
                     }

@@ -3,7 +3,7 @@
  */
 //uwu
 const winston = require('winston');
-let useCrystal = false;
+let useCrystal = remConfig.use_crystal;
 // let Crystal;
 // try {
 //     Crystal = require("eris-crystal");
@@ -11,6 +11,10 @@ let useCrystal = false;
 // } catch (e) {
 //
 // }
+let VoiceConnectionManager;
+if (useCrystal) {
+    VoiceConnectionManager = require('eris-novum').VoiceConnectionManager;
+}
 let Eris = require('eris');
 const StatsD = require('hot-shots');
 const dogstatsd = new StatsD({host: remConfig.statsd_host});
@@ -58,7 +62,11 @@ class Shard {
         }
         Promise.promisifyAll(redis.RedisClient.prototype);
         Promise.promisifyAll(redis.Multi.prototype);
-        let redisClient = redis.createClient({port: 6379, host: remConfig.redis_hostname});
+        let redisClient = redis.createClient({
+            port: remConfig.redis_voice_port,
+            host: remConfig.redis_voice_hostname,
+            password: remConfig.redis_voice_auth ? remConfig.redis_voice_auth : ''
+        });
         redisClient.select(remConfig.redis_database);
         redisClient.on("error", (err) => {
             console.log("Error " + err);
@@ -89,14 +97,19 @@ class Shard {
                 'GUILD_MEMBER_SPEAKING': true,
                 'MESSAGE_UPDATE': true,
                 'MESSAGE_DELETE': true
-            }
+            },
+            crystal: useCrystal
         };
         winston.info(options);
         let bot = new Eris(remConfig.token, options);
         // console.log('Created bot');
-        // if (useCrystal) {
-        //     bot.voiceConnections = new Crystal.ErisClient();
-        // }
+        if (useCrystal) {
+            bot.voiceConnections = new VoiceConnectionManager({
+                port: 6379,
+                host: '127.0.0.1',
+                userID: remConfig.client_id
+            }, 0);
+        }
         this.bot = bot;
         global.rem = bot;
         blocked((ms) => {
