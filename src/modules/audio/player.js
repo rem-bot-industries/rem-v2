@@ -127,18 +127,21 @@ class Player extends EventEmitter {
             }
             this.connection.play(link, options);
             this.announce(Song);
+            // winston.info("added listener");
+            // console.log(this.connection.listeners('end').length);
             this.connection.once('end', () => {
                 winston.info("File ended!");
+                // console.log(this.connection.listeners('end'));
                 this.connection.removeAllListeners();
-                setTimeout(() => {
-                    this.nextSong(Song);
-                }, 100);
+                // console.log(this.connection.listeners('end'));
+                this.nextSong(Song);
             });
             this.connection.once('error', (err) => {
                 winston.error(`Connection error: ${err}`);
                 this.toggleRepeat('off');
                 this.nextSong(Song);
             });
+
         }
         else {
             setTimeout(() => {
@@ -279,7 +282,7 @@ class Player extends EventEmitter {
                             let queuedBy = this.queue.songs[0].queuedBy ? this.queue.songs[0].queuedBy : '-';
                             this.queue.songs[0] = await ytr.resolve(newSong.url);
                             this.queue.songs[0].queuedBy = queuedBy;
-                            this.endSong();
+                            await this.endSong();
                             this.play(this.queue.songs[0]);
                             return song;
                         } catch (e) {
@@ -287,7 +290,7 @@ class Player extends EventEmitter {
                             this.nextSong(newSong);
                         }
                     } else {
-                        this.endSong();
+                        await this.endSong();
                         this.play(this.queue.songs[0]);
                         return song;
                     }
