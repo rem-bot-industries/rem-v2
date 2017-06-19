@@ -62,8 +62,12 @@ class Shard {
             this.HUB.updateState('init');
         }
         // if (!remConfig.use_crystal) {
+        try {
             Promise.promisifyAll(redis.RedisClient.prototype);
             Promise.promisifyAll(redis.Multi.prototype);
+        } catch (e) {
+
+        }
         // }
         let redisClient = redis.createClient({
             port: remConfig.redis_port,
