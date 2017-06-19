@@ -140,7 +140,6 @@ class Player extends EventEmitter {
                 this.nextSong(Song);
             });
         }
-
         else {
             setTimeout(() => {
                 // console.log('TIMEOUT!');
@@ -280,7 +279,7 @@ class Player extends EventEmitter {
                             let queuedBy = this.queue.songs[0].queuedBy ? this.queue.songs[0].queuedBy : '-';
                             this.queue.songs[0] = await ytr.resolve(newSong.url);
                             this.queue.songs[0].queuedBy = queuedBy;
-                            await this.endSong();
+                            this.endSong();
                             this.play(this.queue.songs[0]);
                             return song;
                         } catch (e) {
@@ -288,7 +287,7 @@ class Player extends EventEmitter {
                             this.nextSong(newSong);
                         }
                     } else {
-                        await this.endSong();
+                        this.endSong();
                         this.play(this.queue.songs[0]);
                         return song;
                     }
