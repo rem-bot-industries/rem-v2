@@ -50,7 +50,7 @@ class Player extends EventEmitter {
                 case SongTypes.youtube: {
                     options.resolve = true;
                     if (Song.isOpus) {
-                        if (!rem.options.crystal) {
+                        if (!remConfig.use_crystal) {
                             try {
                                 link = new WolkeStream(Song.streamUrl);
                             } catch (e) {
@@ -62,7 +62,7 @@ class Player extends EventEmitter {
                         options.format = 'webm';
                         options.frameDuration = 20;
                     } else {
-                        if (!rem.options.crystal) {
+                        if (remConfig.use_crystal) {
                             link = Song.url;
                         } else {
                             link = Song.streamUrl;
@@ -73,7 +73,12 @@ class Player extends EventEmitter {
                     break;
                 }
                 case SongTypes.youtube_live: {
-                    link = Song.streamUrl;
+                    options.resolve = true;
+                    if (remConfig.use_crystal) {
+                        link = Song.url;
+                    } else {
+                        link = Song.streamUrl;
+                    }
                     options.inputArgs = ["-reconnect", "1", "-reconnect_streamed", "1", "-reconnect_delay_max", "2"];
                     break;
                 }

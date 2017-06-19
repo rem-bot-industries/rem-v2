@@ -134,7 +134,7 @@ class BotInfo extends Command {
         });
         fields.push({
             name: this.t('bot-info.top_donators', {lngs: msg.lang}),
-            value: `**Karen#3938** 95$/m \n**ResurrectionHQ#3061** 50$\n**Hulkerman#0140** 108€`,
+            value: `\`Karen#3938\` \`95$/m\`\n\`ResurrectionHQ#3061\` \`50$/m\`\n\`Hulkerman#0140\` \`108€\``,
             inline: true
         });
         return fields;

@@ -14,6 +14,7 @@ let useCrystal = remConfig.use_crystal;
 let VoiceConnectionManager;
 if (useCrystal) {
     VoiceConnectionManager = require('eris-novum').VoiceConnectionManager;
+    // VoiceConnectionManager = require('../../../Rem NEXT/voice/eris-novum/src/exports').VoiceConnectionManager;
 }
 let Eris = require('eris');
 const StatsD = require('hot-shots');
@@ -60,10 +61,10 @@ class Shard {
         if (this.SHARDED) {
             this.HUB.updateState('init');
         }
-        if (!remConfig.use_crystal) {
+        // if (!remConfig.use_crystal) {
             Promise.promisifyAll(redis.RedisClient.prototype);
             Promise.promisifyAll(redis.Multi.prototype);
-        }
+        // }
         let redisClient = redis.createClient({
             port: remConfig.redis_port,
             host: remConfig.redis_hostname
