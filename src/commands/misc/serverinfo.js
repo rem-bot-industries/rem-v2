@@ -25,8 +25,7 @@ class ServerInfo extends Command {
          */
 
             // let avatar = msg.channel.guild.iconURL;
-        let avatar = msg.channel.guild.iconURL.substring(0, msg.channel.guild.iconURL.length - 3);
-        avatar += "webp";
+        let avatar = msg.channel.guild.iconURL ? msg.channel.guild.iconURL.substring(0, msg.channel.guild.iconURL.length - 3) + "webp" : '';
         try {
             let reply = {
                 embed: {

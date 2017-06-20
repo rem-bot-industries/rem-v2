@@ -51,6 +51,9 @@ class UserInfo extends Command {
         let avatar = user.avatar ? (user.avatar.startsWith('a_') ? `​https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.gif` : `​https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.webp`) : user.defaultAvatarURL;
         avatar = avatar.replace(/[^a-zA-Z0-9_\-./:]/, '');
         avatar += '?size=1024';
+        if (user.avatar.startsWith('a_')) {
+            avatar += '&f=.gif';
+        }
         try {
             let dbUser = await this.u.loadUser(user);
             let reply = {
