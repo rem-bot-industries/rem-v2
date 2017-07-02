@@ -39,7 +39,7 @@ class Help extends Command {
                 } else {
                     return msg.channel.createMessage(this.t('help.command-no-detail', {
                         lngs: msg.lang,
-                        legacy_help: this.t(`help.${cmd}`, {lngs: msg.lang})
+                        legacy_help: this.t(`help.${command.cmd}`, {lngs: msg.lang})
                     }));
                 }
             } else {

@@ -28,6 +28,7 @@ class AddPlaylistToQueue extends Command {
 
     async run (msg) {
         msg.content = msg.content.split(' ').splice(1).join(' ');
+        msg.content = msg.content.trim();
         if (msg.content === '') {
             return msg.channel.createMessage(this.t('generic.empty-search', {lngs: msg.lang}));
         }

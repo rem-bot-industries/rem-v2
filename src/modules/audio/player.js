@@ -254,7 +254,7 @@ class Player extends EventEmitter {
                                 await this.endSong();
                                 this.play(this.queue.songs[0]);
                             } catch (e) {
-                                winston.error(err);
+                                winston.error(e);
                                 this.nextSong(song);
                             }
                         } else {
