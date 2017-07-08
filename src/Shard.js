@@ -4,13 +4,6 @@
 //uwu
 const winston = require('winston');
 let useCrystal = remConfig.use_crystal;
-// let Crystal;
-// try {
-//     Crystal = require("eris-crystal");
-//     useCrystal = true;
-// } catch (e) {
-//
-// }
 let VoiceConnectionManager;
 if (useCrystal) {
     VoiceConnectionManager = require('eris-novum').VoiceConnectionManager;

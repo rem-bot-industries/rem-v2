@@ -1,6 +1,6 @@
 {
   "name": "rem-v2",
-  "version": "2.6.0-beta3",
+  "version": "2.7.0-rc",
   "description": "uwu",
   "main": "index.js",
   "scripts": {
@@ -35,7 +35,7 @@
     "erlpack": "github:hammerandchisel/erlpack",
     "eventemitter3": "^2.0.3",
     "hot-shots": "^4.5.0",
-    "i18next": "^8.4.2",
+    "i18next": "^8.4.3",
     "i18next-node-fs-backend": "^1.0.0",
     "icy": "^2.1.0",
     "knuth-shuffle": "^1.0.1",
@@ -44,7 +44,7 @@
     "merge-json": "0.1.0-b.3",
     "minimist": "^1.2.0",
     "moment": "^2.18.1",
-    "mongoose": "^4.11.0",
+    "mongoose": "^4.11.1",
     "node-opus": "^0.2.6",
     "node-osu": "^1.2.0",
     "raven": "^2.1.0",

@@ -76,7 +76,7 @@ class Softban extends Command {
                 continue;
             }
 
-            //if there was no mention found so far, check
+            //if there was no mention found so far, check the string itself
             if (!target) {
                 let index = msgSplit.indexOf('-r');
                 let user;
@@ -136,7 +136,7 @@ class Softban extends Command {
                 user: utils.getMemberNameDiscrim(target)
             }));
         }
-        //actually softbanban the user
+        //actually softban the user
         try {
             await target.ban(deleteDays, reason);
             try {
