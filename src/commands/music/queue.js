@@ -50,8 +50,8 @@ class Queue extends Command {
         let reply;
         winston.debug(Queue);
         let repeat = Queue.repeat !== 'off' ? this.t(`np.repeat-${Queue.repeat}`, {lngs: msg.lang}) : '';
-        if (!Queue.songs[0]) {
-            msg.channel.createMessage(this.t('generic.no-song-in-queue', {lngs: msg.lang}));
+        if (!Queue.songs[0] || Queue.songs.length === 0) {
+            return msg.channel.createMessage(this.t('generic.no-song-in-queue', {lngs: msg.lang}));
         }
         if (Queue.songs[0].duration && Queue.songs[0].duration !== '') {
             reply = `${this.t('np.song-duration', {

@@ -19,16 +19,16 @@ class UserInfo extends Command {
     }
 
     async run(msg) {
-        let messageSplit = msg.content.split(' ').splice(1);
+        let msgSplit = msg.content.trim().split(' ').map(c => c.trim()).filter(c => c !== '').splice(1);
         let user;
         let member;
         if (msg.mentions.length > 0) {
             user = msg.mentions[0];
             member = msg.channel.guild ? msg.channel.guild.members.find(u => u.id === user.id) : null;
             this.buildReply(msg, user, member);
-        } else if (messageSplit.length > 0) {
-            let users = utils.searchUser(msg.channel.guild.members, messageSplit.join(' '));
-            let pick = await searcher.userSearchMenu(msg, messageSplit, this.t);
+        } else if (msgSplit.length > 0) {
+            let users = utils.searchUser(msg.channel.guild.members, msgSplit.join(' '));
+            let pick = await searcher.userSearchMenu(msg, msgSplit, this.t);
             if (pick === -1) {
                 return msg.channel.createMessage(this.t('generic.cancelled-command', {lngs: msg.lang}));
             }

@@ -18,7 +18,7 @@ const url = remConfig.mongo_hostname;
 let Connector = require('./structures/connector');
 let ModuleManager = require('./modules/moduleManager');
 mongoose.Promise = Promise;
-mongoose.connect(url, (err) => {
+mongoose.connect(url, {useMongoClient: true}, (err) => {
     if (err) return winston.error('Failed to connect to the database!');
 });
 let redis = require("redis");

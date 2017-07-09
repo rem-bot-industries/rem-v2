@@ -72,7 +72,7 @@ class Softban extends Command {
                     split = split.substring(2);
                 }
                 split = split.substring(0, split.length - 1);
-                target = msg.guild.members.find(m => m.id === split);
+                target = msg.channel.guild.members.find(m => m.user.id === split);
                 continue;
             }
 
@@ -126,11 +126,11 @@ class Softban extends Command {
             });
         }
         //check if the role of the user is higher than the role of the user he want's to ban
-        if (utils.getHighestRolePosition(target, msg.channel.guild.roles) > utils.getHighestRolePosition(msg.member, msg.channel.guild.roles)) {
+        if (utils.getHighestRolePosition(target, msg.channel.guild.roles) > utils.getHighestRolePosition(msg.member, msg.channel.guild.roles) && msg.channel.guild.ownerID !== msg.member) {
             return msg.channel.createMessage(this.t('ban.privilege', {lngs: msg.lang}));
         }
         //check if rem's role is higher than the role of the user that should be banned
-        if (utils.getHighestRolePosition(target, msg.channel.guild.roles) > utils.getHighestRolePosition(msg.channel.guild.members.find(m => m.id === rem.user.id), msg.channel.guild.roles)) {
+        if (utils.getHighestRolePosition(target, msg.channel.guild.roles) > utils.getHighestRolePosition(msg.channel.guild.members.find(m => m.user.id === rem.user.id), msg.channel.guild.roles)) {
             return msg.channel.createMessage(this.t('ban.privilege_self', {
                 lngs: msg.lang,
                 user: utils.getMemberNameDiscrim(target)

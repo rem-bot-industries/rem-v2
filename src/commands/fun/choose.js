@@ -23,8 +23,7 @@ class Choose extends Command {
         if (chooseString.endsWith(';')) {
             chooseString = chooseString.substring(0, chooseString.length - 1);
         }
-        let msgSplit = chooseString.split(' ').splice(1);
-        msgSplit = msgSplit.join(' ').split(';');
+        let msgSplit = chooseString.split(';');
         for (let i = 0; i < msgSplit.length; i++) {
             msgSplit[i] = msgSplit[i].trim();
         }

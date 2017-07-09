@@ -20,7 +20,7 @@ class Love extends Command {
     async run(msg) {
         let time = moment();
         time.locale(msg.lang[0]);
-        let msgSplit = msg.content.split(' ').splice(1);
+        let msgSplit = msg.content.trim().split(' ').map(c => c.trim()).filter(c => c !== '').splice(1);
         if (this.u.checkLoveCD(msg.dbUser)) {
             let targetMember;
             if (msg.mentions.length > 0) {

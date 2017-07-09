@@ -48,7 +48,7 @@ class Kick extends Command {
                     split = split.substring(2);
                 }
                 split = split.substring(0, split.length - 1);
-                target = msg.guild.members.find(m => m.id === split);
+                target = msg.channel.guild.members.find(m => m.user.id === split);
                 continue;
             }
             //parse the reason if added
@@ -110,11 +110,11 @@ class Kick extends Command {
             });
         }
         //check if the role of the user is higher than the role of the user he want's to kick
-        if (utils.getHighestRolePosition(target, msg.channel.guild.roles) > utils.getHighestRolePosition(msg.member, msg.channel.guild.roles)) {
+        if (utils.getHighestRolePosition(target, msg.channel.guild.roles) > utils.getHighestRolePosition(msg.member, msg.channel.guild.roles) && msg.channel.guild.ownerID !== msg.member) {
             return msg.channel.createMessage(this.t('kick.privilege', {lngs: msg.lang}));
         }
         //check if rem's role is higher than the role of the user that should be kicked
-        if (utils.getHighestRolePosition(target, msg.channel.guild.roles) > utils.getHighestRolePosition(msg.channel.guild.members.find(m => m.id === rem.user.id), msg.channel.guild.roles)) {
+        if (utils.getHighestRolePosition(target, msg.channel.guild.roles) > utils.getHighestRolePosition(msg.channel.guild.members.find(m => m.user.id === rem.user.id), msg.channel.guild.roles)) {
             return msg.channel.createMessage(this.t('kick.privilege_self', {
                 lngs: msg.lang,
                 user: `${target.user.username}#${target.user.discriminator}`
