@@ -10,11 +10,17 @@ class Lenny extends Command {
         this.needGuild = false;
         this.t = t;
         this.accessLevel = 0;
+        this.help = {
+            short: 'help.lenny.short',
+            usage: 'help.lenny.usage',
+            example: 'help.lenny.example'
+        }
     }
 
     run(msg) {
         // this.emit('run');
-        msg.channel.createMessage('\u200B' + '( ͡° ͜ʖ ͡°)');
+        let content = msg.content.split(' ').splice(1).join(' ').trim();
+        msg.channel.createMessage('\u200B' + content + (content !== '' ? ' ' : '') + '( ͡° ͜ʖ ͡°)');
     }
 }
 module.exports = Lenny;

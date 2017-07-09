@@ -10,6 +10,11 @@ class Roll extends Command {
         this.needGuild = false;
         this.t = t;
         this.accessLevel = 0;
+        this.help = {
+            short: 'help.roll.short',
+            usage: 'help.roll.usage',
+            example: 'help.roll.example'
+        }
     }
 
     random(min, max) {

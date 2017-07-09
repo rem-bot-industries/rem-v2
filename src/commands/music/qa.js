@@ -37,7 +37,11 @@ class AddToQueue extends Command {
             if (Object.prototype.toString.call(res) === '[object Array]') {
                 return this.searchResult(msg, res);
             } else {
-                msg.channel.createMessage(this.t('qa.success', {song: res.title, lngs: msg.lang}));
+                msg.channel.createMessage(this.t('qa.success', {
+                    song: res.title,
+                    lngs: msg.lang,
+                    user: `${msg.author.username}#${msg.author.discriminator}`
+                }));
             }
         } catch (err) {
             if (err instanceof TranslatableError) {

@@ -3,14 +3,12 @@
  */
 //uwu
 const winston = require('winston');
-let useCrystal = false;
-// let Crystal;
-// try {
-//     Crystal = require("eris-crystal");
-//     useCrystal = true;
-// } catch (e) {
-//
-// }
+let useCrystal = remConfig.use_crystal;
+let VoiceConnectionManager;
+if (useCrystal) {
+    VoiceConnectionManager = require('eris-novum').VoiceConnectionManager;
+    // VoiceConnectionManager = require('../../../Rem NEXT/voice/eris-novum/src/exports').VoiceConnectionManager;
+}
 let Eris = require('eris');
 const StatsD = require('hot-shots');
 const dogstatsd = new StatsD({host: remConfig.statsd_host});
@@ -56,9 +54,18 @@ class Shard {
         if (this.SHARDED) {
             this.HUB.updateState('init');
         }
-        Promise.promisifyAll(redis.RedisClient.prototype);
-        Promise.promisifyAll(redis.Multi.prototype);
-        let redisClient = redis.createClient({port: 6379, host: remConfig.redis_hostname});
+        // if (!remConfig.use_crystal) {
+        try {
+            Promise.promisifyAll(redis.RedisClient.prototype);
+            Promise.promisifyAll(redis.Multi.prototype);
+        } catch (e) {
+
+        }
+        // }
+        let redisClient = redis.createClient({
+            port: remConfig.redis_port,
+            host: remConfig.redis_hostname
+        });
         redisClient.select(remConfig.redis_database);
         redisClient.on("error", (err) => {
             console.log("Error " + err);
@@ -89,14 +96,22 @@ class Shard {
                 'GUILD_MEMBER_SPEAKING': true,
                 'MESSAGE_UPDATE': true,
                 'MESSAGE_DELETE': true
-            }
+            },
+            crystal: useCrystal
         };
         winston.info(options);
         let bot = new Eris(remConfig.token, options);
         // console.log('Created bot');
-        // if (useCrystal) {
-        //     bot.voiceConnections = new Crystal.ErisClient();
-        // }
+        if (useCrystal) {
+            bot.voiceConnections = new VoiceConnectionManager({
+                redis: {
+                    port: remConfig.redis_voice_port,
+                    host: remConfig.redis_voice_hostname,
+                    password: remConfig.redis_voice_auth ? remConfig.redis_voice_auth : ''
+                },
+                userID: remConfig.bot_id
+            }, parseInt(this.id));
+        }
         this.bot = bot;
         global.rem = bot;
         blocked((ms) => {
@@ -238,9 +253,9 @@ class Shard {
                     let channel = Guild.channels.find(c => c.id === greetingChannel.value);
                     if (channel) {
                         let msg = greeting.value;
-                        msg = msg.replace('%USER%', Member.mention);
-                        msg = msg.replace('%USER_NO_MENTION%', Member.username ? Member.username : Member.user.username);
-                        msg = msg.replace('%GUILD%', Guild.name);
+                        msg = msg.replace(/%USER%/g, Member.mention);
+                        msg = msg.replace(/%USER_NO_MENTION%/g, Member.username ? Member.username : Member.user.username);
+                        msg = msg.replace(/%GUILD%/g, Guild.name);
                         await channel.createMessage(msg);
                     }
                 }
@@ -259,8 +274,8 @@ class Shard {
                     let channel = Guild.channels.find(c => c.id === farewellChannel.value);
                     if (channel) {
                         let msg = farewell.value;
-                        msg = msg.replace('%USER%', Member.username ? Member.username : Member.user.username);
-                        msg = msg.replace('%GUILD%', Guild.name);
+                        msg = msg.replace(/%USER%/g, Member.username ? Member.username : Member.user.username);
+                        msg = msg.replace(/%GUILD%/g, Guild.name);
                         await channel.createMessage(msg);
                     }
                 }

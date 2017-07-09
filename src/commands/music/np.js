@@ -56,14 +56,16 @@ class NowPlaying extends Command {
                     repeat: repeat,
                     duration: Queue.songs[0].duration,
                     current: Queue.time,
-                    interpolation: {escape: false}
+                    interpolation: {escape: false},
+                    user: Queue.songs[0].queuedBy ? Queue.songs[0].queuedBy : '-'
                 })} \n`;
         } else {
             reply = reply + `${this.t('np.song', {
                     lngs: msg.lang,
                     title: Queue.songs[0].title,
                     repeat: repeat,
-                    interpolation: {escape: false}
+                    interpolation: {escape: false},
+                    user: Queue.songs[0].queuedBy ? Queue.songs[0].queuedBy : '-'
                 })}\n`;
         }
         return reply;

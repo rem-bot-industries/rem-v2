@@ -6,7 +6,15 @@ let winston = require('winston');
 let async = require('async');
 let config = remConfig;
 let util = require('util');
-let _ = require('lodash');
+const defaultPerms = [
+    {type: 'guild', id: '228604101800230912', cat: 'fun', perm: '*', use: true},
+    {type: 'guild', id: '228604101800230912', cat: 'eastereggs', perm: '*', use: true},
+    {type: 'guild', id: '228604101800230912', cat: 'generic', perm: '*', use: true},
+    {type: 'guild', id: '228604101800230912', cat: 'misc', perm: '*', use: true},
+    {type: 'guild', id: '228604101800230912', cat: 'image', perm: '*', use: true},
+    {type: 'guild', id: '228604101800230912', cat: 'music', perm: '*', use: true},
+    {type: 'guild', id: '228604101800230912', cat: 'music', perm: 'fskip', use: false}
+];
 /**
  * The permission manager, it loads all permissions from the database and builds the permission tree
  */
@@ -26,9 +34,8 @@ class PermissionManager {
      * The base function to check if a user is allowed to do sth.
      * @param msg - The msg of the command that should be check
      * @param node - the permission node category.command
-     * @param cb - the callback
      */
-    checkPermission(msg, node, cb) {
+    async checkPermission(msg, node) {
         this.msg = msg;
         this.guild = msg.channel.guild;
         this.node = node;
@@ -37,40 +44,28 @@ class PermissionManager {
         this.cmd = nodeSplit[1];
         if (msg.channel.guild) {
             if (this.checkDiscordRoles(msg)) {
-                return cb();
+                return;
             }
-            this.loadPermission(msg, (err) => {
-                cb(err);
-            });
-        } else {
-            cb();
-        }
+            let res = await this.loadPermission(msg);
+            console.log(res);
+            if (!res) {
+                throw new Error('Missing Permissions');
+            }
 
+        }
     }
 
     /**
      * Loads the permission document out of the database
      * @param msg - the message, so we can get the id of the guild to load the perms per guild
-     * @param cb - the callback
      */
-    loadPermission(msg, cb) {
-        permModel.findOne({id: msg.channel.guild.id}, (err, Perms) => {
-            if (err) return cb(err);
-            if (Perms) {
-                this.buildPermTree(Perms.permissions, cb);
-            } else {
-                Perms = [
-                    {type: 'guild', id: '228604101800230912', cat: 'fun', perm: '*', use: true},
-                    {type: 'guild', id: '228604101800230912', cat: 'eastereggs', perm: '*', use: true},
-                    {type: 'guild', id: '228604101800230912', cat: 'generic', perm: '*', use: true},
-                    {type: 'guild', id: '228604101800230912', cat: 'misc', perm: '*', use: true},
-                    {type: 'guild', id: '228604101800230912', cat: 'image', perm: '*', use: true},
-                    {type: 'guild', id: '228604101800230912', cat: 'music', perm: '*', use: true},
-                    {type: 'guild', id: '228604101800230912', cat: 'music', perm: 'fskip', use: false},
-                ];
-                this.buildPermTree(Perms, cb);
-            }
-        });
+    async loadPermission(msg) {
+        let Perms = await permModel.findOne({id: msg.channel.guild.id});
+        if (Perms) {
+            return this.buildPermTree(Perms.permissions);
+        } else {
+            return this.buildPermTree(defaultPerms);
+        }
     }
 
     /**
@@ -78,11 +73,11 @@ class PermissionManager {
      * JK it builds a big json object with all the perms combined,
      * that makes it easier to evaluate the perms
      * @param Perms
-     * @param cb
      */
-    buildPermTree(Perms, cb) {
+    buildPermTree(Perms) {
         let tree = {channel: {}, user: {}, role: {}};
-        async.each(Perms, (Perm, cb) => {
+        // console.log(Perms);
+        Perms.forEach(Perm => {
             switch (Perm.type) {
                 case 'guild':
                     if (!tree[Perm.cat]) {
@@ -94,10 +89,7 @@ class PermissionManager {
                     if (tree[Perm.cat][Perm.perm]) {
                         tree[Perm.cat][Perm.perm] = Perm.use;
                     }
-                    async.setImmediate(() => {
-                        cb();
-                    });
-                    return;
+                    break;
                 case 'channel':
                     if (Perm.id === this.msg.channel.id) {
                         if (!tree.channel[Perm.cat]) {
@@ -110,10 +102,7 @@ class PermissionManager {
                             tree.channel[Perm.cat][Perm.perm] = Perm.use;
                         }
                     }
-                    async.setImmediate(() => {
-                        cb();
-                    });
-                    return;
+                    break;
                 case 'role':
                     if (this.checkRoleExistId(this.msg, Perm.id)) {
                         if (!tree.role[Perm.cat]) {
@@ -126,10 +115,7 @@ class PermissionManager {
                             tree.role[Perm.cat][Perm.perm] = Perm.use;
                         }
                     }
-                    async.setImmediate(() => {
-                        cb();
-                    });
-                    return;
+                    break;
                 case 'user':
                     if (this.msg.author.id === Perm.id) {
                         if (!tree.user[Perm.cat]) {
@@ -142,28 +128,21 @@ class PermissionManager {
                             tree.user[Perm.cat][Perm.perm] = Perm.use;
                         }
                     }
-                    async.setImmediate(() => {
-                        cb();
-                    });
-                    return;
+                    break;
             }
-        }, (err) => {
-            this.checkTree(tree, cb);
         });
+        return this.checkTree(tree);
     }
 
-    checkTree(tree, cb) {
+    checkTree(tree) {
+        // console.log(tree);
         let finalPerms = {user: true, role: true, channel: true, guild: true};
         finalPerms.user = this.uwu(tree.user);
         finalPerms.role = this.uwu(tree.role);
         finalPerms.channel = this.uwu(tree.channel);
         finalPerms.guild = this.uwu(tree);
-        let res = this.owo(finalPerms);
-        if (res) {
-            return cb();
-        } else {
-            return cb('NOPE');
-        }
+        // console.log(finalPerms);
+        return this.owo(finalPerms);
     }
 
     owo(finalPerms) {
@@ -203,6 +182,7 @@ class PermissionManager {
     }
 
     uwu(tree) {
+        // console.log(tree);
         // this.msg.channel.sendCode('json', JSON.stringify(tree));
         if (tree[this.cat] || tree['*']) {
             if (tree[this.cat]) {
@@ -253,83 +233,112 @@ class PermissionManager {
         return ({type: type, id: id, cat: nodeSplit[0], perm: nodeSplit[1], use: allow});
     }
 
-    addPermission(id, perm, cb) {
-        permModel.findOne({id: id}, (err, Perms) => {
-            if (err) return cb(err);
-            if (Perms) {
-                if (Perms.permissions.length > 0) {
-                    if (this.checkExist(perm, Perms.permissions)) {
-                        //TODO ask the user if he wants to overwrite the permission
-                        console.log('overwrite uwu');
-                    } else {
-                        permModel.update({id: id}, {$push: {permissions: perm}}, cb);
+    async addPermission(id, perm, addDefaults) {
+        let Perms = await permModel.findOne({id: id});
+        if (Perms) {
+            if (Perms.permissions.length > 0) {
+                if (this.checkExist(perm, Perms.permissions)) {
+                    await permModel.update({id}, {
+                        $pull: {
+                            permissions: {
+                                id: perm.id,
+                                cat: perm.cat,
+                                perm: perm.perm
+                            }
+                        }
+                    });
+                    return permModel.update({id}, {$push: {permissions: perm}});
+                } else {
+                    return permModel.update({id: id}, {$push: {permissions: perm}});
+                }
+            } else {
+                if (typeof (addDefaults) === 'undefined') {
+                    throw new Error('add_defaults');
+                }
+                if (addDefaults) {
+                    let defaults = defaultPerms;
+                    defaults.push(perm);
+                    return permModel.update({id: id}, {$push: {permissions: {$each: defaults}}});
+                } else {
+                    return permModel.update({id: id}, {$push: {permissions: perm}});
+                }
+            }
+        } else {
+            if (typeof (addDefaults) === 'undefined') {
+                throw new Error('add_defaults');
+            }
+            return this.createDbPerm(id, perm, addDefaults);
+        }
+    }
+
+    async removePermission(id, perm) {
+        let Perms = await permModel.findOne({id: id});
+        if (Perms) {
+            if (Perms.permissions.length > 0) {
+                let perms = Perms.permissions.filter(p => {
+                    if (perm.cat !== p.cat) {
+                        return true;
                     }
-                } else {
-                    permModel.update({id: id}, {$push: {permissions: perm}}, cb);
-                }
+                    if (perm.perm !== p.perm) {
+                        return true;
+                    }
+                    if (perm.id !== p.id) {
+                        return true;
+                    }
+                    if (perm.type !== p.type) {
+                        return true;
+                    }
+                });
+                console.log(perms);
+                return permModel.update({id: id}, {$set: {permissions: perms}});
             } else {
-                this.createDbPerm(id, perm, cb);
+                throw new TranslatableError({t: 'no-perms', message: 'No permissions found'});
             }
-        });
+        } else {
+            throw new TranslatableError({t: 'no-perms', message: 'No permissions found'});
+        }
     }
 
-    removePermission(id, perm, cb) {
-        permModel.findOne({id: id}, (err, Perms) => {
-            if (err) {
-                winston.error(err);
-                return cb({t: 'generic.error', err});
-            }
-            if (Perms) {
-                if (Perms.permissions.length > 0) {
-                    let perms = _.reject(Perms.permissions, perm);
-                    // console.log(perms);
-                    permModel.update({id: id}, {$set: {permissions: perms}}, cb);
-                } else {
-                    return cb({t: 'no-perms', err: 'No permissions found'});
-                }
-            } else {
-                return cb({t: 'no-perms', err: 'No permissions found'});
-            }
-        });
+    async resetDbPerm(id) {
+        let Perms = await permModel.findOne({id});
+        if (Perms) {
+            return permModel.remove({id});
+        } else {
+            throw new TranslatableError({
+                t: 'reset-perms.nothing-found',
+                message: 'No permission object created on the database'
+            });
+        }
     }
 
-    resetDbPerm(id, cb) {
-        permModel.findOne({id}, (err, Perms) => {
-            if (err) return cb({err: err, t: 'generic.error'});
-            if (Perms) {
-                permModel.remove({id}, cb);
-            } else {
-                return cb({err: 'No permissions found', t: 'reset-perms.nothing-found'});
-            }
-        });
-    }
-
-    createDbPerm(id, perm, cb) {
+    async createDbPerm(id, perm, addDefaults) {
+        let permsToBeAdded = [perm];
+        if (addDefaults) {
+            defaultPerms.forEach(p => permsToBeAdded.push(p));
+        }
         let perms = new permModel({
             id: id,
-            permissions: [perm]
+            permissions: permsToBeAdded
         });
-        perms.save(cb);
+        return perms.save();
     }
 
     checkExist(perm, perms) {
         for (let i = 0; i < perms.length; i++) {
-            if (perm === perms[i]) {
-                return perm;
+            if (perm.id === perms[i].id && perm.type === perms[i].type && perm.cat === perms[i].cat && perm.perm === perms[i].perm) {
+                return true;
             }
         }
         return false;
     }
 
-    getPermDB(msg, cb) {
-        permModel.findOne({id: msg.channel.guild.id}, (err, Perms) => {
-            if (err) return cb(err);
-            if (Perms && Perms.permissions.length > 0) {
-                cb(null, Perms.permissions);
-            } else {
-                cb('no-perms');
-            }
-        });
+    async getPermDB(msg) {
+        let Perms = await permModel.findOne({id: msg.channel.guild.id});
+        if (Perms && Perms.permissions.length > 0) {
+            return Perms.permissions;
+        } else {
+            throw new TranslatableError({t: 'gp.no-perms', message: 'No permissions created yet'});
+        }
     }
 
     checkRoleExistName(msg, name) {
@@ -384,6 +393,10 @@ class PermissionManager {
             });
         }
         return roles;
+    }
+
+    getDefaultPerms() {
+        return defaultPerms;
     }
 
 }

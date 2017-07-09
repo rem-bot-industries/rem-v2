@@ -20,13 +20,13 @@
 I will write those if people actually want to contribute. Until then: Just make it work good and fast. uwu
 
 ## Requirements:
-- [x] Node and NPM
-- [x] Git
-- [x] MongoDB (follow instructions on how to configure the server at [https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows/](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows/))
-- [x] Redis, which can be found here: [https://redis.io/download](redis)
-- [x] ffmpeg and youtube-dl
-- [x] Buildtools and Python 2.7
-- [x] Basic understanding of node js
+* Node and NPM
+* Git
+* MongoDB (follow instructions on how to configure the server at [https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows/](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows/))
+* Redis, which can be found here: [redis](https://redis.io/download)
+* ffmpeg and youtube-dl
+* Buildtools and Python 2.7
+* Basic understanding of node js
 
 ## Installation instructions
 
@@ -35,7 +35,7 @@ I will write those if people actually want to contribute. Until then: Just make 
 2. Install git, Here is the [link](https://git-scm.com/downloads) to get it.
 3. Install node, Here is the [link](https://nodejs.org/en/download/current/) to get it.
 4. Install ffmpeg and add it to path, it can be found [here](https://ffmpeg.org/download.html), if you are on linux, you might wanna compile it, here is a [guide](https://trac.ffmpeg.org/wiki/CompilationGuide/Ubuntu) for that
-5. If you have Windows, open a console with administrator permissions and type `npm install --global windows-build-tools` into it. 
+5. If you have Windows, open a console with administrator permissions and type `npm install --global windows-build-tools` into it.
 This will install the neccessary tools, which will be later needed by npm to build Rems dependencies.
 6. For Linux environments, you should get `build-essential` and `python 2.7` installed.
 7. Clone the source of v2 from git
@@ -83,8 +83,8 @@ If the installation fails, due to not being able to clone the git repo of it, re
 - use_ws tells rem whether the master server should be used or not, leave this set to false, as it is not needed with one shard.
 - the number of shards defines how many processes the master will spawn.
  Can be set to 1 unless you want to operate this fork on over 2500 servers.
- 
-### ***Example keys.json***
+
+## Example keys.json
 ```json
 {
   "keys": [

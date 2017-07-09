@@ -3,6 +3,7 @@
  */
 let Command = require('../../structures/command');
 let util = require('util');
+const winston = require('winston');
 /**
  * The show queue command,
  * shows the current queue
@@ -30,7 +31,7 @@ class Queue extends Command {
      * The main function of the command
      * @param msg
      */
-    async run (msg) {
+    async run(msg) {
         try {
             let queue = await this.v.getQueue(msg.channel.guild.id);
             msg.channel.createMessage(this.buildReply(queue, msg));
@@ -47,7 +48,7 @@ class Queue extends Command {
      */
     buildReply(Queue, msg) {
         let reply;
-        // console.log(Queue);
+        winston.debug(Queue);
         let repeat = Queue.repeat !== 'off' ? this.t(`np.repeat-${Queue.repeat}`, {lngs: msg.lang}) : '';
         if (!Queue.songs[0]) {
             msg.channel.createMessage(this.t('generic.no-song-in-queue', {lngs: msg.lang}));
@@ -59,14 +60,16 @@ class Queue extends Command {
                 repeat: repeat,
                 duration: Queue.songs[0].duration,
                 current: Queue.time,
-                interpolation: {escape: false}
+                interpolation: {escape: false},
+                user: Queue.songs[0].queuedBy ? Queue.songs[0].queuedBy : '-'
             })} \n`;
         } else {
             reply = `${this.t('np.song', {
                 lngs: msg.lang,
                 title: Queue.songs[0].title,
                 repeat: repeat,
-                interpolation: {escape: false}
+                interpolation: {escape: false},
+                user: Queue.songs[0].queuedBy ? Queue.songs[0].queuedBy : '-'
             })}\n`;
         }
         if (Queue.songs.length > 1) {
@@ -74,12 +77,21 @@ class Queue extends Command {
         }
         for (let q = 1; q < Queue.songs.length; q++) {
             if (!Queue.songs[q]) continue;
-            if ((reply.length + Queue.songs[q].title.length) > 1970) { // Discord 2000 char limit
+            if ((reply.length + Queue.songs[q].title.length) > 1800) { // Discord 2000 char limit
                 reply += `... +${Queue.songs.length - q}`;
                 break;
             }
             reply += `${q + 1}. ${Queue.songs[q].title}`;
-            if (Queue.songs[q].duration) reply += ` ${Queue.songs[q].duration}`;
+            if (Queue.songs[q].duration) {
+                reply += ` ${Queue.songs[q].duration}`;
+            }
+            if (Queue.songs[q].queuedBy) {
+                reply += ' ';
+                reply += this.t('queue.by', {
+                    lngs: msg.lang,
+                    user: Queue.songs[q].queuedBy ? Queue.songs[q].queuedBy : '-'
+                });
+            }
             reply += '\n';
         }
         if (Queue.songs.length > 1) reply += '```';

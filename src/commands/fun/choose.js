@@ -10,10 +10,15 @@ class Choose extends Command {
         this.needGuild = false;
         this.t = t;
         this.accessLevel = 0;
+        this.help = {
+            short: 'help.choose.short',
+            usage: 'help.choose.usage',
+            example: 'help.choose.example'
+        }
     }
 
     run(msg) {
-        let chooseString = msg.content.substring(msg.prefix.length);
+        let chooseString = msg.content.split(' ').splice(1).join(' ').trim();
         if (chooseString === '') return msg.channel.createMessage(this.t('choose.empty-choose', {lngs: msg.lang}));
         if (chooseString.endsWith(';')) {
             chooseString = chooseString.substring(0, chooseString.length - 1);

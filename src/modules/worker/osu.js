@@ -1,5 +1,4 @@
 let fs = require('fs');
-let Promise = require('bluebird');
 let path = require('path');
 let unzip = require('unzip2');
 let config;

@@ -14,7 +14,7 @@ class Yui extends Command {
     }
 
     run(msg) {
-        msg.channel.createMessage('https://wia.ram.moe/i/rkL9kPXNl.gif');
+        msg.channel.createMessage('https://cdn.ram.moe/rkL9kPXNl.gif');
     }
 }
 module.exports = Yui;

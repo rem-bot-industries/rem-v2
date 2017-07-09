@@ -1,6 +1,6 @@
 {
   "name": "rem-v2",
-  "version": "2.5.0",
+  "version": "2.7.0-rc",
   "description": "uwu",
   "main": "index.js",
   "scripts": {
@@ -16,13 +16,14 @@
   },
   "author": "Wolke <wolke@ram.moe>",
   "contributors": [
-    "Dean"
+    "Dean",
+    "Veld"
   ],
   "license": "MIT",
   "dependencies": {
     "ascii-table": "0.0.9",
-    "async": "^2.4.0",
-    "axios": "^0.16.1",
+    "async": "^2.5.0",
+    "axios": "^0.16.2",
     "babel-cli": "^6.24.1",
     "babel-plugin-transform-async-to-generator": "^6.24.1",
     "babel-preset-latest": "^6.24.1",
@@ -34,20 +35,19 @@
     "erlpack": "github:hammerandchisel/erlpack",
     "eventemitter3": "^2.0.3",
     "hot-shots": "^4.5.0",
-    "i18next": "^7.2.3",
-    "i18next-node-fs-backend": "^0.1.3",
+    "i18next": "^8.4.3",
+    "i18next-node-fs-backend": "^1.0.0",
     "icy": "^2.1.0",
     "knuth-shuffle": "^1.0.1",
     "lodash": "^4.17.4",
     "longjohn": "^0.2.12",
     "merge-json": "0.1.0-b.3",
-    "minami": "^1.2.3",
     "minimist": "^1.2.0",
     "moment": "^2.18.1",
-    "mongoose": "^4.10.0",
+    "mongoose": "^4.11.1",
     "node-opus": "^0.2.6",
     "node-osu": "^1.2.0",
-    "raven": "^1.2.1",
+    "raven": "^2.1.0",
     "recursive-readdir": "^2.1.1",
     "redis": "^2.7.1",
     "request": "^2.81.0",
@@ -56,12 +56,12 @@
     "unzip2": "^0.2.5",
     "winston": "^2.3.1",
     "winston-daily-rotate-file": "^1.4.6",
-    "ws": "^2.3.1",
+    "ws": "^3.0.0",
     "youtube-dl": "^1.11.1",
-    "ytdl-core": "^0.14.1"
+    "ytdl-core": "^0.14.4"
   },
-  "devDependencies": {
-    "eslint": "^3.19.0",
-    "minami": "^1.1.1"
+  "devDependencies": {},
+  "optionalDependencies": {
+    "eris-novum": "git+https://git.dvguild.tk/briantanner/eris-novum.git"
   }
 }

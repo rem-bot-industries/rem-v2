@@ -28,6 +28,7 @@ class YoutubeImporter extends BasicImporter {
         let info = await ytdl.getInfoAsync(url);
         if (info.live_playback === '1') {
             try {
+                // console.log(info);
                 let info = await this.resolveLiveStream(url);
                 info.loaderUrl = `https://www.youtube.com/watch?v=${info.video_id}`;
                 let streamUrl = this.filterLiveStreams(info.formats);
@@ -116,12 +117,12 @@ class YoutubeImporter extends BasicImporter {
 
     filterLiveStreams(formats) {
         for (let i = 0; i < formats.length; i++) {
-            if (formats[i].format_id === '94') {
+            if (formats[i].itag === '94' || formats[i].format_id === '94') {
                 return formats[i].url;
             }
         }
         for (let i = 0; i < formats.length; i++) {
-            if (formats[i].format_id === '93' || formats[i].format_id === '95') {
+            if (formats[i].itag === '93' || formats[i].itag === '95' || formats[i].format_id === '93' || formats[i].format_id === '95') {
                 return formats[i].url;
             }
         }

@@ -18,10 +18,10 @@ class FlipCoin extends Command {
         let reply;
         let url;
         if (rand > 50) {
-            url = 'https://rra.ram.moe/i/HJSEfDUbl';
+            url = 'https://cdn.ram.moe/HJSEfDUbl.gif';
             reply = 'flip.head';
         } else {
-            url = 'https://rra.ram.moe/i/Byu2fPLWg';
+            url = 'https://cdn.ram.moe/Byu2fPLWg.png';
             reply = 'flip.tail';
         }
         msg.channel.createMessage(this.t(reply, {lngs: msg.lang, url: url}));

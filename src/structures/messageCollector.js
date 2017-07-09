@@ -34,7 +34,11 @@ class MessageCollector extends EventEmitter {
     }
 
     message(msg) {
+        this.max--;
         this.collected.set(msg.id, msg);
+        if (this.max === 0) {
+            this.stop();
+        }
     }
 
     stop() {
@@ -52,7 +56,7 @@ class MessageCollector extends EventEmitter {
     }
 
     check(msg) {
-        if (msg.channel.id === this.channelID && !this.stopped && this.filter(msg) && msg.author.id !== rem.user.id) {
+        if (!this.stopped && this.filter(msg) && msg.author.id !== rem.user.id) {
             this.emit('message', msg);
         }
     }

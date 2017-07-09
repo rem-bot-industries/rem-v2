@@ -11,7 +11,7 @@ let StatsD = require('hot-shots');
 let dogstatsd = new StatsD({host: remConfig.statsd_host});
 let stat = `rem_${remConfig.environment}`;
 class MessageManager extends Manager {
-    constructor ({cm, lm, gm, vm, um, pm, rm, sm, stm, mod}) {
+    constructor({cm, lm, gm, vm, um, pm, rm, sm, stm, mod}) {
         super();
         this.setMaxListeners(20);
         this.l = lm;
@@ -31,7 +31,7 @@ class MessageManager extends Manager {
         this.ready = false;
     }
 
-    init () {
+    init() {
         return new Promise((resolve, reject) => {
             this.load(this.mod).then(() => {
                 resolve();
@@ -39,7 +39,7 @@ class MessageManager extends Manager {
         });
     }
 
-    load (mod) {
+    load(mod) {
         return new Promise((resolve, reject) => {
             recursive(path.join(__dirname, '../../commands'), (err, files) => {
                 if (err) {
@@ -67,15 +67,15 @@ class MessageManager extends Manager {
         });
     }
 
-    reload () {
+    reload() {
 
     }
 
-    unload () {
+    unload() {
 
     }
 
-    async check (msg) {
+    async check(msg) {
         if (this.ready) {
             try {
                 let Data = await this.loadData(msg);
@@ -98,31 +98,32 @@ class MessageManager extends Manager {
                             msg.lang = [Guild.lng, 'en'];
                             msg.lngs = this.lngs;
                             msg.prefix = Guild.prefix;
+                            msg.aliases = this.aliases;
                             let node = `${command.cat}.${command.cmd}`;
-                            this.p.checkPermission(msg, node, (err) => {
-                                if (err) {
-                                    dogstatsd.increment(`${stat}.failed-commands`);
-                                    this.s.logCmdStat(msg, cmd, false, 'permission');
-                                    return msg.channel.createMessage(this.t('generic.no-permission', {
-                                        lngs: msg.lang,
-                                        node: node
-                                    }));
-                                }
-                                console.log(cmd);
-                                if (command.needGuild) {
-                                    if (msg.channel.guild) {
-                                        this.s.logCmdStat(msg, cmd, true);
-                                        command.run(msg);
-                                    } else {
-                                        dogstatsd.increment(`${stat}.failed-commands`);
-                                        this.s.logCmdStat(msg, cmd, false, 'need-guild');
-                                        return msg.channel.createMessage(this.t('generic.no-pm', {lngs: msg.lang}));
-                                    }
-                                } else {
+                            try {
+                                await this.p.checkPermission(msg, node);
+                            } catch (e) {
+                                dogstatsd.increment(`${stat}.failed-commands`);
+                                this.s.logCmdStat(msg, cmd, false, 'permission');
+                                return msg.channel.createMessage(this.t('generic.no-permission', {
+                                    lngs: msg.lang,
+                                    node: node
+                                }));
+                            }
+                            console.log(cmd);
+                            if (command.needGuild) {
+                                if (msg.channel.guild) {
                                     this.s.logCmdStat(msg, cmd, true);
                                     command.run(msg);
+                                } else {
+                                    dogstatsd.increment(`${stat}.failed-commands`);
+                                    this.s.logCmdStat(msg, cmd, false, 'need-guild');
+                                    return msg.channel.createMessage(this.t('generic.no-pm', {lngs: msg.lang}));
                                 }
-                            });
+                            } else {
+                                this.s.logCmdStat(msg, cmd, true);
+                                command.run(msg);
+                            }
                         }
                     }
                     catch (err) {
@@ -135,18 +136,19 @@ class MessageManager extends Manager {
                         if (msg.content === `${rem.user.mention} prefix` || msg.content === `<@!${rem.user.id}> prefix`) {
                             return msg.channel.createMessage(`\`${msg.db.prefix}\``);
                         }
-                        this.p.checkPermission(msg, 'fun.cleverbot', (err) => {
-                            if (err) {
-                                dogstatsd.increment(`${stat}.failed-commands`);
-                                this.s.logCmdStat(msg, 'cleverbot', false, 'permission');
-                                return msg.channel.createMessage(this.t('generic.no-permission', {
-                                    lngs: msg.lang,
-                                    node: 'fun.cleverbot'
-                                }));
-                            }
-                            this.s.logCmdStat(msg, 'cleverbot', true);
-                            this.c.talk(msg);
-                        });
+                        try {
+                            await this.p.checkPermission(msg, 'fun.cleverbot');
+                        } catch (e) {
+                            dogstatsd.increment(`${stat}.failed-commands`);
+                            this.s.logCmdStat(msg, 'cleverbot', false, 'permission');
+                            return msg.channel.createMessage(this.t('generic.no-permission', {
+                                lngs: msg.lang,
+                                node: 'fun.cleverbot'
+                            }));
+                        }
+                        this.s.logCmdStat(msg, 'cleverbot', true);
+                        this.c.talk(msg);
+
                     } else if (msg.channel.guild) {
                         // this.r.filterReaction(msg);
                         // this.u.increaseExperience(msg).then(() => {
@@ -162,14 +164,14 @@ class MessageManager extends Manager {
         }
     }
 
-    async loadData (msg) {
+    async loadData(msg) {
         let results = {};
         results.guild = await this.loadGuild(msg);
         results.user = await this.loadUser(msg);
         return Promise.resolve(results);
     }
 
-    async loadGuild (msg) {
+    async loadGuild(msg) {
         if (msg.channel.guild) {
             winston.debug(`Loading Guild ${msg.channel.guild.id}|${msg.channel.guild.name} via Message Manager!`);
             let Guild = await this.g.loadGuild(msg.channel.guild.id);
@@ -193,7 +195,7 @@ class MessageManager extends Manager {
         }
     }
 
-    async loadUser (msg) {
+    async loadUser(msg) {
         winston.debug(`Loading User ${msg.author.id}|${msg.author.username}#${msg.author.discriminator} via Message Manager`);
         return this.u.loadUser(msg.author);
     }

@@ -35,9 +35,6 @@ class Player extends EventEmitter {
         this.started = false;
         this.autoLeaveTimeout = null;
         this.autoplay();
-        // setInterval(() => {
-        //     this.emit('sync', this.queue);
-        // }, 1000 * 30);
     }
 
     /**
@@ -51,23 +48,37 @@ class Player extends EventEmitter {
             let options = {};
             switch (Song.type) {
                 case SongTypes.youtube: {
+                    options.resolve = true;
                     if (Song.isOpus) {
-                        if (!rem.options.crystal) {
-                            link = new WolkeStream(Song.streamUrl);
+                        if (!remConfig.use_crystal) {
+                            try {
+                                link = new WolkeStream(Song.streamUrl);
+                            } catch (e) {
+
+                            }
                         } else {
-                            link = Song.streamUrl;
+                            link = Song.url;
                         }
                         options.format = 'webm';
                         options.frameDuration = 20;
                     } else {
-                        link = Song.streamUrl;
+                        if (remConfig.use_crystal) {
+                            link = Song.url;
+                        } else {
+                            link = Song.streamUrl;
+                        }
                         options.inputArgs = ["-reconnect", "1", "-reconnect_streamed", "1", "-reconnect_delay_max", "2"];
                         // link = this.processStream(secondStream);
                     }
                     break;
                 }
                 case SongTypes.youtube_live: {
-                    link = Song.streamUrl;
+                    options.resolve = true;
+                    if (remConfig.use_crystal) {
+                        link = Song.url;
+                    } else {
+                        link = Song.streamUrl;
+                    }
                     options.inputArgs = ["-reconnect", "1", "-reconnect_streamed", "1", "-reconnect_delay_max", "2"];
                     break;
                 }
@@ -116,20 +127,22 @@ class Player extends EventEmitter {
             }
             this.connection.play(link, options);
             this.announce(Song);
+            // winston.info("added listener");
+            // console.log(this.connection.listeners('end').length);
             this.connection.once('end', () => {
                 winston.info("File ended!");
+                // console.log(this.connection.listeners('end'));
                 this.connection.removeAllListeners();
-                setTimeout(() => {
-                    this.nextSong(Song);
-                }, 100);
+                // console.log(this.connection.listeners('end'));
+                this.nextSong(Song);
             });
             this.connection.once('error', (err) => {
                 winston.error(`Connection error: ${err}`);
                 this.toggleRepeat('off');
                 this.nextSong(Song);
             });
-        }
 
+        }
         else {
             setTimeout(() => {
                 // console.log('TIMEOUT!');
@@ -144,9 +157,8 @@ class Player extends EventEmitter {
     pause() {
         try {
             this.connection.pause();
-            this.emit('pause');
         } catch (e) {
-            this.emit('debug', e);
+            console.error(e);
         }
     }
 
@@ -156,9 +168,8 @@ class Player extends EventEmitter {
     resume() {
         try {
             this.connection.resume();
-            this.emit('resume');
         } catch (e) {
-            this.emit('debug', e);
+            console.error(e);
         }
     }
 
@@ -169,6 +180,9 @@ class Player extends EventEmitter {
      * @param next - if the song should be enqueued to the 2nd position
      */
     addToQueue(Song, immediate, next) {
+        if (!Song || Song === undefined) {
+            return this.queue;
+        }
         if (this.queue.repeat !== 'queue') {
             this.toggleRepeat('off');
         }
@@ -234,16 +248,17 @@ class Player extends EventEmitter {
                     if (this.queue.songs[0]) {
                         if (this.queue.songs[0].needsResolve) {
                             let song = this.queue.songs[0];
-                            ytr.resolve(song.url).then(resolvedSong => {
-                                this.queue.songs[0] = resolvedSong;
-                                this.endSong();
+                            try {
+                                this.queue.songs[0] = await ytr.resolve(song.url);
+                                this.queue.songs[0].queuedBy = song.queuedBy;
+                                await this.endSong();
                                 this.play(this.queue.songs[0]);
-                            }).catch(err => {
-                                winston.error(err);
+                            } catch (e) {
+                                winston.error(e);
                                 this.nextSong(song);
-                            });
+                            }
                         } else {
-                            this.endSong();
+                            await this.endSong();
                             this.play(this.queue.songs[0]);
                         }
                     } else {
@@ -264,8 +279,10 @@ class Player extends EventEmitter {
                     if (this.queue.songs[0].needsResolve) {
                         let newSong = this.queue.songs[0];
                         try {
+                            let queuedBy = this.queue.songs[0].queuedBy ? this.queue.songs[0].queuedBy : '-';
                             this.queue.songs[0] = await ytr.resolve(newSong.url);
-                            this.endSong();
+                            this.queue.songs[0].queuedBy = queuedBy;
+                            await this.endSong();
                             this.play(this.queue.songs[0]);
                             return song;
                         } catch (e) {
@@ -273,7 +290,7 @@ class Player extends EventEmitter {
                             this.nextSong(newSong);
                         }
                     } else {
-                        this.endSong();
+                        await this.endSong();
                         this.play(this.queue.songs[0]);
                         return song;
                     }
@@ -289,9 +306,9 @@ class Player extends EventEmitter {
         }
     }
 
-    endSong(leave) {
+    async endSong(leave) {
         try {
-            this.connection.stopPlaying();
+            await this.connection.stopPlaying();
         } catch (e) {
             console.error(e);
             this.emit('debug', e);
@@ -299,17 +316,19 @@ class Player extends EventEmitter {
         clearTimeout(this.autoLeaveTimeout);
         if (leave) {
             this.started = false;
-        }
-        this.autoLeaveTimeout = setTimeout(() => {
-            try {
-                let conn = rem.voiceConnections.get(this.connection.id);
-                if (conn) {
-                    rem.voiceConnections.leave(this.connection.id);
+        } else {
+            this.autoLeaveTimeout = setTimeout(() => {
+                try {
+                    let conn = rem.voiceConnections.get(this.connection.id);
+                    if (conn) {
+                        rem.voiceConnections.leave(this.connection.id);
+                    }
+                } catch (e) {
+                    console.error(e);
                 }
-            } catch (e) {
-                console.error(e);
-            }
-        }, 1000 * 60 * 10); // 10 Minutes
+            }, 1000 * 60 * 10); // 10 Minutes
+        }
+        return Promise.resolve();
     }
 
     /**
@@ -317,8 +336,18 @@ class Player extends EventEmitter {
      * @returns {{repeat: boolean, repeatId: string, voteskips: Array, songs: Array, time: string}}
      */
     getQueue() {
-        if (this.connection.current) {
-            this.queue.time = this.convertSeconds(Math.floor(this.connection.current.playTime / 1000));
+        if (this.connection.current || this.connection.timestamp) {
+            let time = 0;
+            if (!this.connection.current) {
+                try {
+                    time = this.connection.getTimestamp();
+                } catch (e) {
+
+                }
+            } else {
+                time = this.connection.current.playTime;
+            }
+            this.queue.time = this.convertSeconds(Math.floor(time / 1000));
         }
         return this.queue;
     }

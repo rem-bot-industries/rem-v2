@@ -14,7 +14,8 @@ class uwu extends Command {
 
     run(msg) {
         // this.emit('run');
-        msg.channel.createMessage('uwu');
+        let content = msg.content.split(' ').splice(1).join(' ').trim();
+        msg.channel.createMessage('\u200B' + content + (content !== '' ? ' ' : '') + 'uwu');
     }
 }
 module.exports = uwu;

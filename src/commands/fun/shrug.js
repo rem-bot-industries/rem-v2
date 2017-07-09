@@ -10,11 +10,17 @@ class Shrug extends Command {
         this.needGuild = false;
         this.t = t;
         this.accessLevel = 0;
+        this.help = {
+            short: 'help.shrug.short',
+            usage: 'help.shrug.usage',
+            example: 'help.shrug.example'
+        }
     }
 
     run(msg) {
         // this.emit('run');
-        msg.channel.createMessage('\u200B' + '¯\\_(ツ)_/¯');
+        let content = msg.content.split(' ').splice(1).join(' ').trim();
+        msg.channel.createMessage('\u200B' + content + (content !== '' ? ' ' : '') + '¯\\_(ツ)_/¯');
     }
 }
 module.exports = Shrug;
