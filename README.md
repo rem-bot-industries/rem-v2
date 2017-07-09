@@ -1,9 +1,24 @@
-# Rem v2
->The rewrite of Rem, now even cleaner and soon fully documented.
+<h1 align="center">
+    <a href="https://discord.gg/rem"><img src="http://i.imgur.com/1lPOnSm.jpg" width="256px" alt="Rem"></a>
+  <br>
+    Rem
+  <br>
+ </h1>
+<h4 align="center">The rewrite of Rem, now even cleaner and soon fully documented.</h4>
+<h5 align="center">This Code is provided as is, there will be no support for getting it to run.</h5>
+  <p align="center">
+      <a href="https://discord.gg/yuTxmYn" target="_blank"><img src="https://discordapp.com/api/guilds/206530953391243275/embed.png" alt="Discord"></a>
+    <a href="https://david-dm.org/DasWolke/rem-v2" target="_blank"><img src="https://david-dm.org/DasWolke/rem-v2/status.svg" alt="Dependencies"></a>
+    <a href="https://github.com/rem-bot-industries/rem-v2/blob/master" target="_blank"><img src="https://img.shields.io/github/stars/DasWolke/rem-v2.svg?style=social&label=Star" alt="Github Stars"></a>
+    <a href="https://github.com/rem-bot-industries/rem-v2/issues" target="_blank"><img src="https://img.shields.io/github/issues/DasWolke/rem-v2.svg" alt="Github Issues"></a>
+  </p>
+  
+-------------------
 
->This Code is provided as is, there will be no support for getting it to run.
+## Contibuting Guidelines
 
-[![Discord](https://discordapp.com/api/guilds/206530953391243275/embed.png)](https://discord.gg/yuTxmYn) [![Dependencies](https://david-dm.org/DasWolke/rem-v2/status.svg)](https://david-dm.org/DasWolke/rem-v2) [![GitHub stars](https://img.shields.io/github/stars/DasWolke/rem-v2.svg?style=social&label=Star)]()[![GitHub issues](https://img.shields.io/github/issues/DasWolke/rem-v2.svg)]()
+I will write those if people actually want to contribute. Until then: Just make it work good and fast. uwu
+
 ## Requirements:
 * Node and NPM
 * Git
@@ -33,7 +48,7 @@ If the installation fails, due to not being able to clone the git repo of it, re
 13. Start the MongoDB Server and the Redis Server if you did not do that already
 14. Start Rem by going into the src folder and typing the following:  `node index.js`.
 
-## Example main.json
+### ***Example main.json***
 ```json
 {
   "owner": "Owner Name",
@@ -77,11 +92,8 @@ If the installation fails, due to not being able to clone the git repo of it, re
   ]
 }
 ```
+
 ## Helpful links
 If you need help creating tokens and a Youtube api I suggest reading these two tutorials on it.
 * https://github.com/reactiflux/discord-irc/wiki/Creating-a-discord-bot-&-getting-a-token
 * http://docs.thesharks.xyz/install_windows/
-
-## Contibuting Guidelines
-
-I will write those if people actually want to contribute. Until then: Just make it work good and fast. uwu
