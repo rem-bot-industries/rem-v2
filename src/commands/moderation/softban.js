@@ -126,7 +126,7 @@ class Softban extends Command {
             });
         }
         //check if the role of the user is higher than the role of the user he want's to ban
-        if (utils.getHighestRolePosition(target, msg.channel.guild.roles) > utils.getHighestRolePosition(msg.member, msg.channel.guild.roles) && msg.channel.guild.ownerID !== msg.member) {
+        if (utils.getHighestRolePosition(target, msg.channel.guild.roles) > utils.getHighestRolePosition(msg.member, msg.channel.guild.roles) && msg.channel.guild.ownerID !== msg.author.id) {
             return msg.channel.createMessage(this.t('ban.privilege', {lngs: msg.lang}));
         }
         //check if rem's role is higher than the role of the user that should be banned
