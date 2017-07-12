@@ -9,7 +9,7 @@ class Menu {
         this.msg = msg;
         this.choices = choices;
         let content = utils.renderList(utils.prefixIndex(choices), 'js', true);
-        this.menuText = this.buildMenu(title, description, content, t, msg.lngs);
+        this.menuText = this.buildMenu(title, description, content, t, msg.lang);
         this.menuMsg = null;
         this.sendWrongUsage = false;
         return this.setUpListener(msg);

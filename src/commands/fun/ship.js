@@ -20,7 +20,7 @@ class Ship extends Command {
     }
 
     async run(msg) {
-        let msgSplit = msg.content.split(' ').splice(1);
+        let msgSplit = msg.content.trim().split(' ').map(c => c.trim()).filter(c => c !== '').splice(1);
         // console.log(msgSplit);
         if (msgSplit.length === 0) {
             return msg.channel.createMessage(this.t('ship.single', {
