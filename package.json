@@ -1,6 +1,6 @@
 {
   "name": "rem-v2",
-  "version": "2.7.1",
+  "version": "2.7.2-wolke",
   "description": "uwu",
   "main": "index.js",
   "scripts": {
@@ -44,7 +44,7 @@
     "merge-json": "0.1.0-b.3",
     "minimist": "^1.2.0",
     "moment": "^2.18.1",
-    "mongoose": "^4.11.1",
+    "mongoose": "^4.11.4",
     "node-opus": "^0.2.6",
     "node-osu": "^1.2.0",
     "raven": "^2.1.0",
@@ -56,11 +56,14 @@
     "unzip2": "^0.2.5",
     "winston": "^2.3.1",
     "winston-daily-rotate-file": "^1.4.6",
-    "ws": "^3.0.0",
+    "ws": "^3.1.0",
     "youtube-dl": "^1.11.1",
     "ytdl-core": "^0.14.4"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "heapdump": "^0.3.9",
+    "memwatch-next": "^0.3.0"
+  },
   "optionalDependencies": {
     "eris-novum": "git+https://git.dvguild.tk/briantanner/eris-novum.git"
   }

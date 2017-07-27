@@ -83,15 +83,13 @@ class YoutubeImporter extends BasicImporter {
 
     filterOpus(formats) {
         formats.sort((a, b) => {
-            return parseInt(a.itag) - parseInt(b.itag)
+            return parseInt(b.itag) - parseInt(a.itag);
         });
         for (let i = 0; i < formats.length; i++) {
-            // console.log(formats[i]);
-            // console.log(formats[i].itag);
-            if (formats[i].itag === '250') {
+            if (formats[i].itag === '251') {
                 return formats[i].url;
             }
-            if (formats[i].itag === '251') {
+            if (formats[i].itag === '250') {
                 return formats[i].url;
             }
         }

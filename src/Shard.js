@@ -26,6 +26,14 @@ const stat = `rem_${remConfig.environment}`;
 const blocked = require('blocked');
 const procToWs = require('./ws/procToWs');
 const hub = new procToWs();
+// let memwatch = require('memwatch-next');
+// memwatch.on('leak', function(info) {
+//     console.log("leak:",info);
+// });
+//
+// memwatch.on('stats', function(stats) {
+//     console.log("stats:",stats);
+// });
 /**
  * The base shard class
  * @extends EventEmitter
