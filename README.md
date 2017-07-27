@@ -15,7 +15,7 @@
   
 -------------------
 
-## Contibuting Guidelines
+## Contributing Guidelines
 
 I will write those if people actually want to contribute. Until then: Just make it work good and fast. uwu
 
@@ -96,4 +96,4 @@ If the installation fails, due to not being able to clone the git repo of it, re
 ## Helpful links
 If you need help creating tokens and a Youtube api I suggest reading these two tutorials on it.
 * https://github.com/reactiflux/discord-irc/wiki/Creating-a-discord-bot-&-getting-a-token
-* http://docs.thesharks.xyz/install_windows/
+* http://docs.thesharks.xyz/install_windows/ (Requirements & API keys section, forward is another case)
