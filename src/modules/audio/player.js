@@ -46,6 +46,7 @@ class Player extends EventEmitter {
         if ((this.connection && this.connection.ready || this.connection && rem.options.crystal) && Song) {
             let link;
             let options = {};
+            // console.log(Song.streamUrl);
             switch (Song.type) {
                 case SongTypes.youtube: {
                     options.resolve = true;
@@ -54,7 +55,8 @@ class Player extends EventEmitter {
                             try {
                                 link = new WolkeStream(Song.streamUrl);
                             } catch (e) {
-
+                                console.error(e);
+                                return this.nextSong(Song);
                             }
                         } else {
                             link = Song.url;
@@ -125,10 +127,6 @@ class Player extends EventEmitter {
                     return this.nextSong();
                     break;
             }
-            this.connection.play(link, options);
-            this.announce(Song);
-            // winston.info("added listener");
-            // console.log(this.connection.listeners('end').length);
             this.connection.once('end', () => {
                 winston.info("File ended!");
                 // console.log(this.connection.listeners('end'));
@@ -141,7 +139,8 @@ class Player extends EventEmitter {
                 this.toggleRepeat('off');
                 this.nextSong(Song);
             });
-
+            this.connection.play(link, options);
+            this.announce(Song);
         }
         else {
             setTimeout(() => {
