@@ -2,7 +2,7 @@
  * Created by Julian/Wolke on 07.11.2016.
  */
 let Command = require('../../structures/command');
-const inviteLink = remConfig.invite_url;
+let clientId = require('../../../main.json').client_id;
 class Invite extends Command {
     constructor({t}) {
         super();
@@ -18,7 +18,7 @@ class Invite extends Command {
     }
 
     run(msg) {
-        let inviteLink = 'https://ram.moe/invite';
+        const inviteLink = 'https://discordapp.com/oauth2/authorize?client_id=' + clientId + '&scope=bot&permissions=0';
         msg.channel.createMessage(this.t('add', {lngs: msg.lang, link: inviteLink}))
     }
 }

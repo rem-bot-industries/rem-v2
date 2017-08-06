@@ -108,33 +108,8 @@ class BotInfo extends Command {
         fields.push({name: this.t('bot-info.users-s', {lngs: msg.lang}), value: shard_users, inline: true});
         fields.push({name: this.t('bot-info.channels-s', {lngs: msg.lang}), value: shard_channels, inline: true});
         fields.push({
-            name: this.t('generic.donate', {lngs: msg.lang}),
-            value: '[patreon.com/rem_bot](https://www.patreon.com/rem_bot)',
-            inline: true
-        });
-        fields.push({
-            name: this.t('generic.support', {lngs: msg.lang}),
-            value: '[ram.moe/support](https://ram.moe/support)',
-            inline: true
-        });
-        fields.push({
-            name: this.t('generic.invite', {lngs: msg.lang}),
-            value: '[ram.moe/invite](https://ram.moe/invite)',
-            inline: true
-        });
-        fields.push({
             name: this.t('bot-info.shard', {lngs: msg.lang}),
             value: `${rem.options.firstShardID + 1}/${rem.options.maxShards}`,
-            inline: true
-        });
-        fields.push({
-            name: 'Twitter',
-            value: '[twitter.com/Rem_Bot__](https://twitter.com/Rem_Bot__)',
-            inline: true
-        });
-        fields.push({
-            name: this.t('bot-info.top_donators', {lngs: msg.lang}),
-            value: `\`Karen#3938\` \`100$/m\`\n\`ResurrectionHQ#3061\` \`50$/m\`\n\`Hulkerman#0140\` \`108€\``,
             inline: true
         });
         return fields;

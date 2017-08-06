@@ -14,7 +14,11 @@ winston.add(winston.transports.Console, {
     'colorize': true
 });
 const version = require('./../package.json').version;
+process.title = "Rem v" + version;
 const util = require('util');
+winston.info("Thanks for using Rem v2! You're now using the Rem client, a defunct Discord bot which provides " + 
+             "multiple functions like music, moderation and fun. Please take in mind that the client is " +
+             "provided as it is and we are no longer giving support. Run it at your own risk~ uwu");
 const configTemplate = require('./structures/template.js');
 let wsWorker;
 /**
