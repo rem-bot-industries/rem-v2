@@ -14,31 +14,44 @@ class CleverBotManager extends Manager {
 
 
     talk(msg) {
-        if (this.cleverbots[msg.channel.guild.id]) {
-            this.cleverbots[msg.channel.guild.id].talk(msg, (err, reply) => {
+        this.getCleverBot(msg.channel.guild.id).then( cleverbot => {
+            cleverbot.talk(msg, (err, reply) => {
                 if (err) {
                     console.error(err);
                     return msg.channel.createMessage(':x: An error with cleverbot occured!');
                 }
+                
                 msg.channel.createMessage(':pencil: ' + reply);
             });
-        } else {
-            this.cleverbots[msg.channel.guild.id] = new CleverBot(cleverbotUser, cleverbotKey, `wolke_rem_discordbot_${msg.channel.guild.id}`);
-            this.cleverbots[msg.channel.guild.id].createSession(msg.channel.guild.id, (err) => {
-                if (err) {
-                    console.error(err);
-                    return msg.channel.createMessage(':x: An error with cleverbot occured!');
+        }).catch(error => {
+            console.error(error);
+            return msg.channel.createMessage(':x: An error with cleverbot occured!');
+        });
+    }
+    
+    getCleverBot(guild_id) {
+        return new Promise((resolve, reject) => {
+            if(!guild_id) {
+                return reject(new Error('Missing guild ID'));
+            }
+            
+            if(this.cleverbots[guild_id]) {
+                return resolve(this.cleverbots[guild_id]);
+            }
+            
+            let cleverbot = new CleverBot(cleverbotUser, cleverbotKey, `wolke_rem_discordbot_${msg.channel.guild.id}`);
+            
+            cleverbot.createSession(guild_id, (cleverbotError) => {
+                if(cleverbotError) {
+                    return reject(cleverbotError);
                 }
-                this.cleverbots[msg.channel.guild.id].talk(msg, (err, reply) => {
-                    if (err) {
-                        console.error(err);
-                        return msg.channel.createMessage(':x: An error with cleverbot occured!');
-                    }
-                    msg.channel.createMessage(':pencil: ' + reply);
-                });
+                
+                //We try to create the cleverbot session before we actually store it so in case it fails, it won't try to talk to a clever bot that doesn't have a session.
+                this.cleverbots[guild_id] = cleverbot;
+                
+                return resolve(cleverbot);
             });
-
-        }
+        });
     }
 }
 class CleverBot {
