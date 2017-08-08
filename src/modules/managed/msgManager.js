@@ -51,10 +51,11 @@ class MessageManager extends Manager {
                     if (file.endsWith('.js')) {
                         let command = require(file);
                         let cmd = new command({t: this.t, v: this.v, mod});
-                        commands[cmd.cmd] = cmd;
+                        let cmdName = cmd.cmd.toLowerCase();
+                        commands[cmdName] = cmd;
                         if (cmd.aliases && cmd.aliases.length > 0) {
                             cmd.aliases.forEach((alias) => {
-                                this.aliases[alias] = cmd.cmd;
+                                this.aliases[alias.toLowerCase()] = cmdName;
                             });
                         }
                     }
@@ -87,6 +88,11 @@ class MessageManager extends Manager {
                 if (msg.content.startsWith(Guild.prefix)) {
                     try {
                         let cmd = msg.content.substr(Guild.prefix.length).split(' ')[0];
+                        
+                        if(cmd !== undefined) {
+                            cmd = cmd.toLowerCase();
+                        }
+                        
                         let command = this.commands[cmd];
                         if (typeof (command) === 'undefined') {
                             if (typeof (this.aliases[cmd]) !== 'undefined') {
