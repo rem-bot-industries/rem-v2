@@ -2,7 +2,7 @@
  * Created by Julian/Wolke on 07.11.2016.
  */
 let Command = require('../../structures/command');
-let clientId = require('../../../main.json').client_id;
+let clientId = require('../../../config/main.json').client_id;
 class Invite extends Command {
     constructor({t}) {
         super();
