@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "rem-v2",
-  "version": "2.7.2-wolke",
+  "version": "2.8.0-lurking-wolke",
   "description": "uwu",
   "main": "index.js",
   "scripts": {
@@ -10,10 +10,8 @@
     "patch": "npm --no-git-tag-version version patch",
     "minor": "npm --no-git-tag-version version minor",
     "major": "npm --no-git-tag-version version major",
-    "build": "./node_modules/.bin/babel src --source-maps --out-dir dist/",
-    "watch": "babel src --watch --source-maps --out-dir dist/",
     "doit": "npm rebuild",
-    "rebuild": "npm rebuild && npm run build"
+    "rebuild": "npm rebuild"
   },
   "author": "Wolke <wolke@ram.moe>",
   "contributors": [
@@ -24,16 +22,16 @@
   "dependencies": {
     "ascii-table": "0.0.9",
     "async": "^2.5.0",
-    "axios": "^0.16.2",
+    "axios": "^0.17.0",
     "babel-cli": "^6.24.1",
     "babel-plugin-transform-async-to-generator": "^6.24.1",
-    "babel-preset-latest": "^6.24.1",
+    "babel-preset-env": "^1.6.1",
     "better-cleverbot-io": "^1.0.2",
     "blocked": "^1.2.1",
     "bluebird": "^3.5.0",
     "docker-config-loader": "^1.0.0",
-    "eris": "git+https://github.com/abalabahaha/eris.git#dev",
-    "erlpack": "github:hammerandchisel/erlpack",
+    "eris": "^0.8.0",
+    "erlpack": "^0.1.2",
     "eventemitter3": "^2.0.3",
     "hot-shots": "^4.5.0",
     "i18next": "^8.4.3",
@@ -59,6 +57,6 @@
     "winston-daily-rotate-file": "^1.4.6",
     "ws": "^3.1.0",
     "youtube-dl": "^1.11.1",
-    "ytdl-core": "^0.14.4"
+    "ytdl-core": "^0.18.1"
   }
 }
