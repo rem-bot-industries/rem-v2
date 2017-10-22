@@ -10,7 +10,6 @@
       <a href="https://discord.gg/yuTxmYn" target="_blank"><img src="https://discordapp.com/api/guilds/206530953391243275/embed.png" alt="Discord"></a>
     <a href="https://david-dm.org/DasWolke/rem-v2" target="_blank"><img src="https://david-dm.org/DasWolke/rem-v2/status.svg" alt="Dependencies"></a>
     <a href="https://github.com/rem-bot-industries/rem-v2/blob/master" target="_blank"><img src="https://img.shields.io/github/stars/DasWolke/rem-v2.svg?style=social&label=Star" alt="Github Stars"></a>
-    <a href="https://github.com/rem-bot-industries/rem-v2/issues" target="_blank"><img src="https://img.shields.io/github/issues/DasWolke/rem-v2.svg" alt="Github Issues"></a>
   </p>
   
 -------------------

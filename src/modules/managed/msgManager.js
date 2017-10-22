@@ -6,7 +6,6 @@ let Manager = require('../../structures/manager');
 const winston = require('winston');
 const recursive = require('recursive-readdir');
 let path = require('path');
-let async = require('async');
 let StatsD = require('hot-shots');
 let dogstatsd = new StatsD({host: remConfig.statsd_host});
 let stat = `rem_${remConfig.environment}`;
