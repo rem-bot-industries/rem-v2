@@ -26,7 +26,7 @@ class Yandere extends Command {
 
     run(msg) {
         // Force commands to only run in NSFW channels
-        if (!msg.channel.name.startsWith('nsfw')) {
+        if (!msg.channel.nsfw) {
             return msg.channel.createMessage(this.t('nsfw-images.error-discord-not-nsfw-channel', {lngs: msg.lang}));
         }
 

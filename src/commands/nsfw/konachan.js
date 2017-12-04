@@ -26,7 +26,7 @@ class Konachan extends Command {
 
     run(msg) {
         // Force commands to only run in NSFW channels
-        if (!msg.channel.name.startsWith('nsfw')) {
+        if (!msg.channel.nsfw) {
             return msg.channel.createMessage(this.t('nsfw-images.error-discord-not-nsfw-channel', {lngs: msg.lang}));
         }
 
@@ -79,7 +79,7 @@ class Konachan extends Command {
                     if (body.length > 0) {
                         let random = Math.floor(Math.random() * body.length);
                         if (typeof(body[random]) !== 'undefined' && typeof (body[random].file_url) !== 'undefined') {
-                            msg.channel.createMessage(`http://${body[random].file_url.substring(2)}`);
+                            msg.channel.createMessage(body[random].file_url);
                         } else {
                             msg.channel.createMessage(this.t('nsfw-images.error-body', {lngs: msg.lang}));
                         }
