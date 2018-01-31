@@ -14,6 +14,9 @@
   
 -------------------
 
+## Noteworthy Forks
+There are some forks which deserve to be listed here since they added some new features to rem
+- PaveLiArcH: [https://github.com/PaveLiArcH/rem-v2](https://github.com/PaveLiArcH/rem-v2)
 ## Contributing Guidelines
 
 I will write those if people actually want to contribute. Until then: Just make it work good and fast. uwu
