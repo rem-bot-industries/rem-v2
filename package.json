@@ -57,6 +57,6 @@
     "winston-daily-rotate-file": "^1.4.6",
     "ws": "^3.3.3",
     "youtube-dl": "^1.11.1",
-    "ytdl-core": "^0.18.1"
+    "ytdl-core": "^0.20.1"
   }
 }
