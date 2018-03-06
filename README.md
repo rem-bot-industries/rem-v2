@@ -42,7 +42,7 @@ This will install the neccessary tools, which will be later needed by npm to bui
 6. For Linux environments, you should get `build-essential` and `python 2.7` installed.
 7. Clone the source of v2 from git
 8. Go into the just created directory and open a cmd and execute `npm install`.
-There could be some errors while installing the dependencies as the optional depenency of rem links to `eris-crystal`
+There could be some errors while installing the dependencies as the optional dependency of rem links to `eris-crystal`
 If the installation fails, due to not being able to clone the git repo of it, remove it from the dependencies in the package.json.
 9. Create the following directories within the root: `temp`,`audio`,`config`
 10. Create 2 files within the config directory: `main.json` and `keys.json`. An Example can be found down below.
