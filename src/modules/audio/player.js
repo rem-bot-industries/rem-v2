@@ -26,7 +26,6 @@ class Player extends EventEmitter {
      */
     constructor(msg, connection, queue) {
         super();
-        this.setMaxListeners(20);
         this.msg = msg;
         this.queue = queue ? queue : {id: msg.channel.guild.id, repeat: 'off', voteskips: [], songs: [], time: ''};
         this.connection = connection;

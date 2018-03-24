@@ -12,7 +12,6 @@ let stat = `rem_${remConfig.environment}`;
 class MessageManager extends Manager {
     constructor({cm, lm, gm, vm, um, pm, rm, sm, stm, mod}) {
         super();
-        this.setMaxListeners(20);
         this.l = lm;
         this.v = vm;
         this.lngs = lm.getList();
