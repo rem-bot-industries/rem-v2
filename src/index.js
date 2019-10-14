@@ -1,22 +1,24 @@
 /**Require the dependencies*/
-//uwu
-global.Promise = require('bluebird');
-global.TranslatableError = require('./structures/TranslatableError');
-require('source-map-support').install({
-    handleUncaughtExceptions: false
-});
 const child_process = require('child_process');
 //require the logger and modify it, to look cool
 const winston = require('winston');
-winston.remove(winston.transports.Console);
-winston.add(winston.transports.Console, {
-    'timestamp': true,
-    'colorize': true
+const logger = winston.createLogger({
+    level: 'info',
+    format: winston.format.colorize(),
+    transports: [
+        //
+        // - Write to all logs with level `info` and below to `combined.log`
+        // - Write all logs error (and below) to `error.log`.
+        //
+        new winston.transports.Console({
+            format: winston.format.simple()
+        })
+    ]
 });
 const version = require('./../package.json').version;
 process.title = "Rem v" + version;
 const util = require('util');
-winston.info("Thanks for using Rem v2! You're now using the Rem client, a defunct Discord bot which provides " + 
+logger.info('Thanks for using Rem v2! You\'re now using the Rem client, a defunct Discord bot which provides ' +
              "multiple functions like music, moderation and fun. Please take in mind that the client is " +
              "provided as it is and we are no longer giving support. Run it at your own risk~ uwu");
 const configTemplate = require('./structures/template.js');
@@ -29,8 +31,8 @@ let config;
 try {
     config = loader({secretName: 'secret_name', localPath: './config/main.json'});
 } catch (e) {
-    winston.error(e);
-    winston.error('Failed to require config!');
+    logger.error(e)
+    logger.error('Failed to require config!')
     process.exit(1);
 }
 global.remConfig = config;
@@ -66,9 +68,9 @@ if (!remConfig.no_error_tracking) {
         winston.error('Oh no I died because of an unhandled error!');
         process.exit(1);
     });
-    winston.info('Initializing error tracking!');
+    logger.info('Initializing error tracking!')
 } else {
-    winston.warn('No error tracking is used!');
+    logger.warn('No error tracking is used!')
 }
 let client;
 if (remConfig.use_ws) {
@@ -128,9 +130,9 @@ if (remConfig.use_ws) {
     });
 
 }
-winston.info(`Client Started!`);
+logger.info(`Client Started!`)
 process.once('SIGINT', () => {
-    winston.error('Received SIGINT');
+    logger.error('Received SIGINT')
     if (client) {
         try {
             client.kill();
@@ -140,7 +142,6 @@ process.once('SIGINT', () => {
     }
     process.exit(0);
 });
-winston.cli();
 process.on('unhandledRejection', (reason, promise) => {
     if (!reason) return;
     winston.error(`Unhandled rejection: ${reason} - ${util.inspect(promise)}`);

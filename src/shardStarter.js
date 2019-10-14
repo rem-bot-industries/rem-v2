@@ -8,19 +8,27 @@ require('source-map-support').install({
     handleUncaughtExceptions: false
 });
 require('longjohn');
-const winston = require('winston');
 const version = require('../package.json').version;
-winston.remove(winston.transports.Console);
-winston.add(winston.transports.Console, {
-    'timestamp': true,
-    'colorize': true
+const winston = require('winston')
+const logger = winston.createLogger({
+    level: 'info',
+    format: winston.format.colorize(),
+    transports: [
+        //
+        // - Write to all logs with level `info` and below to `combined.log`
+        // - Write all logs error (and below) to `error.log`.
+        //
+        new winston.transports.Console({
+            format: winston.format.simple()
+        })
+    ]
 });
 let config;
 try {
     config = JSON.parse(process.env.CONFIG);
 } catch (e) {
-    winston.error(e);
-    winston.error('Failed to parse config!');
+    logger.error(e)
+    logger.error('Failed to parse config!')
     process.exit(1);
 }
 global.remConfig = config;
@@ -33,9 +41,9 @@ if (!remConfig.no_error_tracking) {
         winston.error('Oh no I died because of an unhandled error!');
         process.exit(1);
     });
-    winston.info('Initializing error tracking!');
+    logger.info('Initializing error tracking!')
 } else {
-    winston.warn('No error tracking is used!');
+    logger.warn('No error tracking is used!')
 }
 let Shard = require('./Shard');
 const erisOptions = {
