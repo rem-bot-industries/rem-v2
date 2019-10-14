@@ -60,7 +60,7 @@ class Queue extends Command {
                 repeat: repeat,
                 duration: Queue.songs[0].duration,
                 current: Queue.time,
-                interpolation: {escape: false},
+                interpolation: {escapeValue: false},
                 user: Queue.songs[0].queuedBy ? Queue.songs[0].queuedBy : '-'
             })} \n`;
         } else {
@@ -68,7 +68,7 @@ class Queue extends Command {
                 lngs: msg.lang,
                 title: Queue.songs[0].title,
                 repeat: repeat,
-                interpolation: {escape: false},
+                interpolation: {escapeValue: false},
                 user: Queue.songs[0].queuedBy ? Queue.songs[0].queuedBy : '-'
             })}\n`;
         }
