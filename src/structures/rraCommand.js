@@ -25,7 +25,7 @@ class Command extends EventEmitter {
             if (cfg.use_weeb) {
                 let res = await axios.get('https://api.weeb.sh/images/random', {
                     headers: {Authorization: cfg.weebsh_token},
-                    params: {"type": this.cmd === 'nyan' ? 'neko' : this.cmd}
+                    params: {"type": this.cmd === 'nyan' ? 'neko' : this.cmd === 'handhold' ? 'handholding' : this.cmd}
                 });
                 return msg.channel.createMessage(res.data.url);
             } else {
